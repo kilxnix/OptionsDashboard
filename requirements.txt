@@ -1,0 +1,13 @@
+flask
+pandas
+requests
+yfinance
+tqdm
+scipy
+tabulate
+seaborn
+matplotlib
+lxml
+beautifulsoup4
+numpy
+psycopg2-binary
