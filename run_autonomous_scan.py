@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 import json
 
-from scanner_core import run_scanner, summarize_results
+from scanner_core import run_scanner, summarize_results, convert_numpy_types
 from db_client import fetch_tickers_from_db
 
 
@@ -15,8 +15,11 @@ def save_to_local(results, directory="output"):
     filename = f"trade_plans_{date_str}.json"
     full_path = os.path.join(directory, filename)
 
+    # Convert numpy/pandas types to JSON-serializable types
+    converted_results = convert_numpy_types(results)
+
     with open(full_path, "w") as f:
-        json.dump(results, f, indent=2)
+        json.dump(converted_results, f, indent=2, default=str)
 
     return full_path
 
