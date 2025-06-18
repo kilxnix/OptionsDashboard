@@ -1474,3 +1474,1119 @@ Delta: 0.25837 | Gamma: 0.49461 | Theta: -0.02694 | Score: 7.94
 
 ================================================================================
 
+📈 Trade Plan for LCID (Bullish Bias)
+
+🔹 Option: $$2.0 Put expiring 2025-07-11
+🔹 Entry Price: $0.08
+🔹 Stop Loss: $0.06
+🔹 Initial Target: $0.14
+🔹 Final Target: $0.28
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.29267 | Gamma: 0.98667 | Theta: -0.00231 | Score: 171.47
+
+================================================================================
+
+📈 Trade Plan for F (Bullish Bias)
+
+🔹 Option: $$11.0 Call expiring 2025-07-03
+🔹 Entry Price: $0.10
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.18
+🔹 Final Target: $0.35
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.27167 | Gamma: 0.59739 | Theta: -0.00575 | Score: 42.16
+
+================================================================================
+
+📈 Trade Plan for RIG (Bearish Bias)
+
+🔹 Option: $$3.5 Call expiring 2025-07-03
+🔹 Entry Price: $0.08
+🔹 Stop Loss: $0.06
+🔹 Initial Target: $0.14
+🔹 Final Target: $0.28
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.29025 | Gamma: 0.83467 | Theta: -0.00424 | Score: 79.36
+
+================================================================================
+
+📈 Trade Plan for HL (Bearish Bias)
+
+🔹 Option: $$6.0 Call expiring 2025-08-01
+🔹 Entry Price: $0.57
+🔹 Stop Loss: $0.43
+🔹 Initial Target: $1.00
+🔹 Final Target: $1.99
+🔹 Position Size: 3 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.30180 | Gamma: 6.69071 | Theta: -0.00041 | Score: 6527.94
+
+================================================================================
+
+📈 Trade Plan for GRAB (Bullish Bias)
+
+🔹 Option: $$4.5 Put expiring 2025-07-11
+🔹 Entry Price: $0.15
+🔹 Stop Loss: $0.11
+🔹 Initial Target: $0.26
+🔹 Final Target: $0.53
+🔹 Position Size: 12 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.30231 | Gamma: 0.71003 | Theta: -0.00325 | Score: 88.01
+
+================================================================================
+
+📈 Trade Plan for NOK (Bullish Bias)
+
+🔹 Option: $$5.5 Call expiring 2025-07-18
+🔹 Entry Price: $0.11
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.19
+🔹 Final Target: $0.39
+🔹 Position Size: 16 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.33330 | Gamma: 0.96252 | Theta: -0.00235 | Score: 164.47
+
+================================================================================
+
+📈 Trade Plan for LCID (Bullish Bias)
+
+🔹 Option: $$2.0 Put expiring 2025-07-11
+🔹 Entry Price: $0.08
+🔹 Stop Loss: $0.06
+🔹 Initial Target: $0.14
+🔹 Final Target: $0.28
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.29267 | Gamma: 0.98667 | Theta: -0.00231 | Score: 171.47
+
+================================================================================
+
+📈 Trade Plan for BB (Bullish Bias)
+
+🔹 Option: $$4.5 Call expiring 2025-06-20
+🔹 Entry Price: $0.07
+🔹 Stop Loss: $0.05
+🔹 Initial Target: $0.12
+🔹 Final Target: $0.25
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.31696 | Gamma: 1.17414 | Theta: -0.01366 | Score: 35.01
+
+================================================================================
+
+📈 Trade Plan for F (Bullish Bias)
+
+🔹 Option: $$11.0 Call expiring 2025-07-03
+🔹 Entry Price: $0.10
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.18
+🔹 Final Target: $0.35
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.27167 | Gamma: 0.59739 | Theta: -0.00575 | Score: 42.16
+
+================================================================================
+
+📈 Trade Plan for RIG (Bearish Bias)
+
+🔹 Option: $$3.5 Call expiring 2025-07-03
+🔹 Entry Price: $0.08
+🔹 Stop Loss: $0.06
+🔹 Initial Target: $0.14
+🔹 Final Target: $0.28
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.29025 | Gamma: 0.83467 | Theta: -0.00424 | Score: 79.36
+
+================================================================================
+
+📈 Trade Plan for HL (Bearish Bias)
+
+🔹 Option: $$6.0 Call expiring 2025-08-01
+🔹 Entry Price: $0.57
+🔹 Stop Loss: $0.43
+🔹 Initial Target: $1.00
+🔹 Final Target: $1.99
+🔹 Position Size: 3 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.30180 | Gamma: 6.69071 | Theta: -0.00041 | Score: 6527.94
+
+================================================================================
+
+📈 Trade Plan for RXRX (Bearish Bias)
+
+🔹 Option: $$5.0 Put expiring 2025-08-01
+🔹 Entry Price: $2.65
+🔹 Stop Loss: $1.99
+🔹 Initial Target: $4.64
+🔹 Final Target: $9.28
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.29894 | Gamma: 6.64397 | Theta: -0.00002 | Score: 132879.99
+
+================================================================================
+
+📈 Trade Plan for ABEV (Bullish Bias)
+
+🔹 Option: $$3.0 Call expiring 2026-01-16
+🔹 Entry Price: $0.10
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.18
+🔹 Final Target: $0.35
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.25655 | Gamma: 0.55345 | Theta: -0.00050 | Score: 443.35
+
+================================================================================
+
+📈 Trade Plan for NGD (Bearish Bias)
+
+🔹 Option: $$5.0 Call expiring 2025-06-20
+🔹 Entry Price: $0.10
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.18
+🔹 Final Target: $0.35
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.35222 | Gamma: 1.06051 | Theta: -0.01644 | Score: 26.45
+
+================================================================================
+
+📈 Trade Plan for AGNC (Bearish Bias)
+
+🔹 Option: $$9.5 Call expiring 2025-07-25
+🔹 Entry Price: $0.16
+🔹 Stop Loss: $0.12
+🔹 Initial Target: $0.28
+🔹 Final Target: $0.56
+🔹 Position Size: 12 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.38056 | Gamma: 0.98709 | Theta: -0.00229 | Score: 173.09
+
+================================================================================
+
+📈 Trade Plan for PCG (Bearish Bias)
+
+🔹 Option: $$14.0 Call expiring 2025-06-20
+🔹 Entry Price: $0.11
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.19
+🔹 Final Target: $0.39
+🔹 Position Size: 16 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.27157 | Gamma: 0.53932 | Theta: -0.02591 | Score: 8.93
+
+================================================================================
+
+📈 Trade Plan for GRAB (Bullish Bias)
+
+🔹 Option: $$4.5 Put expiring 2025-07-11
+🔹 Entry Price: $0.15
+🔹 Stop Loss: $0.11
+🔹 Initial Target: $0.26
+🔹 Final Target: $0.53
+🔹 Position Size: 12 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.30231 | Gamma: 0.71003 | Theta: -0.00325 | Score: 88.01
+
+================================================================================
+
+📈 Trade Plan for SNAP (Bearish Bias)
+
+🔹 Option: $$8.5 Call expiring 2025-06-20
+🔹 Entry Price: $0.08
+🔹 Stop Loss: $0.06
+🔹 Initial Target: $0.14
+🔹 Final Target: $0.28
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.30636 | Gamma: 0.83682 | Theta: -0.01869 | Score: 18.53
+
+================================================================================
+
+📈 Trade Plan for STNE (Bullish Bias)
+
+🔹 Option: $$15.5 Call expiring 2025-06-20
+🔹 Entry Price: $0.15
+🔹 Stop Loss: $0.11
+🔹 Initial Target: $0.26
+🔹 Final Target: $0.53
+🔹 Position Size: 12 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.26846 | Gamma: 0.52944 | Theta: -0.02613 | Score: 8.71
+
+================================================================================
+
+📈 Trade Plan for SWTX (Bullish Bias)
+
+🔹 Option: $$47.0 Put expiring 2025-07-25
+🔹 Entry Price: $4.80
+🔹 Stop Loss: $3.60
+🔹 Initial Target: $8.40
+🔹 Final Target: $16.80
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.28591 | Gamma: 2.20251 | Theta: 0.00092 | Score: 958.02
+
+================================================================================
+
+📈 Trade Plan for NOK (Bullish Bias)
+
+🔹 Option: $$5.5 Call expiring 2025-07-18
+🔹 Entry Price: $0.11
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.19
+🔹 Final Target: $0.39
+🔹 Position Size: 16 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.33330 | Gamma: 0.96252 | Theta: -0.00235 | Score: 164.47
+
+================================================================================
+
+📈 Trade Plan for BB (Bullish Bias)
+
+🔹 Option: $$4.5 Call expiring 2025-06-20
+🔹 Entry Price: $0.07
+🔹 Stop Loss: $0.05
+🔹 Initial Target: $0.12
+🔹 Final Target: $0.25
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.31696 | Gamma: 1.17414 | Theta: -0.01366 | Score: 35.01
+
+================================================================================
+
+📈 Trade Plan for RXRX (Bearish Bias)
+
+🔹 Option: $$5.0 Put expiring 2025-08-01
+🔹 Entry Price: $2.65
+🔹 Stop Loss: $1.99
+🔹 Initial Target: $4.64
+🔹 Final Target: $9.28
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.29894 | Gamma: 6.64397 | Theta: -0.00002 | Score: 132879.99
+
+================================================================================
+
+📈 Trade Plan for ABEV (Bullish Bias)
+
+🔹 Option: $$3.0 Call expiring 2026-01-16
+🔹 Entry Price: $0.10
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.18
+🔹 Final Target: $0.35
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.25655 | Gamma: 0.55345 | Theta: -0.00050 | Score: 443.35
+
+================================================================================
+
+📈 Trade Plan for NGD (Bearish Bias)
+
+🔹 Option: $$5.0 Call expiring 2025-06-20
+🔹 Entry Price: $0.10
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.18
+🔹 Final Target: $0.35
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.35222 | Gamma: 1.06051 | Theta: -0.01644 | Score: 26.45
+
+================================================================================
+
+📈 Trade Plan for AGNC (Bearish Bias)
+
+🔹 Option: $$9.5 Call expiring 2025-07-25
+🔹 Entry Price: $0.16
+🔹 Stop Loss: $0.12
+🔹 Initial Target: $0.28
+🔹 Final Target: $0.56
+🔹 Position Size: 12 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.38056 | Gamma: 0.98709 | Theta: -0.00229 | Score: 173.09
+
+================================================================================
+
+📈 Trade Plan for PCG (Bearish Bias)
+
+🔹 Option: $$14.0 Call expiring 2025-06-20
+🔹 Entry Price: $0.11
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.19
+🔹 Final Target: $0.39
+🔹 Position Size: 16 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.27157 | Gamma: 0.53932 | Theta: -0.02591 | Score: 8.93
+
+================================================================================
+
+📈 Trade Plan for SNAP (Bearish Bias)
+
+🔹 Option: $$8.5 Call expiring 2025-06-20
+🔹 Entry Price: $0.08
+🔹 Stop Loss: $0.06
+🔹 Initial Target: $0.14
+🔹 Final Target: $0.28
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.30636 | Gamma: 0.83682 | Theta: -0.01869 | Score: 18.53
+
+================================================================================
+
+📈 Trade Plan for STNE (Bullish Bias)
+
+🔹 Option: $$15.5 Call expiring 2025-06-20
+🔹 Entry Price: $0.15
+🔹 Stop Loss: $0.11
+🔹 Initial Target: $0.26
+🔹 Final Target: $0.53
+🔹 Position Size: 12 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.26846 | Gamma: 0.52944 | Theta: -0.02613 | Score: 8.71
+
+================================================================================
+
+📈 Trade Plan for SWTX (Bullish Bias)
+
+🔹 Option: $$47.0 Put expiring 2025-07-25
+🔹 Entry Price: $4.80
+🔹 Stop Loss: $3.60
+🔹 Initial Target: $8.40
+🔹 Final Target: $16.80
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.28591 | Gamma: 2.20251 | Theta: 0.00092 | Score: 958.02
+
+================================================================================
+
+📈 Trade Plan for TEVA (Bearish Bias)
+
+🔹 Option: $$17.5 Put expiring 2025-07-03
+🔹 Entry Price: $0.69
+🔹 Stop Loss: $0.52
+🔹 Initial Target: $1.21
+🔹 Final Target: $2.42
+🔹 Position Size: 2 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.27549 | Gamma: 5.62647 | Theta: -0.00001 | Score: 225059.41
+
+================================================================================
+
+📈 Trade Plan for GT (Bearish Bias)
+
+🔹 Option: $$11.0 Call expiring 2025-06-20
+🔹 Entry Price: $0.15
+🔹 Stop Loss: $0.11
+🔹 Initial Target: $0.26
+🔹 Final Target: $0.53
+🔹 Position Size: 12 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.29549 | Gamma: 0.62686 | Theta: -0.02414 | Score: 11.00
+
+================================================================================
+
+📈 Trade Plan for AESI (Bullish Bias)
+
+🔹 Option: $$15.0 Call expiring 2025-06-20
+🔹 Entry Price: $0.15
+🔹 Stop Loss: $0.11
+🔹 Initial Target: $0.26
+🔹 Final Target: $0.53
+🔹 Position Size: 12 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.27582 | Gamma: 0.55629 | Theta: -0.03392 | Score: 7.17
+
+================================================================================
+
+📈 Trade Plan for SIRI (Bearish Bias)
+
+🔹 Option: $$22.0 Call expiring 2025-07-11
+🔹 Entry Price: $0.90
+🔹 Stop Loss: $0.68
+🔹 Initial Target: $1.57
+🔹 Final Target: $3.15
+🔹 Position Size: 2 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.27671 | Gamma: 5.70895 | Theta: -0.00111 | Score: 2057.82
+
+================================================================================
+
+📈 Trade Plan for CLF (Bearish Bias)
+
+🔹 Option: $$8.0 Call expiring 2025-06-20
+🔹 Entry Price: $0.11
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.19
+🔹 Final Target: $0.39
+🔹 Position Size: 16 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.29516 | Gamma: 0.61911 | Theta: -0.03232 | Score: 8.28
+
+================================================================================
+
+📈 Trade Plan for WBD (Bearish Bias)
+
+🔹 Option: $$11.0 Call expiring 2025-06-20
+🔹 Entry Price: $0.10
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.18
+🔹 Final Target: $0.35
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.31289 | Gamma: 0.77609 | Theta: -0.02060 | Score: 15.70
+
+================================================================================
+
+📈 Trade Plan for LAZ (Bearish Bias)
+
+🔹 Option: $$43.0 Call expiring 2025-06-20
+🔹 Entry Price: $1.80
+🔹 Stop Loss: $1.35
+🔹 Initial Target: $3.15
+🔹 Final Target: $6.30
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.27794 | Gamma: 5.70216 | Theta: -0.00470 | Score: 485.70
+
+================================================================================
+
+📈 Trade Plan for MLCO (Bullish Bias)
+
+🔹 Option: $$6.5 Call expiring 2025-06-20
+🔹 Entry Price: $0.10
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.18
+🔹 Final Target: $0.35
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.31272 | Gamma: 0.86193 | Theta: -0.02447 | Score: 14.68
+
+================================================================================
+
+📈 Trade Plan for LFST (Bearish Bias)
+
+🔹 Option: $$5.0 Put expiring 2025-06-20
+🔹 Entry Price: $0.15
+🔹 Stop Loss: $0.11
+🔹 Initial Target: $0.26
+🔹 Final Target: $0.53
+🔹 Position Size: 12 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.25588 | Gamma: 4.98170 | Theta: -0.00331 | Score: 602.41
+
+================================================================================
+
+📈 Trade Plan for TEVA (Bearish Bias)
+
+🔹 Option: $$17.0 Call expiring 2025-07-25
+🔹 Entry Price: $2.12
+🔹 Stop Loss: $1.59
+🔹 Initial Target: $3.71
+🔹 Final Target: $7.42
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.28030 | Gamma: 5.86708 | Theta: -0.00081 | Score: 2897.73
+
+================================================================================
+
+📈 Trade Plan for COTY (Bullish Bias)
+
+🔹 Option: $$5.0 Call expiring 2025-06-20
+🔹 Entry Price: $0.10
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.18
+🔹 Final Target: $0.35
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.42426 | Gamma: 1.47465 | Theta: -0.01758 | Score: 34.25
+
+================================================================================
+
+📈 Trade Plan for LBTYK (Bullish Bias)
+
+🔹 Option: $$10.0 Put expiring 2025-06-20
+🔹 Entry Price: $0.15
+🔹 Stop Loss: $0.11
+🔹 Initial Target: $0.26
+🔹 Final Target: $0.53
+🔹 Position Size: 12 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.42598 | Gamma: 1.24842 | Theta: -0.02000 | Score: 25.46
+
+================================================================================
+
+📈 Trade Plan for AESI (Bullish Bias)
+
+🔹 Option: $$15.0 Call expiring 2025-06-20
+🔹 Entry Price: $0.15
+🔹 Stop Loss: $0.11
+🔹 Initial Target: $0.26
+🔹 Final Target: $0.53
+🔹 Position Size: 12 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.27582 | Gamma: 0.55629 | Theta: -0.03392 | Score: 7.17
+
+================================================================================
+
+📈 Trade Plan for SIRI (Bearish Bias)
+
+🔹 Option: $$21.5 Call expiring 2025-07-11
+🔹 Entry Price: $0.90
+🔹 Stop Loss: $0.68
+🔹 Initial Target: $1.57
+🔹 Final Target: $3.15
+🔹 Position Size: 2 contracts
+🔹 Max Hold Time: 10 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.58008 | Gamma: 7.05273 | Theta: -0.00192 | Score: 1469.94
+
+================================================================================
+
+📈 Trade Plan for CLF (Bearish Bias)
+
+🔹 Option: $$8.0 Call expiring 2025-06-20
+🔹 Entry Price: $0.11
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.19
+🔹 Final Target: $0.39
+🔹 Position Size: 16 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.29516 | Gamma: 0.61911 | Theta: -0.03232 | Score: 8.28
+
+================================================================================
+
+📈 Trade Plan for INTR (Bullish Bias)
+
+🔹 Option: $$7.5 Put expiring 2025-07-18
+🔹 Entry Price: $0.50
+🔹 Stop Loss: $0.38
+🔹 Initial Target: $0.88
+🔹 Final Target: $1.75
+🔹 Position Size: 4 contracts
+🔹 Max Hold Time: 10 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.54422 | Gamma: 18.07500 | Theta: 0.00034 | Score: 21265.27
+
+================================================================================
+
+📈 Trade Plan for MLCO (Bullish Bias)
+
+🔹 Option: $$6.5 Call expiring 2025-06-20
+🔹 Entry Price: $0.10
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.18
+🔹 Final Target: $0.35
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.31272 | Gamma: 0.86193 | Theta: -0.02447 | Score: 14.68
+
+================================================================================
+
+📈 Trade Plan for LBTYK (Bearish Bias)
+
+🔹 Option: $$10.0 Put expiring 2025-06-20
+🔹 Entry Price: $0.15
+🔹 Stop Loss: $0.11
+🔹 Initial Target: $0.26
+🔹 Final Target: $0.53
+🔹 Position Size: 12 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.42598 | Gamma: 1.24842 | Theta: -0.02000 | Score: 25.46
+
+================================================================================
+
+📈 Trade Plan for UEC (Bullish Bias)
+
+🔹 Option: $$7.0 Call expiring 2025-06-20
+🔹 Entry Price: $0.10
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.18
+🔹 Final Target: $0.35
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.26123 | Gamma: 0.61749 | Theta: -0.02873 | Score: 9.19
+
+================================================================================
+
+📈 Trade Plan for GNW (Bearish Bias)
+
+🔹 Option: $$7.0 Call expiring 2025-06-20
+🔹 Entry Price: $0.10
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.18
+🔹 Final Target: $0.35
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.34244 | Gamma: 1.01960 | Theta: -0.02233 | Score: 18.91
+
+================================================================================
+
+📈 Trade Plan for INTR (Bearish Bias)
+
+🔹 Option: $$7.5 Put expiring 2025-07-18
+🔹 Entry Price: $0.50
+🔹 Stop Loss: $0.38
+🔹 Initial Target: $0.88
+🔹 Final Target: $1.75
+🔹 Position Size: 4 contracts
+🔹 Max Hold Time: 10 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.54422 | Gamma: 18.07500 | Theta: 0.00034 | Score: 21265.27
+
+================================================================================
+
+📈 Trade Plan for GNW (Bearish Bias)
+
+🔹 Option: $$7.0 Call expiring 2025-06-20
+🔹 Entry Price: $0.10
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.18
+🔹 Final Target: $0.35
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.34244 | Gamma: 1.01960 | Theta: -0.02233 | Score: 18.91
+
+================================================================================
+
+📈 Trade Plan for PENN (Bullish Bias)
+
+🔹 Option: $$16.5 Put expiring 2025-07-11
+🔹 Entry Price: $2.32
+🔹 Stop Loss: $1.74
+🔹 Initial Target: $4.06
+🔹 Final Target: $8.12
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.34717 | Gamma: 8.54879 | Theta: 0.00035 | Score: 9770.49
+
+================================================================================
+
+📈 Trade Plan for RUM (Bullish Bias)
+
+🔹 Option: $$9.0 Put expiring 2025-08-01
+🔹 Entry Price: $1.20
+🔹 Stop Loss: $0.90
+🔹 Initial Target: $2.10
+🔹 Final Target: $4.20
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 10 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.52551 | Gamma: 12.57304 | Theta: 0.00042 | Score: 11974.88
+
+================================================================================
+
+📈 Trade Plan for X (Bullish Bias)
+
+🔹 Option: $$55.0 Call expiring 2025-07-03
+🔹 Entry Price: $0.03
+🔹 Stop Loss: $0.02
+🔹 Initial Target: $0.05
+🔹 Final Target: $0.10
+🔹 Position Size: 50 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.31555 | Gamma: 3.07279 | Theta: -0.00334 | Score: 368.63
+
+================================================================================
+
+📈 Trade Plan for SAN (Bearish Bias)
+
+🔹 Option: $$8.0 Put expiring 2025-09-19
+🔹 Entry Price: $0.60
+🔹 Stop Loss: $0.45
+🔹 Initial Target: $1.05
+🔹 Final Target: $2.10
+🔹 Position Size: 3 contracts
+🔹 Max Hold Time: 10 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.51166 | Gamma: 9.85900 | Theta: 0.00040 | Score: 9859.55
+
+================================================================================
+
+📈 Trade Plan for TSEM (Bullish Bias)
+
+🔹 Option: $$39.0 Call expiring 2025-06-20
+🔹 Entry Price: $1.10
+🔹 Stop Loss: $0.83
+🔹 Initial Target: $1.93
+🔹 Final Target: $3.85
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.30526 | Gamma: 6.84337 | Theta: -0.00440 | Score: 622.55
+
+================================================================================
+
+📈 Trade Plan for PENN (Bullish Bias)
+
+🔹 Option: $$16.5 Put expiring 2025-07-11
+🔹 Entry Price: $2.32
+🔹 Stop Loss: $1.74
+🔹 Initial Target: $4.06
+🔹 Final Target: $8.12
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.34717 | Gamma: 8.54879 | Theta: 0.00035 | Score: 9770.49
+
+================================================================================
+
+📈 Trade Plan for RUM (Bullish Bias)
+
+🔹 Option: $$9.0 Put expiring 2025-08-01
+🔹 Entry Price: $1.20
+🔹 Stop Loss: $0.90
+🔹 Initial Target: $2.10
+🔹 Final Target: $4.20
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 10 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.52551 | Gamma: 12.57304 | Theta: 0.00042 | Score: 11974.88
+
+================================================================================
+
+📈 Trade Plan for X (Bullish Bias)
+
+🔹 Option: $$55.0 Call expiring 2025-07-03
+🔹 Entry Price: $0.03
+🔹 Stop Loss: $0.02
+🔹 Initial Target: $0.05
+🔹 Final Target: $0.10
+🔹 Position Size: 50 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.31555 | Gamma: 3.07279 | Theta: -0.00334 | Score: 368.63
+
+================================================================================
+
+📈 Trade Plan for SAN (Bearish Bias)
+
+🔹 Option: $$8.0 Put expiring 2025-09-19
+🔹 Entry Price: $0.60
+🔹 Stop Loss: $0.45
+🔹 Initial Target: $1.05
+🔹 Final Target: $2.10
+🔹 Position Size: 3 contracts
+🔹 Max Hold Time: 10 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.51166 | Gamma: 9.85900 | Theta: 0.00040 | Score: 9859.55
+
+================================================================================
+
+📈 Trade Plan for TSEM (Bullish Bias)
+
+🔹 Option: $$39.0 Call expiring 2025-06-20
+🔹 Entry Price: $1.10
+🔹 Stop Loss: $0.83
+🔹 Initial Target: $1.93
+🔹 Final Target: $3.85
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.30526 | Gamma: 6.84337 | Theta: -0.00440 | Score: 622.55
+
+================================================================================
+

@@ -1,0 +1,45 @@
+What error would tis be from? '''Dominant Volume Levels:
+$7.96 - 26.4% of total volume
+$7.99 - 18.5% of total volume
+Options Data Fetched: 72 contracts
+No valid options found matching criteria
+Scanning: 100%|███████████████████████████████████████████████████████████████████████████████████| 514/514 [3:21:48<00:00, 23.56s/it]
+[2025-06-17 16:33:58,817] ERROR in app: Exception on /scan [GET]
+Traceback (most recent call last):
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 17, in trigger_scan
+    result = run_autonomous_scan(dry_run=False)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/run_autonomous_scan.py", line 79, in run_autonomous_scan
+    output_path = save_to_local(results)
+                  ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/run_autonomous_scan.py", line 19, in save_to_local
+    json.dump(results, f, indent=2)
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/json/__init__.py", line 179, in dump
+    for chunk in iterable:
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/json/encoder.py", line 432, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  [Previous line repeated 1 more time]
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/json/encoder.py", line 439, in _iterencode
+    o = _default(o)
+        ^^^^^^^^^^^
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type bool is not JSON serializable'''
