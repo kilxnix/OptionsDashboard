@@ -1175,6 +1175,58 @@ def save_to_drive(results):
         return None
 
 
+def save_individual_result(symbol, result_data, base_dir='./TradingPlans'):
+    """Save individual result immediately when found"""
+    try:
+        if not os.path.exists(base_dir):
+            os.makedirs(base_dir)
+
+        # Create a filename with current date
+        date_str = datetime.now().strftime('%Y-%m-%d')
+        individual_file = os.path.join(base_dir, f'progressive_results_{date_str}.json')
+        
+        # Load existing data or create new
+        if os.path.exists(individual_file):
+            with open(individual_file, 'r') as f:
+                existing_data = json.load(f)
+        else:
+            existing_data = {}
+        
+        # Add the new result
+        existing_data[symbol] = convert_numpy_types(result_data)
+        
+        # Save back to file
+        with open(individual_file, 'w') as f:
+            json.dump(existing_data, f, indent=2, default=str)
+        
+        print(f"✅ Saved {symbol} to {individual_file}")
+        
+        # Also append to human-readable format
+        human_readable_file = os.path.join(base_dir, f'progressive_plans_{date_str}.txt')
+        with open(human_readable_file, 'a') as f:
+            f.write(f"\n{'='*60}\n")
+            f.write(f"Symbol: {symbol} - {datetime.now().strftime('%H:%M:%S')}\n")
+            f.write(f"Confluence Score: {result_data.get('confluence', {}).get('score', 'N/A')}/10\n")
+            f.write(f"Bias: {result_data.get('confluence', {}).get('bias', 'N/A')}\n")
+            
+            if 'trade_plan' in result_data and result_data['trade_plan']:
+                tp = result_data['trade_plan']
+                f.write(f"Entry: ${tp.get('entry_price', 0):.2f}\n")
+                f.write(f"Stop: ${tp.get('stop_loss', 0):.2f}\n")
+                f.write(f"Target: ${tp.get('initial_target', 0):.2f}\n")
+                f.write(f"Position Size: {tp.get('position_size', 0)} contracts\n")
+                f.write(f"Strike: {tp.get('strike', 'N/A')} {tp.get('type', 'N/A').capitalize()}\n")
+                f.write(f"Expiration: {tp.get('expiration', 'N/A')}\n")
+            
+            f.write(f"{'='*60}\n")
+        
+        return True
+        
+    except Exception as e:
+        print(f"❌ Error saving individual result for {symbol}: {e}")
+        return False
+
+
 def save_detailed_options_data(results, base_dir, timestamp):
     """Save detailed options data to a separate file"""
     options_filepath = os.path.join(base_dir, f'options_data_{timestamp}.txt')
@@ -1511,7 +1563,7 @@ def run_scanner(symbols=None,
                             ],
                                      tablefmt='pretty'))
 
-                        results[symbol] = {
+                        result_data = {
                             'timeframe_analysis': analysis_results,
                             'confluence': confluence,
                             'volume_profile': volume_analysis,
@@ -1519,6 +1571,11 @@ def run_scanner(symbols=None,
                             'trade_plan': trade_plan,
                             'oi_skew': oi_skew
                         }
+                        
+                        results[symbol] = result_data
+                        
+                        # Save this result immediately
+                        save_individual_result(symbol, result_data)
                     else:
                         print("No valid options found matching criteria")
                 else:

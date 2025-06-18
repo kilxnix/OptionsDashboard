@@ -24,6 +24,32 @@ def save_to_local(results, directory="output"):
     return full_path
 
 
+def save_individual_scan_result(symbol, result_data, directory="output"):
+    """Save individual scan result immediately"""
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    date_str = datetime.now().strftime("%Y-%m-%d")
+    progressive_file = os.path.join(directory, f"progressive_scan_{date_str}.json")
+    
+    # Load existing data or create new
+    if os.path.exists(progressive_file):
+        with open(progressive_file, 'r') as f:
+            existing_data = json.load(f)
+    else:
+        existing_data = {}
+    
+    # Add the new result
+    existing_data[symbol] = convert_numpy_types(result_data)
+    
+    # Save back to file
+    with open(progressive_file, 'w') as f:
+        json.dump(existing_data, f, indent=2, default=str)
+    
+    print(f"✅ Progressive save: {symbol} saved to {progressive_file}")
+    return True
+
+
 def run_autonomous_scan(min_delta=0.25,
                         max_delta=0.68,
                         min_price=0.01,
@@ -56,7 +82,8 @@ def run_autonomous_scan(min_delta=0.25,
 
     print(f"🔍 {len(symbols)} tickers found: {symbols[:5]}...")
 
-    # ── Run your existing scanner_core logic ──
+    # ── Run your existing scanner_core logic with progressive saving ──
+    print("🔄 Running scanner with progressive saving enabled...")
     results = run_scanner(
         symbols=symbols,
         min_delta=min_delta,
@@ -66,6 +93,11 @@ def run_autonomous_scan(min_delta=0.25,
         time_to_expiry_range=time_to_expiry_range,
         iv_percentile_threshold=iv_percentile_threshold
     )
+    
+    # Additional safety: save each result from the final results dict too
+    if results:
+        for symbol, result_data in results.items():
+            save_individual_scan_result(symbol, result_data)
 
     if not results:
         print("⚠️ No valid results found in scanner.")
