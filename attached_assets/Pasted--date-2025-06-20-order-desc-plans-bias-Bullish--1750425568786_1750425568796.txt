@@ -1,0 +1,93 @@
+{
+  "date": "2025-06-20",
+  "order": "desc",
+  "plans": [
+    {
+      "bias": "Bullish",
+      "confluence_score": 10.0,
+      "entry_price": 0.1,
+      "expiration": "2025-06-20",
+      "max_hold_time": "4 hours",
+      "option_type": "Put",
+      "position_size": 24,
+      "strike": "$10.0",
+      "symbol": "VOD",
+      "target_price": 0.18
+    },
+    {
+      "bias": "Bearish",
+      "confluence_score": 9.28,
+      "entry_price": 0.95,
+      "expiration": "2026-02-20",
+      "max_hold_time": "12 hours",
+      "option_type": "Call",
+      "position_size": 2,
+      "strike": "$5.0",
+      "symbol": "NGD",
+      "target_price": 1.66
+    },
+    {
+      "bias": "Bearish",
+      "confluence_score": 8.99,
+      "entry_price": 4.8,
+      "expiration": "2025-08-01",
+      "max_hold_time": "12 hours",
+      "option_type": "Put",
+      "position_size": 1,
+      "strike": "$47.0",
+      "symbol": "SWTX",
+      "target_price": 8.4
+    },
+    {
+      "bias": "Bullish",
+      "confluence_score": 8.85,
+      "entry_price": 0.1,
+      "expiration": "2025-06-20",
+      "max_hold_time": "4 hours",
+      "option_type": "Call",
+      "position_size": 24,
+      "strike": "$7.0",
+      "symbol": "UEC",
+      "target_price": 0.18
+    },
+    {
+      "bias": "Bullish",
+      "confluence_score": 8.64,
+      "entry_price": 0.9,
+      "expiration": "2025-08-15",
+      "max_hold_time": "12 hours",
+      "option_type": "Put",
+      "position_size": 2,
+      "strike": "$7.0",
+      "symbol": "SBSW",
+      "target_price": 1.57
+    },
+    {
+      "bias": "Bearish",
+      "confluence_score": 7.42,
+      "entry_price": 0.15,
+      "expiration": "2025-06-20",
+      "max_hold_time": "4 hours",
+      "option_type": "Call",
+      "position_size": 12,
+      "strike": "$7.5",
+      "symbol": "INTR",
+      "target_price": 0.26
+    },
+    {
+      "bias": "Bullish",
+      "confluence_score": 7.07,
+      "entry_price": 0.08,
+      "expiration": "2025-06-20",
+      "max_hold_time": "4 hours",
+      "option_type": "Put",
+      "position_size": 24,
+      "strike": "$8.0",
+      "symbol": "SNAP",
+      "target_price": 0.14
+    }
+  ],
+  "sort_by": "confluence_score",
+  "status": "success",
+  "total_plans": 7
+}
