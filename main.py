@@ -132,6 +132,116 @@ def get_sorted_plans():
         }), 500
 
 
+@app.route("/plans/all", methods=["GET"])
+def get_all_plans():
+    """Return all trading plans from ALL progressive results files"""
+    try:
+        # Get query parameters for sorting
+        sort_by = request.args.get('sort_by', 'confluence_score')
+        order = request.args.get('order', 'desc')
+        limit = request.args.get('limit', type=int)  # Optional limit
+        
+        base_dir = './TradingPlans'
+        pattern = os.path.join(base_dir, 'progressive_results_*.json')
+        files = glob.glob(pattern)
+        
+        if not files:
+            return jsonify({
+                "status": "error",
+                "message": "No trading plans found"
+            }), 404
+        
+        # Load and merge all files
+        all_plans = []
+        files_processed = []
+        
+        for file_path in files:
+            try:
+                with open(file_path, 'r') as f:
+                    results = json.load(f)
+                
+                # Extract date from filename for tracking
+                filename = os.path.basename(file_path)
+                date_part = filename.replace('progressive_results_', '').replace('.json', '')
+                files_processed.append(date_part)
+                
+                # Convert each symbol's data to plan format
+                for symbol, data in results.items():
+                    plan_data = {
+                        'symbol': symbol,
+                        'scan_date': date_part,
+                        'confluence_score': data.get('confluence', {}).get('score', 0),
+                        'bias': data.get('confluence', {}).get('bias', 'N/A'),
+                        'entry_price': 0,
+                        'target_price': 0,
+                        'option_type': 'N/A',
+                        'strike': 'N/A',
+                        'expiration': 'N/A',
+                        'position_size': 0,
+                        'max_hold_time': 'N/A'
+                    }
+                    
+                    # Extract trade plan details if available
+                    if 'trade_plan' in data and data['trade_plan']:
+                        tp = data['trade_plan']
+                        plan_data.update({
+                            'entry_price': tp.get('entry_price', 0),
+                            'target_price': tp.get('initial_target', 0),
+                            'option_type': tp.get('type', 'N/A'),
+                            'strike': tp.get('strike', 'N/A'),
+                            'expiration': tp.get('expiration', 'N/A'),
+                            'position_size': tp.get('position_size', 0),
+                            'max_hold_time': tp.get('max_hold_time', 'N/A')
+                        })
+                    
+                    all_plans.append(plan_data)
+                    
+            except Exception as e:
+                print(f"Error processing file {file_path}: {e}")
+                continue
+        
+        if not all_plans:
+            return jsonify({
+                "status": "error",
+                "message": "No valid plans found in any files"
+            }), 404
+        
+        # Sort the plans
+        reverse_order = order.lower() == 'desc'
+        
+        if sort_by == 'confluence_score':
+            all_plans.sort(key=lambda x: x['confluence_score'], reverse=reverse_order)
+        elif sort_by == 'entry_price':
+            all_plans.sort(key=lambda x: x['entry_price'], reverse=reverse_order)
+        elif sort_by == 'target_price':
+            all_plans.sort(key=lambda x: x['target_price'], reverse=reverse_order)
+        elif sort_by == 'symbol':
+            all_plans.sort(key=lambda x: x['symbol'], reverse=reverse_order)
+        elif sort_by == 'scan_date':
+            all_plans.sort(key=lambda x: x['scan_date'], reverse=reverse_order)
+        else:
+            all_plans.sort(key=lambda x: x['confluence_score'], reverse=True)
+        
+        # Apply limit if specified
+        if limit and limit > 0:
+            all_plans = all_plans[:limit]
+        
+        return jsonify({
+            "status": "success",
+            "total_plans": len(all_plans),
+            "files_processed": files_processed,
+            "sort_by": sort_by,
+            "order": order,
+            "plans": all_plans
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Error retrieving all plans: {str(e)}"
+        }), 500
+
+
 @app.route("/plans/formatted", methods=["GET"])
 def get_formatted_plans():
     """Return human-readable formatted trading plans"""
