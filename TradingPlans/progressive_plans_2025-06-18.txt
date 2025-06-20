@@ -1,0 +1,1368 @@
+
+============================================================
+Symbol: LCID - 17:15:09
+Confluence Score: 7.77/10
+Bias: Bullish
+Entry: $0.06
+Stop: $0.04
+Target: $0.10
+Position Size: 25 contracts
+Strike: $2.0 Put
+Expiration: 2025-07-03
+============================================================
+
+============================================================
+Symbol: RIG - 17:16:04
+Confluence Score: 8.3/10
+Bias: Bearish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $3.5 Call
+Expiration: 2025-07-11
+============================================================
+
+============================================================
+Symbol: F - 17:16:33
+Confluence Score: 8.57/10
+Bias: Bullish
+Entry: $0.07
+Stop: $0.05
+Target: $0.12
+Position Size: 24 contracts
+Strike: $10.5 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: SRCL - 17:17:18
+Confluence Score: 7.08/10
+Bias: Bullish
+Entry: $0.00
+Stop: $0.00
+Target: $0.00
+Position Size: 50 contracts
+Strike: $62.5 Put
+Expiration: 2025-01-17
+============================================================
+
+============================================================
+Symbol: HL - 17:17:45
+Confluence Score: 8.16/10
+Bias: Bearish
+Entry: $0.07
+Stop: $0.05
+Target: $0.12
+Position Size: 24 contracts
+Strike: $6.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: GRAB - 17:18:08
+Confluence Score: 8.77/10
+Bias: Bullish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $5.0 Call
+Expiration: 2025-07-03
+============================================================
+
+============================================================
+Symbol: NOK - 17:21:14
+Confluence Score: 8.39/10
+Bias: Bullish
+Entry: $0.11
+Stop: $0.08
+Target: $0.19
+Position Size: 16 contracts
+Strike: $5.0 Put
+Expiration: 2025-07-18
+============================================================
+
+============================================================
+Symbol: PTEN - 17:24:28
+Confluence Score: 7.18/10
+Bias: Bearish
+Entry: $2.50
+Stop: $1.88
+Target: $4.38
+Position Size: 1 contracts
+Strike: $7.0 Put
+Expiration: 2027-01-15
+============================================================
+
+============================================================
+Symbol: VEON - 17:27:11
+Confluence Score: 8.6/10
+Bias: Bullish
+Entry: $2.70
+Stop: $2.03
+Target: $4.73
+Position Size: 1 contracts
+Strike: $40.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: KHC - 17:29:20
+Confluence Score: 8.33/10
+Bias: Bullish
+Entry: $0.12
+Stop: $0.09
+Target: $0.21
+Position Size: 16 contracts
+Strike: $25.5 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: UWMC - 17:30:28
+Confluence Score: 7.64/10
+Bias: Bullish
+Entry: $2.00
+Stop: $1.50
+Target: $3.50
+Position Size: 1 contracts
+Strike: $4.0 Call
+Expiration: 2025-08-01
+============================================================
+
+============================================================
+Symbol: GENI - 17:32:51
+Confluence Score: 7.66/10
+Bias: Bearish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $10.0 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: CZR - 17:33:55
+Confluence Score: 7.49/10
+Bias: Bearish
+Entry: $1.32
+Stop: $0.99
+Target: $2.31
+Position Size: 1 contracts
+Strike: $26.5 Put
+Expiration: 2025-06-27
+============================================================
+
+============================================================
+Symbol: ROIV - 17:52:25
+Confluence Score: 8.28/10
+Bias: Bearish
+Entry: $2.95
+Stop: $2.21
+Target: $5.16
+Position Size: 1 contracts
+Strike: $12.0 Call
+Expiration: 2027-01-15
+============================================================
+
+============================================================
+Symbol: ASAN - 17:53:38
+Confluence Score: 9.17/10
+Bias: Bullish
+Entry: $0.15
+Stop: $0.11
+Target: $0.26
+Position Size: 12 contracts
+Strike: $13.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: KRYS - 17:57:05
+Confluence Score: 8.18/10
+Bias: Bearish
+Entry: $2.00
+Stop: $1.50
+Target: $3.50
+Position Size: 1 contracts
+Strike: $130.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: KEY - 17:58:15
+Confluence Score: 8.15/10
+Bias: Bullish
+Entry: $0.09
+Stop: $0.07
+Target: $0.16
+Position Size: 25 contracts
+Strike: $16.0 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: ABEV - 18:03:30
+Confluence Score: 7.81/10
+Bias: Bullish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $3.0 Call
+Expiration: 2026-01-16
+============================================================
+
+============================================================
+Symbol: AGNC - 18:04:54
+Confluence Score: 8.43/10
+Bias: Bullish
+Entry: $0.11
+Stop: $0.08
+Target: $0.19
+Position Size: 16 contracts
+Strike: $9.5 Call
+Expiration: 2025-07-25
+============================================================
+
+============================================================
+Symbol: KGC - 18:05:26
+Confluence Score: 9.2/10
+Bias: Bearish
+Entry: $0.11
+Stop: $0.08
+Target: $0.19
+Position Size: 16 contracts
+Strike: $16.0 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: SNAP - 18:09:40
+Confluence Score: 7.07/10
+Bias: Bullish
+Entry: $0.08
+Stop: $0.06
+Target: $0.14
+Position Size: 24 contracts
+Strike: $8.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: KVUE - 18:09:58
+Confluence Score: 9.34/10
+Bias: Bullish
+Entry: $2.78
+Stop: $2.08
+Target: $4.86
+Position Size: 1 contracts
+Strike: $21.5 Put
+Expiration: 2025-07-25
+============================================================
+
+============================================================
+Symbol: LYG - 18:11:23
+Confluence Score: 7.78/10
+Bias: Bearish
+Entry: $0.15
+Stop: $0.11
+Target: $0.26
+Position Size: 12 contracts
+Strike: $4.0 Put
+Expiration: 2025-07-18
+============================================================
+
+============================================================
+Symbol: GGB - 18:15:17
+Confluence Score: 7.59/10
+Bias: Bearish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $3.0 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: BEKE - 18:29:43
+Confluence Score: 10.0/10
+Bias: Bullish
+Entry: $1.26
+Stop: $0.95
+Target: $2.21
+Position Size: 1 contracts
+Strike: $19.0 Put
+Expiration: 2025-08-01
+============================================================
+
+============================================================
+Symbol: PAA - 18:33:13
+Confluence Score: 7.44/10
+Bias: Bearish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $18.0 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: SWTX - 18:40:30
+Confluence Score: 8.44/10
+Bias: Bearish
+Entry: $4.80
+Stop: $3.60
+Target: $8.40
+Position Size: 1 contracts
+Strike: $47.0 Put
+Expiration: 2025-08-01
+============================================================
+
+============================================================
+Symbol: SBSW - 18:46:30
+Confluence Score: 7.78/10
+Bias: Bearish
+Entry: $0.15
+Stop: $0.11
+Target: $0.26
+Position Size: 12 contracts
+Strike: $7.0 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: VOD - 18:51:05
+Confluence Score: 8.93/10
+Bias: Bullish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $10.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: LAZ - 19:10:47
+Confluence Score: 8.05/10
+Bias: Bearish
+Entry: $1.80
+Stop: $1.35
+Target: $3.15
+Position Size: 1 contracts
+Strike: $43.0 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: TEVA - 19:14:48
+Confluence Score: 7.83/10
+Bias: Bullish
+Entry: $2.12
+Stop: $1.59
+Target: $3.71
+Position Size: 1 contracts
+Strike: $17.0 Call
+Expiration: 2025-07-25
+============================================================
+
+============================================================
+Symbol: AESI - 19:21:45
+Confluence Score: 7.82/10
+Bias: Bearish
+Entry: $0.15
+Stop: $0.11
+Target: $0.26
+Position Size: 12 contracts
+Strike: $15.0 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: LCID - 19:25:24
+Confluence Score: 7.77/10
+Bias: Bullish
+Entry: $0.06
+Stop: $0.04
+Target: $0.10
+Position Size: 25 contracts
+Strike: $2.0 Put
+Expiration: 2025-07-03
+============================================================
+
+============================================================
+Symbol: RIG - 19:26:41
+Confluence Score: 8.3/10
+Bias: Bearish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $3.5 Call
+Expiration: 2025-07-11
+============================================================
+
+============================================================
+Symbol: F - 19:27:23
+Confluence Score: 8.57/10
+Bias: Bullish
+Entry: $0.07
+Stop: $0.05
+Target: $0.12
+Position Size: 24 contracts
+Strike: $10.5 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: SRCL - 19:28:28
+Confluence Score: 7.08/10
+Bias: Bullish
+Entry: $0.00
+Stop: $0.00
+Target: $0.00
+Position Size: 50 contracts
+Strike: $62.5 Put
+Expiration: 2025-01-17
+============================================================
+
+============================================================
+Symbol: HL - 19:29:06
+Confluence Score: 8.16/10
+Bias: Bearish
+Entry: $0.07
+Stop: $0.05
+Target: $0.12
+Position Size: 24 contracts
+Strike: $6.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: GRAB - 19:29:41
+Confluence Score: 8.77/10
+Bias: Bullish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $5.0 Call
+Expiration: 2025-07-03
+============================================================
+
+============================================================
+Symbol: NOK - 19:34:21
+Confluence Score: 8.39/10
+Bias: Bullish
+Entry: $0.11
+Stop: $0.08
+Target: $0.19
+Position Size: 16 contracts
+Strike: $5.0 Put
+Expiration: 2025-07-18
+============================================================
+
+============================================================
+Symbol: PTEN - 19:38:32
+Confluence Score: 7.18/10
+Bias: Bearish
+Entry: $2.50
+Stop: $1.88
+Target: $4.38
+Position Size: 1 contracts
+Strike: $7.0 Put
+Expiration: 2027-01-15
+============================================================
+
+============================================================
+Symbol: VEON - 19:42:30
+Confluence Score: 8.6/10
+Bias: Bullish
+Entry: $2.70
+Stop: $2.03
+Target: $4.73
+Position Size: 1 contracts
+Strike: $40.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: KHC - 19:45:38
+Confluence Score: 8.33/10
+Bias: Bullish
+Entry: $0.12
+Stop: $0.09
+Target: $0.21
+Position Size: 16 contracts
+Strike: $25.5 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: UWMC - 19:47:13
+Confluence Score: 7.64/10
+Bias: Bullish
+Entry: $2.00
+Stop: $1.50
+Target: $3.50
+Position Size: 1 contracts
+Strike: $4.0 Call
+Expiration: 2025-08-01
+============================================================
+
+============================================================
+Symbol: GENI - 19:49:58
+Confluence Score: 7.66/10
+Bias: Bearish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $10.0 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: CZR - 19:51:09
+Confluence Score: 7.49/10
+Bias: Bearish
+Entry: $1.32
+Stop: $0.99
+Target: $2.31
+Position Size: 1 contracts
+Strike: $26.5 Put
+Expiration: 2025-06-27
+============================================================
+
+============================================================
+Symbol: MLCO - 19:56:19
+Confluence Score: 8.29/10
+Bias: Bullish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $6.5 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: GNW - 19:59:24
+Confluence Score: 8.92/10
+Bias: Bearish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $7.0 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: LBTYK - 20:04:25
+Confluence Score: 7.65/10
+Bias: Bearish
+Entry: $0.15
+Stop: $0.11
+Target: $0.26
+Position Size: 12 contracts
+Strike: $10.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: ROIV - 20:16:47
+Confluence Score: 7.55/10
+Bias: Bearish
+Entry: $2.95
+Stop: $2.21
+Target: $5.16
+Position Size: 1 contracts
+Strike: $12.0 Call
+Expiration: 2027-01-15
+============================================================
+
+============================================================
+Symbol: ASAN - 20:18:26
+Confluence Score: 8.89/10
+Bias: Bullish
+Entry: $0.15
+Stop: $0.11
+Target: $0.26
+Position Size: 12 contracts
+Strike: $13.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: UEC - 20:20:25
+Confluence Score: 8.85/10
+Bias: Bullish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $7.0 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: KRYS - 20:23:03
+Confluence Score: 7.41/10
+Bias: Bearish
+Entry: $2.00
+Stop: $1.50
+Target: $3.50
+Position Size: 1 contracts
+Strike: $130.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: KEY - 20:24:41
+Confluence Score: 8.35/10
+Bias: Bullish
+Entry: $0.09
+Stop: $0.07
+Target: $0.16
+Position Size: 25 contracts
+Strike: $16.0 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: ABEV - 20:31:58
+Confluence Score: 7.81/10
+Bias: Bullish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $3.0 Call
+Expiration: 2026-01-16
+============================================================
+
+============================================================
+Symbol: AGNC - 20:33:56
+Confluence Score: 8.43/10
+Bias: Bullish
+Entry: $0.11
+Stop: $0.08
+Target: $0.19
+Position Size: 16 contracts
+Strike: $9.5 Call
+Expiration: 2025-07-25
+============================================================
+
+============================================================
+Symbol: KGC - 20:34:35
+Confluence Score: 9.33/10
+Bias: Bearish
+Entry: $0.11
+Stop: $0.08
+Target: $0.19
+Position Size: 16 contracts
+Strike: $16.0 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: INTR - 20:38:32
+Confluence Score: 7.42/10
+Bias: Bearish
+Entry: $0.50
+Stop: $0.38
+Target: $0.88
+Position Size: 4 contracts
+Strike: $7.5 Put
+Expiration: 2025-07-18
+============================================================
+
+============================================================
+Symbol: SNAP - 20:40:31
+Confluence Score: 7.07/10
+Bias: Bullish
+Entry: $0.08
+Stop: $0.06
+Target: $0.14
+Position Size: 24 contracts
+Strike: $8.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: KVUE - 20:40:52
+Confluence Score: 9.24/10
+Bias: Bullish
+Entry: $2.78
+Stop: $2.08
+Target: $4.86
+Position Size: 1 contracts
+Strike: $21.5 Put
+Expiration: 2025-07-25
+============================================================
+
+============================================================
+Symbol: LYG - 20:42:39
+Confluence Score: 9.44/10
+Bias: Bullish
+Entry: $0.15
+Stop: $0.11
+Target: $0.26
+Position Size: 12 contracts
+Strike: $4.0 Put
+Expiration: 2025-07-18
+============================================================
+
+============================================================
+Symbol: LCID - 21:22:54
+Confluence Score: 8.46/10
+Bias: Bullish
+Entry: $0.06
+Stop: $0.04
+Target: $0.10
+Position Size: 25 contracts
+Strike: $2.0 Put
+Expiration: 2025-07-03
+============================================================
+
+============================================================
+Symbol: RIG - 21:23:53
+Confluence Score: 8.3/10
+Bias: Bearish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $3.5 Call
+Expiration: 2025-07-11
+============================================================
+
+============================================================
+Symbol: SRCL - 21:24:32
+Confluence Score: 7.08/10
+Bias: Bullish
+Entry: $0.00
+Stop: $0.00
+Target: $0.00
+Position Size: 50 contracts
+Strike: $62.5 Put
+Expiration: 2025-01-17
+============================================================
+
+============================================================
+Symbol: GRAB - 21:24:55
+Confluence Score: 7.11/10
+Bias: Bearish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $5.0 Call
+Expiration: 2025-07-03
+============================================================
+
+============================================================
+Symbol: NOK - 21:25:50
+Confluence Score: 9.11/10
+Bias: Bullish
+Entry: $0.11
+Stop: $0.08
+Target: $0.19
+Position Size: 16 contracts
+Strike: $5.0 Put
+Expiration: 2025-07-18
+============================================================
+
+============================================================
+Symbol: VEON - 21:28:45
+Confluence Score: 8.6/10
+Bias: Bullish
+Entry: $2.70
+Stop: $2.03
+Target: $4.73
+Position Size: 1 contracts
+Strike: $40.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: KHC - 21:30:34
+Confluence Score: 7.38/10
+Bias: Bullish
+Entry: $0.12
+Stop: $0.09
+Target: $0.21
+Position Size: 16 contracts
+Strike: $25.5 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: UWMC - 21:31:08
+Confluence Score: 7.98/10
+Bias: Bullish
+Entry: $2.00
+Stop: $1.50
+Target: $3.50
+Position Size: 1 contracts
+Strike: $4.0 Call
+Expiration: 2025-08-01
+============================================================
+
+============================================================
+Symbol: HL - 21:36:07
+Confluence Score: 8.65/10
+Bias: Bearish
+Entry: $0.07
+Stop: $0.05
+Target: $0.12
+Position Size: 24 contracts
+Strike: $6.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: ROIV - 21:48:22
+Confluence Score: 7.55/10
+Bias: Bearish
+Entry: $2.95
+Stop: $2.21
+Target: $5.16
+Position Size: 1 contracts
+Strike: $12.0 Call
+Expiration: 2027-01-15
+============================================================
+
+============================================================
+Symbol: ASAN - 21:49:30
+Confluence Score: 8.89/10
+Bias: Bullish
+Entry: $0.15
+Stop: $0.11
+Target: $0.26
+Position Size: 12 contracts
+Strike: $13.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: KRYS - 21:50:37
+Confluence Score: 7.41/10
+Bias: Bearish
+Entry: $2.00
+Stop: $1.50
+Target: $3.50
+Position Size: 1 contracts
+Strike: $130.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: ABEV - 21:59:11
+Confluence Score: 7.81/10
+Bias: Bullish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $3.0 Call
+Expiration: 2026-01-16
+============================================================
+
+============================================================
+Symbol: SWTX - 22:12:56
+Confluence Score: 8.44/10
+Bias: Bearish
+Entry: $4.80
+Stop: $3.60
+Target: $8.40
+Position Size: 1 contracts
+Strike: $47.0 Put
+Expiration: 2025-08-01
+============================================================
+
+============================================================
+Symbol: SNAP - 22:17:56
+Confluence Score: 7.07/10
+Bias: Bullish
+Entry: $0.08
+Stop: $0.06
+Target: $0.14
+Position Size: 24 contracts
+Strike: $8.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: KGC - 22:21:18
+Confluence Score: 9.33/10
+Bias: Bearish
+Entry: $0.11
+Stop: $0.08
+Target: $0.19
+Position Size: 16 contracts
+Strike: $16.0 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: SBSW - 22:22:52
+Confluence Score: 8.64/10
+Bias: Bullish
+Entry: $0.15
+Stop: $0.11
+Target: $0.26
+Position Size: 12 contracts
+Strike: $7.0 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: VOD - 22:25:58
+Confluence Score: 10.0/10
+Bias: Bullish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $10.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: LCID - 22:42:30
+Confluence Score: 8.46/10
+Bias: Bullish
+Entry: $0.06
+Stop: $0.04
+Target: $0.10
+Position Size: 25 contracts
+Strike: $2.0 Put
+Expiration: 2025-07-03
+============================================================
+
+============================================================
+Symbol: LFST - 22:43:41
+Confluence Score: 7.08/10
+Bias: Bullish
+Entry: $0.15
+Stop: $0.11
+Target: $0.26
+Position Size: 12 contracts
+Strike: $5.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: RIG - 22:43:47
+Confluence Score: 8.3/10
+Bias: Bearish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $3.5 Call
+Expiration: 2025-07-11
+============================================================
+
+============================================================
+Symbol: SRCL - 22:44:46
+Confluence Score: 7.08/10
+Bias: Bullish
+Entry: $0.00
+Stop: $0.00
+Target: $0.00
+Position Size: 50 contracts
+Strike: $62.5 Put
+Expiration: 2025-01-17
+============================================================
+
+============================================================
+Symbol: GRAB - 22:45:31
+Confluence Score: 7.11/10
+Bias: Bearish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $5.0 Call
+Expiration: 2025-07-03
+============================================================
+
+============================================================
+Symbol: LCID - 22:46:27
+Confluence Score: 8.46/10
+Bias: Bullish
+Entry: $0.06
+Stop: $0.04
+Target: $0.10
+Position Size: 25 contracts
+Strike: $2.0 Put
+Expiration: 2025-07-03
+============================================================
+
+============================================================
+Symbol: TEVA - 22:46:30
+Confluence Score: 8.86/10
+Bias: Bullish
+Entry: $2.12
+Stop: $1.59
+Target: $3.71
+Position Size: 1 contracts
+Strike: $17.0 Call
+Expiration: 2025-07-25
+============================================================
+
+============================================================
+Symbol: NOK - 22:47:29
+Confluence Score: 9.11/10
+Bias: Bullish
+Entry: $0.11
+Stop: $0.08
+Target: $0.19
+Position Size: 16 contracts
+Strike: $5.0 Put
+Expiration: 2025-07-18
+============================================================
+
+============================================================
+Symbol: RIG - 22:48:23
+Confluence Score: 8.3/10
+Bias: Bearish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $3.5 Call
+Expiration: 2025-07-11
+============================================================
+
+============================================================
+Symbol: SRCL - 22:49:27
+Confluence Score: 7.08/10
+Bias: Bullish
+Entry: $0.00
+Stop: $0.00
+Target: $0.00
+Position Size: 50 contracts
+Strike: $62.5 Put
+Expiration: 2025-01-17
+============================================================
+
+============================================================
+Symbol: GRAB - 22:50:13
+Confluence Score: 7.11/10
+Bias: Bearish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $5.0 Call
+Expiration: 2025-07-03
+============================================================
+
+============================================================
+Symbol: NOK - 22:52:06
+Confluence Score: 9.11/10
+Bias: Bullish
+Entry: $0.11
+Stop: $0.08
+Target: $0.19
+Position Size: 16 contracts
+Strike: $5.0 Put
+Expiration: 2025-07-18
+============================================================
+
+============================================================
+Symbol: VEON - 22:53:13
+Confluence Score: 8.6/10
+Bias: Bullish
+Entry: $2.70
+Stop: $2.03
+Target: $4.73
+Position Size: 1 contracts
+Strike: $40.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: KHC - 22:56:46
+Confluence Score: 7.38/10
+Bias: Bullish
+Entry: $0.12
+Stop: $0.09
+Target: $0.21
+Position Size: 16 contracts
+Strike: $25.5 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: VEON - 22:57:29
+Confluence Score: 8.6/10
+Bias: Bullish
+Entry: $2.70
+Stop: $2.03
+Target: $4.73
+Position Size: 1 contracts
+Strike: $40.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: UWMC - 22:57:32
+Confluence Score: 7.98/10
+Bias: Bullish
+Entry: $2.00
+Stop: $1.50
+Target: $3.50
+Position Size: 1 contracts
+Strike: $4.0 Call
+Expiration: 2025-08-01
+============================================================
+
+============================================================
+Symbol: AESI - 22:58:33
+Confluence Score: 7.69/10
+Bias: Bearish
+Entry: $0.15
+Stop: $0.11
+Target: $0.26
+Position Size: 12 contracts
+Strike: $15.0 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: KHC - 23:00:40
+Confluence Score: 7.38/10
+Bias: Bullish
+Entry: $0.12
+Stop: $0.09
+Target: $0.21
+Position Size: 16 contracts
+Strike: $25.5 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: UWMC - 23:01:27
+Confluence Score: 7.98/10
+Bias: Bullish
+Entry: $2.00
+Stop: $1.50
+Target: $3.50
+Position Size: 1 contracts
+Strike: $4.0 Call
+Expiration: 2025-08-01
+============================================================
+
+============================================================
+Symbol: HL - 23:06:44
+Confluence Score: 8.65/10
+Bias: Bearish
+Entry: $0.07
+Stop: $0.05
+Target: $0.12
+Position Size: 24 contracts
+Strike: $6.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: VALE - 23:10:27
+Confluence Score: 7.34/10
+Bias: Bullish
+Entry: $0.12
+Stop: $0.09
+Target: $0.21
+Position Size: 16 contracts
+Strike: $9.0 Put
+Expiration: 2025-07-03
+============================================================
+
+============================================================
+Symbol: HL - 23:10:36
+Confluence Score: 8.65/10
+Bias: Bearish
+Entry: $0.07
+Stop: $0.05
+Target: $0.12
+Position Size: 24 contracts
+Strike: $6.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: LYG - 23:14:54
+Confluence Score: 9.44/10
+Bias: Bullish
+Entry: $0.15
+Stop: $0.11
+Target: $0.26
+Position Size: 12 contracts
+Strike: $4.0 Put
+Expiration: 2025-07-18
+============================================================
+
+============================================================
+Symbol: AGNC - 23:15:48
+Confluence Score: 8.43/10
+Bias: Bullish
+Entry: $0.11
+Stop: $0.08
+Target: $0.19
+Position Size: 16 contracts
+Strike: $9.5 Call
+Expiration: 2025-07-25
+============================================================
+
+============================================================
+Symbol: ROIV - 23:29:26
+Confluence Score: 7.55/10
+Bias: Bearish
+Entry: $2.95
+Stop: $2.21
+Target: $5.16
+Position Size: 1 contracts
+Strike: $12.0 Call
+Expiration: 2027-01-15
+============================================================
+
+============================================================
+Symbol: ASAN - 23:31:38
+Confluence Score: 8.89/10
+Bias: Bullish
+Entry: $0.15
+Stop: $0.11
+Target: $0.26
+Position Size: 12 contracts
+Strike: $13.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: ROIV - 23:33:12
+Confluence Score: 7.55/10
+Bias: Bearish
+Entry: $2.95
+Stop: $2.21
+Target: $5.16
+Position Size: 1 contracts
+Strike: $12.0 Call
+Expiration: 2027-01-15
+============================================================
+
+============================================================
+Symbol: KRYS - 23:33:34
+Confluence Score: 7.41/10
+Bias: Bearish
+Entry: $2.00
+Stop: $1.50
+Target: $3.50
+Position Size: 1 contracts
+Strike: $130.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: ASAN - 23:35:10
+Confluence Score: 8.89/10
+Bias: Bullish
+Entry: $0.15
+Stop: $0.11
+Target: $0.26
+Position Size: 12 contracts
+Strike: $13.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: KRYS - 23:37:15
+Confluence Score: 7.41/10
+Bias: Bearish
+Entry: $2.00
+Stop: $1.50
+Target: $3.50
+Position Size: 1 contracts
+Strike: $130.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: RXRX - 23:39:55
+Confluence Score: 8.81/10
+Bias: Bullish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $5.0 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: RXRX - 23:43:25
+Confluence Score: 8.81/10
+Bias: Bullish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $5.0 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: MLCO - 23:44:18
+Confluence Score: 8.87/10
+Bias: Bullish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $6.5 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: ABEV - 23:50:06
+Confluence Score: 7.69/10
+Bias: Bullish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $3.0 Call
+Expiration: 2026-01-16
+============================================================
+
+============================================================
+Symbol: LBTYK - 23:51:20
+Confluence Score: 8.65/10
+Bias: Bearish
+Entry: $0.15
+Stop: $0.11
+Target: $0.26
+Position Size: 12 contracts
+Strike: $10.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: ABEV - 23:54:05
+Confluence Score: 7.69/10
+Bias: Bullish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $3.0 Call
+Expiration: 2026-01-16
+============================================================

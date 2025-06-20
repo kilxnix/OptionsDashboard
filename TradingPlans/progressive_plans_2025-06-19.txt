@@ -1,0 +1,144 @@
+
+============================================================
+Symbol: UEC - 00:09:07
+Confluence Score: 8.85/10
+Bias: Bullish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $7.0 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: SWTX - 00:15:50
+Confluence Score: 8.99/10
+Bias: Bearish
+Entry: $4.80
+Stop: $3.60
+Target: $8.40
+Position Size: 1 contracts
+Strike: $47.0 Put
+Expiration: 2025-08-01
+============================================================
+
+============================================================
+Symbol: SWTX - 00:18:32
+Confluence Score: 8.99/10
+Bias: Bearish
+Entry: $4.80
+Stop: $3.60
+Target: $8.40
+Position Size: 1 contracts
+Strike: $47.0 Put
+Expiration: 2025-08-01
+============================================================
+
+============================================================
+Symbol: SNAP - 00:25:03
+Confluence Score: 7.07/10
+Bias: Bullish
+Entry: $0.08
+Stop: $0.06
+Target: $0.14
+Position Size: 24 contracts
+Strike: $8.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: SNAP - 00:28:00
+Confluence Score: 7.07/10
+Bias: Bullish
+Entry: $0.08
+Stop: $0.06
+Target: $0.14
+Position Size: 24 contracts
+Strike: $8.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: NGD - 00:29:55
+Confluence Score: 9.28/10
+Bias: Bearish
+Entry: $0.95
+Stop: $0.71
+Target: $1.66
+Position Size: 2 contracts
+Strike: $5.0 Call
+Expiration: 2026-02-20
+============================================================
+
+============================================================
+Symbol: NGD - 00:32:41
+Confluence Score: 9.28/10
+Bias: Bearish
+Entry: $0.95
+Stop: $0.71
+Target: $1.66
+Position Size: 2 contracts
+Strike: $5.0 Call
+Expiration: 2026-02-20
+============================================================
+
+============================================================
+Symbol: INTR - 00:34:02
+Confluence Score: 7.42/10
+Bias: Bearish
+Entry: $0.15
+Stop: $0.11
+Target: $0.26
+Position Size: 12 contracts
+Strike: $7.5 Call
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: SBSW - 00:34:57
+Confluence Score: 8.64/10
+Bias: Bullish
+Entry: $0.90
+Stop: $0.68
+Target: $1.57
+Position Size: 2 contracts
+Strike: $7.0 Put
+Expiration: 2025-08-15
+============================================================
+
+============================================================
+Symbol: SBSW - 00:37:20
+Confluence Score: 8.64/10
+Bias: Bullish
+Entry: $0.90
+Stop: $0.68
+Target: $1.57
+Position Size: 2 contracts
+Strike: $7.0 Put
+Expiration: 2025-08-15
+============================================================
+
+============================================================
+Symbol: VOD - 00:40:53
+Confluence Score: 10.0/10
+Bias: Bullish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $10.0 Put
+Expiration: 2025-06-20
+============================================================
+
+============================================================
+Symbol: VOD - 00:43:40
+Confluence Score: 10.0/10
+Bias: Bullish
+Entry: $0.10
+Stop: $0.08
+Target: $0.18
+Position Size: 24 contracts
+Strike: $10.0 Put
+Expiration: 2025-06-20
+============================================================
