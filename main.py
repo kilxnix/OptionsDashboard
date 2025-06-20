@@ -177,6 +177,7 @@ def get_all_plans():
                         'option_type': 'N/A',
                         'strike': 'N/A',
                         'expiration': 'N/A',
+                        'expiration_date': None,  # For proper date sorting
                         'position_size': 0,
                         'max_hold_time': 'N/A'
                     }
@@ -184,15 +185,23 @@ def get_all_plans():
                     # Extract trade plan details if available
                     if 'trade_plan' in data and data['trade_plan']:
                         tp = data['trade_plan']
+                        expiration_str = tp.get('expiration', 'N/A')
                         plan_data.update({
                             'entry_price': tp.get('entry_price', 0),
                             'target_price': tp.get('initial_target', 0),
                             'option_type': tp.get('type', 'N/A'),
                             'strike': tp.get('strike', 'N/A'),
-                            'expiration': tp.get('expiration', 'N/A'),
+                            'expiration': expiration_str,
                             'position_size': tp.get('position_size', 0),
                             'max_hold_time': tp.get('max_hold_time', 'N/A')
                         })
+                        
+                        # Convert expiration to datetime for sorting
+                        try:
+                            if expiration_str != 'N/A':
+                                plan_data['expiration_date'] = pd.to_datetime(expiration_str)
+                        except:
+                            plan_data['expiration_date'] = None
                     
                     all_plans.append(plan_data)
                     
@@ -219,6 +228,9 @@ def get_all_plans():
             all_plans.sort(key=lambda x: x['symbol'], reverse=reverse_order)
         elif sort_by == 'scan_date':
             all_plans.sort(key=lambda x: x['scan_date'], reverse=reverse_order)
+        elif sort_by == 'expiration' or sort_by == 'expiration_date':
+            # Sort by expiration date, putting None values at the end
+            all_plans.sort(key=lambda x: x['expiration_date'] if x['expiration_date'] is not None else pd.Timestamp.max, reverse=reverse_order)
         else:
             all_plans.sort(key=lambda x: x['confluence_score'], reverse=True)
         
