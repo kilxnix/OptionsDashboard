@@ -3,6 +3,7 @@ from datetime import datetime
 import os
 import json
 import glob
+import pandas as pd
 from run_autonomous_scan import run_autonomous_scan
 
 app = Flask(__name__)
