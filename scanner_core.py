@@ -1209,14 +1209,33 @@ def save_individual_result(symbol, result_data, base_dir='./TradingPlans'):
             f.write(f"Confluence Score: {result_data.get('confluence', {}).get('score', 'N/A')}/10\n")
             f.write(f"Bias: {result_data.get('confluence', {}).get('bias', 'N/A')}\n")
             
+            # Add options details
+            if 'options' in result_data and not isinstance(result_data['options'], bool) and not result_data['options'].empty:
+                f.write(f"\nTop Options Found: {len(result_data['options'])}\n")
+                
+                # Show top 3 options
+                for i, option in enumerate(result_data['options'].head(3).itertuples(), 1):
+                    f.write(f"\nOption {i}:\n")
+                    f.write(f"  Strike: ${option.strike} {option.type.capitalize()}\n")
+                    f.write(f"  Expiration: {option.expiration}\n")
+                    f.write(f"  Delta: {option.delta:.4f}\n")
+                    f.write(f"  Gamma: {option.gamma:.4f}\n")
+                    f.write(f"  Theta: {option.theta:.4f}\n")
+                    f.write(f"  Volume: {option.volume}\n")
+                    f.write(f"  Score: {option.score:.2f}\n")
+                    if hasattr(option, 'implied_volatility'):
+                        f.write(f"  IV: {option.implied_volatility:.2%}\n")
+            
             if 'trade_plan' in result_data and result_data['trade_plan']:
                 tp = result_data['trade_plan']
-                f.write(f"Entry: ${tp.get('entry_price', 0):.2f}\n")
-                f.write(f"Stop: ${tp.get('stop_loss', 0):.2f}\n")
-                f.write(f"Target: ${tp.get('initial_target', 0):.2f}\n")
-                f.write(f"Position Size: {tp.get('position_size', 0)} contracts\n")
-                f.write(f"Strike: {tp.get('strike', 'N/A')} {tp.get('type', 'N/A').capitalize()}\n")
-                f.write(f"Expiration: {tp.get('expiration', 'N/A')}\n")
+                f.write(f"\nTrade Plan:\n")
+                f.write(f"  Entry: ${tp.get('entry_price', 0):.2f}\n")
+                f.write(f"  Stop: ${tp.get('stop_loss', 0):.2f}\n")
+                f.write(f"  Target: ${tp.get('initial_target', 0):.2f}\n")
+                f.write(f"  Position Size: {tp.get('position_size', 0)} contracts\n")
+                f.write(f"  Strike: {tp.get('strike', 'N/A')} {tp.get('type', 'N/A').capitalize()}\n")
+                f.write(f"  Expiration: {tp.get('expiration', 'N/A')}\n")
+                f.write(f"  Max Hold: {tp.get('max_hold_time', 'N/A')}\n")
             
             f.write(f"{'='*60}\n")
         
