@@ -1,0 +1,161 @@
+Scanning: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 691/691 [4:19:02<00:00, 22.49s/it]
+✅ Progressive save: NVDA saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: LCID saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: F saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: RIG saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: GRAB saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: SRCL saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: HPE saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: PARA saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: WMT saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: VKTX saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: UWMC saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: MCHP saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: XOM saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: ANF saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: OKLO saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: RXRX saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: AMCR saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: BAC saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: PFE saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: SNAP saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: NIO saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: KGC saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: IBRX saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: GOOG saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: TAC saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: U saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: JOBY saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: JD saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: SWTX saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: FLEX saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: BP saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: VOD saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: HBAN saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: AGNC saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: WRD saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: CEG saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: FIX saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: CAKE saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: HL saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: SIRI saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: WBD saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: ACHR saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: LI saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: BBVA saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: ZIM saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: MLCO saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: UEC saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: ORCL saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: PAGS saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: KR saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: AU saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: NTR saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: APA saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: INTR saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: PTON saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: KEY saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: ATI saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: PYPL saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: AVPT saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: EEFT saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: GME saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: SYM saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: RUM saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: AG saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: X saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: OTLY saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: FRO saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: ASO saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: DRS saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: IREN saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: AUR saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: DKNG saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: PCG saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: CLSK saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: WEN saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: OI saved to output/progressive_scan_2025-06-21.json
+✅ Progressive save: SHAK saved to output/progressive_scan_2025-06-21.json
+
+=== Summary of Trading Opportunities ===
++--------+---------+-------+-------+-----------+-------+-----+--------------+----------+------------+------------------+
+| Symbol | Bias    | Score | Gap % | Gap Price | Entry | R/R | Skew         | Put/Call | Confluence | Vol Confirmation |
++--------+---------+-------+-------+-----------+-------+-----+--------------+----------+------------+------------------+
+| NVDA   | Bearish | 7.3   | -0.0% | $143.75   | $0.03 | N/A | Neutral Skew | 0.96     | 7.3/10     | Yes (5)          |
+| LCID   | Bullish | 9.6   | -0.5% | N/A       | $0.12 | N/A | Neutral Skew | 1.01     | 9.6/10     | No               |
+| F      | Bullish | 9.7   | 0.0%  | N/A       | $0.09 | N/A | Neutral Skew | 1.01     | 9.7/10     | Yes (10)         |
+| RIG    | Bearish | 8.5   | 0.0%  | N/A       | $0.11 | N/A | Bullish Skew | 0.42     | 8.5/10     | No               |
+| GRAB   | Bearish | 7.5   | 0.0%  | N/A       | $0.15 | N/A | Bullish Skew | 0.18     | 7.5/10     | No               |
+| SRCL   | Bullish | 7.1   | N/A   | N/A       | $0.00 | N/A | Neutral Skew | 0.98     | 7.1/10     | No               |
+| HPE    | Bullish | 9.3   | 0.3%  | $17.93    | $0.08 | N/A | Bullish Skew | 0.66     | 9.3/10     | Yes (40)         |
+| PARA   | Bullish | 8.8   | -0.2% | N/A       | $0.15 | N/A | Bearish Skew | 1.6      | 8.8/10     | Yes (6)          |
+| WMT    | Bullish | 9.6   | -0.0% | N/A       | $0.06 | N/A | Bearish Skew | 1.45     | 9.6/10     | Yes (18)         |
+| VKTX   | Bearish | 7.5   | 0.0%  | N/A       | $0.10 | N/A | Bullish Skew | 0.25     | 7.5/10     | Yes (10)         |
+| UWMC   | Bullish | 9.3   | 0.2%  | $4.06     | $0.10 | N/A | Bullish Skew | 0.23     | 9.3/10     | Yes (15)         |
+| MCHP   | Bearish | 8.0   | -0.4% | $68.97    | $0.15 | N/A | Neutral Skew | 0.73     | 8.0/10     | Yes (37)         |
+| XOM    | Bearish | 8.0   | 0.1%  | N/A       | $0.10 | N/A | Bullish Skew | 0.64     | 8.0/10     | No               |
+| ANF    | Bullish | 8.8   | 0.0%  | $78.09    | $0.80 | N/A | Bearish Skew | 1.66     | 8.8/10     | Yes (30)         |
+| OKLO   | Bearish | 10.0  | 0.0%  | N/A       | $0.82 | N/A | Neutral Skew | 1.02     | 10.0/10    | No               |
+| RXRX   | Bullish | 8.8   | 0.1%  | N/A       | $0.90 | N/A | Bullish Skew | 0.42     | 8.8/10     | No               |
+| AMCR   | Bullish | 10.0  | 0.2%  | $9.02     | $0.05 | N/A | Bullish Skew | 0.1      | 10.0/10    | Yes (44)         |
+| BAC    | Bullish | 8.8   | 0.0%  | N/A       | $0.01 | N/A | Bearish Skew | 1.41     | 8.8/10     | Yes (10)         |
+| PFE    | Bullish | 8.8   | 0.0%  | N/A       | $0.03 | N/A | Neutral Skew | 0.86     | 8.8/10     | Yes (10)         |
+| SNAP   | Bearish | 7.8   | -0.2% | $8.04     | $0.03 | N/A | Bullish Skew | 0.52     | 7.8/10     | Yes (10)         |
+| NIO    | Bearish | 9.7   | 0.0%  | N/A       | $0.71 | N/A | Bullish Skew | 0.64     | 9.7/10     | Yes (5)          |
+| KGC    | Bearish | 9.3   | 0.2%  | N/A       | $0.01 | N/A | Bullish Skew | 0.32     | 9.3/10     | Yes (30)         |
+| IBRX   | Bullish | 7.8   | 0.0%  | N/A       | $2.05 | N/A | Bullish Skew | 0.34     | 7.8/10     | Yes (12)         |
+| GOOG   | Bearish | 9.2   | -0.0% | N/A       | $0.08 | N/A | Bullish Skew | 0.6      | 9.2/10     | No               |
+| TAC    | Bearish | 8.0   | 0.0%  | N/A       | $0.80 | N/A | Bullish Skew | 0.07     | 8.0/10     | No               |
+| U      | Bullish | 7.0   | -0.1% | N/A       | $0.03 | N/A | Bullish Skew | 0.37     | 7.0/10     | No               |
+| JOBY   | Bearish | 10.0  | 0.0%  | N/A       | $0.05 | N/A | Bullish Skew | 0.33     | 10.0/10    | No               |
+| JD     | Bearish | 9.5   | 0.1%  | N/A       | $0.03 | N/A | Bullish Skew | 0.52     | 9.5/10     | Yes (10)         |
+| SWTX   | Bullish | 7.9   | 0.0%  | N/A       | $4.80 | N/A | Bullish Skew | 0.15     | 7.9/10     | Yes (11)         |
+| FLEX   | Bullish | 7.6   | 0.2%  | $46.03    | $0.75 | N/A | Neutral Skew | 1.08     | 7.6/10     | Yes (30)         |
+| BP     | Bearish | 7.9   | -0.0% | N/A       | $0.12 | N/A | Bullish Skew | 0.53     | 7.9/10     | Yes (10)         |
+| VOD    | Bullish | 8.9   | 1.1%  | $10.27    | $0.15 | N/A | Bullish Skew | 0.55     | 8.9/10     | Yes (28)         |
+| HBAN   | Bullish | 8.5   | -0.1% | $15.88    | $2.60 | N/A | Bullish Skew | 0.67     | 8.5/10     | Yes (50)         |
+| AGNC   | Bullish | 8.9   | -0.1% | N/A       | $0.10 | N/A | Bearish Skew | 1.61     | 8.9/10     | Yes (8)          |
+| WRD    | Bullish | 7.4   | 0.1%  | N/A       | $0.10 | N/A | Bullish Skew | 0.44     | 7.4/10     | No               |
+| CEG    | Bearish | 8.5   | -0.6% | $306.80   | $1.10 | N/A | Neutral Skew | 1.26     | 8.5/10     | Yes (30)         |
+| FIX    | Bearish | 8.7   | -0.1% | $500.02   | $4.80 | N/A | Neutral Skew | 0.83     | 8.7/10     | Yes (20)         |
+| CAKE   | Bullish | 8.3   | -1.4% | N/A       | $1.95 | N/A | Bullish Skew | 0.66     | 8.3/10     | Yes (18)         |
+| HL     | Bullish | 8.4   | 0.7%  | N/A       | $0.09 | N/A | Bullish Skew | 0.27     | 8.4/10     | Yes (2)          |
+| SIRI   | Bullish | 9.0   | 0.7%  | $21.65    | $0.11 | N/A | Bullish Skew | 0.36     | 9.0/10     | Yes (36)         |
+| WBD    | Bullish | 8.3   | -0.1% | N/A       | $0.04 | N/A | Bullish Skew | 0.64     | 8.3/10     | No               |
+| ACHR   | Bearish | 8.1   | 0.0%  | N/A       | $0.02 | N/A | Bullish Skew | 0.41     | 8.1/10     | No               |
+| LI     | Bullish | 10.0  | -0.2% | N/A       | $0.14 | N/A | Neutral Skew | 1.09     | 10.0/10    | Yes (5)          |
+| BBVA   | Bearish | 10.0  | 0.0%  | N/A       | $2.55 | N/A | Neutral Skew | 0.74     | 10.0/10    | Yes (5)          |
+| ZIM    | Bullish | 8.1   | 0.3%  | N/A       | $0.01 | N/A | Neutral Skew | 0.87     | 8.1/10     | Yes (12)         |
+| MLCO   | Bullish | 7.3   | 0.0%  | N/A       | $0.15 | N/A | Bullish Skew | 0.32     | 7.3/10     | No               |
+| UEC    | Bearish | 8.5   | -0.6% | $6.50     | $0.05 | N/A | Bullish Skew | 0.17     | 8.5/10     | Yes (30)         |
+| ORCL   | Bearish | 7.1   | 0.0%  | N/A       | $0.10 | N/A | Neutral Skew | 0.9      | 7.1/10     | No               |
+| PAGS   | Bullish | 9.2   | 0.3%  | $9.00     | $0.50 | N/A | Bullish Skew | 0.31     | 9.2/10     | Yes (15)         |
+| KR     | Bearish | 7.1   | 0.0%  | N/A       | $0.01 | N/A | Bullish Skew | 0.61     | 7.1/10     | Yes (6)          |
+| AU     | Bearish | 7.6   | 0.0%  | $48.00    | $0.05 | N/A | Bearish Skew | 1.72     | 7.6/10     | Yes (20)         |
+| NTR    | Bearish | 7.8   | 0.0%  | N/A       | $1.90 | N/A | Neutral Skew | 0.97     | 7.8/10     | Yes (13)         |
+| APA    | Bearish | 8.3   | 0.0%  | N/A       | $0.11 | N/A | Bullish Skew | 0.63     | 8.3/10     | Yes (12)         |
+| INTR   | Bullish | 8.1   | 0.1%  | $7.56     | $0.70 | N/A | Bullish Skew | 0.25     | 8.1/10     | Yes (15)         |
+| PTON   | Bullish | 8.2   | 0.0%  | N/A       | $0.11 | N/A | Bullish Skew | 0.39     | 8.2/10     | Yes (10)         |
+| KEY    | Bullish | 8.6   | 0.0%  | N/A       | $0.12 | N/A | Neutral Skew | 0.97     | 8.6/10     | Yes (21)         |
+| ATI    | Bullish | 7.9   | 0.0%  | $82.74    | $0.25 | N/A | Bearish Skew | 1.51     | 7.9/10     | Yes (27)         |
+| PYPL   | Bullish | 10.0  | 0.1%  | N/A       | $0.06 | N/A | Bullish Skew | 0.59     | 10.0/10    | Yes (8)          |
+| AVPT   | Bearish | 7.6   | -1.7% | $18.46    | $1.90 | N/A | Neutral Skew | 0.94     | 7.6/10     | Yes (5)          |
+| EEFT   | Bearish | 8.2   | 0.0%  | N/A       | $2.20 | N/A | Bearish Skew | 6.22     | 8.2/10     | No               |
+| GME    | Bullish | 9.7   | 0.0%  | N/A       | $0.02 | N/A | Bullish Skew | 0.45     | 9.7/10     | No               |
+| SYM    | Bullish | 8.1   | 0.0%  | N/A       | $0.60 | N/A | Bullish Skew | 0.59     | 8.1/10     | No               |
+| RUM    | Bullish | 8.3   | 0.0%  | N/A       | $0.10 | N/A | Bullish Skew | 0.3      | 8.3/10     | Yes (2)          |
+| AG     | Bearish | 9.4   | 0.0%  | N/A       | $0.12 | N/A | Neutral Skew | 0.73     | 9.4/10     | Yes (3)          |
+| X      | Bullish | 7.5   | -0.0% | $54.97    | $0.03 | N/A | Neutral Skew | 1.01     | 7.5/10     | Yes (5)          |
+| OTLY   | Bearish | 8.5   | -1.0% | $12.98    | $0.95 | N/A | Bearish Skew | 2.6      | 8.5/10     | Yes (15)         |
+| FRO    | Bearish | 9.5   | -0.9% | $19.07    | $0.05 | N/A | Bullish Skew | 0.29     | 9.5/10     | Yes (17)         |
+| ASO    | Bullish | 7.7   | 1.1%  | $43.51    | $0.85 | N/A | Neutral Skew | 0.84     | 7.7/10     | Yes (11)         |
+| DRS    | Bearish | 7.6   | 2.3%  | $44.00    | $1.70 | N/A | Bullish Skew | 0.3      | 7.6/10     | Yes (35)         |
+| IREN   | Bullish | 7.5   | -0.0% | $10.53    | $0.03 | N/A | Bullish Skew | 0.62     | 7.5/10     | No               |
+| AUR    | Bullish | 7.2   | 0.0%  | N/A       | $0.10 | N/A | Bullish Skew | 0.36     | 7.2/10     | Yes (5)          |
+| DKNG   | Bullish | 8.1   | 0.2%  | $40.40    | $0.09 | N/A | Bullish Skew | 0.56     | 8.1/10     | No               |
+| PCG    | Bullish | 8.3   | 0.0%  | N/A       | $0.09 | N/A | Bullish Skew | 0.46     | 8.3/10     | Yes (5)          |
+| CLSK   | Bullish | 8.2   | 0.0%  | N/A       | $0.03 | N/A | Bullish Skew | 0.3      | 8.2/10     | Yes (3)          |
+| WEN    | Bullish | 9.2   | 0.0%  | $12.01    | $0.35 | N/A | Bearish Skew | 1.91     | 9.2/10     | Yes (12)         |
+| OI     | Bearish | 7.5   | -1.3% | $14.20    | $0.40 | N/A | Bullish Skew | 0.23     | 7.5/10     | No               |
+| SHAK   | Bullish | 9.0   | -0.1% | N/A       | $1.40 | N/A | Neutral Skew | 1.18     | 9.0/10     | Yes (9)          |
++--------+---------+-------+-------+-----------+-------+-----+--------------+----------+------------+------------------+

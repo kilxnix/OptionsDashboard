@@ -1,0 +1,1232 @@
+
+============================================================
+Symbol: NVDA - 06:21:29
+Confluence Score: 7.35/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $144.0 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.2521
+  Gamma: 1.6064
+  Theta: -0.0360
+  Volume: 152132
+  Score: 18.44
+
+============================================================
+Symbol: LCID - 06:21:55
+Confluence Score: 9.59/10
+Bias: Bullish
+
+Top Options Found: 7
+
+Option 1:
+  Strike: $2.0 Put
+  Expiration: 2025-07-25 00:00:00
+  Delta: -0.2937
+  Gamma: 0.7176
+  Theta: -0.0023
+  Volume: 52
+  Score: 127.07
+
+============================================================
+Symbol: F - 06:22:26
+Confluence Score: 9.65/10
+Bias: Bullish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $10.5 Put
+  Expiration: 2025-06-27 00:00:00
+  Delta: -0.3690
+  Gamma: 1.2165
+  Theta: -0.0079
+  Volume: 3716
+  Score: 62.41
+
+============================================================
+Symbol: RIG - 06:23:22
+Confluence Score: 8.47/10
+Bias: Bearish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $3.5 Call
+  Expiration: 2025-08-01 00:00:00
+  Delta: 0.2518
+  Gamma: 0.4781
+  Theta: -0.0026
+  Volume: 4
+  Score: 73.80
+
+============================================================
+Symbol: GRAB - 06:23:44
+Confluence Score: 7.46/10
+Bias: Bearish
+
+Top Options Found: 4
+
+Option 1:
+  Strike: $4.5 Call
+  Expiration: 2025-06-27 00:00:00
+  Delta: 0.4246
+  Gamma: 12.1185
+  Theta: -0.0011
+  Volume: 161
+  Score: 4290.44
+
+============================================================
+Symbol: SRCL - 06:23:57
+Confluence Score: 7.08/10
+Bias: Bullish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $62.5 Put
+  Expiration: 2025-01-17 00:00:00
+  Delta: -0.3852
+  Gamma: 1.3688
+  Theta: 0.0024
+  Volume: 0
+  Score: 224.87
+
+============================================================
+Symbol: HPE - 06:24:20
+Confluence Score: 9.3/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $18.0 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.2684
+  Gamma: 5.3986
+  Theta: -0.0106
+  Volume: 11774
+  Score: 203.75
+
+============================================================
+Symbol: PARA - 06:24:42
+Confluence Score: 8.83/10
+Bias: Bullish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $12.5 Call
+  Expiration: 2025-07-03 00:00:00
+  Delta: 0.3756
+  Gamma: 0.9707
+  Theta: -0.0062
+  Volume: 37
+  Score: 62.89
+
+============================================================
+Symbol: WMT - 06:28:07
+Confluence Score: 9.58/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $96.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.2530
+  Gamma: 1.6154
+  Theta: -0.0288
+  Volume: 1230
+  Score: 23.06
+
+============================================================
+Symbol: VKTX - 06:33:22
+Confluence Score: 7.55/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $26.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.4713
+  Gamma: 2.0793
+  Theta: -0.0366
+  Volume: 212
+  Score: 23.44
+
+============================================================
+Symbol: UWMC - 06:34:35
+Confluence Score: 9.3/10
+Bias: Bullish
+
+Top Options Found: 3
+
+Option 1:
+  Strike: $4.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.2587
+  Gamma: 5.0864
+  Theta: -0.0102
+  Volume: 40
+  Score: 200.85
+
+============================================================
+Symbol: MCHP - 06:35:01
+Confluence Score: 8.03/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $69.0 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.3228
+  Gamma: 7.5745
+  Theta: -0.0111
+  Volume: 19
+  Score: 272.61
+
+============================================================
+Symbol: XOM - 06:36:11
+Confluence Score: 8.02/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $115.0 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.2608
+  Gamma: 0.7302
+  Theta: -0.0758
+  Volume: 12534
+  Score: 4.45
+
+============================================================
+Symbol: ANF - 06:46:04
+Confluence Score: 8.77/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $78.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.2946
+  Gamma: 6.3596
+  Theta: -0.0066
+  Volume: 208
+  Score: 384.88
+
+============================================================
+Symbol: OKLO - 06:55:15
+Confluence Score: 10.0/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $58.0 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.2546
+  Gamma: 4.9177
+  Theta: -0.0122
+  Volume: 72
+  Score: 161.57
+
+============================================================
+Symbol: RXRX - 06:59:39
+Confluence Score: 8.75/10
+Bias: Bullish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $5.0 Put
+  Expiration: 2025-07-11 00:00:00
+  Delta: -0.2543
+  Gamma: 4.9239
+  Theta: -0.0003
+  Volume: 63
+  Score: 5793.44
+
+============================================================
+Symbol: AMCR - 06:59:56
+Confluence Score: 10.0/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $9.0 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.2960
+  Gamma: 6.4462
+  Theta: -0.0096
+  Volume: 882
+  Score: 269.77
+
+============================================================
+Symbol: BAC - 07:02:48
+Confluence Score: 8.85/10
+Bias: Bullish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $45.5 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.4313
+  Gamma: 12.5732
+  Theta: -0.0038
+  Volume: 4488
+  Score: 1320.72
+
+============================================================
+Symbol: PFE - 07:03:45
+Confluence Score: 8.78/10
+Bias: Bullish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $24.0 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.3672
+  Gamma: 4.7326
+  Theta: -0.0160
+  Volume: 6230
+  Score: 118.75
+
+============================================================
+Symbol: SNAP - 07:06:22
+Confluence Score: 7.75/10
+Bias: Bearish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $8.0 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.6247
+  Gamma: 10.9276
+  Theta: -0.0072
+  Volume: 4101
+  Score: 610.41
+
+============================================================
+Symbol: NIO - 07:06:46
+Confluence Score: 9.69/10
+Bias: Bearish
+
+Top Options Found: 4
+
+Option 1:
+  Strike: $3.5 Call
+  Expiration: 2026-02-20 00:00:00
+  Delta: 0.6440
+  Gamma: 13.2380
+  Theta: -0.0003
+  Volume: 0
+  Score: 18912.07
+
+============================================================
+Symbol: KGC - 07:08:04
+Confluence Score: 9.34/10
+Bias: Bearish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $15.5 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.3409
+  Gamma: 8.3155
+  Theta: -0.0087
+  Volume: 245
+  Score: 382.53
+
+============================================================
+Symbol: IBRX - 07:12:45
+Confluence Score: 7.8/10
+Bias: Bullish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $3.0 Put
+  Expiration: 2026-08-21 00:00:00
+  Delta: -0.3382
+  Gamma: 8.2121
+  Theta: 0.0001
+  Volume: 0
+  Score: 32848.92
+
+============================================================
+Symbol: GOOG - 07:21:26
+Confluence Score: 9.17/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $167.5 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.2736
+  Gamma: 0.7995
+  Theta: -0.0638
+  Volume: 5464
+  Score: 5.61
+
+============================================================
+Symbol: TAC - 07:22:53
+Confluence Score: 8.02/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $11.0 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.3384
+  Gamma: 8.2006
+  Theta: -0.0086
+  Volume: 103
+  Score: 382.07
+
+============================================================
+Symbol: U - 07:23:24
+Confluence Score: 7.0/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $23.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.2711
+  Gamma: 2.7603
+  Theta: -0.0191
+  Volume: 658
+  Score: 58.29
+
+============================================================
+Symbol: JOBY - 07:24:56
+Confluence Score: 10.0/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $8.5 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.2586
+  Gamma: 5.0662
+  Theta: -0.0101
+  Volume: 440
+  Score: 202.03
+
+============================================================
+Symbol: JD - 07:28:23
+Confluence Score: 9.49/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $31.5 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.2983
+  Gamma: 3.2754
+  Theta: -0.0195
+  Volume: 1017
+  Score: 67.91
+
+============================================================
+Symbol: SWTX - 07:32:50
+Confluence Score: 7.91/10
+Bias: Bullish
+
+Top Options Found: 6
+
+Option 1:
+  Strike: $47.0 Put
+  Expiration: 2025-06-27 00:00:00
+  Delta: -0.5057
+  Gamma: 6.0875
+  Theta: 0.0009
+  Volume: 0
+  Score: 2563.69
+
+============================================================
+Symbol: FLEX - 07:33:13
+Confluence Score: 7.63/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $46.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.2742
+  Gamma: 5.6315
+  Theta: -0.0084
+  Volume: 20
+  Score: 270.05
+
+============================================================
+Symbol: BP - 07:35:44
+Confluence Score: 7.91/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $31.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.2702
+  Gamma: 0.7863
+  Theta: -0.0686
+  Volume: 217
+  Score: 5.19
+
+============================================================
+Symbol: VOD - 07:39:38
+Confluence Score: 8.89/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $10.5 Call
+  Expiration: 2025-06-27 00:00:00
+  Delta: 0.3035
+  Gamma: 0.6577
+  Theta: -0.0136
+  Volume: 13
+  Score: 19.94
+
+============================================================
+Symbol: HBAN - 07:44:09
+Confluence Score: 8.51/10
+Bias: Bullish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $17.0 Call
+  Expiration: 2027-01-15 00:00:00
+  Delta: 0.4215
+  Gamma: 1.9545
+  Theta: -0.0008
+  Volume: 0
+  Score: 920.26
+
+============================================================
+Symbol: AGNC - 07:44:39
+Confluence Score: 8.93/10
+Bias: Bullish
+
+Top Options Found: 4
+
+Option 1:
+  Strike: $9.5 Call
+  Expiration: 2025-08-01 00:00:00
+  Delta: 0.3237
+  Gamma: 0.8218
+  Theta: -0.0022
+  Volume: 360
+  Score: 149.37
+
+============================================================
+Symbol: WRD - 07:52:28
+Confluence Score: 7.38/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $7.5 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.3837
+  Gamma: 10.2772
+  Theta: -0.0067
+  Volume: 837
+  Score: 609.69
+
+============================================================
+Symbol: CEG - 08:00:15
+Confluence Score: 8.54/10
+Bias: Bearish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $305.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.6073
+  Gamma: 2.3905
+  Theta: -0.0089
+  Volume: 69
+  Score: 107.75
+
+============================================================
+Symbol: FIX - 08:04:46
+Confluence Score: 8.7/10
+Bias: Bearish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $500.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.3817
+  Gamma: 1.4458
+  Theta: -0.0276
+  Volume: 12
+  Score: 21.61
+
+============================================================
+Symbol: CAKE - 08:07:37
+Confluence Score: 8.27/10
+Bias: Bullish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $60.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.5362
+  Gamma: 12.5571
+  Theta: -0.0025
+  Volume: 2
+  Score: 2034.16
+
+============================================================
+Symbol: HL - 08:11:00
+Confluence Score: 8.44/10
+Bias: Bullish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $5.5 Put
+  Expiration: 2025-07-03 00:00:00
+  Delta: -0.2504
+  Gamma: 0.7067
+  Theta: -0.0053
+  Volume: 5
+  Score: 53.60
+
+============================================================
+Symbol: SIRI - 08:16:16
+Confluence Score: 8.96/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $22.0 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.2781
+  Gamma: 0.8157
+  Theta: -0.0697
+  Volume: 519
+  Score: 5.29
+
+============================================================
+Symbol: WBD - 08:20:20
+Confluence Score: 8.35/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $10.5 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.3247
+  Gamma: 7.6527
+  Theta: -0.0080
+  Volume: 812
+  Score: 380.89
+
+============================================================
+Symbol: ACHR - 08:22:04
+Confluence Score: 8.05/10
+Bias: Bearish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $10.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.2585
+  Gamma: 5.0522
+  Theta: -0.0100
+  Volume: 6424
+  Score: 201.88
+
+============================================================
+Symbol: LI - 08:26:19
+Confluence Score: 10.0/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $26.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.3691
+  Gamma: 9.6134
+  Theta: -0.0063
+  Volume: 79
+  Score: 614.93
+
+============================================================
+Symbol: BBVA - 08:30:33
+Confluence Score: 10.0/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $15.0 Put
+  Expiration: 2025-08-15 00:00:00
+  Delta: -0.3085
+  Gamma: 5.9747
+  Theta: 0.0004
+  Volume: 0
+  Score: 6638.94
+
+============================================================
+Symbol: ZIM - 08:32:05
+Confluence Score: 8.09/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $16.5 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.2845
+  Gamma: 6.0217
+  Theta: -0.0090
+  Volume: 354
+  Score: 268.54
+
+============================================================
+Symbol: MLCO - 08:35:42
+Confluence Score: 7.27/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $6.5 Call
+  Expiration: 2025-06-27 00:00:00
+  Delta: 0.4062
+  Gamma: 1.0948
+  Theta: -0.0101
+  Volume: 2
+  Score: 43.87
+
+============================================================
+Symbol: UEC - 08:36:13
+Confluence Score: 8.51/10
+Bias: Bearish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $6.5 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.2659
+  Gamma: 5.2863
+  Theta: -0.0104
+  Volume: 845
+  Score: 204.31
+
+============================================================
+Symbol: ORCL - 08:40:23
+Confluence Score: 7.12/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $205.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.3123
+  Gamma: 0.8893
+  Theta: -0.0628
+  Volume: 11671
+  Score: 6.29
+
+============================================================
+Symbol: PAGS - 08:42:44
+Confluence Score: 9.24/10
+Bias: Bullish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $9.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.4833
+  Gamma: 15.1203
+  Theta: -0.0047
+  Volume: 5
+  Score: 1276.67
+
+============================================================
+Symbol: KR - 08:47:36
+Confluence Score: 7.07/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $72.0 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.3246
+  Gamma: 7.6306
+  Theta: -0.0112
+  Volume: 13605
+  Score: 271.94
+
+============================================================
+Symbol: AU - 08:50:38
+Confluence Score: 7.57/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $48.0 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.3625
+  Gamma: 9.2326
+  Theta: -0.0097
+  Volume: 129
+  Score: 382.17
+
+============================================================
+Symbol: NTR - 08:51:22
+Confluence Score: 7.8/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $61.0 Call
+  Expiration: 2025-07-03 00:00:00
+  Delta: 0.6158
+  Gamma: 3.2965
+  Theta: -0.0062
+  Volume: 43
+  Score: 215.20
+
+============================================================
+Symbol: APA - 09:02:48
+Confluence Score: 8.28/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $20.0 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.4493
+  Gamma: 1.9015
+  Theta: -0.0422
+  Volume: 825
+  Score: 18.72
+
+============================================================
+Symbol: INTR - 09:04:58
+Confluence Score: 8.14/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $7.5 Call
+  Expiration: 2025-08-15 00:00:00
+  Delta: 0.2922
+  Gamma: 6.2477
+  Theta: -0.0004
+  Volume: 0
+  Score: 5950.63
+
+============================================================
+Symbol: PTON - 09:10:17
+Confluence Score: 8.19/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $6.5 Call
+  Expiration: 2025-06-27 00:00:00
+  Delta: 0.3019
+  Gamma: 0.6397
+  Theta: -0.0138
+  Volume: 692
+  Score: 19.18
+
+============================================================
+Symbol: KEY - 09:11:28
+Confluence Score: 8.61/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $16.5 Call
+  Expiration: 2025-06-27 00:00:00
+  Delta: 0.2889
+  Gamma: 0.6070
+  Theta: -0.0143
+  Volume: 75
+  Score: 17.62
+
+============================================================
+Symbol: ATI - 09:21:53
+Confluence Score: 7.9/10
+Bias: Bullish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $82.5 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.4109
+  Gamma: 8.9391
+  Theta: -0.0044
+  Volume: 2
+  Score: 805.88
+
+============================================================
+Symbol: PYPL - 09:22:23
+Confluence Score: 10.0/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $70.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.3600
+  Gamma: 2.2916
+  Theta: -0.0275
+  Volume: 5355
+  Score: 33.94
+
+============================================================
+Symbol: AVPT - 09:22:42
+Confluence Score: 7.63/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $18.0 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.2684
+  Gamma: 5.3986
+  Theta: -0.0106
+  Volume: 52
+  Score: 203.75
+
+============================================================
+Symbol: EEFT - 09:29:20
+Confluence Score: 8.15/10
+Bias: Bearish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $100.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.5612
+  Gamma: 7.4764
+  Theta: -0.0037
+  Volume: 12
+  Score: 802.54
+
+============================================================
+Symbol: GME - 09:54:17
+Confluence Score: 9.73/10
+Bias: Bullish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $23.5 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.2704
+  Gamma: 5.4542
+  Theta: -0.0108
+  Volume: 10866
+  Score: 202.80
+
+============================================================
+Symbol: SYM - 09:57:30
+Confluence Score: 8.12/10
+Bias: Bullish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $34.0 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.5818
+  Gamma: 19.9658
+  Theta: -0.0062
+  Volume: 72
+  Score: 1297.27
+
+============================================================
+Symbol: RUM - 09:58:11
+Confluence Score: 8.3/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $8.5 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.2586
+  Gamma: 5.0662
+  Theta: -0.0101
+  Volume: 26
+  Score: 202.03
+
+============================================================
+Symbol: AG - 09:59:21
+Confluence Score: 9.42/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $8.5 Call
+  Expiration: 2025-06-27 00:00:00
+  Delta: 0.2767
+  Gamma: 0.5498
+  Theta: -0.0148
+  Volume: 941
+  Score: 15.45
+
+============================================================
+Symbol: X - 09:59:46
+Confluence Score: 7.47/10
+Bias: Bullish
+
+Top Options Found: 5
+
+Option 1:
+  Strike: $55.0 Call
+  Expiration: 2025-07-03 00:00:00
+  Delta: 0.3155
+  Gamma: 3.0728
+  Theta: -0.0033
+  Volume: 1135
+  Score: 368.63
+
+============================================================
+Symbol: OTLY - 10:01:21
+Confluence Score: 8.46/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $13.0 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.4041
+  Gamma: 11.1861
+  Theta: -0.0073
+  Volume: 5
+  Score: 611.08
+
+============================================================
+Symbol: FRO - 10:03:39
+Confluence Score: 9.52/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $19.0 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.3431
+  Gamma: 8.3981
+  Theta: -0.0088
+  Volume: 447
+  Score: 381.51
+
+============================================================
+Symbol: ASO - 10:05:00
+Confluence Score: 7.65/10
+Bias: Bullish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $44.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.4336
+  Gamma: 12.5765
+  Theta: -0.0039
+  Volume: 70
+  Score: 1293.92
+
+============================================================
+Symbol: DRS - 10:12:28
+Confluence Score: 7.64/10
+Bias: Bearish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $44.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.4336
+  Gamma: 12.5765
+  Theta: -0.0039
+  Volume: 23
+  Score: 1293.92
+
+============================================================
+Symbol: IREN - 10:13:49
+Confluence Score: 7.55/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $10.5 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.3630
+  Gamma: 4.6295
+  Theta: -0.0157
+  Volume: 4571
+  Score: 118.98
+
+============================================================
+Symbol: AUR - 10:14:10
+Confluence Score: 7.25/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $5.0 Put
+  Expiration: 2025-06-27 00:00:00
+  Delta: -0.2841
+  Gamma: 0.7830
+  Theta: -0.0103
+  Volume: 142
+  Score: 31.02
+
+============================================================
+Symbol: DKNG - 10:18:25
+Confluence Score: 8.14/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $40.5 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.3591
+  Gamma: 9.0985
+  Theta: -0.0060
+  Volume: 280
+  Score: 612.32
+
+============================================================
+Symbol: PCG - 10:26:34
+Confluence Score: 8.32/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $14.0 Call
+  Expiration: 2025-06-20 00:00:00
+  Delta: 0.3103
+  Gamma: 1.3931
+  Theta: -0.0452
+  Volume: 2177
+  Score: 12.95
+
+============================================================
+Symbol: CLSK - 10:27:29
+Confluence Score: 8.16/10
+Bias: Bullish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $9.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.4833
+  Gamma: 15.1203
+  Theta: -0.0047
+  Volume: 3478
+  Score: 1276.70
+
+============================================================
+Symbol: WEN - 10:29:54
+Confluence Score: 9.24/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $12.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.3802
+  Gamma: 10.1094
+  Theta: -0.0066
+  Volume: 28
+  Score: 610.59
+
+============================================================
+Symbol: OI - 10:35:04
+Confluence Score: 7.46/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $14.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.3229
+  Gamma: 7.5838
+  Theta: -0.0080
+  Volume: 0
+  Score: 381.53
+
+============================================================
+Symbol: SHAK - 10:37:19
+Confluence Score: 9.04/10
+Bias: Bullish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $133.0 Put
+  Expiration: 2025-06-20 00:00:00
+  Delta: -0.3565
+  Gamma: 5.3151
+  Theta: -0.0075
+  Volume: 0
+  Score: 285.83
