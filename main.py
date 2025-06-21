@@ -33,13 +33,17 @@ def trigger_scan():
             "digest": result["digest"] if result else "No output"
         }), 200
 
+    # Safely extract top result from summary
+    summary = result.get("summary", {})
+    if isinstance(summary, dict):
+        top_result = summary.get("top_symbol", "N/A")
+    else:
+        top_result = "N/A"
+    
     return jsonify({
-        "status":
-        "completed",
-        "digest":
-        result["digest"],
-        "top_result":
-        result.get("summary", {}).get("top_symbol", "N/A")
+        "status": "completed",
+        "digest": result["digest"],
+        "top_result": top_result
     }), 200
 
 
