@@ -31,21 +31,21 @@ def save_individual_scan_result(symbol, result_data, directory="output"):
 
     date_str = datetime.now().strftime("%Y-%m-%d")
     progressive_file = os.path.join(directory, f"progressive_scan_{date_str}.json")
-    
+
     # Load existing data or create new
     if os.path.exists(progressive_file):
         with open(progressive_file, 'r') as f:
             existing_data = json.load(f)
     else:
         existing_data = {}
-    
+
     # Add the new result
     existing_data[symbol] = convert_numpy_types(result_data)
-    
+
     # Save back to file
     with open(progressive_file, 'w') as f:
         json.dump(existing_data, f, indent=2, default=str)
-    
+
     print(f"✅ Progressive save: {symbol} saved to {progressive_file}")
     return True
 
@@ -78,30 +78,30 @@ def run_autonomous_scan(min_delta=0.25,
             import requests
             import time
             from db_client import update_tickers_in_db
-            
+
             # Fetch fresh symbols from Alpha Vantage
             api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
             if not api_key:
                 print("❌ ALPHA_VANTAGE_API_KEY not set, skipping symbol refresh")
             else:
                 url = f'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey={api_key}'
-                
+
                 try:
                     print("   Fetching top gainers, losers, and most active...")
                     response = requests.get(url, timeout=30)
                     if response.status_code == 200:
                         data = response.json()
-                        
+
                         if 'Error Message' not in data and 'Information' not in data:
                             all_fresh_symbols = []
                             categories = ['top_gainers', 'top_losers', 'most_actively_traded']
-                            
+
                             for category in categories:
                                 if category in data:
                                     symbols = [item['ticker'] for item in data[category]]
                                     all_fresh_symbols.extend(symbols)
                                     print(f"   ✅ {len(symbols)} symbols from {category}")
-                            
+
                             # Update database with fresh symbols
                             if all_fresh_symbols:
                                 unique_symbols = list(dict.fromkeys(all_fresh_symbols))
@@ -111,14 +111,14 @@ def run_autonomous_scan(min_delta=0.25,
                                 print("⚠️ No fresh symbols fetched, using existing database")
                         else:
                             print(f"❌ Alpha Vantage API error: {data.get('Error Message', data.get('Information', 'Unknown error'))}")
-                    
-                except Exception as e:pt Exception as e:
+
+                except Exception as e:
                     print(f"   ❌ Failed to fetch from Alpha Vantage: {e}")
                     print("📦 Falling back to existing database")
-                
+
         except Exception as e:
             print(f"❌ Symbol refresh failed: {e}")
-            print("📦 Falling back to existing database")k to existing database symbols")
+            print("📦 Falling back to existing database")
 
     # ── PULL TICKERS FROM DATABASE ──
     symbols = fetch_tickers_from_db()
@@ -144,7 +144,7 @@ def run_autonomous_scan(min_delta=0.25,
         time_to_expiry_range=time_to_expiry_range,
         iv_percentile_threshold=iv_percentile_threshold
     )
-    
+
     # Additional safety: save each result from the final results dict too
     if results:
         for symbol, result_data in results.items():
