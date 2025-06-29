@@ -371,6 +371,776 @@ class CompleteOptionsScanner:
 
             key_prefix = tf_config['key_prefix']
             if key_prefix not in data:
+                print(
+                    f"No data available for {symbol} at {timeframe} timeframe")
+                return None
+
+            # Convert to DataFrame
+            df = pd.DataFrame.from_dict(data[key_prefix], orient='index')
+
+            # Handle different column names based on timeframe
+            if function == 'TIME_SERIES_DAILY_ADJUSTED':
+                df.columns = [
+                    'Open', 'High', 'Low', 'Close', 'Adjusted_Close', 'Volume',
+                    'Dividend_Amount', 'Split_Coefficient'
+                ]
+            else:
+                df.columns = ['Open', 'High', 'Low', 'Close', 'Volume']
+
+            # Convert types
+            for col in df.columns:
+                if col != 'Volume':
+                    df[col] = pd.to_numeric(df[col], errors='coerce')
+                else:
+                    df['Volume'] = pd.to_numeric(df['Volume'], errors='coerce')
+
+            # Sort index
+            df.index = pd.to_datetime(df.index)
+            df.sort_index(inplace=True)
+
+            print(f"Successfully fetched {timeframe} data for {symbol}")
+            return df
+
+        except Exception as e:
+            print(f"Error fetching {timeframe} data for {symbol}: {e}")
+            return None
+
+    def fetch_multi_timeframe_data(self, symbol):
+        """Fetch price data for all timeframes using Alpha Vantage"""
+        timeframe_data = {}
+
+        for tf in TIMEFRAMES.keys():
+            df = self.fetch_alpha_vantage_data(symbol, tf)
+            if df is not None and not df.empty:
+                timeframe_data[tf] = df
+            time.sleep(0.5)  # Small delay between requests
+
+        return timeframe_data
+
+    def analyze_timeframes(self, symbol, price_data):
+        """Analyze patterns across all timeframes with extended candlestick support"""
+        analysis_results = {}
+
+        for timeframe, data in price_data.items():
+            try:
+                # Use Adjusted_Close for daily data if available
+                if 'Adjusted_Close' in data.columns:
+                    data['Close'] = data['Adjusted_Close']
+
+                gaps = self.analyze_gaps(data)
+                patterns = self.detect_patterns(data)
+                volume_analysis = self.analyze_volume(data)
+                candle_patterns = self.check_candlestick_conditions(data)
+
+                latest_gap = gaps.iloc[-1]
+                latest_patterns = patterns.iloc[-1]
+                latest_candles = candle_patterns.iloc[-1]
+                latest_volume = volume_analysis.iloc[-1]
+
+                analysis_results[timeframe] = {
+                    'gap_percent': latest_gap['gap_percent'],
+                    'gap_direction': latest_gap['gap_direction'],
+                    'gap_mitigated': latest_gap['gap_mitigated'],
+                    'unmitigated_gap_price':
+                    latest_gap['unmitigated_gap_price'],
+                    'patterns': {
+                        'falling_wedge':
+                        bool(latest_patterns['falling_wedge']),
+                        'rising_wedge': bool(latest_patterns['rising_wedge']),
+                        'high_slope': latest_patterns['high_slope'],
+                        'low_slope': latest_patterns['low_slope']
+                    },
+                    'candles': {
+                        'bullish':
+                        bool(latest_candles['matching_candle_bullish']),
+                        'bearish':
+                        bool(latest_candles['matching_candle_bearish']),
+                        'bullish_engulfing':
+                        bool(latest_candles['bullish_engulfing']),
+                        'bearish_engulfing':
+                        bool(latest_candles['bearish_engulfing']),
+                        'hammer':
+                        bool(latest_candles['hammer']),
+                        'inverted_hammer':
+                        bool(latest_candles['inverted_hammer']),
+                        'shooting_star':
+                        bool(latest_candles['shooting_star']),
+                        'doji':
+                        bool(latest_candles['doji']),
+                    },
+                    'volume': {
+                        'relative_volume': latest_volume['relative_volume'],
+                        'unusual_volume': bool(latest_volume['unusual_volume'])
+                    }
+                }
+
+            except Exception as e:
+                print(f"Error analyzing {timeframe} for {symbol}: {e}")
+                continue
+
+        return analysis_results
+
+    def calculate_pattern_confluence(self, analysis_results):
+        """Calculate pattern confluence with weighted timeframe importance"""
+        confluence_score = 0
+        bullish_signals = 0
+        bearish_signals = 0
+
+        # Define timeframe weights (higher weight for longer timeframes)
+        timeframe_weights = {
+            '5m': 0.5,
+            '15m': 0.75,
+            '30m': 1.0,
+            '1h': 1.25,
+            'D': 1.5,
+            'W': 2.0
+        }
+
+        for tf, results in analysis_results.items():
+            weight = timeframe_weights.get(tf, 1.0)
+
+            # === Gap Analysis ===
+            if abs(results['gap_percent']
+                   ) > 0 and not results['gap_mitigated']:
+                if results['gap_direction'] == 'Up':
+                    bullish_signals += weight
+                else:
+                    bearish_signals += weight
+
+            # === Pattern Analysis ===
+            if results['patterns']['falling_wedge']:
+                bullish_signals += weight
+            if results['patterns']['rising_wedge']:
+                bearish_signals += weight
+
+            # === Candlestick Patterns ===
+            candles = results['candles']
+
+            if candles.get('bullish'):
+                bullish_signals += weight
+            if candles.get('bearish'):
+                bearish_signals += weight
+
+            # New candlestick logic
+            if candles.get('bullish_engulfing'):
+                bullish_signals += weight
+            if candles.get('hammer') or candles.get('inverted_hammer'):
+                bullish_signals += 0.5 * weight
+
+            if candles.get('bearish_engulfing'):
+                bearish_signals += weight
+            if candles.get('shooting_star'):
+                bearish_signals += 0.5 * weight
+
+            if candles.get('doji'):
+                # Doji = indecision — light weight to both sides
+                bullish_signals += 0.2 * weight
+                bearish_signals += 0.2 * weight
+
+            # === Volume Confirmation ===
+            if results['volume']['unusual_volume']:
+                if bullish_signals > bearish_signals:
+                    bullish_signals += 0.5 * weight
+                elif bearish_signals > bullish_signals:
+                    bearish_signals += 0.5 * weight
+
+        # === Final Score ===
+        total_signals = bullish_signals + bearish_signals
+        if total_signals > 0:
+            if bullish_signals > bearish_signals:
+                confluence_score = (bullish_signals / total_signals) * 10
+                bias = 'Bullish'
+            else:
+                confluence_score = (bearish_signals / total_signals) * 10
+                bias = 'Bearish'
+        else:
+            confluence_score = 0
+            bias = 'Neutral'
+
+        return {
+            'score': round(confluence_score, 2),
+            'bias': bias,
+            'bullish_signals': round(bullish_signals, 2),
+            'bearish_signals': round(bearish_signals, 2)
+        }
+
+    def fetch_price_data(self, symbol, period='1mo', interval='15m'):
+        """Fetch price data using yfinance"""
+        try:
+            stock = yf.Ticker(symbol)
+            df = stock.history(period=period, interval=interval)
+            if df.empty:
+                print(f"No price data available for {symbol}")
+                return None
+            df.index = pd.to_datetime(df.index)
+            return df
+        except Exception as e:
+            print(f"Error fetching price data for {symbol}: {e}")
+            return None
+
+    def _check_rate_limit(self):
+        """Implement rate limiting"""
+        current_time = time.time()
+        if current_time - self.last_request_time < 60:  # Within the same minute
+            if self.request_count >= self.requests_per_minute:
+                sleep_time = 60 - (current_time - self.last_request_time)
+                if sleep_time > 0:
+                    time.sleep(sleep_time)
+                self.request_count = 0
+                self.last_request_time = time.time()
+        else:  # New minute
+            self.request_count = 0
+            self.last_request_time = current_time
+
+        self.request_count += 1
+
+    def fetch_options_data(self, symbol):
+        """Fetch options data with improved error handling and fallback"""
+        self._check_rate_limit()
+
+        # Try historical options first
+        url = f"https://www.alphavantage.co/query?function=HISTORICAL_OPTIONS&symbol={symbol}&apikey={self.api_key}"
+
+        try:
+            response = requests.get(url, timeout=15)
+            data = response.json()
+
+            if 'Information' in data and 'rate limit' in data['Information'].lower():
+                print(f"⏳ Rate limit reached for {symbol} - waiting...")
+                time.sleep(60)
+                return self.fetch_options_data(symbol)
+
+            if 'Error Message' in data:
+                print(f"❌ Alpha Vantage error for {symbol}: {data['Error Message']}")
+                return None
+
+            if 'data' in data and data['data'] and len(data['data']) > 0:
+                df = pd.DataFrame(data['data'])
+                print(f"✅ Options data found for {symbol}: {len(df)} contracts")
+                return df
+
+            # Try real-time options as fallback
+            print(f"🔄 Trying real-time options for {symbol}...")
+            return self._fetch_realtime_options(symbol)
+
+        except Exception as e:
+            print(f"❌ Error fetching options for {symbol}: {e}")
+            return None
+
+    def _fetch_realtime_options(self, symbol):
+        """Fallback method for real-time options data"""
+        try:
+            url = f"https://www.alphavantage.co/query?function=REALTIME_OPTIONS&symbol={symbol}&apikey={self.api_key}"
+            response = requests.get(url, timeout=15)
+            data = response.json()
+            
+            if 'data' in data and data['data']:
+                df = pd.DataFrame(data['data'])
+                print(f"✅ Real-time options found for {symbol}: {len(df)} contracts")
+                return df
+            
+            print(f"❌ No options data available for {symbol}")
+            return None
+            
+        except Exception as e:
+            print(f"❌ Real-time options fetch failed for {symbol}: {e}")
+            return None
+
+    def analyze_gaps(self, price_data):
+        """Identify and track gap mitigation"""
+        df = price_data.copy()
+
+        # Get prior candle values for comparison
+        df['prev_close'] = df['Close'].shift(1)
+        df['prev_open'] = df['Open'].shift(1)
+
+        # Calculate gaps
+        df['gap'] = df['Open'] - df['prev_close']
+        df['gap_percent'] = (df['gap'] / df['prev_close']) * 100
+
+        # Track gap direction
+        df['gap_direction'] = np.where(df['gap'] > 0, 'Up', 'Down')
+
+        # Track gap mitigation
+        df['gap_mitigated'] = False
+        df['unmitigated_gap_price'] = np.nan
+
+        # For each row, check if gap is mitigated
+        for i in range(1, len(df)):
+            if df.iloc[i]['gap'] != 0:  # If there's a gap
+                if df.iloc[i]['gap'] > 0:  # Bullish gap
+                    # Gap is mitigated if price falls back to previous close
+                    df.iloc[i, df.columns.get_loc('gap_mitigated')] = df.iloc[
+                        i]['Low'] <= df.iloc[i - 1]['Close']
+                    if not df.iloc[i]['gap_mitigated']:
+                        df.iloc[i,
+                                df.columns.get_loc('unmitigated_gap_price'
+                                                   )] = df.iloc[i - 1]['Close']
+                else:  # Bearish gap
+                    # Gap is mitigated if price rises back to previous close
+                    df.iloc[i, df.columns.get_loc('gap_mitigated')] = df.iloc[
+                        i]['High'] >= df.iloc[i - 1]['Close']
+                    if not df.iloc[i]['gap_mitigated']:
+                        df.iloc[i,
+                                df.columns.get_loc('unmitigated_gap_price'
+                                                   )] = df.iloc[i - 1]['Close']
+
+        # Track number of bars since last unmitigated gap
+        df['bars_since_gap'] = 0
+        last_gap_idx = None
+        for i in range(len(df) - 1, -1, -1):
+            if pd.notna(df.iloc[i]['unmitigated_gap_price']):
+                last_gap_idx = i
+                df.iloc[i, df.columns.get_loc('bars_since_gap')] = 0
+            elif last_gap_idx is not None:
+                df.iloc[
+                    i, df.columns.get_loc('bars_since_gap')] = last_gap_idx - i
+
+        return df
+
+    def check_candlestick_conditions(self, price_data):
+        """Check various candlestick patterns"""
+        df = price_data.copy()
+
+        # Previous candle values
+        df['prev_open'] = df['Open'].shift(1)
+        df['prev_close'] = df['Close'].shift(1)
+        df['prev_high'] = df['High'].shift(1)
+        df['prev_low'] = df['Low'].shift(1)
+
+        # Real body and shadows
+        df['body'] = abs(df['Close'] - df['Open'])
+        df['upper_shadow'] = df['High'] - df[['Close', 'Open']].max(axis=1)
+        df['lower_shadow'] = df[['Close', 'Open']].min(axis=1) - df['Low']
+        df['range'] = df['High'] - df['Low']
+
+        # === Pattern Conditions === #
+
+        # Bullish Engulfing
+        df['bullish_engulfing'] = ((df['prev_close'] < df['prev_open'])
+                                   &  # Previous red
+                                   (df['Close'] > df['Open'])
+                                   &  # Current green
+                                   (df['Open'] < df['prev_close']) &
+                                   (df['Close'] > df['prev_open']))
+
+        # Bearish Engulfing
+        df['bearish_engulfing'] = ((df['prev_close'] > df['prev_open'])
+                                   &  # Previous green
+                                   (df['Close'] < df['Open']) &  # Current red
+                                   (df['Open'] > df['prev_close']) &
+                                   (df['Close'] < df['prev_open']))
+
+        # Hammer
+        df['hammer'] = ((df['body'] <= df['range'] * 0.3) &
+                        (df['lower_shadow'] >= df['body'] * 2) &
+                        (df['upper_shadow'] <= df['body'] * 0.5))
+
+        # Inverted Hammer
+        df['inverted_hammer'] = ((df['body'] <= df['range'] * 0.3) &
+                                 (df['upper_shadow'] >= df['body'] * 2) &
+                                 (df['lower_shadow'] <= df['body'] * 0.5))
+
+        # Shooting Star (bearish inverted hammer)
+        df['shooting_star'] = ((df['body'] <= df['range'] * 0.3) &
+                               (df['upper_shadow'] >= df['body'] * 2) &
+                               (df['lower_shadow'] <= df['body'] * 0.2))
+
+        # Doji
+        df['doji'] = (df['body'] <= df['range'] * 0.1)
+
+        # === Existing Matching Candle Logic === #
+        df['is_prev_green'] = df['prev_close'] > df['prev_open']
+        df['is_prev_red'] = df['prev_close'] < df['prev_open']
+        df['bull_cond1'] = df['prev_close'] <= df['Open']
+        df['bull_cond2'] = df['Open'] >= df['Low']
+        df['bull_cond3'] = df['prev_close'] <= df['Low']
+        df['matching_candle_bullish'] = (df['is_prev_green'] & df['bull_cond1']
+                                         & df['bull_cond2'] & df['bull_cond3'])
+
+        df['bear_cond1'] = df['prev_close'] >= df['Open']
+        df['bear_cond2'] = df['Open'] <= df['High']
+        df['bear_cond3'] = df['prev_close'] >= df['High']
+        df['matching_candle_bearish'] = (df['is_prev_red'] & df['bear_cond1']
+                                         & df['bear_cond2'] & df['bear_cond3'])
+
+        return df
+
+    def detect_patterns(self, price_data):
+        df = price_data.copy()
+        patterns = pd.DataFrame(index=df.index)
+
+        x = np.arange(len(df))
+        high_trend = stats.linregress(x, df['High'])
+        low_trend = stats.linregress(x, df['Low'])
+
+        patterns['high_slope'] = high_trend.slope
+        patterns['low_slope'] = low_trend.slope
+        patterns['high_r2'] = high_trend.rvalue**2
+        patterns['low_r2'] = low_trend.rvalue**2
+
+        patterns['falling_wedge'] = (
+            (patterns['high_slope'] < -0.0001) &
+            (patterns['low_slope'] < -0.0001) &
+            (patterns['high_slope'] < patterns['low_slope']) &
+            (patterns['high_r2'] > self.min_pattern_quality) &
+            (patterns['low_r2'] > self.min_pattern_quality))
+
+        patterns['rising_wedge'] = (
+            (patterns['high_slope'] > 0.0001) &
+            (patterns['low_slope'] > 0.0001) &
+            (patterns['high_slope'] > patterns['low_slope']) &
+            (patterns['high_r2'] > self.min_pattern_quality) &
+            (patterns['low_r2'] > self.min_pattern_quality))
+
+        return patterns
+
+    def analyze_volume(self, price_data):
+        df = price_data.copy()
+        df['volume_sma'] = df['Volume'].expanding().mean()
+        df['volume_std'] = df['Volume'].expanding().std()
+        df['relative_volume'] = df['Volume'] / df['volume_sma']
+        df['unusual_volume'] = df['Volume'] > (df['volume_sma'] +
+                                               2 * df['volume_std'])
+        return df
+
+    def fetch_volume_profile(self,
+                             symbol,
+                             interval='15min',
+                             price_levels=20,
+                             lookback_days=10):
+        """
+        Volume profile using OHLC distribution (upgrade), fully backward-compatible.
+        """
+        self._check_rate_limit()
+
+        try:
+            url = (
+                f'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY'
+                f'&symbol={symbol}&interval={interval}&outputsize=full&apikey={self.api_key}'
+            )
+            response = requests.get(url)
+            data = response.json()
+
+            if 'Error Message' in data:
+                print(
+                    f"Error fetching data for {symbol}: {data['Error Message']}"
+                )
+                return None
+
+            key_prefix = f'Time Series ({interval})'
+            if key_prefix not in data:
+                print(f"No intraday data available for {symbol}")
+                return None
+
+            df = pd.DataFrame.from_dict(data[key_prefix], orient='index')
+            df.columns = ['Open', 'High', 'Low', 'Close', 'Volume']
+            df = df.apply(pd.to_numeric, errors='coerce')
+            df.index = pd.to_datetime(df.index)
+            df.sort_index(inplace=True)
+
+            df = df[df.index >= datetime.now() - timedelta(days=lookback_days)]
+
+            if df.empty:
+                print(
+                    f"No data available for {symbol} in the specified time period"
+                )
+                return None
+
+            price_min = df['Low'].min()
+            price_max = df['High'].max()
+            price_range = price_max - price_min
+
+            if price_range == 0:
+                print(f"Flat price range for {symbol}, skipping")
+                return None
+
+            level_size = price_range / price_levels
+            price_levels_array = [
+                price_min + (level_size * i) for i in range(price_levels + 1)
+            ]
+
+            volume_profile = {
+                'price_levels': price_levels_array,
+                'volumes': [0] * price_levels,
+                'relative_volumes': [0] * price_levels,
+                'dominant_levels': []
+            }
+
+            # More accurate distribution: split volume across OHLC range
+            for _, row in df.iterrows():
+                prices = [row['Open'], row['High'], row['Low'], row['Close']]
+                valid_prices = [p for p in prices if not pd.isna(p)]
+                if not valid_prices:
+                    continue
+
+                spread = np.linspace(min(valid_prices),
+                                     max(valid_prices),
+                                     num=len(valid_prices))
+                volume_share = row['Volume'] / len(
+                    spread) if row['Volume'] > 0 else 0
+
+                for price in spread:
+                    for i in range(price_levels):
+                        if price_levels_array[i] <= price < price_levels_array[
+                                i + 1]:
+                            volume_profile['volumes'][i] += volume_share
+                            break
+
+            total_volume = sum(volume_profile['volumes'])
+            if total_volume > 0:
+                volume_profile['relative_volumes'] = [
+                    (v / total_volume) * 100 for v in volume_profile['volumes']
+                ]
+
+            mean_volume = np.mean(volume_profile['volumes'])
+            std_volume = np.std(volume_profile['volumes'])
+            threshold = mean_volume + (1.5 * std_volume)
+
+            for i, volume in enumerate(volume_profile['volumes']):
+                if volume > threshold:
+                    price_level = (price_levels_array[i] +
+                                   price_levels_array[i + 1]) / 2
+                    volume_profile['dominant_levels'].append({
+                        'price':
+                        round(price_level, 2),
+                        'volume':
+                        int(volume),
+                        'percentage':
+                        round(volume_profile['relative_volumes'][i], 2)
+                    })
+
+            return volume_profile
+
+        except Exception as e:
+            print(f"Error creating volume profile for {symbol}: {e}")
+            return None
+
+    def analyze_with_volume_profile(self, symbol, analysis_results):
+        """
+      Enhance analysis with volume profile data
+      """
+        # Get volume profile for intraday timeframes from TIMEFRAMES dict
+        volume_profiles = {}
+
+        # Extract intraday timeframes only (daily/weekly don't work with volume profiles)
+        intraday_timeframes = [
+            tf for tf, config in TIMEFRAMES.items()
+            if config['function'] == 'TIME_SERIES_INTRADAY'
+        ]
+
+        for tf in intraday_timeframes:
+            # Convert timeframe key to interval format
+            interval = TIMEFRAMES[tf]['interval']
+            volume_profiles[interval] = self.fetch_volume_profile(
+                symbol, interval=interval)
+
+        # Rest of the function remains the same
+        confluences = []
+
+        # Check if any key levels from volume profile match gap levels
+        for tf, results in analysis_results.items():
+            if 'gap_percent' in results and abs(results['gap_percent']) > 0:
+                gap_price = results['unmitigated_gap_price']
+                if pd.isna(gap_price):
+                    continue
+
+                # Check if gap aligns with a high volume node
+                for profile_tf, profile in volume_profiles.items():
+                    if profile and 'dominant_levels' in profile:
+                        for level in profile['dominant_levels']:
+                            # If gap price is near a high volume node (+/- 1%)
+                            price_diff_percent = abs(
+                                (level['price'] - gap_price) / gap_price * 100)
+                            if price_diff_percent < 1.0:
+                                confluences.append({
+                                    'type':
+                                    'gap_volume_confluence',
+                                    'gap_timeframe':
+                                    tf,
+                                    'volume_timeframe':
+                                    profile_tf,
+                                    'gap_price':
+                                    gap_price,
+                                    'volume_level':
+                                    level['price'],
+                                    'volume_strength':
+                                    level['percentage']
+                                })
+
+        return {'volume_profiles': volume_profiles, 'confluences': confluences}
+
+    def print_multi_timeframe_analysis(self, symbol, analysis_results,
+                                       confluence):
+        """Print detailed multi-timeframe analysis"""
+        print(f"\n=== {symbol} Multi-Timeframe Analysis ===")
+        print(
+            f"Overall Confluence Score: {confluence['score']}/10 ({confluence['bias']})"
+        )
+        print(f"Bullish Signals: {confluence['bullish_signals']}")
+        print(f"Bearish Signals: {confluence['bearish_signals']}\n")
+
+        headers = [
+            'Timeframe', 'Gap %', 'Direction', 'Patterns', 'Candles', 'Volume'
+        ]
+        rows = []
+
+        for tf, data in analysis_results.items():
+            patterns = []
+            if data['patterns']['falling_wedge']:
+                patterns.append('Falling Wedge')
+            if data['patterns']['rising_wedge']:
+                patterns.append('Rising Wedge')
+
+            candles = []
+            if data['candles']['bullish']:
+                candles.append('Bullish')
+            if data['candles']['bearish']:
+                candles.append('Bearish')
+
+            rows.append([
+                tf, f"{data['gap_percent']:.2f}%", data['gap_direction'],
+                ', '.join(patterns) if patterns else 'None',
+                ', '.join(candles) if candles else 'None',
+                'Unusual' if data['volume']['unusual_volume'] else 'Normal'
+            ])
+
+        print(tabulate(rows, headers=headers, tablefmt='pretty'))
+
+    def screen_options(self,
+                       options_data,
+                       price_analysis,
+                       min_price=None,
+                       max_price=None,
+                       iv_percentile_threshold=None,
+                       time_to_expiry_range=None):
+        """
+        Filters options by price, delta, IV percentile, and days to expiration.
+        Returns scored candidates.
+        """
+        if options_data is None or options_data.empty:
+            return pd.DataFrame()
+
+        required_cols = {
+            'strike', 'type', 'expiration', 'delta', 'gamma', 'theta',
+            'implied_volatility', 'mark'
+        }
+        if not required_cols.issubset(options_data.columns):
+            print(
+                f"Error: Options data missing required columns. Found columns: {list(options_data.columns)}"
+            )
+            return pd.DataFrame()
+
+        # Convert expiration to datetime
+        options_data['expiration'] = pd.to_datetime(options_data['expiration'],
+                                                    errors='coerce')
+
+        # Start with a copy before filtering
+        filtered_data = options_data.copy()
+
+        # === Time to expiry filter ===
+        if time_to_expiry_range:
+            filtered_data['days_to_expiration'] = (
+                filtered_data['expiration'] - datetime.now()).dt.days
+            filtered_data = filtered_data[(
+                filtered_data['days_to_expiration'] >= time_to_expiry_range[0]
+            ) & (filtered_data['days_to_expiration'] <= time_to_expiry_range[1]
+                 )]
+
+        # === IV percentile filter ===
+        if iv_percentile_threshold is not None and 'iv_percentile' in filtered_data.columns:
+            filtered_data = filtered_data[filtered_data['iv_percentile'] >=
+                                          iv_percentile_threshold]
+
+        # Field normalization
+        field_mapping = {'implied_volatility': 'implied_vol', 'mark': 'price'}
+        for old_name, new_name in field_mapping.items():
+            if old_name in filtered_data.columns and new_name not in filtered_data.columns:
+                filtered_data[new_name] = filtered_data[old_name]
+
+        # Convert numeric fields
+        numeric_cols = [
+            'strike', 'delta', 'gamma', 'theta', 'vega', 'implied_vol', 'price'
+        ]
+        for col in numeric_cols:
+            if col in filtered_data.columns:
+                filtered_data[col] = pd.to_numeric(filtered_data[col],
+                                                   errors='coerce')
+
+        # Price filtering
+        if min_price is not None:
+            filtered_data = filtered_data[filtered_data['price'] >= min_price]
+        if max_price is not None:
+            filtered_data = filtered_data[filtered_data['price'] <= max_price]
+
+        # Delta filtering
+        mask = ((filtered_data['delta'].abs() >= self.min_delta) &
+                (filtered_data['delta'].abs() <= self.max_delta))
+        candidates = filtered_data[mask].copy()
+
+        if not candidates.empty:
+            candidates['score'] = candidates.apply(
+                lambda x: self._score_option(x, price_analysis), axis=1)
+            return candidates.sort_values('score', ascending=False)
+
+        return pd.DataFrame()
+
+    def _score_option(self, option, price_analysis):
+        """Score individual options"""
+        try:
+            # Delta score (preference for options closer to 0.4 delta)
+            delta_score = 1 - abs(abs(float(option['delta'])) - 0.6)
+
+            # Gamma/Theta ratio (preference for high gamma relative to theta)
+            gamma = abs(float(option['gamma']))
+            theta = abs(float(option['theta']))
+            gamma_theta_ratio = gamma / theta if theta != 0 else 0
+
+            # Volume score (preference for higher volume)
+            volume = float(option['volume'])
+            volume_score = min(volume / self.min_volume, 1.0)
+
+            # Combine scores with weights
+            total_score = (delta_score * 0.6 + gamma_theta_ratio * 0.4 +
+                           volume_score * 0.2)
+
+            return round(total_score, 4)
+        except Exception as e:
+            print(f"Error calculating option score: {e}")
+            return 0.0
+
+    def analyze_oi_skew(self, options_df):
+        """
+        Analyze Put/Call open interest ratio for directional sentiment.
+        Returns skew ratio and bias interpretation.
+        """
+        if options_df is None or options_df.empty:
+            return {'put_call_ratio': None, 'bias': 'Unknown'}
+
+        # Normalize type field and open_interest to ensure numeric
+        options_df = options_df.copy()
+        options_df['type'] = options_df['type'].str.lower().fillna('')
+        options_df['open_interest'] = pd.to_numeric(
+            options_df['open_interest'], errors='coerce').fillna(0)
+
+        total_put_oi = options_df[options_df['type'] ==
+                                  'put']['open_interest'].sum()
+        total_call_oi = options_df[options_df['type'] ==
+                                   'call']['open_interest'].sum()
+
+        if total_call_oi == 0:
+            return {'put_call_ratio': None, 'bias': 'Invalid'}
+
+        ratio = total_put_oi / total_call_oi
+
+        if ratio > 1.3:
+            bias = 'Bearish Skew'
+        elif ratio < 0.7:
+            bias = 'Bullish Skew'
+        else:
+            bias = 'Neutral Skew'
+
+        return {'put_call_ratio': round(ratio, 2), 'bias': bias}
 
 
 def discover_high_volume_movers(limit=15):
