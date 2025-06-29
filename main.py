@@ -30,26 +30,34 @@ def health():
 def trigger_scan():
     # Check if auto-refresh is requested (default: True)
     auto_refresh = request.args.get('auto_refresh', 'true').lower() == 'true'
-    result = run_autonomous_scan(dry_run=False, auto_refresh_symbols=auto_refresh)
+    limit = int(request.args.get('limit', 25))  # Allow limiting symbol count
+    
+    result = run_autonomous_scan(
+        dry_run=False, 
+        auto_refresh_symbols=auto_refresh,
+        symbol_limit=limit
+    )
 
     if not result or not result.get("results"):
         return jsonify({
             "status": "no-results",
             "message": "Scanner ran but found no valid trade plans.",
-            "digest": result["digest"] if result else "No output"
+            "digest": result["digest"] if result else "No output",
+            "symbols_processed": result.get("symbols_processed", 0) if result else 0
         }), 200
 
-    # Safely extract top result from summary
-    summary = result.get("summary", {})
-    if isinstance(summary, dict):
-        top_result = summary.get("top_symbol", "N/A")
-    else:
-        top_result = "N/A"
+    # Get summary stats
+    results = result.get("results", {})
+    top_scores = sorted([(k, v.get("confluence", {}).get("score", 0)) 
+                        for k, v in results.items()], 
+                       key=lambda x: x[1], reverse=True)
     
     return jsonify({
         "status": "completed",
         "digest": result["digest"],
-        "top_result": top_result
+        "symbols_processed": result.get("symbols_processed", 0),
+        "opportunities_found": len(results),
+        "top_3_symbols": [f"{sym} ({score:.1f})" for sym, score in top_scores[:3]]
     }), 200
 
 

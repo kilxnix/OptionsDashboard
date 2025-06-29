@@ -91,16 +91,17 @@ class CompleteOptionsScanner:
             if function == 'TIME_SERIES_INTRADAY':
                 url = (f'https://www.alphavantage.co/query?function={function}'
                        f'&symbol={symbol}&interval={tf_config["interval"]}'
-                       f'&outputsize=full&apikey={self.api_key}')
+                       f'&outputsize=compact&apikey={self.api_key}')  # Use compact for faster response
             elif function == 'TIME_SERIES_DAILY_ADJUSTED':
                 url = (
                     f'https://www.alphavantage.co/query?function={function}'
-                    f'&symbol={symbol}&outputsize=full&apikey={self.api_key}')
+                    f'&symbol={symbol}&outputsize=compact&apikey={self.api_key}')
             else:  # Weekly
                 url = (f'https://www.alphavantage.co/query?function={function}'
                        f'&symbol={symbol}&apikey={self.api_key}')
 
-            response = requests.get(url)
+            response = requests.get(url, timeout=15)  # Add timeout
+            response.raise_for_status()  # Raise exception for bad status codes
             data = response.json()
 
             if 'Error Message' in data:
@@ -858,55 +859,27 @@ class CompleteOptionsScanner:
 
 
 def print_volume_profile(symbol, volume_profile, tf='15min'):
-    """Display volume profile visualization"""
+    """Display simplified volume profile summary"""
     if not volume_profile or 'volume_profiles' not in volume_profile or tf not in volume_profile[
             'volume_profiles']:
-        print(
-            f"No volume profile data available for {symbol} at {tf} timeframe")
         return
 
     profile = volume_profile['volume_profiles'][tf]
-    if not profile:
-        print(
-            f"No volume profile data available for {symbol} at {tf} timeframe")
+    if not profile or not profile.get('dominant_levels'):
         return
 
-    print(f"\n=== {symbol} Volume Profile ({tf}) ===")
-
-    # Create a simple ASCII chart
-    max_volume = max(profile['volumes'])
-    chart_width = 40
-
-    for i, volume in enumerate(profile['volumes']):
-        price_low = profile['price_levels'][i]
-        price_high = profile['price_levels'][i + 1]
-        price_mid = (price_low + price_high) / 2
-
-        # Calculate bar length
-        if max_volume > 0:
-            bar_length = int((volume / max_volume) * chart_width)
-        else:
-            bar_length = 0
-
-        # Mark high volume nodes
-        is_dominant = False
-        for level in profile['dominant_levels']:
-            if abs(level['price'] - price_mid) < 0.01:
-                is_dominant = True
-                break
-
-        # Print bar
-        percentage = profile['relative_volumes'][i]
-        marker = '##' if is_dominant else '  '
-        print(
-            f"${price_mid:.2f} | {'█' * bar_length}{' ' * (chart_width - bar_length)} | {percentage:.1f}% {marker}"
-        )
-
-    print("\nDominant Volume Levels:")
-    for level in profile['dominant_levels']:
-        print(
-            f"${level['price']:.2f} - {level['percentage']:.1f}% of total volume"
-        )
+    print(f"\n📊 {symbol} Key Volume Levels ({tf}):")
+    
+    # Show only top 3 dominant levels
+    top_levels = sorted(profile['dominant_levels'], 
+                       key=lambda x: x['percentage'], reverse=True)[:3]
+    
+    for i, level in enumerate(top_levels, 1):
+        print(f"  {i}. ${level['price']:.2f} ({level['percentage']:.1f}% volume)")
+    
+    # Show volume confluence if multiple timeframes agree
+    if len(profile['dominant_levels']) > 2:
+        print(f"  💡 Strong volume confluence at {len(profile['dominant_levels'])} levels")
 
 
 def calculate_hold_time(days_to_expiry, delta, implied_vol):
@@ -1422,6 +1395,21 @@ def run_scanner(symbols=None,
     scanner = CompleteOptionsScanner(ALPHA_VANTAGE_API_KEY,
                                      min_delta=min_delta,
                                      max_delta=max_delta)
+    
+    # Filter out problematic symbols upfront
+    if symbols:
+        # Remove symbols with special characters that cause API issues
+        filtered_symbols = []
+        skip_patterns = ['+', 'W', 'WS', 'WT']  # Warrants and rights often cause issues
+        
+        for symbol in symbols:
+            if not any(pattern in symbol for pattern in skip_patterns):
+                filtered_symbols.append(symbol)
+            else:
+                print(f"⏭️  Skipping {symbol} (warrant/right)")
+        
+        symbols = filtered_symbols[:30]  # Limit to 30 symbols for faster processing
+        print(f"🔍 Processing {len(symbols)} filtered symbols...")
 
     if symbols is None:
         print("Paste your stock list (any format):")
@@ -1437,17 +1425,24 @@ def run_scanner(symbols=None,
 
     for symbol in tqdm(symbols, desc="Scanning"):
         try:
+            # Quick pre-filter: try to fetch just daily data first
+            daily_data = scanner.fetch_alpha_vantage_data(symbol, 'D')
+            if daily_data is None or daily_data.empty:
+                print(f"⚠️  No daily data for {symbol}, skipping...")
+                continue
+            
+            # If daily data exists, proceed with full analysis
             multi_tf_data = scanner.fetch_multi_timeframe_data(symbol)
-            if not multi_tf_data:
+            if not multi_tf_data or len(multi_tf_data) < 2:  # Need at least 2 timeframes
                 continue
 
-            analysis_results = scanner.analyze_timeframes(
-                symbol, multi_tf_data)
+            analysis_results = scanner.analyze_timeframes(symbol, multi_tf_data)
             confluence = scanner.calculate_pattern_confluence(analysis_results)
 
-            # Add volume profile analysis
-            volume_analysis = scanner.analyze_with_volume_profile(
-                symbol, analysis_results)
+            # Skip volume analysis for low-scoring symbols to save time
+            volume_analysis = None
+            if confluence['score'] >= 6.0:
+                volume_analysis = scanner.analyze_with_volume_profile(symbol, analysis_results)
 
             # Integrate volume profile with confluence score
             if volume_analysis and 'confluences' in volume_analysis:
@@ -1479,22 +1474,28 @@ def run_scanner(symbols=None,
                             confluence['bias'] = 'Bearish'
                     confluence['score'] = round(confluence['score'], 2)
 
-            scanner.print_multi_timeframe_analysis(symbol, analysis_results,
-                                                   confluence)
-            print(f"\n=== {symbol} Analysis ===")
-            # Use the 15m timeframe as a reference for the gap percentage (if available)
-            if '15m' in analysis_results:
-                print(f"Gap: {analysis_results['15m']['gap_percent']:.2f}%")
-            else:
-                print("15m data not available for gap analysis.")
+            # Only show detailed analysis for high-scoring symbols
+            if confluence['score'] >= 7.0:
+                scanner.print_multi_timeframe_analysis(symbol, analysis_results, confluence)
+                
+                # Show gap info more concisely
+                gap_info = "No gap"
+                if '15m' in analysis_results and analysis_results['15m']['gap_percent'] != 0:
+                    gap_info = f"{analysis_results['15m']['gap_percent']:.2f}% gap"
+                elif 'D' in analysis_results and analysis_results['D']['gap_percent'] != 0:
+                    gap_info = f"{analysis_results['D']['gap_percent']:.2f}% daily gap"
+                
+                print(f"\n🎯 {symbol}: {confluence['score']:.1f}/10 {confluence['bias']} | {gap_info}")
 
-            # Print volume profiles for all available timeframes
-            if volume_analysis and 'volume_profiles' in volume_analysis:
-                for timeframe in volume_analysis['volume_profiles']:
-                    if volume_analysis['volume_profiles'][timeframe]:
-                        print_volume_profile(symbol,
-                                             volume_analysis,
-                                             tf=timeframe)
+                # Show only the most relevant volume profile (15m or 1h)
+                if volume_analysis and 'volume_profiles' in volume_analysis:
+                    for tf in ['15m', '1h']:  # Priority order
+                        if tf in volume_analysis['volume_profiles'] and volume_analysis['volume_profiles'][tf]:
+                            print_volume_profile(symbol, volume_analysis, tf=tf)
+                            break
+            else:
+                # Just show a brief summary for lower scoring symbols
+                print(f"⚪ {symbol}: {confluence['score']:.1f}/10 {confluence['bias']} (below threshold)")
 
             if confluence['score'] >= 7.0:
                 options_data = scanner.fetch_options_data(symbol)

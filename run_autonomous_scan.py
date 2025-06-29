@@ -58,7 +58,8 @@ def run_autonomous_scan(min_delta=0.25,
                         iv_percentile_threshold=85,
                         discovery_limit=50,  # still accepted but unused now
                         dry_run=False,
-                        auto_refresh_symbols=True):
+                        auto_refresh_symbols=True,
+                        symbol_limit=25):
     """
     Autonomous scan pipeline that:
       1. Optionally refreshes symbols from Yahoo Finance screeners
@@ -121,20 +122,25 @@ def run_autonomous_scan(min_delta=0.25,
             print("📦 Falling back to existing database")
 
     # ── PULL TICKERS FROM DATABASE ──
-    symbols = fetch_tickers_from_db()
-    if not symbols:
+    all_symbols = fetch_tickers_from_db()
+    if not all_symbols:
         print("❌ No tickers found in database.")
         return {
             "digest": "No tickers found in database.",
             "results": None,
             "summary": {},
-            "output_path": None
+            "output_path": None,
+            "symbols_processed": 0
         }
 
-    print(f"🔍 {len(symbols)} tickers ready for analysis: {symbols[:5]}...")
+    # Limit symbols for faster processing
+    symbols = all_symbols[:symbol_limit]
+    print(f"🔍 Processing {len(symbols)} of {len(all_symbols)} tickers: {symbols[:3]}...")
 
     # ── Run your existing scanner_core logic with progressive saving ──
-    print("🔄 Running scanner with progressive saving enabled...")
+    print("🔄 Running optimized scanner...")
+    start_time = datetime.now()
+    
     results = run_scanner(
         symbols=symbols,
         min_delta=min_delta,
@@ -144,6 +150,9 @@ def run_autonomous_scan(min_delta=0.25,
         time_to_expiry_range=time_to_expiry_range,
         iv_percentile_threshold=iv_percentile_threshold
     )
+    
+    scan_duration = datetime.now() - start_time
+    print(f"⏱️  Scan completed in {scan_duration.total_seconds():.1f} seconds")
 
     # Additional safety: save each result from the final results dict too
     if results:
@@ -190,7 +199,9 @@ def run_autonomous_scan(min_delta=0.25,
         "digest": digest.strip(),
         "results": results,
         "summary": summary,
-        "output_path": output_path
+        "output_path": output_path,
+        "symbols_processed": len(symbols),
+        "processing_time": scan_duration.total_seconds()
     }
 
 
