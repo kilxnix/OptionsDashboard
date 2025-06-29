@@ -1,3 +1,4 @@
+
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
@@ -65,6 +66,239 @@ TIMEFRAMES = {
         'key_prefix': 'Weekly Time Series'
     }
 }
+
+
+def get_optionable_stocks_with_volume():
+    """
+    Multi-source approach to get optionable stocks with high volume potential
+    """
+    print("🔍 Aggregating optionable stocks from multiple sources...")
+    
+    all_symbols = set()
+    
+    # 1. Core optionable ETFs and major stocks (guaranteed options)
+    core_optionable = [
+        # Major ETFs
+        'SPY', 'QQQ', 'IWM', 'DIA', 'VIX', 'TLT', 'GLD', 'SLV', 'OIL', 'USO',
+        'XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLU', 'XLB', 'XLP', 'XLY', 'XLRE',
+        'EEM', 'FXI', 'EWJ', 'EWZ', 'EFA', 'VEA', 'VWO', 'RSX', 'KWEB',
+        'ARKK', 'ARKQ', 'ARKG', 'ARKW', 'ARKF', 'SOXL', 'SOXS', 'TQQQ', 'SQQQ',
+        'SPXL', 'SPXS', 'TNA', 'TZA', 'UVXY', 'SVXY', 'VIXY',
+        
+        # Mega cap stocks (definitely optionable)
+        'AAPL', 'MSFT', 'GOOGL', 'GOOG', 'AMZN', 'NVDA', 'TSLA', 'META', 'BRK.B',
+        'UNH', 'JNJ', 'JPM', 'V', 'PG', 'HD', 'MA', 'AVGO', 'PFE', 'LLY',
+        'XOM', 'BAC', 'ABBV', 'KO', 'WMT', 'PEP', 'TMO', 'COST', 'DIS', 'MRK',
+        'ABT', 'ACN', 'VZ', 'ADBE', 'NFLX', 'NKE', 'WFC', 'DHR', 'T', 'CRM',
+        'LIN', 'NEE', 'RTX', 'PM', 'LOW', 'UPS', 'HON', 'QCOM', 'SBUX', 'ELV',
+        'BMY', 'AMGN', 'INTU', 'CAT', 'GE', 'IBM', 'AMD', 'NOW', 'SPGI', 'DE',
+        
+        # High-volume meme/popular stocks
+        'GME', 'AMC', 'BB', 'NOK', 'PLTR', 'WISH', 'CLOV', 'WKHS', 'RIDE',
+        'F', 'GM', 'LCID', 'RIVN', 'NIO', 'XPEV', 'LI', 'BABA', 'JD', 'PDD',
+        'UBER', 'LYFT', 'ABNB', 'COIN', 'HOOD', 'SQ', 'PYPL', 'ZM', 'PTON',
+        'SNAP', 'TWTR', 'PINS', 'ROKU', 'SHOP', 'CRM', 'SNOW', 'CRWD', 'ZS',
+        
+        # Energy/commodity plays (often explosive)
+        'XOM', 'CVX', 'COP', 'EOG', 'SLB', 'HAL', 'OXY', 'PXD', 'DVN', 'FANG',
+        'MRO', 'APA', 'HES', 'VLO', 'MPC', 'PSX', 'FCX', 'NEM', 'GOLD', 'AEM',
+        
+        # Banking/Finance (interest rate plays)
+        'JPM', 'BAC', 'WFC', 'C', 'GS', 'MS', 'USB', 'PNC', 'TFC', 'COF',
+        
+        # Healthcare/Biotech (FDA plays)
+        'JNJ', 'PFE', 'UNH', 'ABBV', 'BMY', 'MRK', 'GILD', 'AMGN', 'BIIB', 'CELG'
+    ]
+    
+    all_symbols.update(core_optionable)
+    print(f"✅ Added {len(core_optionable)} core optionable stocks")
+    
+    # 2. Try Alpha Vantage with filtering
+    try:
+        av_symbols = fetch_alphavantage_filtered()
+        all_symbols.update(av_symbols)
+        print(f"✅ Added {len(av_symbols)} filtered Alpha Vantage symbols")
+    except Exception as e:
+        print(f"⚠️ Alpha Vantage failed: {e}")
+    
+    # 3. Add S&P 500 components (all have options)
+    try:
+        sp500_symbols = get_sp500_components()
+        all_symbols.update(sp500_symbols)
+        print(f"✅ Added {len(sp500_symbols)} S&P 500 components")
+    except Exception as e:
+        print(f"⚠️ S&P 500 fetch failed: {e}")
+    
+    # 4. Add NASDAQ 100 components
+    try:
+        nasdaq100_symbols = get_nasdaq100_components()
+        all_symbols.update(nasdaq100_symbols)
+        print(f"✅ Added {len(nasdaq100_symbols)} NASDAQ 100 components")
+    except Exception as e:
+        print(f"⚠️ NASDAQ 100 fetch failed: {e}")
+    
+    # 5. Add high-volume penny stocks that are optionable
+    optionable_pennies = [
+        'SNDL', 'PLUG', 'FCEL', 'GEVO', 'CLSK', 'RIOT', 'MARA', 'EBON', 'CAN',
+        'SOS', 'EXPR', 'CTRM', 'SHIP', 'TOPS', 'NAKD', 'SENS', 'OCGN', 'PROG'
+    ]
+    all_symbols.update(optionable_pennies)
+    print(f"✅ Added {len(optionable_pennies)} optionable penny stocks")
+    
+    # Filter and prioritize
+    final_symbols = filter_and_prioritize_symbols(list(all_symbols))
+    
+    print(f"🎯 Final curated list: {len(final_symbols)} optionable stocks")
+    return final_symbols
+
+
+def fetch_alphavantage_filtered():
+    """Fetch from Alpha Vantage and filter for optionable stocks"""
+    api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
+    if not api_key:
+        return []
+    
+    url = f'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey={api_key}'
+    
+    try:
+        response = requests.get(url, timeout=30)
+        data = response.json()
+        
+        if 'Error Message' in data or 'Information' in data:
+            return []
+        
+        all_symbols = []
+        for category in ['top_gainers', 'top_losers', 'most_actively_traded']:
+            if category in data:
+                symbols = [item['ticker'] for item in data[category]]
+                all_symbols.extend(symbols)
+        
+        # Filter for likely optionable stocks
+        filtered = []
+        for symbol in all_symbols:
+            if is_likely_optionable(symbol):
+                filtered.append(symbol)
+        
+        return filtered[:20]  # Top 20 filtered
+        
+    except Exception as e:
+        print(f"Alpha Vantage error: {e}")
+        return []
+
+
+def get_sp500_components():
+    """Get S&P 500 components (all have options)"""
+    try:
+        # Wikipedia has reliable S&P 500 list
+        url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+        tables = pd.read_html(url)
+        sp500_df = tables[0]
+        symbols = sp500_df['Symbol'].tolist()
+        
+        # Clean symbols (remove dots, etc.)
+        cleaned = []
+        for symbol in symbols:
+            if isinstance(symbol, str):
+                # Replace dots with dashes for options compatibility
+                cleaned_symbol = symbol.replace('.', '-')
+                cleaned.append(cleaned_symbol)
+        
+        return cleaned[:100]  # Top 100 by market cap
+        
+    except Exception as e:
+        print(f"S&P 500 fetch error: {e}")
+        return []
+
+
+def get_nasdaq100_components():
+    """Get NASDAQ 100 components"""
+    try:
+        # Use a reliable source for NASDAQ 100
+        nasdaq100_core = [
+            'AAPL', 'MSFT', 'AMZN', 'NVDA', 'GOOGL', 'GOOG', 'META', 'TSLA',
+            'AVGO', 'COST', 'NFLX', 'ADBE', 'PEP', 'TMUS', 'CSCO', 'CMCSA',
+            'INTC', 'TXN', 'QCOM', 'INTU', 'AMAT', 'AMD', 'ISRG', 'HON',
+            'BKNG', 'MU', 'ADI', 'VRTX', 'ADP', 'SBUX', 'GILD', 'MDLZ',
+            'PANW', 'LRCX', 'PYPL', 'REGN', 'KLAC', 'SNPS', 'CDNS', 'MAR',
+            'MRVL', 'ORLY', 'CSX', 'FTNT', 'ADSK', 'ABNB', 'CHTR', 'ASML',
+            'NXPI', 'WDAY', 'MNST', 'TEAM', 'DXCM', 'KDP', 'AEP', 'FAST',
+            'ROST', 'ODFL', 'VRSK', 'EXC', 'KHC', 'GEHC', 'CTSH', 'FANG',
+            'BKR', 'DDOG', 'BIIB', 'ZS', 'IDXX', 'ANSS', 'CSGP', 'ON',
+            'TTD', 'ZM', 'ILMN', 'GFS', 'CRWD', 'WBD', 'LCID', 'ARM'
+        ]
+        return nasdaq100_core
+        
+    except Exception as e:
+        print(f"NASDAQ 100 fetch error: {e}")
+        return []
+
+
+def is_likely_optionable(symbol):
+    """Filter out symbols unlikely to have active options"""
+    if not symbol or len(symbol) < 1:
+        return False
+    
+    # Remove obvious warrants, rights, units
+    exclusion_patterns = [
+        'W', 'WS', 'WT', 'WW', 'WI',  # Warrants
+        'U', 'UN',  # Units
+        'R', 'RT',  # Rights  
+        '+', '=', '-',  # Special characters
+        'TEST', 'HALT'  # Test/halted symbols
+    ]
+    
+    for pattern in exclusion_patterns:
+        if pattern in symbol.upper():
+            return False
+    
+    # Skip if contains numbers (often warrants)
+    if any(char.isdigit() for char in symbol):
+        return False
+    
+    # Skip if too long (usually derivatives)
+    if len(symbol) > 5:
+        return False
+    
+    # Skip if too short (often problematic)
+    if len(symbol) < 2:
+        return False
+    
+    return True
+
+
+def filter_and_prioritize_symbols(symbols):
+    """Filter and prioritize symbols for best options opportunities"""
+    
+    # Remove duplicates while preserving order
+    unique_symbols = list(dict.fromkeys(symbols))
+    
+    # Priority groups (higher priority = scanned first)
+    priority_groups = {
+        'mega_cap': ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'TSLA', 'META'],
+        'popular_etfs': ['SPY', 'QQQ', 'IWM', 'SOXL', 'TQQQ', 'SQQQ', 'UVXY'],
+        'meme_stocks': ['GME', 'AMC', 'PLTR', 'BB', 'COIN', 'HOOD'],
+        'energy': ['XOM', 'CVX', 'USO', 'XLE', 'OIL'],
+        'finance': ['JPM', 'BAC', 'XLF', 'GS', 'MS'],
+        'tech': ['NFLX', 'CRM', 'ADBE', 'CRWD', 'ZS', 'SNOW'],
+    }
+    
+    prioritized = []
+    used = set()
+    
+    # Add by priority groups
+    for group_name, group_symbols in priority_groups.items():
+        for symbol in group_symbols:
+            if symbol in unique_symbols and symbol not in used:
+                prioritized.append(symbol)
+                used.add(symbol)
+    
+    # Add remaining symbols
+    for symbol in unique_symbols:
+        if symbol not in used and is_likely_optionable(symbol):
+            prioritized.append(symbol)
+            used.add(symbol)
+    
+    return prioritized[:75]  # Limit to 75 high-quality symbols
 
 
 class CompleteOptionsScanner:
@@ -1417,30 +1651,26 @@ def run_scanner(symbols=None,
                 max_price=None,
                 time_to_expiry_range=(1, 30),
                 iv_percentile_threshold=None):
-    """Enhanced scanner with expiration selection and volume profile analysis"""
+    """Enhanced scanner with optionable stock aggregation"""
     scanner = CompleteOptionsScanner(ALPHA_VANTAGE_API_KEY,
                                      min_delta=min_delta,
                                      max_delta=max_delta)
     
-    # Filter out problematic symbols upfront
-    if symbols:
-        # Remove symbols with special characters that cause API issues
+    # Use the new multi-source approach if no symbols provided
+    if symbols is None:
+        symbols = get_optionable_stocks_with_volume()
+        print(f"🎯 Using {len(symbols)} curated optionable stocks")
+    else:
+        # Filter provided symbols
         filtered_symbols = []
-        skip_patterns = ['+', 'W', 'WS', 'WT']  # Warrants and rights often cause issues
-        
         for symbol in symbols:
-            if not any(pattern in symbol for pattern in skip_patterns):
+            if is_likely_optionable(symbol):
                 filtered_symbols.append(symbol)
             else:
-                print(f"⏭️  Skipping {symbol} (warrant/right)")
+                print(f"⏭️  Skipping {symbol} (likely not optionable)")
         
         symbols = filtered_symbols[:30]  # Limit to 30 symbols for faster processing
         print(f"🔍 Processing {len(symbols)} filtered symbols...")
-
-    if symbols is None:
-        print("Paste your stock list (any format):")
-        stock_text = input()
-        symbols = process_stock_list(stock_text)
 
     print(
         f"\nAnalyzing {len(symbols)} symbols across {len(TIMEFRAMES)} timeframes..."
