@@ -46,7 +46,9 @@ def health():
 
 @app.route("/scan", methods=["GET"])
 def trigger_scan():
-    result = run_autonomous_scan(dry_run=False)
+    # Check if auto-refresh is requested (default: True)
+    auto_refresh = request.args.get('auto_refresh', 'true').lower() == 'true'
+    result = run_autonomous_scan(dry_run=False, auto_refresh_symbols=auto_refresh)
 
     if not result or not result.get("results"):
         return jsonify({

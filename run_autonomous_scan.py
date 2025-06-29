@@ -57,19 +57,66 @@ def run_autonomous_scan(min_delta=0.25,
                         time_to_expiry_range=(2, 16),
                         iv_percentile_threshold=85,
                         discovery_limit=50,  # still accepted but unused now
-                        dry_run=False):
+                        dry_run=False,
+                        auto_refresh_symbols=True):
     """
     Autonomous scan pipeline that:
-      1. Fetches tickers from your Supabase/Postgres table
-      2. Runs the options scanner over them
-      3. Saves results locally (unless dry_run=True)
-      4. Summarizes results and returns a digest
+      1. Optionally refreshes symbols from Yahoo Finance screeners
+      2. Fetches tickers from your Supabase/Postgres table
+      3. Runs the options scanner over them
+      4. Saves results locally (unless dry_run=True)
+      5. Summarizes results and returns a digest
     """
     print(
         f"\n📡 Starting autonomous scan at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}..."
     )
 
-    # ── NEW: pull tickers from DB instead of finviz discovery ──
+    # ── AUTO-REFRESH SYMBOLS FROM YAHOO FINANCE ──
+    if auto_refresh_symbols:
+        print("🔄 Auto-refreshing symbols from Yahoo Finance...")
+        try:
+            import requests
+            import time
+            from db_client import update_tickers_in_db
+            
+            # Fetch fresh symbols from Yahoo screeners
+            screeners = ['MOST_ACTIVES', 'DAY_GAINERS', 'DAY_LOSERS']
+            all_fresh_symbols = []
+            
+            for screener in screeners:
+                try:
+                    print(f"   Fetching {screener}...")
+                    # Use the same logic from main.py
+                    url = 'https://query1.finance.yahoo.com/v1/finance/screener/predefined/saved'
+                    params = {'scrIds': screener, 'count': 50, 'start': 0}  # Get top 50 from each
+                    
+                    response = requests.get(url, params=params, timeout=10)
+                    if response.status_code == 200:
+                        data = response.json()
+                        if 'finance' in data and data['finance']['result']:
+                            quotes = data['finance']['result'][0]['quotes']
+                            symbols = [q['symbol'] for q in quotes if 'symbol' in q]
+                            all_fresh_symbols.extend(symbols)
+                            print(f"   ✅ {len(symbols)} symbols from {screener}")
+                    
+                    time.sleep(1)  # Rate limiting
+                    
+                except Exception as e:
+                    print(f"   ❌ Failed to fetch {screener}: {e}")
+            
+            # Update database with fresh symbols
+            if all_fresh_symbols:
+                unique_symbols = list(dict.fromkeys(all_fresh_symbols))
+                update_result = update_tickers_in_db(unique_symbols, mode="replace")
+                print(f"🔄 Database updated with {len(unique_symbols)} fresh symbols")
+            else:
+                print("⚠️ No fresh symbols fetched, using existing database")
+                
+        except Exception as e:
+            print(f"❌ Symbol refresh failed: {e}")
+            print("📦 Falling back to existing database symbols")
+
+    # ── PULL TICKERS FROM DATABASE ──
     symbols = fetch_tickers_from_db()
     if not symbols:
         print("❌ No tickers found in database.")
@@ -80,7 +127,7 @@ def run_autonomous_scan(min_delta=0.25,
             "output_path": None
         }
 
-    print(f"🔍 {len(symbols)} tickers found: {symbols[:5]}...")
+    print(f"🔍 {len(symbols)} tickers ready for analysis: {symbols[:5]}...")
 
     # ── Run your existing scanner_core logic with progressive saving ──
     print("🔄 Running scanner with progressive saving enabled...")
