@@ -302,9 +302,25 @@ def fetch_alphavantage_top_symbols():
                 all_symbols.extend(category_symbols)
                 print(f"Fetched {len(category_symbols)} symbols from {category}")
         
+        # Add common optionable stocks as backup
+        backup_symbols = [
+            'SPY', 'QQQ', 'IWM', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 
+            'NVDA', 'META', 'AMD', 'INTC', 'NFLX', 'CRM', 'UBER', 'LYFT',
+            'BABA', 'DIS', 'BA', 'GE', 'F', 'GM', 'T', 'VZ', 'JPM', 'BAC',
+            'WFC', 'C', 'GS', 'MS', 'XOM', 'CVX', 'KO', 'PEP', 'WMT', 'TGT'
+        ]
+        
+        # Add backup symbols if we have fewer than 40 unique symbols
+        if len(all_symbols) < 40:
+            for symbol in backup_symbols:
+                if symbol not in all_symbols:
+                    all_symbols.append(symbol)
+                    if len(all_symbols) >= 60:  # Cap at reasonable number
+                        break
+        
         # Remove duplicates while preserving order
         unique_symbols = list(dict.fromkeys(all_symbols))
-        print(f"Total unique symbols: {len(unique_symbols)}")
+        print(f"Total unique symbols (including backup): {len(unique_symbols)}")
         
         return {
             'all_symbols': unique_symbols,
@@ -315,7 +331,12 @@ def fetch_alphavantage_top_symbols():
         
     except Exception as e:
         print(f"Error fetching Alpha Vantage data: {e}")
-        return {'all_symbols': [], 'top_gainers': [], 'top_losers': [], 'most_active': []}
+        # Return backup symbols as fallback
+        backup_symbols = [
+            'SPY', 'QQQ', 'IWM', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 
+            'NVDA', 'META', 'AMD', 'INTC', 'NFLX', 'UBER', 'DIS', 'F'
+        ]
+        return {'all_symbols': backup_symbols, 'top_gainers': [], 'top_losers': [], 'most_active': []}
 
 
 @app.route("/screener/symbols", methods=["GET"])

@@ -336,29 +336,55 @@ class CompleteOptionsScanner:
         self.request_count += 1
 
     def fetch_options_data(self, symbol):
-        """Fetch options data with rate limiting"""
+        """Fetch options data with improved error handling and fallback"""
         self._check_rate_limit()
 
+        # Try historical options first
         url = f"https://www.alphavantage.co/query?function=HISTORICAL_OPTIONS&symbol={symbol}&apikey={self.api_key}"
 
         try:
-            response = requests.get(url, timeout=10)
+            response = requests.get(url, timeout=15)
             data = response.json()
 
-            if 'Information' in data and 'rate limit' in data[
-                    'Information'].lower():
-                print(f"Rate limit reached - waiting for reset...")
-                time.sleep(60)  # Wait for rate limit reset
-                return self.fetch_options_data(symbol)  # Retry
+            if 'Information' in data and 'rate limit' in data['Information'].lower():
+                print(f"⏳ Rate limit reached for {symbol} - waiting...")
+                time.sleep(60)
+                return self.fetch_options_data(symbol)
 
-            if 'data' in data and data['data']:
-                return pd.DataFrame(data['data'])
+            if 'Error Message' in data:
+                print(f"❌ Alpha Vantage error for {symbol}: {data['Error Message']}")
+                return None
 
-            print(f"No valid data for {symbol}")
-            return None
+            if 'data' in data and data['data'] and len(data['data']) > 0:
+                df = pd.DataFrame(data['data'])
+                print(f"✅ Options data found for {symbol}: {len(df)} contracts")
+                return df
+
+            # Try real-time options as fallback
+            print(f"🔄 Trying real-time options for {symbol}...")
+            return self._fetch_realtime_options(symbol)
 
         except Exception as e:
-            print(f"Error fetching options data for {symbol}: {e}")
+            print(f"❌ Error fetching options for {symbol}: {e}")
+            return None
+
+    def _fetch_realtime_options(self, symbol):
+        """Fallback method for real-time options data"""
+        try:
+            url = f"https://www.alphavantage.co/query?function=REALTIME_OPTIONS&symbol={symbol}&apikey={self.api_key}"
+            response = requests.get(url, timeout=15)
+            data = response.json()
+            
+            if 'data' in data and data['data']:
+                df = pd.DataFrame(data['data'])
+                print(f"✅ Real-time options found for {symbol}: {len(df)} contracts")
+                return df
+            
+            print(f"❌ No options data available for {symbol}")
+            return None
+            
+        except Exception as e:
+            print(f"❌ Real-time options fetch failed for {symbol}: {e}")
             return None
 
     def analyze_gaps(self, price_data):
@@ -1475,7 +1501,7 @@ def run_scanner(symbols=None,
                     confluence['score'] = round(confluence['score'], 2)
 
             # Only show detailed analysis for high-scoring symbols
-            if confluence['score'] >= 7.0:
+            if confluence['score'] >= 6.0:
                 scanner.print_multi_timeframe_analysis(symbol, analysis_results, confluence)
                 
                 # Show gap info more concisely
@@ -1497,7 +1523,7 @@ def run_scanner(symbols=None,
                 # Just show a brief summary for lower scoring symbols
                 print(f"⚪ {symbol}: {confluence['score']:.1f}/10 {confluence['bias']} (below threshold)")
 
-            if confluence['score'] >= 7.0:
+            if confluence['score'] >= 6.0:  # Lower threshold to catch more opportunities
                 options_data = scanner.fetch_options_data(symbol)
                 oi_skew = scanner.analyze_oi_skew(options_data)
                 options_count = len(options_data) if (

@@ -133,9 +133,25 @@ def run_autonomous_scan(min_delta=0.25,
             "symbols_processed": 0
         }
 
-    # Limit symbols for faster processing
-    symbols = all_symbols[:symbol_limit]
-    print(f"🔍 Processing {len(symbols)} of {len(all_symbols)} tickers: {symbols[:3]}...")
+    # Filter out problematic symbols and prioritize optionable stocks
+    filtered_symbols = []
+    skip_patterns = ['W', 'WS', 'WT', '+', 'WARRANTS', 'UNITS']
+    
+    for symbol in all_symbols:
+        # Skip obvious warrants/rights/units
+        if any(pattern in symbol.upper() for pattern in skip_patterns):
+            continue
+        # Skip very short symbols (often problematic)
+        if len(symbol) < 2:
+            continue
+        # Skip symbols with numbers (often warrants)
+        if any(char.isdigit() for char in symbol):
+            continue
+        filtered_symbols.append(symbol)
+    
+    # Take more symbols since we're filtering heavily
+    symbols = filtered_symbols[:min(symbol_limit * 2, len(filtered_symbols))]
+    print(f"🔍 Processing {len(symbols)} filtered symbols from {len(all_symbols)} total: {symbols[:5]}...")
 
     # ── Run your existing scanner_core logic with progressive saving ──
     print("🔄 Running optimized scanner...")
