@@ -448,6 +448,62 @@ def get_fallback_symbols():
         }), 500
 
 
+@app.route("/screener/update-db", methods=["POST"])
+def update_database_symbols():
+    """Update database with fresh symbols from Yahoo Finance screeners"""
+    try:
+        # Get mode from request (replace or append)
+        data = request.get_json() if request.is_json else {}
+        mode = data.get('mode', 'replace')  # Default to replace
+        custom_symbols = data.get('symbols', [])  # Allow custom symbol list
+        
+        if custom_symbols:
+            # Use provided symbols
+            symbols_to_add = custom_symbols
+            source = "custom"
+        else:
+            # Fetch from Yahoo Finance screeners
+            screeners = ['MOST_ACTIVES', 'DAY_GAINERS', 'DAY_LOSERS']
+            all_symbols = []
+            
+            for screener in screeners:
+                try:
+                    symbols = fetch_all_symbols(screener)
+                    all_symbols.extend(symbols)
+                    print(f"Fetched {len(symbols)} symbols from {screener}")
+                except Exception as e:
+                    print(f"Failed to fetch {screener}: {e}")
+            
+            # Remove duplicates
+            symbols_to_add = list(dict.fromkeys(all_symbols))
+            source = "yahoo_screeners"
+        
+        if not symbols_to_add:
+            return jsonify({
+                "status": "error",
+                "message": "No symbols to add to database"
+            }), 400
+        
+        # Update database
+        from db_client import update_tickers_in_db
+        result = update_tickers_in_db(symbols_to_add, mode=mode)
+        
+        return jsonify({
+            "status": "success",
+            "source": source,
+            "mode": mode,
+            "symbols_added": len(symbols_to_add),
+            "total_in_database": result["total_in_db"],
+            "message": f"Database updated successfully with {len(symbols_to_add)} symbols"
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "status": "error", 
+            "message": f"Error updating database: {str(e)}"
+        }), 500
+
+
 @app.route("/plans/formatted", methods=["GET"])
 def get_formatted_plans():
     """Return human-readable formatted trading plans"""
