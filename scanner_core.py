@@ -70,90 +70,71 @@ TIMEFRAMES = {
 
 def get_optionable_stocks_with_volume():
     """
-    Multi-source approach to get optionable stocks with high volume potential
+    Dynamic multi-source approach to get optionable stocks with high volume potential.
+    Balances stable ETFs with emerging high-momentum stocks.
     """
     print("🔍 Aggregating optionable stocks from multiple sources...")
     
     all_symbols = set()
     
-    # 1. Core optionable ETFs and major stocks (guaranteed options)
-    core_optionable = [
-        # Major ETFs
-        'SPY', 'QQQ', 'IWM', 'DIA', 'VIX', 'TLT', 'GLD', 'SLV', 'OIL', 'USO',
+    # 1. Core stable ETFs (always include for consistency)
+    core_etfs = [
+        'SPY', 'QQQ', 'IWM', 'DIA', 'VIX', 'TLT', 'GLD', 'SLV', 'USO',
         'XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLU', 'XLB', 'XLP', 'XLY', 'XLRE',
-        'EEM', 'FXI', 'EWJ', 'EWZ', 'EFA', 'VEA', 'VWO', 'RSX', 'KWEB',
-        'ARKK', 'ARKQ', 'ARKG', 'ARKW', 'ARKF', 'SOXL', 'SOXS', 'TQQQ', 'SQQQ',
-        'SPXL', 'SPXS', 'TNA', 'TZA', 'UVXY', 'SVXY', 'VIXY',
-        
-        # Mega cap stocks (definitely optionable)
-        'AAPL', 'MSFT', 'GOOGL', 'GOOG', 'AMZN', 'NVDA', 'TSLA', 'META', 'BRK.B',
-        'UNH', 'JNJ', 'JPM', 'V', 'PG', 'HD', 'MA', 'AVGO', 'PFE', 'LLY',
-        'XOM', 'BAC', 'ABBV', 'KO', 'WMT', 'PEP', 'TMO', 'COST', 'DIS', 'MRK',
-        'ABT', 'ACN', 'VZ', 'ADBE', 'NFLX', 'NKE', 'WFC', 'DHR', 'T', 'CRM',
-        'LIN', 'NEE', 'RTX', 'PM', 'LOW', 'UPS', 'HON', 'QCOM', 'SBUX', 'ELV',
-        'BMY', 'AMGN', 'INTU', 'CAT', 'GE', 'IBM', 'AMD', 'NOW', 'SPGI', 'DE',
-        
-        # High-volume meme/popular stocks
-        'GME', 'AMC', 'BB', 'NOK', 'PLTR', 'WISH', 'CLOV', 'WKHS', 'RIDE',
-        'F', 'GM', 'LCID', 'RIVN', 'NIO', 'XPEV', 'LI', 'BABA', 'JD', 'PDD',
-        'UBER', 'LYFT', 'ABNB', 'COIN', 'HOOD', 'SQ', 'PYPL', 'ZM', 'PTON',
-        'SNAP', 'TWTR', 'PINS', 'ROKU', 'SHOP', 'CRM', 'SNOW', 'CRWD', 'ZS',
-        
-        # Energy/commodity plays (often explosive)
-        'XOM', 'CVX', 'COP', 'EOG', 'SLB', 'HAL', 'OXY', 'PXD', 'DVN', 'FANG',
-        'MRO', 'APA', 'HES', 'VLO', 'MPC', 'PSX', 'FCX', 'NEM', 'GOLD', 'AEM',
-        
-        # Banking/Finance (interest rate plays)
-        'JPM', 'BAC', 'WFC', 'C', 'GS', 'MS', 'USB', 'PNC', 'TFC', 'COF',
-        
-        # Healthcare/Biotech (FDA plays)
-        'JNJ', 'PFE', 'UNH', 'ABBV', 'BMY', 'MRK', 'GILD', 'AMGN', 'BIIB', 'CELG'
+        'ARKK', 'SOXL', 'TQQQ', 'SQQQ', 'UVXY', 'SVXY'
     ]
+    all_symbols.update(core_etfs)
+    print(f"✅ Added {len(core_etfs)} core ETFs")
     
-    all_symbols.update(core_optionable)
-    print(f"✅ Added {len(core_optionable)} core optionable stocks")
-    
-    # 2. Try Alpha Vantage with filtering
+    # 2. Dynamic Alpha Vantage discovery (primary source for emerging stocks)
     try:
         av_symbols = fetch_alphavantage_filtered()
         all_symbols.update(av_symbols)
-        print(f"✅ Added {len(av_symbols)} filtered Alpha Vantage symbols")
+        print(f"✅ Added {len(av_symbols)} dynamic Alpha Vantage symbols")
     except Exception as e:
         print(f"⚠️ Alpha Vantage failed: {e}")
     
-    # 3. Add S&P 500 components (all have options)
+    # 3. Screener-based discovery for unusual volume spikes
     try:
-        sp500_symbols = get_sp500_components()
-        all_symbols.update(sp500_symbols)
-        print(f"✅ Added {len(sp500_symbols)} S&P 500 components")
+        screener_symbols = discover_high_volume_movers()
+        all_symbols.update(screener_symbols)
+        print(f"✅ Added {len(screener_symbols)} high-volume movers")
     except Exception as e:
-        print(f"⚠️ S&P 500 fetch failed: {e}")
+        print(f"⚠️ Volume screener failed: {e}")
     
-    # 4. Add NASDAQ 100 components
+    # 4. Sector rotation discovery
     try:
-        nasdaq100_symbols = get_nasdaq100_components()
-        all_symbols.update(nasdaq100_symbols)
-        print(f"✅ Added {len(nasdaq100_symbols)} NASDAQ 100 components")
+        sector_symbols = discover_sector_rotation_plays()
+        all_symbols.update(sector_symbols)
+        print(f"✅ Added {len(sector_symbols)} sector rotation plays")
     except Exception as e:
-        print(f"⚠️ NASDAQ 100 fetch failed: {e}")
+        print(f"⚠️ Sector rotation discovery failed: {e}")
     
-    # 5. Add high-volume penny stocks that are optionable
-    optionable_pennies = [
-        'SNDL', 'PLUG', 'FCEL', 'GEVO', 'CLSK', 'RIOT', 'MARA', 'EBON', 'CAN',
-        'SOS', 'EXPR', 'CTRM', 'SHIP', 'TOPS', 'NAKD', 'SENS', 'OCGN', 'PROG'
+    # 5. News-driven discovery
+    try:
+        news_symbols = discover_news_driven_stocks()
+        all_symbols.update(news_symbols)
+        print(f"✅ Added {len(news_symbols)} news-driven stocks")
+    except Exception as e:
+        print(f"⚠️ News discovery failed: {e}")
+    
+    # 6. Add select mega caps (guaranteed options but limit quantity)
+    mega_caps = [
+        'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'TSLA', 'META', 'JPM', 
+        'BAC', 'AMD', 'CRM', 'NFLX', 'COIN', 'HOOD', 'PLTR', 'GME', 'AMC'
     ]
-    all_symbols.update(optionable_pennies)
-    print(f"✅ Added {len(optionable_pennies)} optionable penny stocks")
+    all_symbols.update(mega_caps)
+    print(f"✅ Added {len(mega_caps)} select mega caps")
     
-    # Filter and prioritize
-    final_symbols = filter_and_prioritize_symbols(list(all_symbols))
+    # Filter and prioritize with emphasis on momentum
+    final_symbols = filter_and_prioritize_symbols_dynamic(list(all_symbols))
     
-    print(f"🎯 Final curated list: {len(final_symbols)} optionable stocks")
+    print(f"🎯 Final dynamic list: {len(final_symbols)} optionable stocks")
     return final_symbols
 
 
 def fetch_alphavantage_filtered():
-    """Fetch from Alpha Vantage and filter for optionable stocks"""
+    """Enhanced Alpha Vantage filtering prioritizing momentum and unusual activity"""
     api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
     if not api_key:
         return []
@@ -167,19 +148,63 @@ def fetch_alphavantage_filtered():
         if 'Error Message' in data or 'Information' in data:
             return []
         
-        all_symbols = []
-        for category in ['top_gainers', 'top_losers', 'most_actively_traded']:
-            if category in data:
-                symbols = [item['ticker'] for item in data[category]]
-                all_symbols.extend(symbols)
+        # Prioritize by category for momentum
+        prioritized_symbols = []
         
-        # Filter for likely optionable stocks
-        filtered = []
-        for symbol in all_symbols:
-            if is_likely_optionable(symbol):
-                filtered.append(symbol)
+        # 1. Most actively traded (volume = potential explosive moves)
+        if 'most_actively_traded' in data:
+            active_symbols = []
+            for item in data['most_actively_traded']:
+                symbol = item['ticker']
+                if is_likely_optionable(symbol):
+                    # Check for high volume AND reasonable price movement
+                    volume = float(item.get('volume', 0))
+                    change_pct = abs(float(item.get('change_percent', '0%').replace('%', '')))
+                    
+                    # Prioritize high volume + decent price movement
+                    if volume > 1000000 and change_pct > 2.0:
+                        active_symbols.append((symbol, volume, change_pct))
+            
+            # Sort by volume * change_pct (momentum score)
+            active_symbols.sort(key=lambda x: x[1] * x[2], reverse=True)
+            prioritized_symbols.extend([s[0] for s in active_symbols[:8]])
         
-        return filtered[:20]  # Top 20 filtered
+        # 2. Top gainers (momentum up)
+        if 'top_gainers' in data:
+            gainer_symbols = []
+            for item in data['top_gainers']:
+                symbol = item['ticker']
+                if is_likely_optionable(symbol) and symbol not in prioritized_symbols:
+                    change_pct = float(item.get('change_percent', '0%').replace('%', ''))
+                    volume = float(item.get('volume', 0))
+                    
+                    # Filter for significant moves with decent volume
+                    if change_pct > 5.0 and volume > 500000:
+                        gainer_symbols.append((symbol, change_pct))
+            
+            # Sort by change percentage
+            gainer_symbols.sort(key=lambda x: x[1], reverse=True)
+            prioritized_symbols.extend([s[0] for s in gainer_symbols[:6]])
+        
+        # 3. Top losers (potential reversal plays)
+        if 'top_losers' in data:
+            loser_symbols = []
+            for item in data['top_losers']:
+                symbol = item['ticker']
+                if is_likely_optionable(symbol) and symbol not in prioritized_symbols:
+                    change_pct = abs(float(item.get('change_percent', '0%').replace('%', '')))
+                    volume = float(item.get('volume', 0))
+                    
+                    # Look for oversold conditions with volume
+                    if change_pct > 8.0 and volume > 500000:
+                        loser_symbols.append((symbol, change_pct))
+            
+            # Sort by change percentage (biggest drops)
+            loser_symbols.sort(key=lambda x: x[1], reverse=True)
+            prioritized_symbols.extend([s[0] for s in loser_symbols[:6]])
+        
+        print(f"   Filtered {len(prioritized_symbols)} high-momentum symbols from Alpha Vantage")
+        return prioritized_symbols[:20]
         
     except Exception as e:
         print(f"Alpha Vantage error: {e}")
@@ -346,6 +371,150 @@ class CompleteOptionsScanner:
 
             key_prefix = tf_config['key_prefix']
             if key_prefix not in data:
+
+
+def discover_high_volume_movers(limit=15):
+    """
+    Discover stocks with unusual volume spikes using multiple screeners
+    """
+    symbols = []
+    
+    try:
+        # Method 1: Yahoo Finance volume leaders
+        url = "https://finance.yahoo.com/screener/predefined/volume_leaders"
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+        response = requests.get(url, headers=headers, timeout=10)
+        
+        if response.status_code == 200:
+            # Simple regex to extract symbols from Yahoo's volume leaders
+            import re
+            symbol_pattern = r'"symbol":"([A-Z]{1,5})"'
+            found_symbols = re.findall(symbol_pattern, response.text)
+            
+            # Filter for likely optionable stocks
+            for symbol in found_symbols[:limit]:
+                if is_likely_optionable(symbol):
+                    symbols.append(symbol)
+        
+        print(f"   Found {len(symbols)} high-volume symbols from Yahoo")
+        
+    except Exception as e:
+        print(f"   Yahoo volume discovery failed: {e}")
+    
+    # Method 2: Use Alpha Vantage most active as backup
+    if len(symbols) < 10:
+        try:
+            api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
+            if api_key:
+                url = f'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey={api_key}'
+                response = requests.get(url, timeout=15)
+                data = response.json()
+                
+                if 'most_actively_traded' in data:
+                    for item in data['most_actively_traded'][:limit]:
+                        symbol = item['ticker']
+                        if is_likely_optionable(symbol) and symbol not in symbols:
+                            symbols.append(symbol)
+        except Exception as e:
+            print(f"   Alpha Vantage backup failed: {e}")
+    
+    return symbols[:limit]
+
+
+def discover_sector_rotation_plays(limit=10):
+    """
+    Discover stocks benefiting from sector rotation
+    """
+    # Sector ETFs that often lead rotation
+    sector_leaders = [
+        'XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLU', 'XLB', 'XLP', 'XLY', 'XLRE'
+    ]
+    
+    # Representative stocks from each sector
+    sector_stocks = {
+        'XLF': ['JPM', 'BAC', 'WFC', 'GS', 'MS'],  # Financials
+        'XLE': ['XOM', 'CVX', 'COP', 'EOG', 'SLB'],  # Energy
+        'XLK': ['AAPL', 'MSFT', 'NVDA', 'CRM', 'ADBE'],  # Technology
+        'XLV': ['JNJ', 'PFE', 'UNH', 'ABBV', 'BMY'],  # Healthcare
+        'XLI': ['BA', 'CAT', 'GE', 'HON', 'UPS'],  # Industrials
+        'XLB': ['FCX', 'NEM', 'DOW', 'LIN', 'APD'],  # Materials
+        'XLP': ['PG', 'KO', 'WMT', 'PEP', 'COST'],  # Consumer Staples
+        'XLY': ['AMZN', 'TSLA', 'HD', 'MCD', 'NKE'],  # Consumer Discretionary
+    }
+    
+    symbols = []
+    
+    # Add some from each sector (rotation-sensitive stocks)
+    for sector, stocks in sector_stocks.items():
+        symbols.extend(stocks[:2])  # Top 2 from each sector
+    
+    return symbols[:limit]
+
+
+def discover_news_driven_stocks(limit=10):
+    """
+    Discover stocks that are news-driven and potentially explosive
+    """
+    # Categories of news-sensitive stocks
+    news_sensitive = [
+        # Biotech (FDA approvals, trial results)
+        'MRNA', 'BNTX', 'GILD', 'BIIB', 'AMGN', 'REGN',
+        
+        # Crypto-related (regulatory news, adoption)
+        'COIN', 'MSTR', 'RIOT', 'MARA', 'HOOD',
+        
+        # EV/Green energy (policy changes, earnings)
+        'TSLA', 'LCID', 'RIVN', 'NIO', 'XPEV', 'LI', 'PLUG', 'FCEL',
+        
+        # Meme stocks (social sentiment)
+        'GME', 'AMC', 'BB', 'PLTR', 'WISH',
+        
+        # AI/Tech (earnings, product launches)
+        'NVDA', 'AMD', 'CRWD', 'ZS', 'SNOW', 'PLTR',
+        
+        # SPACs and recent IPOs (volatility)
+        'SOFI', 'OPEN', 'CLOV', 'SPCE'
+    ]
+    
+    return news_sensitive[:limit]
+
+
+def filter_and_prioritize_symbols_dynamic(symbols):
+    """
+    Enhanced filtering with dynamic prioritization based on momentum
+    """
+    # Remove duplicates while preserving order
+    unique_symbols = list(dict.fromkeys(symbols))
+    
+    # Priority groups with momentum focus
+    priority_groups = {
+        'high_momentum_etfs': ['SPY', 'QQQ', 'IWM', 'SOXL', 'TQQQ', 'UVXY'],
+        'momentum_stocks': ['NVDA', 'TSLA', 'AMD', 'COIN', 'PLTR', 'GME', 'AMC'],
+        'sector_rotation': ['XLF', 'XLE', 'XLK', 'JPM', 'XOM', 'AAPL'],
+        'volatile_plays': ['RIOT', 'MARA', 'LCID', 'NIO', 'PLUG', 'MRNA'],
+        'news_driven': ['HOOD', 'SOFI', 'CRWD', 'ZS', 'SNOW'],
+    }
+    
+    prioritized = []
+    used = set()
+    
+    # Add by priority groups (momentum-focused)
+    for group_name, group_symbols in priority_groups.items():
+        for symbol in group_symbols:
+            if symbol in unique_symbols and symbol not in used:
+                prioritized.append(symbol)
+                used.add(symbol)
+    
+    # Add remaining symbols (filtered)
+    for symbol in unique_symbols:
+        if symbol not in used and is_likely_optionable(symbol):
+            prioritized.append(symbol)
+            used.add(symbol)
+    
+    # Limit final output but ensure good mix
+    return prioritized[:60]  # Increased from 75 to catch more opportunities
+
+
                 print(
                     f"No data available for {symbol} at {timeframe} timeframe")
                 return None
