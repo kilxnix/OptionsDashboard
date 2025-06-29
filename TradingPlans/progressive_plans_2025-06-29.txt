@@ -1,0 +1,96 @@
+
+============================================================
+Symbol: NU - 19:06:40
+Confluence Score: 8.73/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $13.0 Put
+  Expiration: 2025-07-03 00:00:00
+  Delta: -0.2993
+  Gamma: 0.6726
+  Theta: -0.0145
+  Volume: 2025
+  Score: 19.22
+
+============================================================
+Symbol: F - 19:07:12
+Confluence Score: 8.15/10
+Bias: Bullish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $10.5 Put
+  Expiration: 2025-07-11 00:00:00
+  Delta: -0.2555
+  Gamma: 0.6322
+  Theta: -0.0055
+  Volume: 3180
+  Score: 46.57
+
+============================================================
+Symbol: OPEN - 19:07:34
+Confluence Score: 7.99/10
+Bias: Bullish
+
+Top Options Found: 8
+
+Option 1:
+  Strike: $0.5 Put
+  Expiration: 2025-08-15 00:00:00
+  Delta: -0.3147
+  Gamma: 1.3579
+  Theta: -0.0009
+  Volume: 106
+  Score: 591.03
+
+============================================================
+Symbol: DNN - 19:08:49
+Confluence Score: 7.49/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $2.0 Call
+  Expiration: 2025-08-15 00:00:00
+  Delta: 0.3493
+  Gamma: 0.9712
+  Theta: -0.0015
+  Volume: 20
+  Score: 259.63
+
+============================================================
+Symbol: NKE - 19:09:54
+Confluence Score: 8.53/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $72.0 Put
+  Expiration: 2025-06-27 00:00:00
+  Delta: -0.4309
+  Gamma: 1.3921
+  Theta: -0.0518
+  Volume: 24561
+  Score: 11.45
+
+============================================================
+Symbol: SOXL - 19:10:26
+Confluence Score: 7.42/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $25.0 Put
+  Expiration: 2025-06-27 00:00:00
+  Delta: -0.2960
+  Gamma: 1.6226
+  Theta: -0.0359
+  Volume: 15329
+  Score: 18.69

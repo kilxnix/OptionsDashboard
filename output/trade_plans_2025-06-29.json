@@ -1,0 +1,4515 @@
+{
+  "NU": {
+    "timeframe_analysis": {
+      "1m": {
+        "gap_percent": -0.30000225565605293,
+        "gap_direction": "Down",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": 13.2999,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.00010171913648288515,
+          "low_slope": 0.00010134065883621501
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": true,
+          "inverted_hammer": true,
+          "shooting_star": true,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 2.0635006622773827e-05,
+          "unusual_volume": false
+        }
+      },
+      "5m": {
+        "gap_percent": -0.000751879699259724,
+        "gap_direction": "Down",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": 13.3,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.00035913737378666,
+          "low_slope": 0.0003554346938221004
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 0.00019386771244174445,
+          "unusual_volume": false
+        }
+      },
+      "15m": {
+        "gap_percent": 0.0,
+        "gap_direction": "Down",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.0009675183601207579,
+          "low_slope": 0.0009508575349450517
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 0.0005483312364224881,
+          "unusual_volume": false
+        }
+      },
+      "30m": {
+        "gap_percent": 0.07547169811320593,
+        "gap_direction": "Up",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": 13.25,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.00191363662181958,
+          "low_slope": 0.0018705348841273727
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": true,
+          "shooting_star": true,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 0.000472663897813069,
+          "unusual_volume": false
+        }
+      },
+      "1h": {
+        "gap_percent": -0.37593984962406546,
+        "gap_direction": "Down",
+        "gap_mitigated": true,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.003845745825767306,
+          "low_slope": 0.0036812418777245593
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": true,
+          "shooting_star": true,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 11.724758356889652,
+          "unusual_volume": true
+        }
+      },
+      "D": {
+        "gap_percent": 0.14936519790888403,
+        "gap_direction": "Up",
+        "gap_mitigated": true,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.010351591702211893,
+          "low_slope": 0.01039499262050875
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": true,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 5.922360304053036,
+          "unusual_volume": true
+        }
+      },
+      "W": {
+        "gap_percent": -0.5766062602965426,
+        "gap_direction": "Down",
+        "gap_mitigated": true,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.04979159546643417,
+          "low_slope": 0.049339620939312406
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 3.8046803026291256,
+          "unusual_volume": true
+        }
+      }
+    },
+    "confluence": {
+      "score": 8.73,
+      "bias": "Bearish",
+      "bullish_signals": 3.03,
+      "bearish_signals": 20.9
+    },
+    "volume_profile": {
+      "volume_profiles": {
+        "1min": {
+          "price_levels": [
+            11.83,
+            11.9245,
+            12.019,
+            12.1135,
+            12.208,
+            12.3025,
+            12.397,
+            12.4915,
+            12.586,
+            12.6805,
+            12.775,
+            12.8695,
+            12.964,
+            13.0585,
+            13.153,
+            13.2475,
+            13.342,
+            13.4365,
+            13.531,
+            13.6255,
+            13.72
+          ],
+          "volumes": [
+            4681297.25,
+            8652674.0,
+            16264595.25,
+            59339189.5,
+            45771788.5,
+            51168668.25,
+            2127317.75,
+            570067.5,
+            931267.0,
+            840677.5,
+            2829391.75,
+            10682127.0,
+            5011301.0,
+            9743315.5,
+            145312279.0,
+            409746807.25,
+            137061534.0,
+            43889303.0,
+            9465867.5,
+            14913784.0
+          ],
+          "relative_volumes": [
+            0.47816973417052056,
+            0.8838248471498311,
+            1.661342309994011,
+            6.061184102143726,
+            4.675345907494828,
+            5.226608606185402,
+            0.21729424744684392,
+            0.05822937753723142,
+            0.09512399449357294,
+            0.08587075659383471,
+            0.28900739019761323,
+            1.091122728420149,
+            0.5118778703955327,
+            0.9952281031875325,
+            14.842880105753276,
+            41.85346741225459,
+            14.00011017838779,
+            4.483059978393688,
+            0.966888258627108,
+            1.523364091172925
+          ],
+          "dominant_levels": [
+            {
+              "price": 13.29,
+              "volume": 409746807,
+              "percentage": 41.85
+            }
+          ]
+        },
+        "5min": {
+          "price_levels": [
+            11.83,
+            11.9245,
+            12.019,
+            12.1135,
+            12.208,
+            12.3025,
+            12.397,
+            12.4915,
+            12.586,
+            12.6805,
+            12.775,
+            12.8695,
+            12.964,
+            13.0585,
+            13.153,
+            13.2475,
+            13.342,
+            13.4365,
+            13.531,
+            13.6255,
+            13.72
+          ],
+          "volumes": [
+            5175530.75,
+            8723064.0,
+            16350153.0,
+            59447669.0,
+            48424740.0,
+            47970645.75,
+            1915698.25,
+            712289.5,
+            709145.5,
+            859239.25,
+            3161994.75,
+            10007823.0,
+            6325092.0,
+            9395199.5,
+            212788697.25,
+            347344808.5,
+            132063181.25,
+            42890282.0,
+            10889448.0,
+            13430249.75
+          ],
+          "relative_volumes": [
+            0.5288790456782735,
+            0.8913956822129794,
+            1.670795466790292,
+            6.074860331670888,
+            4.94844519635373,
+            4.902042045606728,
+            0.19576207952537789,
+            0.07278770220941197,
+            0.0724664219775029,
+            0.08780425747626278,
+            0.32311908606082784,
+            1.0226831088883157,
+            0.6463508347983986,
+            0.9600801126564636,
+            21.744529898253052,
+            35.494599436160755,
+            13.495321087356471,
+            4.382887960434209,
+            1.1127749296443044,
+            1.3724153162457533
+          ],
+          "dominant_levels": [
+            {
+              "price": 13.2,
+              "volume": 212788697,
+              "percentage": 21.74
+            },
+            {
+              "price": 13.29,
+              "volume": 347344808,
+              "percentage": 35.49
+            }
+          ]
+        },
+        "15min": {
+          "price_levels": [
+            11.83,
+            11.9245,
+            12.019,
+            12.1135,
+            12.208,
+            12.3025,
+            12.397,
+            12.4915,
+            12.586,
+            12.6805,
+            12.775,
+            12.8695,
+            12.964,
+            13.0585,
+            13.153,
+            13.2475,
+            13.342,
+            13.4365,
+            13.531,
+            13.6255,
+            13.72
+          ],
+          "volumes": [
+            5038843.75,
+            7824618.25,
+            18008918.75,
+            49400101.0,
+            63679653.5,
+            40495341.0,
+            3561060.75,
+            1333512.75,
+            1265347.75,
+            22070.5,
+            3145923.75,
+            9262521.5,
+            7042878.0,
+            11684986.0,
+            190989995.75,
+            371582009.75,
+            124557700.75,
+            44617616.75,
+            12497211.25,
+            11657529.75
+          ],
+          "relative_volumes": [
+            0.5153942410090498,
+            0.8003350340332165,
+            1.8420283444093495,
+            5.052851174570636,
+            6.513424172629244,
+            4.142034675930893,
+            0.36424034828096585,
+            0.1363973216399379,
+            0.12942511726499933,
+            0.002257464045435073,
+            0.32177838088422445,
+            0.9474098573353273,
+            0.7203753363714315,
+            1.1951897676270224,
+            19.535264196253934,
+            38.00697886052105,
+            12.740288213913878,
+            4.563678467009207,
+            1.2782675999674546,
+            1.1923814263027444
+          ],
+          "dominant_levels": [
+            {
+              "price": 13.2,
+              "volume": 190989995,
+              "percentage": 19.54
+            },
+            {
+              "price": 13.29,
+              "volume": 371582009,
+              "percentage": 38.01
+            }
+          ]
+        },
+        "30min": {
+          "price_levels": [
+            11.83,
+            11.9245,
+            12.019,
+            12.1135,
+            12.208,
+            12.3025,
+            12.397,
+            12.4915,
+            12.586,
+            12.6805,
+            12.775,
+            12.8695,
+            12.964,
+            13.0585,
+            13.153,
+            13.2475,
+            13.342,
+            13.4365,
+            13.531,
+            13.6255,
+            13.72
+          ],
+          "volumes": [
+            5957195.5,
+            6688765.0,
+            18193125.0,
+            51304582.25,
+            63268914.75,
+            39038309.25,
+            3569782.25,
+            2287494.75,
+            2258910.5,
+            29135.25,
+            2167300.25,
+            8004697.5,
+            8263662.25,
+            15653616.25,
+            188671368.25,
+            365568127.25,
+            128865554.25,
+            43067133.5,
+            10610134.5,
+            12606657.0
+          ],
+          "relative_volumes": [
+            0.6103218259017145,
+            0.6852719988503787,
+            1.8639074827841606,
+            5.2562160023025415,
+            6.4819762206964535,
+            3.999521617441595,
+            0.36572847422776883,
+            0.23435658147539154,
+            0.2314280907699864,
+            0.002984941316447131,
+            0.22204251075145046,
+            0.8200908622171103,
+            0.8466221115380668,
+            1.6037317646642197,
+            19.329608028763662,
+            37.45289321370942,
+            13.202430634632764,
+            4.41227949528816,
+            1.08702100864455,
+            1.2915671340241612
+          ],
+          "dominant_levels": [
+            {
+              "price": 13.2,
+              "volume": 188671368,
+              "percentage": 19.33
+            },
+            {
+              "price": 13.29,
+              "volume": 365568127,
+              "percentage": 37.45
+            }
+          ]
+        },
+        "60min": {
+          "price_levels": [
+            11.83,
+            11.9245,
+            12.019,
+            12.1135,
+            12.208,
+            12.3025,
+            12.397,
+            12.4915,
+            12.586,
+            12.6805,
+            12.775,
+            12.8695,
+            12.964,
+            13.0585,
+            13.153,
+            13.2475,
+            13.342,
+            13.4365,
+            13.531,
+            13.6255,
+            13.72
+          ],
+          "volumes": [
+            5359932.75,
+            7942652.25,
+            14399460.5,
+            55009731.25,
+            54453738.25,
+            39630018.75,
+            4915325.5,
+            5418711.5,
+            2236600.0,
+            3196385.25,
+            2191879.25,
+            8106229.0,
+            8290679.25,
+            20897181.75,
+            187312046.75,
+            365215026.5,
+            127559520.0,
+            41983184.75,
+            15799041.5,
+            3501516.0
+          ],
+          "relative_volumes": [
+            0.5506296380851176,
+            0.8159542176818253,
+            1.4792666426152357,
+            5.651188143983166,
+            5.59407059444528,
+            4.071219528196305,
+            0.5049548245051302,
+            0.5566680201598919,
+            0.22976748141871256,
+            0.32836689105625594,
+            0.22517328751070226,
+            0.8327585715520563,
+            0.8517072746681932,
+            2.1467820886374787,
+            19.242697496705556,
+            37.51879496341473,
+            13.104278655718455,
+            4.3129619162764925,
+            1.623046577074452,
+            0.35971318629496774
+          ],
+          "dominant_levels": [
+            {
+              "price": 13.2,
+              "volume": 187312046,
+              "percentage": 19.24
+            },
+            {
+              "price": 13.29,
+              "volume": 365215026,
+              "percentage": 37.52
+            }
+          ]
+        }
+      },
+      "confluences": [
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "1m",
+          "volume_timeframe": "1min",
+          "gap_price": 13.2999,
+          "volume_level": 13.29,
+          "volume_strength": 41.85
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "1m",
+          "volume_timeframe": "5min",
+          "gap_price": 13.2999,
+          "volume_level": 13.2,
+          "volume_strength": 21.74
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "1m",
+          "volume_timeframe": "5min",
+          "gap_price": 13.2999,
+          "volume_level": 13.29,
+          "volume_strength": 35.49
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "1m",
+          "volume_timeframe": "15min",
+          "gap_price": 13.2999,
+          "volume_level": 13.2,
+          "volume_strength": 19.54
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "1m",
+          "volume_timeframe": "15min",
+          "gap_price": 13.2999,
+          "volume_level": 13.29,
+          "volume_strength": 38.01
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "1m",
+          "volume_timeframe": "30min",
+          "gap_price": 13.2999,
+          "volume_level": 13.2,
+          "volume_strength": 19.33
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "1m",
+          "volume_timeframe": "30min",
+          "gap_price": 13.2999,
+          "volume_level": 13.29,
+          "volume_strength": 37.45
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "1m",
+          "volume_timeframe": "60min",
+          "gap_price": 13.2999,
+          "volume_level": 13.2,
+          "volume_strength": 19.24
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "1m",
+          "volume_timeframe": "60min",
+          "gap_price": 13.2999,
+          "volume_level": 13.29,
+          "volume_strength": 37.52
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "5m",
+          "volume_timeframe": "1min",
+          "gap_price": 13.3,
+          "volume_level": 13.29,
+          "volume_strength": 41.85
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "5m",
+          "volume_timeframe": "5min",
+          "gap_price": 13.3,
+          "volume_level": 13.2,
+          "volume_strength": 21.74
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "5m",
+          "volume_timeframe": "5min",
+          "gap_price": 13.3,
+          "volume_level": 13.29,
+          "volume_strength": 35.49
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "5m",
+          "volume_timeframe": "15min",
+          "gap_price": 13.3,
+          "volume_level": 13.2,
+          "volume_strength": 19.54
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "5m",
+          "volume_timeframe": "15min",
+          "gap_price": 13.3,
+          "volume_level": 13.29,
+          "volume_strength": 38.01
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "5m",
+          "volume_timeframe": "30min",
+          "gap_price": 13.3,
+          "volume_level": 13.2,
+          "volume_strength": 19.33
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "5m",
+          "volume_timeframe": "30min",
+          "gap_price": 13.3,
+          "volume_level": 13.29,
+          "volume_strength": 37.45
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "5m",
+          "volume_timeframe": "60min",
+          "gap_price": 13.3,
+          "volume_level": 13.2,
+          "volume_strength": 19.24
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "5m",
+          "volume_timeframe": "60min",
+          "gap_price": 13.3,
+          "volume_level": 13.29,
+          "volume_strength": 37.52
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "30m",
+          "volume_timeframe": "1min",
+          "gap_price": 13.25,
+          "volume_level": 13.29,
+          "volume_strength": 41.85
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "30m",
+          "volume_timeframe": "5min",
+          "gap_price": 13.25,
+          "volume_level": 13.2,
+          "volume_strength": 21.74
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "30m",
+          "volume_timeframe": "5min",
+          "gap_price": 13.25,
+          "volume_level": 13.29,
+          "volume_strength": 35.49
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "30m",
+          "volume_timeframe": "15min",
+          "gap_price": 13.25,
+          "volume_level": 13.2,
+          "volume_strength": 19.54
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "30m",
+          "volume_timeframe": "15min",
+          "gap_price": 13.25,
+          "volume_level": 13.29,
+          "volume_strength": 38.01
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "30m",
+          "volume_timeframe": "30min",
+          "gap_price": 13.25,
+          "volume_level": 13.2,
+          "volume_strength": 19.33
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "30m",
+          "volume_timeframe": "30min",
+          "gap_price": 13.25,
+          "volume_level": 13.29,
+          "volume_strength": 37.45
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "30m",
+          "volume_timeframe": "60min",
+          "gap_price": 13.25,
+          "volume_level": 13.2,
+          "volume_strength": 19.24
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "30m",
+          "volume_timeframe": "60min",
+          "gap_price": 13.25,
+          "volume_level": 13.29,
+          "volume_strength": 37.52
+        }
+      ]
+    },
+    "options": [
+      {
+        "contractID": "NU250703P00013000",
+        "symbol": "NU",
+        "expiration": "2025-07-03 00:00:00",
+        "strike": 13.0,
+        "type": "put",
+        "last": "0.11",
+        "mark": "0.10",
+        "bid": "0.09",
+        "bid_size": "44",
+        "ask": "0.12",
+        "ask_size": "4",
+        "volume": "2025",
+        "open_interest": "633",
+        "date": "2025-06-27",
+        "implied_volatility": "0.30397",
+        "delta": -0.29927,
+        "gamma": 0.67257,
+        "theta": -0.01446,
+        "vega": 0.0059,
+        "rho": "-0.00067",
+        "implied_vol": 0.30397,
+        "price": 0.1,
+        "score": 19.2245
+      }
+    ],
+    "trade_plan": {
+      "entry_price": 0.12,
+      "stop_loss": 0.09,
+      "initial_target": 0.21,
+      "final_target": 0.42,
+      "position_size": 16,
+      "max_hold_time": "6 hours",
+      "support": null,
+      "resistance": null,
+      "skew": "Bullish Skew Skew",
+      "strike": "$13.0",
+      "type": "Put",
+      "expiration": "2025-07-03",
+      "risk_metrics": {
+        "delta_exposure": -478.83,
+        "gamma_theta_ratio": 46.51,
+        "implied_vol": 30.4
+      },
+      "delta": -0.29927,
+      "gamma": 0.67257,
+      "theta": -0.01446,
+      "score": 19.2245,
+      "bias": "Bearish",
+      "option_symbol": "NU"
+    },
+    "oi_skew": {
+      "put_call_ratio": 0.48,
+      "bias": "Bullish Skew"
+    }
+  },
+  "F": {
+    "timeframe_analysis": {
+      "1m": {
+        "gap_percent": 0.0,
+        "gap_direction": "Down",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 3.5308952947635497e-05,
+          "low_slope": 3.5403205975992115e-05
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": true,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 0.0003323976850615657,
+          "unusual_volume": false
+        }
+      },
+      "5m": {
+        "gap_percent": 0.0,
+        "gap_direction": "Down",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.00015282067969300743,
+          "low_slope": 0.00015402154839980038
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 0.00023975225079162917,
+          "unusual_volume": false
+        }
+      },
+      "15m": {
+        "gap_percent": -0.046403712296991015,
+        "gap_direction": "Down",
+        "gap_mitigated": true,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.00044965921721779544,
+          "low_slope": 0.00045648485886658316
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 0.002030329353549567,
+          "unusual_volume": false
+        }
+      },
+      "30m": {
+        "gap_percent": 0.0,
+        "gap_direction": "Down",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.0008938426008381313,
+          "low_slope": 0.0009152284396540296
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": true,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": true,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 0.0029575245891664314,
+          "unusual_volume": false
+        }
+      },
+      "1h": {
+        "gap_percent": 0.2320185614849221,
+        "gap_direction": "Up",
+        "gap_mitigated": true,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.0017908781073437382,
+          "low_slope": 0.0018462682929144025
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 4.607046499909783,
+          "unusual_volume": true
+        }
+      },
+      "D": {
+        "gap_percent": 0.6585136406396849,
+        "gap_direction": "Up",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": 10.63,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": -0.0013724256617119893,
+          "low_slope": -0.0013158782616199106
+        },
+        "candles": {
+          "bullish": true,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 4.108033328842124,
+          "unusual_volume": true
+        }
+      },
+      "W": {
+        "gap_percent": -0.37771482530688527,
+        "gap_direction": "Down",
+        "gap_mitigated": true,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": -0.006680716588042208,
+          "low_slope": -0.0060549690008888735
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 2.420421433267057,
+          "unusual_volume": false
+        }
+      }
+    },
+    "confluence": {
+      "score": 8.15,
+      "bias": "Bullish",
+      "bullish_signals": 6.15,
+      "bearish_signals": 1.4
+    },
+    "volume_profile": {
+      "volume_profiles": {
+        "1min": {
+          "price_levels": [
+            10.41,
+            10.444065,
+            10.47813,
+            10.512195,
+            10.54626,
+            10.580325,
+            10.61439,
+            10.648455,
+            10.68252,
+            10.716585,
+            10.75065,
+            10.784715,
+            10.81878,
+            10.852845,
+            10.88691,
+            10.920975,
+            10.95504,
+            10.989105,
+            11.02317,
+            11.057235,
+            11.0913
+          ],
+          "volumes": [
+            7424975.75,
+            30230387.25,
+            73359105.25,
+            67015653.0,
+            47152878.75,
+            192249568.5,
+            62106678.75,
+            13773198.0,
+            30721037.25,
+            93899001.5,
+            59768081.0,
+            232900748.25,
+            58847922.0,
+            20996026.25,
+            10245579.5,
+            235.0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "relative_volumes": [
+            0.7419848071074434,
+            3.020951018254109,
+            7.330844354406933,
+            6.696937207422443,
+            4.712031503116952,
+            19.211680118950117,
+            6.206378795567474,
+            1.3763686246763331,
+            3.0699821340267452,
+            9.383415496752166,
+            5.972680523834311,
+            23.273990728583254,
+            5.880728169899259,
+            2.0981526420647327,
+            1.0238503915667976,
+            2.348377092952111e-05,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dominant_levels": [
+            {
+              "price": 10.6,
+              "volume": 192249568,
+              "percentage": 19.21
+            },
+            {
+              "price": 10.8,
+              "volume": 232900748,
+              "percentage": 23.27
+            }
+          ]
+        },
+        "5min": {
+          "price_levels": [
+            10.41,
+            10.444065,
+            10.47813,
+            10.512195,
+            10.54626,
+            10.580325,
+            10.61439,
+            10.648455,
+            10.68252,
+            10.716585,
+            10.75065,
+            10.784715,
+            10.81878,
+            10.852845,
+            10.88691,
+            10.920975,
+            10.95504,
+            10.989105,
+            11.02317,
+            11.057235,
+            11.0913
+          ],
+          "volumes": [
+            8277003.0,
+            30391560.75,
+            73776023.0,
+            64366911.75,
+            102731525.25,
+            140887252.5,
+            57189809.0,
+            16219341.0,
+            31059822.75,
+            93767731.75,
+            81449251.25,
+            209003850.0,
+            62446930.75,
+            19150579.25,
+            9973447.5,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "relative_volumes": [
+            0.8271287213819405,
+            3.037057348408484,
+            7.372507606030183,
+            6.43224623877528,
+            10.266058273223901,
+            14.078996107569322,
+            5.715031587429339,
+            1.6208140534668993,
+            3.1038374007545015,
+            9.37029792900429,
+            8.139300546819776,
+            20.885951982185208,
+            6.240380725423694,
+            1.9137354582058292,
+            0.9966560213213541,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dominant_levels": [
+            {
+              "price": 10.6,
+              "volume": 140887252,
+              "percentage": 14.08
+            },
+            {
+              "price": 10.8,
+              "volume": 209003850,
+              "percentage": 20.89
+            }
+          ]
+        },
+        "15min": {
+          "price_levels": [
+            10.41,
+            10.444065,
+            10.47813,
+            10.512195,
+            10.54626,
+            10.580325,
+            10.61439,
+            10.648455,
+            10.68252,
+            10.716585,
+            10.75065,
+            10.784715,
+            10.81878,
+            10.852845,
+            10.88691,
+            10.920975,
+            10.95504,
+            10.989105,
+            11.02317,
+            11.057235,
+            11.0913
+          ],
+          "volumes": [
+            9784071.5,
+            30542395.0,
+            70623431.5,
+            64302184.25,
+            122904652.5,
+            124142848.5,
+            54987878.75,
+            17560381.0,
+            32036888.75,
+            90086601.5,
+            82961227.0,
+            195314797.25,
+            75398657.0,
+            21246061.5,
+            8798881.25,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "relative_volumes": [
+            0.9777315792767447,
+            3.0521306082282975,
+            7.057466742187851,
+            6.4257784867676735,
+            12.281978927615617,
+            12.40571303263868,
+            5.494991071080752,
+            1.7548255905357337,
+            3.2014767914002755,
+            9.0024398489187,
+            8.290394391889565,
+            19.517993625798802,
+            7.534659572342209,
+            2.123139151610436,
+            0.8792805797086661,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dominant_levels": [
+            {
+              "price": 10.8,
+              "volume": 195314797,
+              "percentage": 19.52
+            }
+          ]
+        },
+        "30min": {
+          "price_levels": [
+            10.41,
+            10.444065,
+            10.47813,
+            10.512195,
+            10.54626,
+            10.580325,
+            10.61439,
+            10.648455,
+            10.68252,
+            10.716585,
+            10.75065,
+            10.784715,
+            10.81878,
+            10.852845,
+            10.88691,
+            10.920975,
+            10.95504,
+            10.989105,
+            11.02317,
+            11.057235,
+            11.0913
+          ],
+          "volumes": [
+            9426388.0,
+            33911313.0,
+            69534681.0,
+            62953995.25,
+            124135791.75,
+            125003941.25,
+            51881286.0,
+            16909289.5,
+            34852465.75,
+            95638912.0,
+            75847091.25,
+            192581438.75,
+            72945266.0,
+            22703920.0,
+            12363651.25,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "relative_volumes": [
+            0.9419893635665844,
+            3.388794960548753,
+            6.948677468081672,
+            6.291062273218678,
+            12.405026768091505,
+            12.491781906431413,
+            5.18455420890334,
+            1.6897639747555613,
+            3.4828453942876823,
+            9.557302102043812,
+            7.579483595939839,
+            19.244875865798186,
+            7.289500993862676,
+            2.268827800347985,
+            1.2355133241223153,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dominant_levels": [
+            {
+              "price": 10.8,
+              "volume": 192581438,
+              "percentage": 19.24
+            }
+          ]
+        },
+        "60min": {
+          "price_levels": [
+            10.41,
+            10.444065,
+            10.47813,
+            10.512195,
+            10.54626,
+            10.580325,
+            10.61439,
+            10.648455,
+            10.68252,
+            10.716585,
+            10.75065,
+            10.784715,
+            10.81878,
+            10.852845,
+            10.88691,
+            10.920975,
+            10.95504,
+            10.989105,
+            11.02317,
+            11.057235,
+            11.0913
+          ],
+          "volumes": [
+            12160405.5,
+            35330803.25,
+            66528410.5,
+            61037540.0,
+            107840185.5,
+            106914973.5,
+            57386679.75,
+            23835771.5,
+            32764575.0,
+            99250259.25,
+            81773480.25,
+            197033817.75,
+            69546459.75,
+            21170010.0,
+            20455325.25,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "relative_volumes": [
+            1.2245774507623766,
+            3.5578834091734923,
+            6.699545614113191,
+            6.146603839321525,
+            10.859724986089633,
+            10.766554264737064,
+            5.778954821528927,
+            2.4003104419852206,
+            3.2994590294552837,
+            9.994702023700604,
+            8.234754999289501,
+            19.84170431276109,
+            7.003469283175074,
+            2.131862862501914,
+            2.0598926614051045,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dominant_levels": [
+            {
+              "price": 10.8,
+              "volume": 197033817,
+              "percentage": 19.84
+            }
+          ]
+        }
+      },
+      "confluences": [
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "D",
+          "volume_timeframe": "1min",
+          "gap_price": 10.63,
+          "volume_level": 10.6,
+          "volume_strength": 19.21
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "D",
+          "volume_timeframe": "5min",
+          "gap_price": 10.63,
+          "volume_level": 10.6,
+          "volume_strength": 14.08
+        }
+      ]
+    },
+    "options": [
+      {
+        "contractID": "F250711P00010500",
+        "symbol": "F",
+        "expiration": "2025-07-11 00:00:00",
+        "strike": 10.5,
+        "type": "put",
+        "last": "0.09",
+        "mark": "0.08",
+        "bid": "0.08",
+        "bid_size": "22",
+        "ask": "0.09",
+        "ask_size": "25",
+        "volume": "3180",
+        "open_interest": "3859",
+        "date": "2025-06-27",
+        "implied_volatility": "0.24041",
+        "delta": -0.25554,
+        "gamma": 0.6322,
+        "theta": -0.0055,
+        "vega": 0.0068,
+        "rho": "-0.00109",
+        "implied_vol": 0.24041,
+        "price": 0.08,
+        "score": 46.5715
+      },
+      {
+        "contractID": "F250703C00011000",
+        "symbol": "F",
+        "expiration": "2025-07-03 00:00:00",
+        "strike": 11.0,
+        "type": "call",
+        "last": "0.06",
+        "mark": "0.06",
+        "bid": "0.05",
+        "bid_size": "1290",
+        "ask": "0.06",
+        "ask_size": "969",
+        "volume": "5538",
+        "open_interest": "10850",
+        "date": "2025-06-27",
+        "implied_volatility": "0.24193",
+        "delta": 0.2901,
+        "gamma": 1.02197,
+        "theta": -0.00992,
+        "vega": 0.00474,
+        "rho": "0.00051",
+        "implied_vol": 0.24193,
+        "price": 0.06,
+        "score": 41.8225
+      }
+    ],
+    "trade_plan": {
+      "entry_price": 0.09,
+      "stop_loss": 0.07,
+      "initial_target": 0.16,
+      "final_target": 0.32,
+      "position_size": 25,
+      "max_hold_time": "8 hours",
+      "support": null,
+      "resistance": null,
+      "skew": "Neutral Skew Skew",
+      "strike": "$10.5",
+      "type": "Put",
+      "expiration": "2025-07-11",
+      "risk_metrics": {
+        "delta_exposure": -638.85,
+        "gamma_theta_ratio": 114.95,
+        "implied_vol": 24.04
+      },
+      "delta": -0.25554,
+      "gamma": 0.6322,
+      "theta": -0.0055,
+      "score": 46.5715,
+      "bias": "Bullish",
+      "option_symbol": "F"
+    },
+    "oi_skew": {
+      "put_call_ratio": 0.98,
+      "bias": "Neutral Skew"
+    }
+  },
+  "OPEN": {
+    "timeframe_analysis": {
+      "1m": {
+        "gap_percent": 0.6140350877193086,
+        "gap_direction": "Up",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": 0.57,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": -9.616107749851467e-06,
+          "low_slope": -9.592256241380998e-06
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": true,
+          "inverted_hammer": true,
+          "shooting_star": true,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 0.0037238101735319806,
+          "unusual_volume": false
+        }
+      },
+      "5m": {
+        "gap_percent": 0.6140350877193086,
+        "gap_direction": "Up",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": 0.57,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": -3.674827959187095e-05,
+          "low_slope": -3.637230285298177e-05
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": true,
+          "inverted_hammer": true,
+          "shooting_star": true,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 0.0009889801121101193,
+          "unusual_volume": false
+        }
+      },
+      "15m": {
+        "gap_percent": -0.017427675148133318,
+        "gap_direction": "Down",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": 0.5738,
+        "patterns": {
+          "falling_wedge": true,
+          "rising_wedge": false,
+          "high_slope": -0.00010472203127030056,
+          "low_slope": -0.00010261696132502679
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": true,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": true,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 0.03171149581509854,
+          "unusual_volume": false
+        }
+      },
+      "30m": {
+        "gap_percent": 0.0,
+        "gap_direction": "Down",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": true,
+          "rising_wedge": false,
+          "high_slope": -0.00020921163953492065,
+          "low_slope": -0.00020294747123441754
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": true,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 0.01944660806498366,
+          "unusual_volume": false
+        }
+      },
+      "1h": {
+        "gap_percent": -0.3147403392201281,
+        "gap_direction": "Down",
+        "gap_mitigated": true,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": true,
+          "rising_wedge": false,
+          "high_slope": -0.0004220020341277926,
+          "low_slope": -0.00040301261285771223
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 0.012403812358710107,
+          "unusual_volume": false
+        }
+      },
+      "D": {
+        "gap_percent": 0.3717472118959111,
+        "gap_direction": "Up",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": 0.538,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": -0.018641122713695123,
+          "low_slope": -0.01728612107727451
+        },
+        "candles": {
+          "bullish": true,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 8.488328790660452,
+          "unusual_volume": true
+        }
+      },
+      "W": {
+        "gap_percent": -0.8419083255378762,
+        "gap_direction": "Down",
+        "gap_mitigated": true,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": -0.09514916065898205,
+          "low_slope": -0.07866840159724506
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 4.623888843667107,
+          "unusual_volume": true
+        }
+      }
+    },
+    "confluence": {
+      "score": 7.99,
+      "bias": "Bullish",
+      "bullish_signals": 11.53,
+      "bearish_signals": 2.9
+    },
+    "volume_profile": {
+      "volume_profiles": {
+        "1min": {
+          "price_levels": [
+            0.5084,
+            0.512845,
+            0.51729,
+            0.521735,
+            0.52618,
+            0.530625,
+            0.5350699999999999,
+            0.539515,
+            0.54396,
+            0.548405,
+            0.5528500000000001,
+            0.557295,
+            0.56174,
+            0.566185,
+            0.57063,
+            0.575075,
+            0.57952,
+            0.5839650000000001,
+            0.5884100000000001,
+            0.592855,
+            0.5973
+          ],
+          "volumes": [
+            3017317.75,
+            19222889.75,
+            44354241.75,
+            42765835.5,
+            37502617.0,
+            47651882.5,
+            38483043.0,
+            25956667.0,
+            36188778.75,
+            40532146.5,
+            32161256.75,
+            72096024.0,
+            67619071.5,
+            21301082.5,
+            45345821.0,
+            5612463.25,
+            43060027.0,
+            8234640.5,
+            2713905.25,
+            348349.75
+          ],
+          "relative_volumes": [
+            0.4757915031611786,
+            3.031198026543314,
+            6.994083189881743,
+            6.743612321403238,
+            5.913671675748426,
+            7.514077959848564,
+            6.068272019142257,
+            4.0930265329145925,
+            5.706496585926297,
+            6.39138881199506,
+            5.071409099235605,
+            11.368599025046139,
+            10.662642232939575,
+            3.3589018132529382,
+            7.150442254770065,
+            0.8850119700367566,
+            6.790002469077357,
+            1.2984949899581903,
+            0.42794732451844497,
+            0.054930194600260704
+          ],
+          "dominant_levels": [
+            {
+              "price": 0.56,
+              "volume": 72096024,
+              "percentage": 11.37
+            },
+            {
+              "price": 0.56,
+              "volume": 67619071,
+              "percentage": 10.66
+            }
+          ]
+        },
+        "5min": {
+          "price_levels": [
+            0.5084,
+            0.512845,
+            0.51729,
+            0.521735,
+            0.52618,
+            0.530625,
+            0.5350699999999999,
+            0.539515,
+            0.54396,
+            0.548405,
+            0.5528500000000001,
+            0.557295,
+            0.56174,
+            0.566185,
+            0.57063,
+            0.575075,
+            0.57952,
+            0.5839650000000001,
+            0.5884100000000001,
+            0.592855,
+            0.5973
+          ],
+          "volumes": [
+            3923376.5,
+            19097116.75,
+            40352022.75,
+            46043582.75,
+            38138072.75,
+            47758269.0,
+            37814290.5,
+            27640444.0,
+            34479086.0,
+            43855552.0,
+            28216551.25,
+            70050987.0,
+            67411291.5,
+            22859919.25,
+            46259085.25,
+            7234870.25,
+            42290846.5,
+            8347960.0,
+            1503262.75,
+            891127.0
+          ],
+          "relative_volumes": [
+            0.6186654436883969,
+            3.011366920128075,
+            6.36298913916445,
+            7.260474122489178,
+            6.01387802044976,
+            7.530857841625653,
+            5.962821770978246,
+            4.3585385065655275,
+            5.436903401486039,
+            6.915450132374387,
+            4.449383126609857,
+            11.046129514504948,
+            10.629883868003837,
+            3.6047119325617043,
+            7.294456063752899,
+            1.1408449363053055,
+            6.668716426751392,
+            1.3163647122046505,
+            0.2370449831182375,
+            0.14051913723745604
+          ],
+          "dominant_levels": [
+            {
+              "price": 0.56,
+              "volume": 70050987,
+              "percentage": 11.05
+            },
+            {
+              "price": 0.56,
+              "volume": 67411291,
+              "percentage": 10.63
+            }
+          ]
+        },
+        "15min": {
+          "price_levels": [
+            0.5084,
+            0.512845,
+            0.51729,
+            0.521735,
+            0.52618,
+            0.530625,
+            0.5350699999999999,
+            0.539515,
+            0.54396,
+            0.548405,
+            0.5528500000000001,
+            0.557295,
+            0.56174,
+            0.566185,
+            0.57063,
+            0.575075,
+            0.57952,
+            0.5839650000000001,
+            0.5884100000000001,
+            0.592855,
+            0.5973
+          ],
+          "volumes": [
+            5463857.75,
+            18106303.0,
+            42322960.5,
+            43562277.0,
+            40560711.5,
+            38972973.25,
+            44964153.5,
+            27271854.75,
+            32050341.0,
+            41337893.25,
+            30383831.75,
+            73803688.75,
+            61049290.25,
+            19904491.0,
+            49890222.5,
+            7612685.75,
+            43908300.0,
+            7089927.25,
+            4230232.75,
+            1681712.25
+          ],
+          "relative_volumes": [
+            0.8615793083166493,
+            2.855128506028853,
+            6.673780449994854,
+            6.869204544418873,
+            6.3958967011908685,
+            6.145531028105239,
+            7.090262236708789,
+            4.300416816674469,
+            5.053921952871622,
+            6.518448155719736,
+            4.791135117522861,
+            11.637881880150022,
+            9.626679110893281,
+            3.1386793677370113,
+            7.867039253229778,
+            1.2004215378625136,
+            6.923767871401837,
+            1.1179893210196337,
+            0.6670526894232262,
+            0.2651841507298824
+          ],
+          "dominant_levels": [
+            {
+              "price": 0.56,
+              "volume": 73803688,
+              "percentage": 11.64
+            },
+            {
+              "price": 0.56,
+              "volume": 61049290,
+              "percentage": 9.63
+            }
+          ]
+        },
+        "30min": {
+          "price_levels": [
+            0.5084,
+            0.512845,
+            0.51729,
+            0.521735,
+            0.52618,
+            0.530625,
+            0.5350699999999999,
+            0.539515,
+            0.54396,
+            0.548405,
+            0.5528500000000001,
+            0.557295,
+            0.56174,
+            0.566185,
+            0.57063,
+            0.575075,
+            0.57952,
+            0.5839650000000001,
+            0.5884100000000001,
+            0.592855,
+            0.5973
+          ],
+          "volumes": [
+            8620346.0,
+            20926880.75,
+            30693741.75,
+            48448322.5,
+            39697149.5,
+            41594069.0,
+            42486046.75,
+            32643164.0,
+            29304694.5,
+            38929747.25,
+            30669432.0,
+            73407357.75,
+            62064799.5,
+            21085632.5,
+            49159853.25,
+            5993951.25,
+            44867670.75,
+            9344160.5,
+            21195.0,
+            4209037.75
+          ],
+          "relative_volumes": [
+            1.3593174307590556,
+            3.29989930507327,
+            4.840007370468884,
+            7.639675862811789,
+            6.25972870077351,
+            6.558848450850451,
+            6.699501842654475,
+            5.147406127355735,
+            4.620972526731413,
+            6.138719259293005,
+            4.836174036295013,
+            11.575393950027163,
+            9.786818742184586,
+            3.324932409421808,
+            7.751875089037287,
+            0.9451688381469875,
+            7.075053243574357,
+            1.4734536459975336,
+            0.0033421782542067554,
+            0.6637109902894706
+          ],
+          "dominant_levels": [
+            {
+              "price": 0.56,
+              "volume": 73407357,
+              "percentage": 11.58
+            },
+            {
+              "price": 0.56,
+              "volume": 62064799,
+              "percentage": 9.79
+            }
+          ]
+        },
+        "60min": {
+          "price_levels": [
+            0.5084,
+            0.512845,
+            0.51729,
+            0.521735,
+            0.52618,
+            0.530625,
+            0.5350699999999999,
+            0.539515,
+            0.54396,
+            0.548405,
+            0.5528500000000001,
+            0.557295,
+            0.56174,
+            0.566185,
+            0.57063,
+            0.575075,
+            0.57952,
+            0.5839650000000001,
+            0.5884100000000001,
+            0.592855,
+            0.5973
+          ],
+          "volumes": [
+            14347370.5,
+            21290022.5,
+            31347157.25,
+            38291136.5,
+            42460970.25,
+            44684113.25,
+            40250740.0,
+            37872921.0,
+            27383825.0,
+            40420947.5,
+            30173713.25,
+            69271678.5,
+            56015624.25,
+            27887122.5,
+            45343888.25,
+            11727947.5,
+            37935682.75,
+            10635975.75,
+            1085462.25,
+            5740318.25
+          ],
+          "relative_volumes": [
+            2.2623976279091966,
+            3.357165440324652,
+            4.943047522477835,
+            6.03802462531704,
+            6.695554308876527,
+            7.046115650392237,
+            6.347029143604385,
+            5.9720773665385165,
+            4.318080495870693,
+            6.373868698925854,
+            4.758010346356658,
+            10.92326159136188,
+            8.832950639216634,
+            4.397444102611916,
+            7.1501537662932515,
+            1.8493479766375027,
+            5.981974095303096,
+            1.6771579368707137,
+            0.17116357450900005,
+            0.9051750906024117
+          ],
+          "dominant_levels": [
+            {
+              "price": 0.56,
+              "volume": 69271678,
+              "percentage": 10.92
+            }
+          ]
+        }
+      },
+      "confluences": []
+    },
+    "options": [
+      {
+        "contractID": "OPEN250815P00000500",
+        "symbol": "OPEN",
+        "expiration": "2025-08-15 00:00:00",
+        "strike": 0.5,
+        "type": "put",
+        "last": "0.08",
+        "mark": "0.07",
+        "bid": "0.06",
+        "bid_size": "1",
+        "ask": "0.09",
+        "ask_size": "5",
+        "volume": "106",
+        "open_interest": "737",
+        "date": "2025-06-27",
+        "implied_volatility": "1.27819",
+        "delta": -0.31474,
+        "gamma": 1.35793,
+        "theta": -0.00092,
+        "vega": 0.00073,
+        "rho": "-0.00033",
+        "implied_vol": 1.27819,
+        "price": 0.07,
+        "score": 591.0332
+      },
+      {
+        "contractID": "OPEN251121C00001000",
+        "symbol": "OPEN",
+        "expiration": "2025-11-21 00:00:00",
+        "strike": 1.0,
+        "type": "call",
+        "last": "0.08",
+        "mark": "0.08",
+        "bid": "0.08",
+        "bid_size": "40",
+        "ask": "0.09",
+        "ask_size": "10",
+        "volume": "233",
+        "open_interest": "7134",
+        "date": "2025-06-27",
+        "implied_volatility": "1.26035",
+        "delta": 0.37951,
+        "gamma": 0.85217,
+        "theta": -0.00059,
+        "vega": 0.00135,
+        "rho": "0.00053",
+        "implied_vol": 1.26035,
+        "price": 0.08,
+        "score": 578.4101
+      },
+      {
+        "contractID": "OPEN250711P00000500",
+        "symbol": "OPEN",
+        "expiration": "2025-07-11 00:00:00",
+        "strike": 0.5,
+        "type": "put",
+        "last": "0.03",
+        "mark": "0.03",
+        "bid": "0.02",
+        "bid_size": "10",
+        "ask": "0.03",
+        "ask_size": "29",
+        "volume": "90",
+        "open_interest": "295",
+        "date": "2025-06-27",
+        "implied_volatility": "1.32620",
+        "delta": -0.2872,
+        "gamma": 2.3494,
+        "theta": -0.00174,
+        "vega": 0.00037,
+        "rho": "-0.00007",
+        "implied_vol": 1.3262,
+        "price": 0.03,
+        "score": 540.7043
+      },
+      {
+        "contractID": "OPEN260116C00001500",
+        "symbol": "OPEN",
+        "expiration": "2026-01-16 00:00:00",
+        "strike": 1.5,
+        "type": "call",
+        "last": "0.08",
+        "mark": "0.09",
+        "bid": "0.07",
+        "bid_size": "251",
+        "ask": "0.10",
+        "ask_size": "210",
+        "volume": "205",
+        "open_interest": "15970",
+        "date": "2025-06-27",
+        "implied_volatility": "1.44190",
+        "delta": 0.35984,
+        "gamma": 0.62296,
+        "theta": -0.00057,
+        "vega": 0.00156,
+        "rho": "0.00062",
+        "implied_vol": 1.4419,
+        "price": 0.09,
+        "score": 437.8208
+      },
+      {
+        "contractID": "OPEN260116C00002000",
+        "symbol": "OPEN",
+        "expiration": "2026-01-16 00:00:00",
+        "strike": 2.0,
+        "type": "call",
+        "last": "0.07",
+        "mark": "0.07",
+        "bid": "0.06",
+        "bid_size": "1",
+        "ask": "0.07",
+        "ask_size": "36",
+        "volume": "56",
+        "open_interest": "27251",
+        "date": "2025-06-27",
+        "implied_volatility": "1.50227",
+        "delta": 0.28872,
+        "gamma": 0.54603,
+        "theta": -0.00054,
+        "vega": 0.00142,
+        "rho": "0.00051",
+        "implied_vol": 1.50227,
+        "price": 0.07,
+        "score": 405.0799
+      },
+      {
+        "contractID": "OPEN250703P00000500",
+        "symbol": "OPEN",
+        "expiration": "2025-07-03 00:00:00",
+        "strike": 0.5,
+        "type": "put",
+        "last": "0.02",
+        "mark": "0.02",
+        "bid": "0.01",
+        "bid_size": "100",
+        "ask": "0.03",
+        "ask_size": "67",
+        "volume": "177",
+        "open_interest": "799",
+        "date": "2025-06-27",
+        "implied_volatility": "1.59967",
+        "delta": -0.25958,
+        "gamma": 2.82989,
+        "theta": -0.00307,
+        "vega": 0.00023,
+        "rho": "-0.00003",
+        "implied_vol": 1.59967,
+        "price": 0.02,
+        "score": 369.3111
+      },
+      {
+        "contractID": "OPEN260116C00002500",
+        "symbol": "OPEN",
+        "expiration": "2026-01-16 00:00:00",
+        "strike": 2.5,
+        "type": "call",
+        "last": "0.04",
+        "mark": "0.07",
+        "bid": "0.04",
+        "bid_size": "20",
+        "ask": "0.11",
+        "ask_size": "62",
+        "volume": "0",
+        "open_interest": "7824",
+        "date": "2025-06-27",
+        "implied_volatility": "1.64144",
+        "delta": 0.27666,
+        "gamma": 0.48959,
+        "theta": -0.00057,
+        "vega": 0.00139,
+        "rho": "0.00047",
+        "implied_vol": 1.64144,
+        "price": 0.07,
+        "score": 343.9779
+      },
+      {
+        "contractID": "OPEN250815C00001000",
+        "symbol": "OPEN",
+        "expiration": "2025-08-15 00:00:00",
+        "strike": 1.0,
+        "type": "call",
+        "last": "0.03",
+        "mark": "0.04",
+        "bid": "0.03",
+        "bid_size": "8",
+        "ask": "0.04",
+        "ask_size": "112",
+        "volume": "1596",
+        "open_interest": "16570",
+        "date": "2025-06-27",
+        "implied_volatility": "1.65348",
+        "delta": 0.25808,
+        "gamma": 0.95515,
+        "theta": -0.00113,
+        "vega": 0.00066,
+        "rho": "0.00014",
+        "implied_vol": 1.65348,
+        "price": 0.04,
+        "score": 338.701
+      }
+    ],
+    "trade_plan": {
+      "entry_price": 0.09,
+      "stop_loss": 0.07,
+      "initial_target": 0.16,
+      "final_target": 0.32,
+      "position_size": 25,
+      "max_hold_time": "10 hours",
+      "support": null,
+      "resistance": null,
+      "skew": "Bullish Skew Skew",
+      "strike": "$0.5",
+      "type": "Put",
+      "expiration": "2025-08-15",
+      "risk_metrics": {
+        "delta_exposure": -786.85,
+        "gamma_theta_ratio": 1476.01,
+        "implied_vol": 127.82
+      },
+      "delta": -0.31474,
+      "gamma": 1.35793,
+      "theta": -0.00092,
+      "score": 591.0332,
+      "bias": "Bullish",
+      "option_symbol": "OPEN"
+    },
+    "oi_skew": {
+      "put_call_ratio": 0.1,
+      "bias": "Bullish Skew"
+    }
+  },
+  "DNN": {
+    "timeframe_analysis": {
+      "1m": {
+        "gap_percent": -0.555555555555556,
+        "gap_direction": "Down",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": 1.8,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 1.963541006101576e-05,
+          "low_slope": 1.964558743773712e-05
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": true,
+          "inverted_hammer": true,
+          "shooting_star": true,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 2.1846654466334448,
+          "unusual_volume": false
+        }
+      },
+      "5m": {
+        "gap_percent": -0.555555555555556,
+        "gap_direction": "Down",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": 1.8,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 6.792968297332856e-05,
+          "low_slope": 6.850566716507759e-05
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": true,
+          "inverted_hammer": true,
+          "shooting_star": true,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 0.6172848037361401,
+          "unusual_volume": false
+        }
+      },
+      "15m": {
+        "gap_percent": -0.555555555555556,
+        "gap_direction": "Down",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": 1.8,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.00017815064941918655,
+          "low_slope": 0.00018111972540853428
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": true,
+          "inverted_hammer": true,
+          "shooting_star": true,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 0.23488331279054986,
+          "unusual_volume": false
+        }
+      },
+      "30m": {
+        "gap_percent": -0.555555555555556,
+        "gap_direction": "Down",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": 1.8,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.00034082422822935673,
+          "low_slope": 0.0003504313508440067
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": true,
+          "inverted_hammer": true,
+          "shooting_star": true,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 0.12245441002190251,
+          "unusual_volume": false
+        }
+      },
+      "1h": {
+        "gap_percent": -0.555555555555556,
+        "gap_direction": "Down",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": 1.8,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.0006569047504759231,
+          "low_slope": 0.0006847590370025355
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": true,
+          "inverted_hammer": true,
+          "shooting_star": true,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 0.06391260873950175,
+          "unusual_volume": false
+        }
+      },
+      "D": {
+        "gap_percent": 0.5434782608695656,
+        "gap_direction": "Up",
+        "gap_mitigated": true,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": -0.0019340141007658286,
+          "low_slope": -0.0018519069895397387
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 24.83195212801772,
+          "unusual_volume": true
+        }
+      },
+      "W": {
+        "gap_percent": -0.5747126436781614,
+        "gap_direction": "Down",
+        "gap_mitigated": true,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": -0.009713416793334654,
+          "low_slope": -0.008497446213113984
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 33.65359088951425,
+          "unusual_volume": true
+        }
+      }
+    },
+    "confluence": {
+      "score": 7.49,
+      "bias": "Bearish",
+      "bullish_signals": 3.15,
+      "bearish_signals": 9.4
+    },
+    "volume_profile": {
+      "volume_profiles": {
+        "1min": {
+          "price_levels": [
+            1.71,
+            1.72,
+            1.73,
+            1.74,
+            1.75,
+            1.76,
+            1.77,
+            1.78,
+            1.79,
+            1.8,
+            1.81,
+            1.8199999999999998,
+            1.8299999999999998,
+            1.8399999999999999,
+            1.8499999999999999,
+            1.8599999999999999,
+            1.8699999999999999,
+            1.88,
+            1.89,
+            1.9,
+            1.91
+          ],
+          "volumes": [
+            15559500.25,
+            63026935.5,
+            99874146.0,
+            180336584.5,
+            156975894.25,
+            132157258.5,
+            109747534.75,
+            55484063.75,
+            43960952.0,
+            38703938.25,
+            57928490.25,
+            44589692.5,
+            35055797.75,
+            19380534.5,
+            3856373.0,
+            434742.5,
+            150438.5,
+            316465.5,
+            197.0,
+            0
+          ],
+          "relative_volumes": [
+            1.471292530682559,
+            5.959771068673072,
+            9.444010582415679,
+            17.05246733638853,
+            14.843501204817954,
+            12.496673041059537,
+            10.377629457507776,
+            5.246523812182845,
+            4.156908594753517,
+            3.6598100414712222,
+            5.477666611981477,
+            4.216361738268691,
+            3.3148451144305526,
+            1.832606137236679,
+            0.36465520738211965,
+            0.04110886485703565,
+            0.01422533100811436,
+            0.02992469673752673,
+            1.862814511310954e-05,
+            0.0
+          ],
+          "dominant_levels": [
+            {
+              "price": 1.74,
+              "volume": 180336584,
+              "percentage": 17.05
+            },
+            {
+              "price": 1.76,
+              "volume": 156975894,
+              "percentage": 14.84
+            }
+          ]
+        },
+        "5min": {
+          "price_levels": [
+            1.71,
+            1.72,
+            1.73,
+            1.74,
+            1.75,
+            1.76,
+            1.77,
+            1.78,
+            1.79,
+            1.8,
+            1.81,
+            1.8199999999999998,
+            1.8299999999999998,
+            1.8399999999999999,
+            1.8499999999999999,
+            1.8599999999999999,
+            1.8699999999999999,
+            1.88,
+            1.89,
+            1.9,
+            1.91
+          ],
+          "volumes": [
+            19282110.25,
+            63245770.25,
+            111804997.5,
+            164850820.25,
+            150700841.75,
+            129085798.0,
+            112516902.75,
+            58612143.5,
+            48123624.0,
+            35047881.25,
+            62215448.5,
+            43109114.25,
+            33954478.75,
+            18715766.75,
+            5516346.75,
+            27353.0,
+            1829.0,
+            727623.5,
+            0,
+            0
+          ],
+          "relative_volumes": [
+            1.823300415866519,
+            5.9804677861243585,
+            10.572188199043469,
+            15.588157375967796,
+            14.250147098614866,
+            12.206246418275791,
+            10.639505371362953,
+            5.5423158685848755,
+            4.550530129460492,
+            3.3140986971778865,
+            5.883041412615716,
+            4.076362230096795,
+            3.2107074600616325,
+            1.769747442375285,
+            0.5216211915051632,
+            0.002586477083087775,
+            0.00017294872902305197,
+            0.06880347705429452,
+            0.0,
+            0.0
+          ],
+          "dominant_levels": [
+            {
+              "price": 1.74,
+              "volume": 164850820,
+              "percentage": 15.59
+            },
+            {
+              "price": 1.76,
+              "volume": 150700841,
+              "percentage": 14.25
+            }
+          ]
+        },
+        "15min": {
+          "price_levels": [
+            1.71,
+            1.72,
+            1.73,
+            1.74,
+            1.75,
+            1.76,
+            1.77,
+            1.78,
+            1.79,
+            1.8,
+            1.81,
+            1.8199999999999998,
+            1.8299999999999998,
+            1.8399999999999999,
+            1.8499999999999999,
+            1.8599999999999999,
+            1.8699999999999999,
+            1.88,
+            1.89,
+            1.9,
+            1.91
+          ],
+          "volumes": [
+            23007717.75,
+            72532855.25,
+            98262559.75,
+            148051693.75,
+            156473458.0,
+            119272142.5,
+            120193266.25,
+            62628704.5,
+            50692845.5,
+            34706580.25,
+            61066236.75,
+            48704349.75,
+            34927054.5,
+            17210230.75,
+            8333590.75,
+            37861.75,
+            1836.75,
+            1435348.75,
+            0,
+            0
+          ],
+          "relative_volumes": [
+            2.1755918463298882,
+            6.858650222833424,
+            9.291631013319583,
+            13.999652692967762,
+            14.796008152170687,
+            11.278280772428918,
+            11.36538151582885,
+            5.922121452328924,
+            4.79347593426822,
+            3.281827160188191,
+            5.774375720484079,
+            4.6054453270098525,
+            3.302675033316576,
+            1.6273859971685334,
+            0.7880178418109365,
+            0.0035801775509776775,
+            0.00017368164748745763,
+            0.13572545834711472,
+            0.0,
+            0.0
+          ],
+          "dominant_levels": [
+            {
+              "price": 1.74,
+              "volume": 148051693,
+              "percentage": 14.0
+            },
+            {
+              "price": 1.76,
+              "volume": 156473458,
+              "percentage": 14.8
+            }
+          ]
+        },
+        "30min": {
+          "price_levels": [
+            1.71,
+            1.72,
+            1.73,
+            1.74,
+            1.75,
+            1.76,
+            1.77,
+            1.78,
+            1.79,
+            1.8,
+            1.81,
+            1.8199999999999998,
+            1.8299999999999998,
+            1.8399999999999999,
+            1.8499999999999999,
+            1.8599999999999999,
+            1.8699999999999999,
+            1.88,
+            1.89,
+            1.9,
+            1.91
+          ],
+          "volumes": [
+            29502103.25,
+            67940166.75,
+            100160893.5,
+            154111769.25,
+            146408127.25,
+            109232624.0,
+            121941073.75,
+            66970511.25,
+            53742811.0,
+            41549293.25,
+            52742015.25,
+            42224863.5,
+            40362790.25,
+            19408175.75,
+            8863214.0,
+            39152.25,
+            1856.0,
+            2336353.75,
+            0,
+            0
+          ],
+          "relative_volumes": [
+            2.7896972966244644,
+            6.424372456044819,
+            9.471140801611861,
+            14.572696136664028,
+            13.8442453859006,
+            10.328956999904628,
+            11.53065870948911,
+            6.332682541461965,
+            5.0818808845331915,
+            3.9288707680928514,
+            4.987246370695665,
+            3.992752196617949,
+            3.8166759125773617,
+            1.8352228979534702,
+            0.8380990306243372,
+            0.0037022081122899332,
+            0.0001755020019643856,
+            0.2209239010894395,
+            0.0,
+            0.0
+          ],
+          "dominant_levels": [
+            {
+              "price": 1.74,
+              "volume": 154111769,
+              "percentage": 14.57
+            },
+            {
+              "price": 1.76,
+              "volume": 146408127,
+              "percentage": 13.84
+            }
+          ]
+        },
+        "60min": {
+          "price_levels": [
+            1.71,
+            1.72,
+            1.73,
+            1.74,
+            1.75,
+            1.76,
+            1.77,
+            1.78,
+            1.79,
+            1.8,
+            1.81,
+            1.8199999999999998,
+            1.8299999999999998,
+            1.8399999999999999,
+            1.8499999999999999,
+            1.8599999999999999,
+            1.8699999999999999,
+            1.88,
+            1.89,
+            1.9,
+            1.91
+          ],
+          "volumes": [
+            39310961.5,
+            67586578.25,
+            84891134.0,
+            148250441.5,
+            144575108.75,
+            119568403.25,
+            116540243.0,
+            79388869.75,
+            59110778.75,
+            36822206.5,
+            49623811.5,
+            34707439.0,
+            42672664.5,
+            21243293.0,
+            10834581.5,
+            40331.25,
+            4199.5,
+            2353438.75,
+            0,
+            0
+          ],
+          "relative_volumes": [
+            3.7172625395883356,
+            6.391017821013632,
+            8.027344545143565,
+            14.0186297062559,
+            13.671088556643033,
+            11.306443021486952,
+            11.020098800138017,
+            7.507047915425131,
+            5.589542334986368,
+            3.481924725942817,
+            4.692450362999716,
+            3.2819513417332016,
+            4.035146716273298,
+            2.008775524007448,
+            1.0245229932131474,
+            0.0038137414878486775,
+            0.0003971066450511829,
+            0.22254224701653758,
+            0.0,
+            0.0
+          ],
+          "dominant_levels": [
+            {
+              "price": 1.74,
+              "volume": 148250441,
+              "percentage": 14.02
+            },
+            {
+              "price": 1.76,
+              "volume": 144575108,
+              "percentage": 13.67
+            }
+          ]
+        }
+      },
+      "confluences": []
+    },
+    "options": [
+      {
+        "contractID": "DNN250815C00002000",
+        "symbol": "DNN",
+        "expiration": "2025-08-15 00:00:00",
+        "strike": 2.0,
+        "type": "call",
+        "last": "0.10",
+        "mark": "0.08",
+        "bid": "0.05",
+        "bid_size": "184",
+        "ask": "0.10",
+        "ask_size": "10",
+        "volume": "20",
+        "open_interest": "641",
+        "date": "2025-06-27",
+        "implied_volatility": "0.58110",
+        "delta": 0.34928,
+        "gamma": 0.97116,
+        "theta": -0.0015,
+        "vega": 0.00243,
+        "rho": "0.00073",
+        "implied_vol": 0.5811,
+        "price": 0.08,
+        "score": 259.6256
+      }
+    ],
+    "trade_plan": {
+      "entry_price": 0.1,
+      "stop_loss": 0.08,
+      "initial_target": 0.18,
+      "final_target": 0.35,
+      "position_size": 24,
+      "max_hold_time": "12 hours",
+      "support": null,
+      "resistance": null,
+      "skew": "Bullish Skew Skew",
+      "strike": "$2.0",
+      "type": "Call",
+      "expiration": "2025-08-15",
+      "risk_metrics": {
+        "delta_exposure": 838.27,
+        "gamma_theta_ratio": 647.44,
+        "implied_vol": 58.11
+      },
+      "delta": 0.34928,
+      "gamma": 0.97116,
+      "theta": -0.0015,
+      "score": 259.6256,
+      "bias": "Bearish",
+      "option_symbol": "DNN"
+    },
+    "oi_skew": {
+      "put_call_ratio": 0.11,
+      "bias": "Bullish Skew"
+    }
+  },
+  "NKE": {
+    "timeframe_analysis": {
+      "1m": {
+        "gap_percent": 0.0122103510476036,
+        "gap_direction": "Up",
+        "gap_mitigated": true,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.00011032282930251874,
+          "low_slope": 0.00010827355410943076
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 0.17961531485590176,
+          "unusual_volume": false
+        }
+      },
+      "5m": {
+        "gap_percent": 0.0,
+        "gap_direction": "Down",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.0004200502791216018,
+          "low_slope": 0.00040064919114095955
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": true,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": true,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 0.06852866601418382,
+          "unusual_volume": false
+        }
+      },
+      "15m": {
+        "gap_percent": -0.04162042175360868,
+        "gap_direction": "Down",
+        "gap_mitigated": true,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.0012568186524292084,
+          "low_slope": 0.0011370057108533497
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 0.04668361621754333,
+          "unusual_volume": false
+        }
+      },
+      "30m": {
+        "gap_percent": 0.0,
+        "gap_direction": "Down",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.002442412089408654,
+          "low_slope": 0.002102846953304899
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 0.039963043189527404,
+          "unusual_volume": false
+        }
+      },
+      "1h": {
+        "gap_percent": 0.0,
+        "gap_direction": "Down",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.004886991673679082,
+          "low_slope": 0.0037837293502812337
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 5.188932901897784,
+          "unusual_volume": true
+        }
+      },
+      "D": {
+        "gap_percent": 11.592580748321087,
+        "gap_direction": "Up",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": 62.54,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.008701727554678318,
+          "low_slope": 0.00857626191418722
+        },
+        "candles": {
+          "bullish": true,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 24.326021705802887,
+          "unusual_volume": true
+        }
+      },
+      "W": {
+        "gap_percent": -0.3595919050008301,
+        "gap_direction": "Down",
+        "gap_mitigated": true,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.04253764356948823,
+          "low_slope": 0.04044447825580026
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": true,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 8.493760234454395,
+          "unusual_volume": true
+        }
+      }
+    },
+    "confluence": {
+      "score": 8.53,
+      "bias": "Bullish",
+      "bullish_signals": 7.1,
+      "bearish_signals": 1.23
+    },
+    "volume_profile": {
+      "volume_profiles": {
+        "1min": {
+          "price_levels": [
+            57.023,
+            57.881350000000005,
+            58.7397,
+            59.59805,
+            60.4564,
+            61.314750000000004,
+            62.173100000000005,
+            63.03145,
+            63.8898,
+            64.74815,
+            65.6065,
+            66.46485,
+            67.3232,
+            68.18155,
+            69.0399,
+            69.89825,
+            70.75659999999999,
+            71.61495,
+            72.4733,
+            73.33165,
+            74.19
+          ],
+          "volumes": [
+            482.5,
+            875.0,
+            4821062.75,
+            49011217.25,
+            44514146.5,
+            25707121.75,
+            18140183.75,
+            685652.0,
+            1007873.5,
+            795667.5,
+            1024359.0,
+            1935421.0,
+            762734.5,
+            4064573.5,
+            4725071.25,
+            2288299.5,
+            11519354.25,
+            111105559.75,
+            14378792.5,
+            9741232.75
+          ],
+          "relative_volumes": [
+            0.00015756147451553116,
+            0.0002857332439400824,
+            1.574329027195651,
+            16.004724679193856,
+            14.536195977907504,
+            8.394719188560169,
+            5.923718341207622,
+            0.22390122305600618,
+            0.3291233881557082,
+            0.2598270352830806,
+            0.33450676574767874,
+            0.632016137965438,
+            0.2490726890857335,
+            1.3272957387290225,
+            1.5429827841263086,
+            0.7472494162759641,
+            3.7616713805114,
+            36.28177372245275,
+            4.695427457104374,
+            3.18102175272328
+          ],
+          "dominant_levels": [
+            {
+              "price": 72.04,
+              "volume": 111105559,
+              "percentage": 36.28
+            }
+          ]
+        },
+        "5min": {
+          "price_levels": [
+            57.023,
+            57.881350000000005,
+            58.7397,
+            59.59805,
+            60.4564,
+            61.314750000000004,
+            62.173100000000005,
+            63.03145,
+            63.8898,
+            64.74815,
+            65.6065,
+            66.46485,
+            67.3232,
+            68.18155,
+            69.0399,
+            69.89825,
+            70.75659999999999,
+            71.61495,
+            72.4733,
+            73.33165,
+            74.19
+          ],
+          "volumes": [
+            523.25,
+            1255.25,
+            4741732.0,
+            49328291.75,
+            45531243.5,
+            24315687.25,
+            18915842.75,
+            474.75,
+            1669982.75,
+            729812.5,
+            380316.0,
+            2024335.0,
+            1111278.25,
+            3677937.75,
+            6179106.0,
+            2610670.25,
+            10207858.0,
+            108980990.0,
+            16222006.0,
+            9327105.25
+          ],
+          "relative_volumes": [
+            0.00017102107276799322,
+            0.0004102708104959837,
+            1.5498061986016665,
+            16.122651453220353,
+            14.881609379514032,
+            7.947434149232708,
+            6.18252789185985,
+            0.00015516914342399382,
+            0.5458236816226344,
+            0.23853476668799053,
+            0.12430396619365906,
+            0.6616415544038137,
+            0.3632145216602736,
+            1.2021115328789282,
+            2.0196031282697438,
+            0.8532816565666221,
+            3.3363761601974997,
+            35.61977223338354,
+            5.302063771751214,
+            3.048507492928775
+          ],
+          "dominant_levels": [
+            {
+              "price": 72.04,
+              "volume": 108980990,
+              "percentage": 35.62
+            }
+          ]
+        },
+        "15min": {
+          "price_levels": [
+            57.023,
+            57.881350000000005,
+            58.7397,
+            59.59805,
+            60.4564,
+            61.314750000000004,
+            62.173100000000005,
+            63.03145,
+            63.8898,
+            64.74815,
+            65.6065,
+            66.46485,
+            67.3232,
+            68.18155,
+            69.0399,
+            69.89825,
+            70.75659999999999,
+            71.61495,
+            72.4733,
+            73.33165,
+            74.19
+          ],
+          "volumes": [
+            1340.25,
+            18219.75,
+            5800283.25,
+            48587771.5,
+            46689376.75,
+            23622341.5,
+            18132030.75,
+            68294.75,
+            1480157.75,
+            906148.25,
+            500580.5,
+            2302148.0,
+            840757.75,
+            3652354.75,
+            8236376.5,
+            5016549.25,
+            7216020.5,
+            102232672.25,
+            20015866.5,
+            10144875.0
+          ],
+          "relative_volumes": [
+            0.00043875850308209066,
+            0.005964611256504325,
+            1.8988424519471172,
+            15.906209954437356,
+            15.284731246159872,
+            7.733261104893824,
+            5.935894549306799,
+            0.0223576961599445,
+            0.48456019303514675,
+            0.2966463344454065,
+            0.1638753597105648,
+            0.7536556689822264,
+            0.2752394044727973,
+            1.1956737197051024,
+            2.6963478634288447,
+            1.6422709491270917,
+            2.362313264532497,
+            33.46797555865845,
+            6.5526070684058695,
+            3.321134242831505
+          ],
+          "dominant_levels": [
+            {
+              "price": 72.04,
+              "volume": 102232672,
+              "percentage": 33.47
+            }
+          ]
+        },
+        "30min": {
+          "price_levels": [
+            57.023,
+            57.881350000000005,
+            58.7397,
+            59.59805,
+            60.4564,
+            61.314750000000004,
+            62.173100000000005,
+            63.03145,
+            63.8898,
+            64.74815,
+            65.6065,
+            66.46485,
+            67.3232,
+            68.18155,
+            69.0399,
+            69.89825,
+            70.75659999999999,
+            71.61495,
+            72.4733,
+            73.33165,
+            74.19
+          ],
+          "volumes": [
+            1991.25,
+            21694.75,
+            5630760.5,
+            49926042.75,
+            47160620.5,
+            25322762.75,
+            13419929.25,
+            1289546.0,
+            2943310.75,
+            259958.0,
+            1194322.0,
+            1289442.25,
+            543960.5,
+            3152738.25,
+            10648043.0,
+            7172857.25,
+            5015614.25,
+            97597285.5,
+            22730377.5,
+            9068807.0
+          ],
+          "relative_volumes": [
+            0.0006541770693277295,
+            0.007127285863049722,
+            1.849850296033316,
+            16.401994892316853,
+            15.49348223797476,
+            8.31918178183372,
+            4.408793465084984,
+            0.42364917666957747,
+            0.9669536223757947,
+            0.08540291906505858,
+            0.3923656325391751,
+            0.4236150921141762,
+            0.17870507757441123,
+            1.035755966725642,
+            3.4981572197442032,
+            2.35646891877522,
+            1.6477588604863265,
+            32.063229731440906,
+            7.467516252435888,
+            2.9793373938776133
+          ],
+          "dominant_levels": [
+            {
+              "price": 72.04,
+              "volume": 97597285,
+              "percentage": 32.06
+            }
+          ]
+        },
+        "60min": {
+          "price_levels": [
+            57.023,
+            57.881350000000005,
+            58.7397,
+            59.59805,
+            60.4564,
+            61.314750000000004,
+            62.173100000000005,
+            63.03145,
+            63.8898,
+            64.74815,
+            65.6065,
+            66.46485,
+            67.3232,
+            68.18155,
+            69.0399,
+            69.89825,
+            70.75659999999999,
+            71.61495,
+            72.4733,
+            73.33165,
+            74.19
+          ],
+          "volumes": [
+            3410.25,
+            1741018.25,
+            9134545.0,
+            45434773.25,
+            45454184.75,
+            23821538.75,
+            14283852.0,
+            2701551.5,
+            2278344.5,
+            2045845.25,
+            1486898.0,
+            2043241.75,
+            73887.5,
+            9367849.25,
+            2465975.5,
+            7186790.75,
+            12849474.0,
+            88710801.0,
+            25418632.0,
+            6329743.5
+          ],
+          "relative_volumes": [
+            0.0011261181059378325,
+            0.574911567800953,
+            3.0163702115692104,
+            15.00327565310605,
+            15.009685635252051,
+            7.8662461982771585,
+            4.716752249757737,
+            0.8920947315515022,
+            0.7523451339385318,
+            0.6755702303267829,
+            0.49099707044432267,
+            0.6747105137403717,
+            0.024398812859022536,
+            3.093410938823003,
+            0.8143038367712336,
+            2.3731911699029498,
+            4.243098108108621,
+            29.29369964030437,
+            8.393631470822015,
+            2.0901807085381736
+          ],
+          "dominant_levels": [
+            {
+              "price": 72.04,
+              "volume": 88710801,
+              "percentage": 29.29
+            }
+          ]
+        }
+      },
+      "confluences": []
+    },
+    "options": [
+      {
+        "contractID": "NKE250627P00072000",
+        "symbol": "NKE",
+        "expiration": "2025-06-27 00:00:00",
+        "strike": 72.0,
+        "type": "put",
+        "last": "0.09",
+        "mark": "0.09",
+        "bid": "0.05",
+        "bid_size": "10",
+        "ask": "0.13",
+        "ask_size": "281",
+        "volume": "24561",
+        "open_interest": "25",
+        "date": "2025-06-27",
+        "implied_volatility": "0.07486",
+        "delta": -0.43094,
+        "gamma": 1.39205,
+        "theta": -0.05177,
+        "vega": 0.01482,
+        "rho": "-0.00085",
+        "implied_vol": 0.07486,
+        "price": 0.09,
+        "score": 11.4542
+      }
+    ],
+    "trade_plan": {
+      "entry_price": 0.13,
+      "stop_loss": 0.1,
+      "initial_target": 0.23,
+      "final_target": 0.46,
+      "position_size": 16,
+      "max_hold_time": "4 hours",
+      "support": null,
+      "resistance": null,
+      "skew": "Neutral Skew Skew",
+      "strike": "$72.0",
+      "type": "Put",
+      "expiration": "2025-06-27",
+      "risk_metrics": {
+        "delta_exposure": -689.5,
+        "gamma_theta_ratio": 26.89,
+        "implied_vol": 7.49
+      },
+      "delta": -0.43094,
+      "gamma": 1.39205,
+      "theta": -0.05177,
+      "score": 11.4542,
+      "bias": "Bullish",
+      "option_symbol": "NKE"
+    },
+    "oi_skew": {
+      "put_call_ratio": 0.91,
+      "bias": "Neutral Skew"
+    }
+  },
+  "SOXL": {
+    "timeframe_analysis": {
+      "1m": {
+        "gap_percent": 0.48019207683073634,
+        "gap_direction": "Up",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": 24.99,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": true,
+          "high_slope": 0.00040620193026284876,
+          "low_slope": 0.0004060803695656978
+        },
+        "candles": {
+          "bullish": true,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": true,
+          "inverted_hammer": true,
+          "shooting_star": true,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 10.07343263968262,
+          "unusual_volume": true
+        }
+      },
+      "5m": {
+        "gap_percent": 0.48019207683073634,
+        "gap_direction": "Up",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": 24.99,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": true,
+          "high_slope": 0.002022353628524702,
+          "low_slope": 0.0020215700494486707
+        },
+        "candles": {
+          "bullish": true,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": true,
+          "inverted_hammer": true,
+          "shooting_star": true,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 2.02307231993626,
+          "unusual_volume": false
+        }
+      },
+      "15m": {
+        "gap_percent": 0.48019207683073634,
+        "gap_direction": "Up",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": 24.99,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": true,
+          "high_slope": 0.006004095515781628,
+          "low_slope": 0.0060007530588714175
+        },
+        "candles": {
+          "bullish": true,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": true,
+          "inverted_hammer": true,
+          "shooting_star": true,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 0.6813455999785331,
+          "unusual_volume": false
+        }
+      },
+      "30m": {
+        "gap_percent": 0.48019207683073634,
+        "gap_direction": "Up",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": 24.99,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": true,
+          "high_slope": 0.011818661029463782,
+          "low_slope": 0.011808367527426847
+        },
+        "candles": {
+          "bullish": true,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": true,
+          "inverted_hammer": true,
+          "shooting_star": true,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 0.34591391998910137,
+          "unusual_volume": false
+        }
+      },
+      "1h": {
+        "gap_percent": 0.48019207683073634,
+        "gap_direction": "Up",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": 24.99,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": true,
+          "high_slope": 0.02294249349479293,
+          "low_slope": 0.02292295432139336
+        },
+        "candles": {
+          "bullish": true,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": true,
+          "inverted_hammer": true,
+          "shooting_star": true,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 0.17819807999438556,
+          "unusual_volume": false
+        }
+      },
+      "D": {
+        "gap_percent": 0.039682539682545884,
+        "gap_direction": "Up",
+        "gap_mitigated": true,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.008309631438961927,
+          "low_slope": 0.0074697739578573575
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": true,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 5.5660658603701645,
+          "unusual_volume": true
+        }
+      },
+      "W": {
+        "gap_percent": -0.1414427157001468,
+        "gap_direction": "Down",
+        "gap_mitigated": true,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.04523961586000094,
+          "low_slope": 0.0327176399178892
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": false,
+          "inverted_hammer": false,
+          "shooting_star": false,
+          "doji": false
+        },
+        "volume": {
+          "relative_volume": 5.852553788723967,
+          "unusual_volume": true
+        }
+      }
+    },
+    "confluence": {
+      "score": 7.42,
+      "bias": "Bullish",
+      "bullish_signals": 27.2,
+      "bearish_signals": 9.45
+    },
+    "volume_profile": {
+      "volume_profiles": {
+        "1min": {
+          "price_levels": [
+            20.2226,
+            20.50347,
+            20.78434,
+            21.06521,
+            21.34608,
+            21.62695,
+            21.90782,
+            22.18869,
+            22.46956,
+            22.75043,
+            23.0313,
+            23.312170000000002,
+            23.593040000000002,
+            23.87391,
+            24.15478,
+            24.43565,
+            24.71652,
+            24.99739,
+            25.27826,
+            25.55913,
+            25.84
+          ],
+          "volumes": [
+            13737045.5,
+            24602479.75,
+            40690655.0,
+            71084972.25,
+            69585657.75,
+            25753853.5,
+            25454080.5,
+            5724782.25,
+            13042775.75,
+            8368934.0,
+            19544638.0,
+            21519922.75,
+            40820947.5,
+            74720193.5,
+            57779307.25,
+            40031276.0,
+            33821599.25,
+            104404354.0,
+            37969677.5,
+            24457175.75
+          ],
+          "relative_volumes": [
+            1.824031889160935,
+            3.266765595006302,
+            5.402985111379724,
+            9.438802268225736,
+            9.23972034337651,
+            3.419647263509388,
+            3.37984281563816,
+            0.7601478340085929,
+            1.7318453878000863,
+            1.111243498049357,
+            2.5951754308527692,
+            2.85745762058369,
+            5.4202856055011495,
+            9.921494087522358,
+            7.672049929340891,
+            5.315431472349917,
+            4.49089839401213,
+            13.863015235936068,
+            5.0416883733228115,
+            3.2474718444234245
+          ],
+          "dominant_levels": [
+            {
+              "price": 25.14,
+              "volume": 104404354,
+              "percentage": 13.86
+            }
+          ]
+        },
+        "5min": {
+          "price_levels": [
+            20.2226,
+            20.50347,
+            20.78434,
+            21.06521,
+            21.34608,
+            21.62695,
+            21.90782,
+            22.18869,
+            22.46956,
+            22.75043,
+            23.0313,
+            23.312170000000002,
+            23.593040000000002,
+            23.87391,
+            24.15478,
+            24.43565,
+            24.71652,
+            24.99739,
+            25.27826,
+            25.55913,
+            25.84
+          ],
+          "volumes": [
+            14644857.25,
+            23375013.75,
+            42840257.25,
+            70158595.25,
+            68901168.75,
+            26260148.75,
+            24381296.25,
+            6461602.0,
+            12934721.0,
+            7380816.5,
+            19960437.0,
+            22348720.5,
+            42712741.25,
+            73249666.25,
+            55148715.0,
+            41936252.25,
+            36197545.0,
+            102577762.5,
+            36390197.25,
+            24492823.75
+          ],
+          "relative_volumes": [
+            1.9465398131499616,
+            3.106919659275121,
+            5.694167236946696,
+            9.325218850378263,
+            9.158086409100298,
+            3.4904010444427644,
+            3.240670976620742,
+            0.8588520417110531,
+            1.7192348801137605,
+            0.9810306051842297,
+            2.6530668510525484,
+            2.9705085876621102,
+            5.677218285749945,
+            9.736072480704587,
+            7.330161541285114,
+            5.574010263495375,
+            4.811242696188611,
+            13.634253666084122,
+            4.836849314834069,
+            3.2554947960206264
+          ],
+          "dominant_levels": [
+            {
+              "price": 25.14,
+              "volume": 102577762,
+              "percentage": 13.63
+            }
+          ]
+        },
+        "15min": {
+          "price_levels": [
+            20.2226,
+            20.50347,
+            20.78434,
+            21.06521,
+            21.34608,
+            21.62695,
+            21.90782,
+            22.18869,
+            22.46956,
+            22.75043,
+            23.0313,
+            23.312170000000002,
+            23.593040000000002,
+            23.87391,
+            24.15478,
+            24.43565,
+            24.71652,
+            24.99739,
+            25.27826,
+            25.55913,
+            25.84
+          ],
+          "volumes": [
+            12737684.5,
+            21560424.0,
+            51492324.5,
+            69174097.0,
+            67015720.25,
+            24009282.0,
+            23454328.75,
+            8561078.0,
+            14168206.0,
+            5488217.5,
+            18676379.5,
+            23267899.0,
+            46405305.5,
+            68634745.25,
+            58016470.75,
+            40999463.75,
+            36496836.75,
+            101616604.75,
+            35410419.5,
+            24477503.0
+          ],
+          "relative_volumes": [
+            1.6946004612736751,
+            2.8683631201303514,
+            6.850453616570089,
+            9.202807361447048,
+            8.915660491374046,
+            3.1941551348716284,
+            3.1203250731021344,
+            1.1389516460232558,
+            1.8849146737007383,
+            0.7301433715892599,
+            2.4846746137904585,
+            3.095522767758087,
+            6.173685029319561,
+            9.131052897412491,
+            7.718415234293226,
+            5.454500791154258,
+            4.855478748243452,
+            13.518904890634929,
+            4.710943595642862,
+            3.2564464816684513
+          ],
+          "dominant_levels": [
+            {
+              "price": 25.14,
+              "volume": 101616604,
+              "percentage": 13.52
+            }
+          ]
+        },
+        "30min": {
+          "price_levels": [
+            20.2226,
+            20.50347,
+            20.78434,
+            21.06521,
+            21.34608,
+            21.62695,
+            21.90782,
+            22.18869,
+            22.46956,
+            22.75043,
+            23.0313,
+            23.312170000000002,
+            23.593040000000002,
+            23.87391,
+            24.15478,
+            24.43565,
+            24.71652,
+            24.99739,
+            25.27826,
+            25.55913,
+            25.84
+          ],
+          "volumes": [
+            17534483.25,
+            20330726.75,
+            44784156.0,
+            72492610.5,
+            66181629.0,
+            25269266.0,
+            23035453.0,
+            9061295.75,
+            15936553.25,
+            8519047.5,
+            15281600.0,
+            23907680.75,
+            44472190.75,
+            72676878.5,
+            54993958.75,
+            38251932.75,
+            45530332.5,
+            96800104.0,
+            34497240.0,
+            21078844.0
+          ],
+          "relative_volumes": [
+            2.335950267121687,
+            2.7084668481713323,
+            5.966161630170612,
+            9.657492065631498,
+            8.816740803644635,
+            3.3663808520087954,
+            3.0687914677279733,
+            1.2071491315651464,
+            2.123073448505332,
+            1.134910621517594,
+            2.035820337166011,
+            3.184989967367445,
+            5.924601505547597,
+            9.68204031593833,
+            7.326315284035617,
+            5.095936461388636,
+            6.065567536215487,
+            12.895745233678731,
+            4.59573492095702,
+            2.8081313016405183
+          ],
+          "dominant_levels": [
+            {
+              "price": 25.14,
+              "volume": 96800104,
+              "percentage": 12.9
+            }
+          ]
+        },
+        "60min": {
+          "price_levels": [
+            20.2226,
+            20.50347,
+            20.78434,
+            21.06521,
+            21.34608,
+            21.62695,
+            21.90782,
+            22.18869,
+            22.46956,
+            22.75043,
+            23.0313,
+            23.312170000000002,
+            23.593040000000002,
+            23.87391,
+            24.15478,
+            24.43565,
+            24.71652,
+            24.99739,
+            25.27826,
+            25.55913,
+            25.84
+          ],
+          "volumes": [
+            21043504.75,
+            20497899.25,
+            49016367.25,
+            66822456.0,
+            69544871.0,
+            13389379.0,
+            30086743.5,
+            9280033.75,
+            13969681.75,
+            8794142.25,
+            14548413.0,
+            28378669.0,
+            40998391.5,
+            77241817.75,
+            50710037.75,
+            40576042.25,
+            43904516.5,
+            92252003.25,
+            43975440.0,
+            13762644.5
+          ],
+          "relative_volumes": [
+            2.8103231777574686,
+            2.737458519480337,
+            6.546049938385245,
+            8.924021883354703,
+            9.287595635202033,
+            1.7881280987416852,
+            4.018031863313732,
+            1.2393322427908098,
+            1.8656265139446662,
+            1.1744422845567688,
+            1.9429150580769143,
+            3.789921507471676,
+            5.475263329566089,
+            10.315509383718188,
+            6.772236665272271,
+            5.41885932745311,
+            5.863371229936649,
+            12.320093349850971,
+            5.872842939058566,
+            1.8379770520681138
+          ],
+          "dominant_levels": [
+            {
+              "price": 24.01,
+              "volume": 77241817,
+              "percentage": 10.32
+            },
+            {
+              "price": 25.14,
+              "volume": 92252003,
+              "percentage": 12.32
+            }
+          ]
+        }
+      },
+      "confluences": [
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "1m",
+          "volume_timeframe": "1min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 13.86
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "1m",
+          "volume_timeframe": "5min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 13.63
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "1m",
+          "volume_timeframe": "15min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 13.52
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "1m",
+          "volume_timeframe": "30min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 12.9
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "1m",
+          "volume_timeframe": "60min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 12.32
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "5m",
+          "volume_timeframe": "1min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 13.86
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "5m",
+          "volume_timeframe": "5min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 13.63
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "5m",
+          "volume_timeframe": "15min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 13.52
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "5m",
+          "volume_timeframe": "30min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 12.9
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "5m",
+          "volume_timeframe": "60min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 12.32
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "15m",
+          "volume_timeframe": "1min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 13.86
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "15m",
+          "volume_timeframe": "5min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 13.63
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "15m",
+          "volume_timeframe": "15min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 13.52
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "15m",
+          "volume_timeframe": "30min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 12.9
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "15m",
+          "volume_timeframe": "60min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 12.32
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "30m",
+          "volume_timeframe": "1min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 13.86
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "30m",
+          "volume_timeframe": "5min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 13.63
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "30m",
+          "volume_timeframe": "15min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 13.52
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "30m",
+          "volume_timeframe": "30min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 12.9
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "30m",
+          "volume_timeframe": "60min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 12.32
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "1h",
+          "volume_timeframe": "1min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 13.86
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "1h",
+          "volume_timeframe": "5min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 13.63
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "1h",
+          "volume_timeframe": "15min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 13.52
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "1h",
+          "volume_timeframe": "30min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 12.9
+        },
+        {
+          "type": "gap_volume_confluence",
+          "gap_timeframe": "1h",
+          "volume_timeframe": "60min",
+          "gap_price": 24.99,
+          "volume_level": 25.14,
+          "volume_strength": 12.32
+        }
+      ]
+    },
+    "options": [
+      {
+        "contractID": "SOXL250627P00025000",
+        "symbol": "SOXL",
+        "expiration": "2025-06-27 00:00:00",
+        "strike": 25.0,
+        "type": "put",
+        "last": "0.05",
+        "mark": "0.04",
+        "bid": "0.02",
+        "bid_size": "31",
+        "ask": "0.05",
+        "ask_size": "20",
+        "volume": "15329",
+        "open_interest": "5486",
+        "date": "2025-06-27",
+        "implied_volatility": "0.16205",
+        "delta": -0.29604,
+        "gamma": 1.62258,
+        "theta": -0.03592,
+        "vega": 0.00454,
+        "rho": "-0.00020",
+        "implied_vol": 0.16205,
+        "price": 0.04,
+        "score": 18.6864
+      }
+    ],
+    "trade_plan": {
+      "entry_price": 0.05,
+      "stop_loss": 0.04,
+      "initial_target": 0.09,
+      "final_target": 0.18,
+      "position_size": 49,
+      "max_hold_time": "4 hours",
+      "support": null,
+      "resistance": null,
+      "skew": "Bullish Skew Skew",
+      "strike": "$25.0",
+      "type": "Put",
+      "expiration": "2025-06-27",
+      "risk_metrics": {
+        "delta_exposure": -1450.6,
+        "gamma_theta_ratio": 45.17,
+        "implied_vol": 16.2
+      },
+      "delta": -0.29604,
+      "gamma": 1.62258,
+      "theta": -0.03592,
+      "score": 18.6864,
+      "bias": "Bullish",
+      "option_symbol": "SOXL"
+    },
+    "oi_skew": {
+      "put_call_ratio": 0.59,
+      "bias": "Bullish Skew"
+    }
+  }
+}

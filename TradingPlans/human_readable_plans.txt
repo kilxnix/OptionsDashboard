@@ -6892,3 +6892,111 @@ Delta: -0.35653 | Gamma: 5.31506 | Theta: -0.00745 | Score: 285.83
 
 ================================================================================
 
+📈 Trade Plan for NU (Bearish Bias)
+
+🔹 Option: $$13.0 Put expiring 2025-07-03
+🔹 Entry Price: $0.12
+🔹 Stop Loss: $0.09
+🔹 Initial Target: $0.21
+🔹 Final Target: $0.42
+🔹 Position Size: 16 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.29927 | Gamma: 0.67257 | Theta: -0.01446 | Score: 19.22
+
+================================================================================
+
+📈 Trade Plan for F (Bullish Bias)
+
+🔹 Option: $$10.5 Put expiring 2025-07-11
+🔹 Entry Price: $0.09
+🔹 Stop Loss: $0.07
+🔹 Initial Target: $0.16
+🔹 Final Target: $0.32
+🔹 Position Size: 25 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.25554 | Gamma: 0.63220 | Theta: -0.00550 | Score: 46.57
+
+================================================================================
+
+📈 Trade Plan for OPEN (Bullish Bias)
+
+🔹 Option: $$0.5 Put expiring 2025-08-15
+🔹 Entry Price: $0.09
+🔹 Stop Loss: $0.07
+🔹 Initial Target: $0.16
+🔹 Final Target: $0.32
+🔹 Position Size: 25 contracts
+🔹 Max Hold Time: 10 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.31474 | Gamma: 1.35793 | Theta: -0.00092 | Score: 591.03
+
+================================================================================
+
+📈 Trade Plan for DNN (Bearish Bias)
+
+🔹 Option: $$2.0 Call expiring 2025-08-15
+🔹 Entry Price: $0.10
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.18
+🔹 Final Target: $0.35
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.34928 | Gamma: 0.97116 | Theta: -0.00150 | Score: 259.63
+
+================================================================================
+
+📈 Trade Plan for NKE (Bullish Bias)
+
+🔹 Option: $$72.0 Put expiring 2025-06-27
+🔹 Entry Price: $0.13
+🔹 Stop Loss: $0.10
+🔹 Initial Target: $0.23
+🔹 Final Target: $0.46
+🔹 Position Size: 16 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.43094 | Gamma: 1.39205 | Theta: -0.05177 | Score: 11.45
+
+================================================================================
+
+📈 Trade Plan for SOXL (Bullish Bias)
+
+🔹 Option: $$25.0 Put expiring 2025-06-27
+🔹 Entry Price: $0.05
+🔹 Stop Loss: $0.04
+🔹 Initial Target: $0.09
+🔹 Final Target: $0.18
+🔹 Position Size: 49 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.29604 | Gamma: 1.62258 | Theta: -0.03592 | Score: 18.69
+
+================================================================================
+
