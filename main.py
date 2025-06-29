@@ -4,6 +4,7 @@ import os
 import json
 import glob
 import pandas as pd
+import requests
 from run_autonomous_scan import run_autonomous_scan
 
 app = Flask(__name__)
@@ -256,6 +257,99 @@ def get_all_plans():
         return jsonify({
             "status": "error",
             "message": f"Error retrieving all plans: {str(e)}"
+        }), 500
+
+
+def fetch_all_symbols(scrId):
+    """Fetch all symbols from Yahoo Finance screener"""
+    url = 'https://query1.finance.yahoo.com/v1/finance/screener/predefined/saved'
+    symbols = []
+    
+    # First request to find total count
+    params = {'scrIds': scrId, 'count': 1, 'start': 0}
+    r = requests.get(url, params=params)
+    r.raise_for_status()
+    data = r.json()
+    total = data['finance']['result'][0]['total']
+    print(f"Total symbols for {scrId}: {total}")
+
+    # Page through in chunks of 100
+    for start in range(0, total, 100):
+        params = {'scrIds': scrId, 'count': 100, 'start': start}
+        r = requests.get(url, params=params)
+        r.raise_for_status()
+        page = r.json()
+        quotes = page['finance']['result'][0]['quotes']
+        page_syms = [q['symbol'] for q in quotes]
+        print(f"Fetched {len(page_syms)} symbols at offset {start}")
+        symbols.extend(page_syms)
+
+    # Dedupe and return
+    return list(dict.fromkeys(symbols))
+
+
+@app.route("/screener/symbols", methods=["GET"])
+def get_screener_symbols():
+    """Get symbols from Yahoo Finance screeners"""
+    try:
+        # Get screener type from query params
+        screener = request.args.get('screener', 'MOST_ACTIVES')
+        valid_screeners = ['MOST_ACTIVES', 'DAY_GAINERS', 'DAY_LOSERS']
+        
+        if screener not in valid_screeners:
+            return jsonify({
+                "status": "error",
+                "message": f"Invalid screener. Valid options: {valid_screeners}"
+            }), 400
+        
+        symbols = fetch_all_symbols(screener)
+        
+        return jsonify({
+            "status": "success",
+            "screener": screener,
+            "total_symbols": len(symbols),
+            "symbols": symbols
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Error fetching symbols: {str(e)}"
+        }), 500
+
+
+@app.route("/screener/all", methods=["GET"])
+def get_all_screener_symbols():
+    """Get symbols from all Yahoo Finance screeners"""
+    try:
+        screeners = ['MOST_ACTIVES', 'DAY_GAINERS', 'DAY_LOSERS']
+        all_symbols = {}
+        combined_symbols = []
+        
+        for screener in screeners:
+            try:
+                symbols = fetch_all_symbols(screener)
+                all_symbols[screener] = symbols
+                combined_symbols.extend(symbols)
+            except Exception as e:
+                print(f"Error fetching {screener}: {e}")
+                all_symbols[screener] = []
+        
+        # Dedupe combined list
+        unique_symbols = list(dict.fromkeys(combined_symbols))
+        
+        return jsonify({
+            "status": "success",
+            "screeners": all_symbols,
+            "combined_unique_symbols": unique_symbols,
+            "total_unique": len(unique_symbols),
+            "breakdown": {screener: len(symbols) for screener, symbols in all_symbols.items()}
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Error fetching all symbols: {str(e)}"
         }), 500
 
 
