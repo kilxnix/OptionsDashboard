@@ -71,50 +71,54 @@ def run_autonomous_scan(min_delta=0.25,
         f"\n📡 Starting autonomous scan at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}..."
     )
 
-    # ── AUTO-REFRESH SYMBOLS FROM YAHOO FINANCE ──
+    # ── AUTO-REFRESH SYMBOLS FROM ALPHA VANTAGE ──
     if auto_refresh_symbols:
-        print("🔄 Auto-refreshing symbols from Yahoo Finance...")
+        print("🔄 Auto-refreshing symbols from Alpha Vantage...")
         try:
             import requests
             import time
             from db_client import update_tickers_in_db
             
-            # Fetch fresh symbols from Yahoo screeners
-            screeners = ['MOST_ACTIVES', 'DAY_GAINERS', 'DAY_LOSERS']
-            all_fresh_symbols = []
-            
-            for screener in screeners:
+            # Fetch fresh symbols from Alpha Vantage
+            api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
+            if not api_key:
+                print("❌ ALPHA_VANTAGE_API_KEY not set, skipping symbol refresh")
+            else:
+                url = f'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey={api_key}'
+                
                 try:
-                    print(f"   Fetching {screener}...")
-                    # Use the same logic from main.py
-                    url = 'https://query1.finance.yahoo.com/v1/finance/screener/predefined/saved'
-                    params = {'scrIds': screener, 'count': 50, 'start': 0}  # Get top 50 from each
-                    
-                    response = requests.get(url, params=params, timeout=10)
+                    print("   Fetching top gainers, losers, and most active...")
+                    response = requests.get(url, timeout=30)
                     if response.status_code == 200:
                         data = response.json()
-                        if 'finance' in data and data['finance']['result']:
-                            quotes = data['finance']['result'][0]['quotes']
-                            symbols = [q['symbol'] for q in quotes if 'symbol' in q]
-                            all_fresh_symbols.extend(symbols)
-                            print(f"   ✅ {len(symbols)} symbols from {screener}")
+                        
+                        if 'Error Message' not in data and 'Information' not in data:
+                            all_fresh_symbols = []
+                            categories = ['top_gainers', 'top_losers', 'most_actively_traded']
+                            
+                            for category in categories:
+                                if category in data:
+                                    symbols = [item['ticker'] for item in data[category]]
+                                    all_fresh_symbols.extend(symbols)
+                                    print(f"   ✅ {len(symbols)} symbols from {category}")
+                            
+                            # Update database with fresh symbols
+                            if all_fresh_symbols:
+                                unique_symbols = list(dict.fromkeys(all_fresh_symbols))
+                                update_result = update_tickers_in_db(unique_symbols, mode="replace")
+                                print(f"🔄 Database updated with {len(unique_symbols)} fresh symbols")
+                            else:
+                                print("⚠️ No fresh symbols fetched, using existing database")
+                        else:
+                            print(f"❌ Alpha Vantage API error: {data.get('Error Message', data.get('Information', 'Unknown error'))}")
                     
-                    time.sleep(1)  # Rate limiting
-                    
-                except Exception as e:
-                    print(f"   ❌ Failed to fetch {screener}: {e}")
-            
-            # Update database with fresh symbols
-            if all_fresh_symbols:
-                unique_symbols = list(dict.fromkeys(all_fresh_symbols))
-                update_result = update_tickers_in_db(unique_symbols, mode="replace")
-                print(f"🔄 Database updated with {len(unique_symbols)} fresh symbols")
-            else:
-                print("⚠️ No fresh symbols fetched, using existing database")
+                except Exception as e:pt Exception as e:
+                    print(f"   ❌ Failed to fetch from Alpha Vantage: {e}")
+                    print("📦 Falling back to existing database")
                 
         except Exception as e:
             print(f"❌ Symbol refresh failed: {e}")
-            print("📦 Falling back to existing database symbols")
+            print("📦 Falling back to existing database")k to existing database symbols")
 
     # ── PULL TICKERS FROM DATABASE ──
     symbols = fetch_tickers_from_db()
