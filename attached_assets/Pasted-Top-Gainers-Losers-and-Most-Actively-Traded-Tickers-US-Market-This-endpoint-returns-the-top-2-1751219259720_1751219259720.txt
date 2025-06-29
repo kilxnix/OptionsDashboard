@@ -1,0 +1,67 @@
+Top Gainers, Losers, and Most Actively Traded Tickers (US Market)
+
+This endpoint returns the top 20 gainers, losers, and the most active traded tickers in the US market.
+
+
+API Parameters
+❚ Required: function
+
+The API function of your choice. In this case, function=TOP_GAINERS_LOSERS
+
+❚ Required: apikey
+
+Your API key. Claim your free API key here.
+
+
+Examples (click for JSON output)
+https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey=demo
+
+
+💡 Tip: By default, the top gainers, losers, and the most active traded ticker information is updated at the end of each trading day for all users. If you would like to access realtime or 15-minute delayed data, please subscribe to a premium membership plan for your personal use. For commercial use, please contact sales.
+
+* Realtime and 15-minute delayed US market data is regulated by the stock exchanges, FINRA, and the SEC. Learn more about the key market data policies you need to know as a data consumer.
+
+
+Language-specific guides
+Python NodeJS PHP C#/.NET Other
+import requests
+
+# replace the "demo" apikey below with your own key from https://www.alphavantage.co/support/#api-key
+url = 'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey=demo'
+r = requests.get(url)
+data = r.json()
+
+print(data)
+
+Insider Transactions Trending
+This API returns the latest and historical insider transactions made by key stakeholders (e.g., founders, executives, board members, etc.) of a specific company.
+
+
+API Parameters
+❚ Required: function
+
+The function of your choice. In this case, function=INSIDER_TRANSACTIONS
+
+❚ Required: symbol
+
+The symbol of the ticker of your choice. For example: symbol=IBM.
+
+❚ Required: apikey
+
+Your API key. Claim your free API key here.
+
+
+Example (click for JSON output)
+https://www.alphavantage.co/query?function=INSIDER_TRANSACTIONS&symbol=IBM&apikey=demo
+
+
+Language-specific guides
+Python NodeJS PHP C#/.NET Other
+import requests
+
+# replace the "demo" apikey below with your own key from https://www.alphavantage.co/support/#api-key
+url = 'https://www.alphavantage.co/query?function=INSIDER_TRANSACTIONS&symbol=IBM&apikey=demo'
+r = requests.get(url)
+data = r.json()
+
+print(data)
