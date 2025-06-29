@@ -1,0 +1,347 @@
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Serving Flask app 'main'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://172.31.128.76:8080
+Press CTRL+C to quit
+ * Restarting with stat
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Debugger is active!
+ * Debugger PIN: 141-727-993
+172.31.128.76 - - [29/Jun/2025 23:03:04] "GET / HTTP/1.1" 200 -
+
+📡 Starting autonomous scan at 2025-06-29 23:07:07...
+🔄 Auto-refreshing symbols from Alpha Vantage...
+   Fetching top gainers, losers, and most active...
+   ✅ 20 symbols from top_gainers
+   ✅ 20 symbols from top_losers
+   ✅ 20 symbols from most_actively_traded
+Cleared existing tickers
+Database update complete: 59 symbols processed, 59 total in DB
+🔄 Database updated with 59 fresh symbols
+🔍 Processing 25 of 59 tickers: ['BGLWW', 'LCFY', 'BGL']...
+🔄 Running optimized scanner...
+⏭️  Skipping BGLWW (warrant/right)
+⏭️  Skipping NXLIW (warrant/right)
+⏭️  Skipping TGE+ (warrant/right)
+⏭️  Skipping LIDRW (warrant/right)
+⏭️  Skipping STSSW (warrant/right)
+⏭️  Skipping PSFE+ (warrant/right)
+⏭️  Skipping POLEW (warrant/right)
+⏭️  Skipping CREVW (warrant/right)
+⏭️  Skipping LIMNW (warrant/right)
+⏭️  Skipping CLNNW (warrant/right)
+🔍 Processing 15 filtered symbols...
+
+Analyzing 15 symbols across 7 timeframes...
+Looking for options expiring: (2, 16)
+Scanning:   0%|                                                                    | 0/15 [00:00<?, ?it/s]Successfully fetched D data for LCFY
+Successfully fetched 1m data for LCFY
+Successfully fetched 5m data for LCFY
+Successfully fetched 15m data for LCFY
+Successfully fetched 30m data for LCFY
+Successfully fetched 1h data for LCFY
+Successfully fetched D data for LCFY
+Successfully fetched W data for LCFY
+
+=== LCFY Multi-Timeframe Analysis ===
+Overall Confluence Score: 9.11/10 (Bullish)
+Bullish Signals: 3.6
+Bearish Signals: 0.35
+
++-----------+---------+-----------+----------+---------+---------+
+| Timeframe |  Gap %  | Direction | Patterns | Candles | Volume  |
++-----------+---------+-----------+----------+---------+---------+
+|    1m     |  0.96%  |    Up     |   None   |  None   | Normal  |
+|    5m     | -0.83%  |   Down    |   None   |  None   | Normal  |
+|    15m    |  0.12%  |    Up     |   None   |  None   | Normal  |
+|    30m    | -0.01%  |   Down    |   None   |  None   | Normal  |
+|    1h     |  0.00%  |   Down    |   None   |  None   | Normal  |
+|     D     | 284.71% |    Up     |   None   |  None   | Unusual |
+|     W     |  0.38%  |    Up     |   None   |  None   | Unusual |
++-----------+---------+-----------+----------+---------+---------+
+
+🎯 LCFY: 9.1/10 Bullish | 0.12% gap
+No valid data for LCFY
+Options Data Fetched: 0 contracts
+No options data found for LCFY
+Scanning:   7%|████                                                        | 1/15 [00:09<02:16,  9.72s/it]Successfully fetched D data for BGL
+Error fetching data for BGL: Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY.
+Error fetching data for BGL: Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY.
+Error fetching data for BGL: Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY.
+Error fetching data for BGL: Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY.
+Error fetching data for BGL: Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY.
+Successfully fetched D data for BGL
+Error fetching data for BGL: Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_WEEKLY.
+Scanning:  13%|████████                                                    | 2/15 [00:15<01:37,  7.54s/it]Successfully fetched D data for RCT
+Successfully fetched 1m data for RCT
+Successfully fetched 5m data for RCT
+Successfully fetched 15m data for RCT
+Successfully fetched 30m data for RCT
+Successfully fetched 1h data for RCT
+Successfully fetched D data for RCT
+Successfully fetched W data for RCT
+
+=== RCT Multi-Timeframe Analysis ===
+Overall Confluence Score: 8.4/10 (Bullish)
+Bullish Signals: 5.25
+Bearish Signals: 1.0
+
++-----------+--------+-----------+--------------+---------+---------+
+| Timeframe | Gap %  | Direction |   Patterns   | Candles | Volume  |
++-----------+--------+-----------+--------------+---------+---------+
+|    1m     | 2.07%  |    Up     | Rising Wedge |  None   | Normal  |
+|    5m     | -0.35% |   Down    |     None     |  None   | Normal  |
+|    15m    | -0.67% |   Down    |     None     |  None   | Normal  |
+|    30m    | -1.00% |   Down    |     None     |  None   | Normal  |
+|    1h     | -0.35% |   Down    |     None     |  None   | Normal  |
+|     D     | 12.43% |    Up     |     None     |  None   | Unusual |
+|     W     | -0.78% |   Down    |     None     |  None   | Unusual |
++-----------+--------+-----------+--------------+---------+---------+
+
+🎯 RCT: 8.4/10 Bullish | -0.67% gap
+No valid data for RCT
+Options Data Fetched: 0 contracts
+No options data found for RCT
+Scanning:  20%|████████████                                                | 3/15 [00:24<01:38,  8.22s/it]Successfully fetched D data for SERA
+Successfully fetched 1m data for SERA
+Successfully fetched 5m data for SERA
+Successfully fetched 15m data for SERA
+Successfully fetched 30m data for SERA
+Successfully fetched 1h data for SERA
+Successfully fetched D data for SERA
+Successfully fetched W data for SERA
+
+=== SERA Multi-Timeframe Analysis ===
+Overall Confluence Score: 8.47/10 (Bullish)
+Bullish Signals: 4.42
+Bearish Signals: 0.8
+
++-----------+--------+-----------+---------------+---------+---------+
+| Timeframe | Gap %  | Direction |   Patterns    | Candles | Volume  |
++-----------+--------+-----------+---------------+---------+---------+
+|    1m     | 0.00%  |   Down    |     None      |  None   | Normal  |
+|    5m     | -3.42% |   Down    |     None      |  None   | Normal  |
+|    15m    | -0.36% |   Down    |     None      |  None   | Normal  |
+|    30m    | 0.00%  |   Down    |     None      |  None   | Normal  |
+|    1h     | -0.35% |   Down    |     None      |  None   | Normal  |
+|     D     | 5.56%  |    Up     | Falling Wedge |  None   | Unusual |
+|     W     | -2.08% |   Down    |     None      |  None   | Normal  |
++-----------+--------+-----------+---------------+---------+---------+
+
+🎯 SERA: 8.5/10 Bullish | -0.36% gap
+Options Data Fetched: 42 contracts
+No valid options found matching criteria
+Scanning:  27%|████████████████                                            | 4/15 [00:34<01:36,  8.73s/it]Successfully fetched D data for JVSAU
+Successfully fetched 1m data for JVSAU
+Successfully fetched 5m data for JVSAU
+Successfully fetched 15m data for JVSAU
+Successfully fetched 30m data for JVSAU
+Successfully fetched 1h data for JVSAU
+Successfully fetched D data for JVSAU
+Successfully fetched W data for JVSAU
+
+=== JVSAU Multi-Timeframe Analysis ===
+Overall Confluence Score: 10.0/10 (Bearish)
+Bullish Signals: 0
+Bearish Signals: 3.75
+
++-----------+--------+-----------+----------+---------+---------+
+| Timeframe | Gap %  | Direction | Patterns | Candles | Volume  |
++-----------+--------+-----------+----------+---------+---------+
+|    1m     | 0.00%  |   Down    |   None   |  None   | Normal  |
+|    5m     | 0.00%  |   Down    |   None   |  None   | Normal  |
+|    15m    | 0.00%  |   Down    |   None   | Bearish | Normal  |
+|    30m    | 0.00%  |   Down    |   None   | Bearish | Normal  |
+|    1h     | 0.00%  |   Down    |   None   | Bearish | Normal  |
+|     D     | -0.87% |   Down    |   None   |  None   | Unusual |
+|     W     | 0.00%  |   Down    |   None   |  None   | Normal  |
++-----------+--------+-----------+----------+---------+---------+
+
+🎯 JVSAU: 10.0/10 Bearish | -0.87% daily gap
+No valid data for JVSAU
+Options Data Fetched: 0 contracts
+No options data found for JVSAU
+Scanning:  33%|████████████████████                                        | 5/15 [00:42<01:25,  8.56s/it]Successfully fetched D data for AMIX
+Successfully fetched 1m data for AMIX
+Successfully fetched 5m data for AMIX
+Successfully fetched 15m data for AMIX
+Successfully fetched 30m data for AMIX
+Successfully fetched 1h data for AMIX
+Successfully fetched D data for AMIX
+Successfully fetched W data for AMIX
+
+=== AMIX Multi-Timeframe Analysis ===
+Overall Confluence Score: 10.0/10 (Bullish)
+Bullish Signals: 3.75
+Bearish Signals: 0
+
++-----------+--------+-----------+---------------+---------+---------+
+| Timeframe | Gap %  | Direction |   Patterns    | Candles | Volume  |
++-----------+--------+-----------+---------------+---------+---------+
+|    1m     | -0.01% |   Down    |     None      |  None   | Unusual |
+|    5m     | -0.01% |   Down    |     None      |  None   | Normal  |
+|    15m    | 0.00%  |   Down    |     None      |  None   | Normal  |
+|    30m    | 0.00%  |   Down    |     None      |  None   | Normal  |
+|    1h     | 0.00%  |   Down    |     None      |  None   | Normal  |
+|     D     | 9.60%  |    Up     | Falling Wedge |  None   | Unusual |
+|     W     | 4.03%  |    Up     |     None      |  None   | Normal  |
++-----------+--------+-----------+---------------+---------+---------+
+
+🎯 AMIX: 10.0/10 Bullish | 9.60% daily gap
+No valid data for AMIX
+Options Data Fetched: 0 contracts
+No options data found for AMIX
+Scanning:  40%|████████████████████████                                    | 6/15 [01:00<01:46, 11.86s/it]Successfully fetched D data for RILYP
+Successfully fetched 1m data for RILYP
+Successfully fetched 5m data for RILYP
+Successfully fetched 15m data for RILYP
+Successfully fetched 30m data for RILYP
+Successfully fetched 1h data for RILYP
+Successfully fetched D data for RILYP
+Successfully fetched W data for RILYP
+
+=== RILYP Multi-Timeframe Analysis ===
+Overall Confluence Score: 10.0/10 (Bullish)
+Bullish Signals: 2.25
+Bearish Signals: 0
+
++-----------+-------+-----------+---------------+---------+---------+
+| Timeframe | Gap % | Direction |   Patterns    | Candles | Volume  |
++-----------+-------+-----------+---------------+---------+---------+
+|    1m     | 2.58% |    Up     |     None      |  None   | Normal  |
+|    5m     | 2.58% |    Up     |     None      |  None   | Normal  |
+|    15m    | 0.00% |   Down    |     None      |  None   | Normal  |
+|    30m    | 0.00% |   Down    |     None      |  None   | Normal  |
+|    1h     | 0.00% |   Down    |     None      |  None   | Normal  |
+|     D     | 3.59% |    Up     | Falling Wedge |  None   | Unusual |
+|     W     | 6.02% |    Up     |     None      |  None   | Normal  |
++-----------+-------+-----------+---------------+---------+---------+
+
+🎯 RILYP: 10.0/10 Bullish | 3.59% daily gap
+No valid data for RILYP
+Options Data Fetched: 0 contracts
+No options data found for RILYP
+Scanning:  47%|████████████████████████████                                | 7/15 [01:08<01:24, 10.59s/it]Successfully fetched D data for SOND
+Successfully fetched 1m data for SOND
+Successfully fetched 5m data for SOND
+Successfully fetched 15m data for SOND
+Successfully fetched 30m data for SOND
+Successfully fetched 1h data for SOND
+Successfully fetched D data for SOND
+Successfully fetched W data for SOND
+
+=== SOND Multi-Timeframe Analysis ===
+Overall Confluence Score: 8.35/10 (Bullish)
+Bullish Signals: 6.85
+Bearish Signals: 1.35
+
++-----------+--------+-----------+---------------+---------+---------+
+| Timeframe | Gap %  | Direction |   Patterns    | Candles | Volume  |
++-----------+--------+-----------+---------------+---------+---------+
+|    1m     | 1.30%  |    Up     |     None      |  None   | Normal  |
+|    5m     | -1.70% |   Down    |     None      |  None   | Normal  |
+|    15m    | 1.71%  |    Up     | Rising Wedge  |  None   | Normal  |
+|    30m    | 2.09%  |    Up     |     None      |  None   | Normal  |
+|    1h     | 0.00%  |   Down    |     None      |  None   | Normal  |
+|     D     | 11.25% |    Up     | Falling Wedge | Bullish | Unusual |
+|     W     | 4.24%  |    Up     |     None      |  None   | Normal  |
++-----------+--------+-----------+---------------+---------+---------+
+
+🎯 SOND: 8.3/10 Bullish | 1.71% gap
+Options Data Fetched: 24 contracts
+No valid options found matching criteria
+Scanning:  53%|████████████████████████████████                            | 8/15 [01:17<01:10, 10.07s/it]Successfully fetched D data for ODYS
+Successfully fetched 1m data for ODYS
+Successfully fetched 5m data for ODYS
+Successfully fetched 15m data for ODYS
+Successfully fetched 30m data for ODYS
+Successfully fetched 1h data for ODYS
+Successfully fetched D data for ODYS
+Successfully fetched W data for ODYS
+
+=== ODYS Multi-Timeframe Analysis ===
+Overall Confluence Score: 10.0/10 (Bullish)
+Bullish Signals: 4.25
+Bearish Signals: 0
+
++-----------+---------+-----------+----------+---------+--------+
+| Timeframe |  Gap %  | Direction | Patterns | Candles | Volume |
++-----------+---------+-----------+----------+---------+--------+
+|    1m     |  2.76%  |    Up     |   None   |  None   | Normal |
+|    5m     |  2.76%  |    Up     |   None   |  None   | Normal |
+|    15m    |  2.76%  |    Up     |   None   |  None   | Normal |
+|    30m    |  0.92%  |    Up     |   None   |  None   | Normal |
+|    1h     |  0.92%  |    Up     |   None   |  None   | Normal |
+|     D     |  0.00%  |   Down    |   None   |  None   | Normal |
+|     W     | -11.61% |   Down    |   None   |  None   | Normal |
++-----------+---------+-----------+----------+---------+--------+
+
+🎯 ODYS: 10.0/10 Bullish | 2.76% gap
+No valid data for ODYS
+Options Data Fetched: 0 contracts
+No options data found for ODYS
+Scanning:  60%|████████████████████████████████████                        | 9/15 [01:26<00:58,  9.70s/it]Successfully fetched D data for FVNNR
+Successfully fetched 1m data for FVNNR
+Successfully fetched 5m data for FVNNR
+Successfully fetched 15m data for FVNNR
+Successfully fetched 30m data for FVNNR
+Successfully fetched 1h data for FVNNR
+Successfully fetched D data for FVNNR
+Successfully fetched W data for FVNNR
+⚪ FVNNR: 0.0/10 Neutral (below threshold)
+Scanning:  67%|███████████████████████████████████████▎                   | 10/15 [01:32<00:42,  8.56s/it]Successfully fetched D data for SVRE
+Successfully fetched 1m data for SVRE
+Successfully fetched 5m data for SVRE
+Successfully fetched 15m data for SVRE
+Successfully fetched 30m data for SVRE
+Successfully fetched 1h data for SVRE
+Successfully fetched D data for SVRE
+Successfully fetched W data for SVRE
+⚪ SVRE: 5.0/10 Bearish (below threshold)
+Scanning:  73%|███████████████████████████████████████████▎               | 11/15 [01:39<00:32,  8.05s/it]Successfully fetched D data for EYEN
+Successfully fetched 1m data for EYEN
+Successfully fetched 5m data for EYEN
+Successfully fetched 15m data for EYEN
+Successfully fetched 30m data for EYEN
+Successfully fetched 1h data for EYEN
+Successfully fetched D data for EYEN
+Successfully fetched W data for EYEN
+⚪ EYEN: 6.5/10 Bullish (below threshold)
+Scanning:  80%|███████████████████████████████████████████████▏           | 12/15 [01:50<00:27,  9.03s/it]Successfully fetched D data for DAIC
+Successfully fetched 1m data for DAIC
+Successfully fetched 5m data for DAIC
+Successfully fetched 15m data for DAIC
+Successfully fetched 30m data for DAIC
+Successfully fetched 1h data for DAIC
+Successfully fetched D data for DAIC
+Error fetching data for DAIC: Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_WEEKLY.
+⚪ DAIC: 5.9/10 Bullish (below threshold)
+Scanning:  87%|███████████████████████████████████████████████████▏       | 13/15 [02:06<00:21, 10.96s/it]Successfully fetched D data for OTRK
+Successfully fetched 1m data for OTRK
+Successfully fetched 5m data for OTRK
+Successfully fetched 15m data for OTRK
+Successfully fetched 30m data for OTRK
+Successfully fetched 1h data for OTRK
+Successfully fetched D data for OTRK
+Successfully fetched W data for OTRK
+⚪ OTRK: 5.8/10 Bearish (below threshold)
+Scanning:  93%|███████████████████████████████████████████████████████    | 14/15 [02:13<00:09, 10.00s/it]Successfully fetched D data for LIMN
+Successfully fetched 1m data for LIMN
+Successfully fetched 5m data for LIMN
+Successfully fetched 15m data for LIMN
+Successfully fetched 30m data for LIMN
+Successfully fetched 1h data for LIMN
+Successfully fetched D data for LIMN
+Successfully fetched W data for LIMN
+⚪ LIMN: 5.5/10 Bullish (below threshold)
+Scanning: 100%|███████████████████████████████████████████████████████████| 15/15 [02:21<00:00,  9.42s/it]
+⏱️  Scan completed in 141.3 seconds
+⚠️ No valid results found in scanner.
+172.31.128.76 - - [29/Jun/2025 23:09:33] "GET /scan HTTP/1.1" 200 -
