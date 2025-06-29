@@ -5,9 +5,30 @@ import json
 import glob
 import pandas as pd
 import requests
+import time
 from run_autonomous_scan import run_autonomous_scan
 
 app = Flask(__name__)
+
+# Rate limiting for Yahoo Finance API
+class RateLimiter:
+    def __init__(self, max_requests_per_minute=30):
+        self.max_requests = max_requests_per_minute
+        self.requests = []
+    
+    def wait_if_needed(self):
+        now = time.time()
+        # Remove requests older than 1 minute
+        self.requests = [req_time for req_time in self.requests if now - req_time < 60]
+        
+        if len(self.requests) >= self.max_requests:
+            sleep_time = 60 - (now - self.requests[0]) + 1
+            print(f"Rate limit reached. Waiting {sleep_time:.1f} seconds...")
+            time.sleep(sleep_time)
+        
+        self.requests.append(now)
+
+yahoo_rate_limiter = RateLimiter(max_requests_per_minute=25)  # Conservative limit
 
 
 @app.route("/")
@@ -260,32 +281,70 @@ def get_all_plans():
         }), 500
 
 
-def fetch_all_symbols(scrId):
-    """Fetch all symbols from Yahoo Finance screener"""
+def fetch_all_symbols(scrId, max_retries=3):
+    """Fetch all symbols from Yahoo Finance screener with rate limiting"""
     url = 'https://query1.finance.yahoo.com/v1/finance/screener/predefined/saved'
     symbols = []
     
-    # First request to find total count
-    params = {'scrIds': scrId, 'count': 1, 'start': 0}
-    r = requests.get(url, params=params)
-    r.raise_for_status()
-    data = r.json()
-    total = data['finance']['result'][0]['total']
-    print(f"Total symbols for {scrId}: {total}")
+    def make_request(params, retry_count=0):
+        yahoo_rate_limiter.wait_if_needed()
+        
+        try:
+            response = requests.get(url, params=params, timeout=10)
+            
+            if response.status_code == 429:  # Rate limited
+                if retry_count < max_retries:
+                    wait_time = min(60 * (2 ** retry_count), 300)  # Exponential backoff, max 5 min
+                    print(f"Rate limited for {scrId}. Waiting {wait_time} seconds before retry {retry_count + 1}...")
+                    time.sleep(wait_time)
+                    return make_request(params, retry_count + 1)
+                else:
+                    raise Exception(f"Max retries exceeded for {scrId}")
+            
+            response.raise_for_status()
+            return response.json()
+            
+        except requests.exceptions.RequestException as e:
+            if retry_count < max_retries:
+                wait_time = 30 * (retry_count + 1)
+                print(f"Request failed for {scrId}: {e}. Retrying in {wait_time} seconds...")
+                time.sleep(wait_time)
+                return make_request(params, retry_count + 1)
+            else:
+                raise Exception(f"Failed to fetch data for {scrId} after {max_retries} retries: {e}")
+    
+    try:
+        # First request to find total count
+        params = {'scrIds': scrId, 'count': 1, 'start': 0}
+        data = make_request(params)
+        
+        if 'finance' not in data or not data['finance']['result']:
+            raise Exception(f"Invalid response format for {scrId}")
+            
+        total = data['finance']['result'][0]['total']
+        print(f"Total symbols for {scrId}: {total}")
 
-    # Page through in chunks of 100
-    for start in range(0, total, 100):
-        params = {'scrIds': scrId, 'count': 100, 'start': start}
-        r = requests.get(url, params=params)
-        r.raise_for_status()
-        page = r.json()
-        quotes = page['finance']['result'][0]['quotes']
-        page_syms = [q['symbol'] for q in quotes]
-        print(f"Fetched {len(page_syms)} symbols at offset {start}")
-        symbols.extend(page_syms)
+        # Page through in smaller chunks to avoid rate limits
+        chunk_size = 25  # Smaller chunks to be more API-friendly
+        for start in range(0, total, chunk_size):
+            params = {'scrIds': scrId, 'count': chunk_size, 'start': start}
+            page_data = make_request(params)
+            
+            if 'finance' in page_data and page_data['finance']['result']:
+                quotes = page_data['finance']['result'][0]['quotes']
+                page_syms = [q['symbol'] for q in quotes if 'symbol' in q]
+                print(f"Fetched {len(page_syms)} symbols at offset {start}")
+                symbols.extend(page_syms)
+            
+            # Small delay between requests
+            time.sleep(1)
 
-    # Dedupe and return
-    return list(dict.fromkeys(symbols))
+        # Dedupe and return
+        return list(dict.fromkeys(symbols))
+        
+    except Exception as e:
+        print(f"Error fetching symbols for {scrId}: {e}")
+        return []
 
 
 @app.route("/screener/symbols", methods=["GET"])
@@ -320,36 +379,70 @@ def get_screener_symbols():
 
 @app.route("/screener/all", methods=["GET"])
 def get_all_screener_symbols():
-    """Get symbols from all Yahoo Finance screeners"""
+    """Get symbols from all Yahoo Finance screeners with improved error handling"""
     try:
         screeners = ['MOST_ACTIVES', 'DAY_GAINERS', 'DAY_LOSERS']
         all_symbols = {}
         combined_symbols = []
+        errors = {}
         
         for screener in screeners:
             try:
+                print(f"Fetching symbols for {screener}...")
                 symbols = fetch_all_symbols(screener)
                 all_symbols[screener] = symbols
                 combined_symbols.extend(symbols)
+                print(f"Successfully fetched {len(symbols)} symbols for {screener}")
             except Exception as e:
-                print(f"Error fetching {screener}: {e}")
+                error_msg = str(e)
+                print(f"Error fetching {screener}: {error_msg}")
                 all_symbols[screener] = []
+                errors[screener] = error_msg
         
         # Dedupe combined list
         unique_symbols = list(dict.fromkeys(combined_symbols))
         
-        return jsonify({
-            "status": "success",
+        response_data = {
+            "status": "success" if unique_symbols else "partial",
             "screeners": all_symbols,
             "combined_unique_symbols": unique_symbols,
             "total_unique": len(unique_symbols),
             "breakdown": {screener: len(symbols) for screener, symbols in all_symbols.items()}
-        })
+        }
+        
+        if errors:
+            response_data["errors"] = errors
+            response_data["message"] = f"Some screeners failed: {list(errors.keys())}"
+        
+        return jsonify(response_data)
         
     except Exception as e:
         return jsonify({
             "status": "error",
             "message": f"Error fetching all symbols: {str(e)}"
+        }), 500
+
+
+@app.route("/screener/fallback", methods=["GET"])
+def get_fallback_symbols():
+    """Get symbols from database when Yahoo Finance is rate limited"""
+    try:
+        from db_client import fetch_tickers_from_db
+        
+        db_symbols = fetch_tickers_from_db()
+        
+        return jsonify({
+            "status": "success",
+            "source": "database",
+            "total_symbols": len(db_symbols),
+            "symbols": db_symbols,
+            "message": "Using database symbols as fallback"
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Error fetching fallback symbols: {str(e)}"
         }), 500
 
 
