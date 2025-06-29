@@ -448,14 +448,21 @@ def get_fallback_symbols():
         }), 500
 
 
-@app.route("/screener/update-db", methods=["POST"])
+@app.route("/screener/update-db", methods=["POST", "GET"])
 def update_database_symbols():
     """Update database with fresh symbols from Yahoo Finance screeners"""
     try:
-        # Get mode from request (replace or append)
-        data = request.get_json() if request.is_json else {}
-        mode = data.get('mode', 'replace')  # Default to replace
-        custom_symbols = data.get('symbols', [])  # Allow custom symbol list
+        # Handle both GET and POST requests
+        if request.method == 'GET':
+            # For GET requests, use query parameters
+            mode = request.args.get('mode', 'replace')
+            custom_symbols_str = request.args.get('symbols', '')
+            custom_symbols = custom_symbols_str.split(',') if custom_symbols_str else []
+        else:
+            # For POST requests, use JSON body
+            data = request.get_json() if request.is_json else {}
+            mode = data.get('mode', 'replace')  # Default to replace
+            custom_symbols = data.get('symbols', [])  # Allow custom symbol list
         
         if custom_symbols:
             # Use provided symbols
