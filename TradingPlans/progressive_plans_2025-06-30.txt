@@ -1065,3 +1065,161 @@ Trade Plan:
   Expiration: 2025-08-08
   Max Hold: 12 hours
 ============================================================
+
+============================================================
+Symbol: QQQ - 21:52:44
+Confluence Score: 8.14/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $548.0 Put
+  Expiration: 2025-06-27 00:00:00
+  Delta: -0.3768
+  Gamma: 0.7678
+  Theta: -0.0694
+  Volume: 193649
+  Score: 5.09
+  IV: 1.72%
+
+Trade Plan:
+  Entry: $0.15
+  Stop: $0.11
+  Target: $0.26
+  Position Size: 12 contracts
+  Strike: $548.0 Put
+  Expiration: 2025-06-27
+  Max Hold: 4 hours
+============================================================
+
+============================================================
+Symbol: GME - 21:53:08
+Confluence Score: 10.0/10
+Bias: Bullish
+
+Top Options Found: 4
+
+Option 1:
+  Strike: $23.5 Put
+  Expiration: 2025-07-03 00:00:00
+  Delta: -0.4546
+  Gamma: 0.3276
+  Theta: -0.0386
+  Volume: 2342
+  Score: 4.10
+  IV: 40.00%
+
+Option 2:
+  Strike: $23.0 Put
+  Expiration: 2025-07-11 00:00:00
+  Delta: -0.3544
+  Gamma: 0.1945
+  Theta: -0.0244
+  Volume: 581
+  Score: 3.85
+  IV: 41.40%
+
+Option 3:
+  Strike: $24.0 Call
+  Expiration: 2025-07-03 00:00:00
+  Delta: 0.3902
+  Gamma: 0.3010
+  Theta: -0.0418
+  Volume: 21464
+  Score: 3.55
+  IV: 42.15%
+
+Trade Plan:
+  Entry: $0.45
+  Stop: $0.34
+  Target: $0.79
+  Position Size: 4 contracts
+  Strike: $23.5 Put
+  Expiration: 2025-07-03
+  Max Hold: 4 hours
+============================================================
+
+============================================================
+Symbol: AMC - 21:53:18
+Confluence Score: 6.65/10
+Bias: Bullish
+
+Top Options Found: 27
+
+Option 1:
+  Strike: $3.0 Call
+  Expiration: 2025-07-03 00:00:00
+  Delta: 0.6742
+  Gamma: 2.0905
+  Theta: -0.0054
+  Volume: 2892
+  Score: 155.32
+  IV: 43.78%
+
+Option 2:
+  Strike: $3.0 Call
+  Expiration: 2025-07-25 00:00:00
+  Delta: 0.6095
+  Gamma: 1.0303
+  Theta: -0.0027
+  Volume: 859
+  Score: 150.65
+  IV: 43.81%
+
+Option 3:
+  Strike: $3.0 Put
+  Expiration: 2025-07-25 00:00:00
+  Delta: -0.3942
+  Gamma: 0.9662
+  Theta: -0.0026
+  Volume: 13
+  Score: 150.47
+  IV: 46.84%
+
+Trade Plan:
+  Entry: $0.11
+  Stop: $0.08
+  Target: $0.19
+  Position Size: 16 contracts
+  Strike: $3.0 Call
+  Expiration: 2025-07-03
+  Max Hold: 4 hours
+============================================================
+
+============================================================
+Symbol: HOOD - 21:53:41
+Confluence Score: 9.88/10
+Bias: Bullish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $83.0 Put
+  Expiration: 2025-06-27 00:00:00
+  Delta: -0.4282
+  Gamma: 1.7679
+  Theta: -0.0393
+  Volume: 9817
+  Score: 18.67
+  IV: 5.11%
+
+Option 2:
+  Strike: $83.0 Call
+  Expiration: 2025-06-27 00:00:00
+  Delta: 0.5587
+  Gamma: 1.4454
+  Theta: -0.0593
+  Volume: 23067
+  Score: 10.52
+  IV: 6.28%
+
+Trade Plan:
+  Entry: $0.12
+  Stop: $0.09
+  Target: $0.21
+  Position Size: 16 contracts
+  Strike: $83.0 Put
+  Expiration: 2025-06-27
+  Max Hold: 4 hours
+============================================================

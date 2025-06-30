@@ -7558,3 +7558,75 @@ Delta: -0.26448 | Gamma: 0.17100 | Theta: -0.00717 | Score: 9.94
 
 ================================================================================
 
+📈 Trade Plan for QQQ (Bullish Bias)
+
+🔹 Option: $$548.0 Put expiring 2025-06-27
+🔹 Entry Price: $0.15
+🔹 Stop Loss: $0.11
+🔹 Initial Target: $0.26
+🔹 Final Target: $0.53
+🔹 Position Size: 12 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.37680 | Gamma: 0.76781 | Theta: -0.06940 | Score: 5.09
+
+================================================================================
+
+📈 Trade Plan for GME (Bullish Bias)
+
+🔹 Option: $$23.5 Put expiring 2025-07-03
+🔹 Entry Price: $0.45
+🔹 Stop Loss: $0.34
+🔹 Initial Target: $0.79
+🔹 Final Target: $1.57
+🔹 Position Size: 4 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.45460 | Gamma: 0.32761 | Theta: -0.03864 | Score: 4.10
+
+================================================================================
+
+📈 Trade Plan for AMC (Bullish Bias)
+
+🔹 Option: $$3.0 Call expiring 2025-07-03
+🔹 Entry Price: $0.11
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.19
+🔹 Final Target: $0.39
+🔹 Position Size: 16 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.67424 | Gamma: 2.09055 | Theta: -0.00541 | Score: 155.32
+
+================================================================================
+
+📈 Trade Plan for HOOD (Bullish Bias)
+
+🔹 Option: $$83.0 Put expiring 2025-06-27
+🔹 Entry Price: $0.12
+🔹 Stop Loss: $0.09
+🔹 Initial Target: $0.21
+🔹 Final Target: $0.42
+🔹 Position Size: 16 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.42824 | Gamma: 1.76789 | Theta: -0.03934 | Score: 18.67
+
+================================================================================
+
