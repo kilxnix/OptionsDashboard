@@ -1285,6 +1285,51 @@ def filter_and_prioritize_symbols_dynamic(symbols):
     return prioritized[:60]  # Increased from 75 to catch more opportunities
 
 
+class CompleteOptionsScanner:
+
+    def __init__(self, api_key, min_delta=0.2, max_delta=0.7):
+        self.api_key = api_key
+        self.min_delta = min_delta
+        self.max_delta = max_delta
+        self.min_volume = 6
+        self.min_pattern_quality = 0.65
+        self.request_count = 0
+        self.last_request_time = 0
+        self.requests_per_minute = 75
+
+    def fetch_alpha_vantage_data(self, symbol, timeframe):
+        """Fetch price data using Alpha Vantage API with support for all timeframes"""
+        self._check_rate_limit()
+
+        try:
+            tf_config = TIMEFRAMES[timeframe]
+            function = tf_config['function']
+
+            # Build URL based on timeframe type
+            if function == 'TIME_SERIES_INTRADAY':
+                url = (f'https://www.alphavantage.co/query?function={function}'
+                       f'&symbol={symbol}&interval={tf_config["interval"]}'
+                       f'&outputsize=compact&apikey={self.api_key}')  # Use compact for faster response
+            elif function == 'TIME_SERIES_DAILY_ADJUSTED':
+                url = (
+                    f'https://www.alphavantage.co/query?function={function}'
+                    f'&symbol={symbol}&outputsize=compact&apikey={self.api_key}')
+            else:  # Weekly
+                url = (f'https://www.alphavantage.co/query?function={function}'
+                       f'&symbol={symbol}&apikey={self.api_key}')
+
+            response = requests.get(url, timeout=15)  # Add timeout
+            response.raise_for_status()  # Raise exception for bad status codes
+            data = response.json()
+
+            if 'Error Message' in data:
+                print(
+                    f"Error fetching data for {symbol}: {data['Error Message']}"
+                )
+                return None
+
+            key_prefix = tf_config['key_prefix']
+            if key_prefix not in data:
                 print(
                     f"No data available for {symbol} at {timeframe} timeframe")
                 return None
