@@ -78,3 +78,83 @@ Option 1:
   Theta: 0.0042
   Volume: 502
   Score: 215.04
+
+============================================================
+Symbol: GME - 14:00:03
+Confluence Score: 10.0/10
+Bias: Bullish
+
+Top Options Found: 4
+
+Option 1:
+  Strike: $23.5 Put
+  Expiration: 2025-07-03 00:00:00
+  Delta: -0.4546
+  Gamma: 0.3276
+  Theta: -0.0386
+  Volume: 2342
+  Score: 4.10
+
+============================================================
+Symbol: AMC - 14:00:18
+Confluence Score: 7.3/10
+Bias: Bullish
+
+Top Options Found: 27
+
+Option 1:
+  Strike: $3.0 Call
+  Expiration: 2025-07-03 00:00:00
+  Delta: 0.6742
+  Gamma: 2.0905
+  Theta: -0.0054
+  Volume: 2892
+  Score: 155.32
+
+============================================================
+Symbol: XLF - 14:00:30
+Confluence Score: 8.97/10
+Bias: Bearish
+
+Top Options Found: 7
+
+Option 1:
+  Strike: $51.5 Put
+  Expiration: 2025-07-11 00:00:00
+  Delta: -0.3448
+  Gamma: 0.2693
+  Theta: -0.0158
+  Volume: 36
+  Score: 7.45
+
+============================================================
+Symbol: XLE - 14:00:42
+Confluence Score: 8.65/10
+Bias: Bullish
+
+Top Options Found: 3
+
+Option 1:
+  Strike: $85.0 Put
+  Expiration: 2025-06-30 00:00:00
+  Delta: -0.3928
+  Gamma: 0.3076
+  Theta: -0.0761
+  Volume: 182
+  Score: 2.29
+
+============================================================
+Symbol: DNN - 14:01:51
+Confluence Score: 7.33/10
+Bias: Bearish
+
+Top Options Found: 10
+
+Option 1:
+  Strike: $2.0 Call
+  Expiration: 2025-08-15 00:00:00
+  Delta: 0.3493
+  Gamma: 0.9712
+  Theta: -0.0015
+  Volume: 20
+  Score: 259.63

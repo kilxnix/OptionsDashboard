@@ -7090,3 +7090,93 @@ Delta: -0.63463 | Gamma: 2.23371 | Theta: 0.00417 | Score: 215.04
 
 ================================================================================
 
+📈 Trade Plan for GME (Bullish Bias)
+
+🔹 Option: $$23.5 Put expiring 2025-07-03
+🔹 Entry Price: $0.45
+🔹 Stop Loss: $0.34
+🔹 Initial Target: $0.79
+🔹 Final Target: $1.57
+🔹 Position Size: 4 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.45460 | Gamma: 0.32761 | Theta: -0.03864 | Score: 4.10
+
+================================================================================
+
+📈 Trade Plan for AMC (Bullish Bias)
+
+🔹 Option: $$3.0 Call expiring 2025-07-03
+🔹 Entry Price: $0.11
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.19
+🔹 Final Target: $0.39
+🔹 Position Size: 16 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.67424 | Gamma: 2.09055 | Theta: -0.00541 | Score: 155.32
+
+================================================================================
+
+📈 Trade Plan for XLF (Bearish Bias)
+
+🔹 Option: $$51.5 Put expiring 2025-07-11
+🔹 Entry Price: $0.57
+🔹 Stop Loss: $0.43
+🔹 Initial Target: $1.00
+🔹 Final Target: $1.99
+🔹 Position Size: 3 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.34484 | Gamma: 0.26932 | Theta: -0.01583 | Score: 7.45
+
+================================================================================
+
+📈 Trade Plan for XLE (Bullish Bias)
+
+🔹 Option: $$85.0 Put expiring 2025-06-30
+🔹 Entry Price: $0.50
+🔹 Stop Loss: $0.38
+🔹 Initial Target: $0.88
+🔹 Final Target: $1.75
+🔹 Position Size: 4 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.39277 | Gamma: 0.30764 | Theta: -0.07606 | Score: 2.29
+
+================================================================================
+
+📈 Trade Plan for DNN (Bearish Bias)
+
+🔹 Option: $$2.0 Call expiring 2025-08-15
+🔹 Entry Price: $0.10
+🔹 Stop Loss: $0.08
+🔹 Initial Target: $0.18
+🔹 Final Target: $0.35
+🔹 Position Size: 24 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.34928 | Gamma: 0.97116 | Theta: -0.00150 | Score: 259.63
+
+================================================================================
+
