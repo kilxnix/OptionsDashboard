@@ -758,7 +758,7 @@ class CompleteOptionsScanner:
                                          & df['bull_cond2'] & df['bull_cond3'])
 
         df['bear_cond1'] = df['prev_close'] >= df['Open']
-        df['bear_cond2'] = df['Open <= df['High']
+        df['bear_cond2'] = df['Open'] <= df['High']
         df['bear_cond3'] = df['prev_close'] >= df['High']
         df['matching_candle_bearish'] = (df['is_prev_red'] & df['bear_cond1']
                                          & df['bear_cond2'] & df['bear_cond3'])
