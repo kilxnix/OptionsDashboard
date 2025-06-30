@@ -2441,7 +2441,8 @@ def save_individual_result(symbol, result_data, base_dir='./TradingPlans'):
                     f.write(f"  Volume: {option.volume}\n")
                     f.write(f"  Score: {option.score:.2f}\n")
                     if hasattr(option, 'implied_volatility'):
-                        f.write(f"  IV: {option.implied_volatility:.2%}\n")
+                        iv_value = float(option.implied_volatility) if option.implied_volatility else 0
+                        f.write(f"  IV: {iv_value:.2%}\n")
             
             if 'trade_plan' in result_data and result_data['trade_plan']:
                 tp = result_data['trade_plan']
