@@ -79,59 +79,82 @@ def get_optionable_stocks_with_volume():
     # 1. FRESH Alpha Vantage discovery (primary source for current market movers)
     try:
         av_symbols = fetch_alphavantage_filtered()
+        av_unique = [s for s in av_symbols if s not in all_symbols]
         all_symbols.update(av_symbols)
-        print(f"✅ Added {len(av_symbols)} dynamic Alpha Vantage symbols")
+        print(f"✅ Added {len(av_unique)} dynamic Alpha Vantage symbols")
     except Exception as e:
         print(f"⚠️ Alpha Vantage failed: {e}")
 
-    # 2. Database fallback (previously fetched fresh symbols)
+    # 2. Get S&P 500 components (guaranteed options)
+    try:
+        sp500_symbols = get_sp500_components()
+        sp500_unique = [s for s in sp500_symbols if s not in all_symbols]
+        all_symbols.update(sp500_symbols)
+        print(f"✅ Added {len(sp500_unique)} new S&P 500 symbols")
+    except Exception as e:
+        print(f"⚠️ S&P 500 fetch failed: {e}")
+
+    # 3. Get NASDAQ 100 components
+    try:
+        nasdaq_symbols = get_nasdaq100_components()
+        nasdaq_unique = [s for s in nasdaq_symbols if s not in all_symbols]
+        all_symbols.update(nasdaq_symbols)
+        print(f"✅ Added {len(nasdaq_unique)} new NASDAQ 100 symbols")
+    except Exception as e:
+        print(f"⚠️ NASDAQ 100 fetch failed: {e}")
+
+    # 4. Database fallback (only if no other sources worked)
     try:
         from db_client import fetch_tickers_from_db
-        db_symbols = fetch_tickers_from_db()  # Get all symbols from DB
+        db_symbols = fetch_tickers_from_db()
+        db_unique = [s for s in db_symbols if s not in all_symbols]
         all_symbols.update(db_symbols)
-        print(f"✅ Added {len(db_symbols)} symbols from database")
+        print(f"✅ Added {len(db_unique)} unique symbols from database")
     except Exception as e:
         print(f"⚠️ Database fallback failed: {e}")
 
-    # 3. Add minimal core ETFs (only most active)
-    core_etfs = ['SPY', 'QQQ', 'IWM', 'XLF', 'XLE', 'XLK']
+    # 5. Expanded core ETFs and sector ETFs
+    core_etfs = [
+        'SPY', 'QQQ', 'IWM', 'DIA', 'VTI', 'VOO', 'VEA', 'VWO', 'AGG', 'LQD',
+        'XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLP', 'XLU', 'XLB', 'XLRE', 'XLY',
+        'SOXL', 'SOXS', 'TQQQ', 'SQQQ', 'UVXY', 'VXX', 'TLT', 'GLD', 'SLV', 'USO'
+    ]
+    etf_unique = [s for s in core_etfs if s not in all_symbols]
     all_symbols.update(core_etfs)
-    print(f"✅ Added {len(core_etfs)} core ETFs")
+    print(f"✅ Added {len(etf_unique)} new ETF symbols")
 
-    # 4. Screener-based discovery for unusual volume spikes
+    # 6. Popular options trading stocks
+    popular_options_stocks = [
+        'GME', 'AMC', 'PLTR', 'BB', 'COIN', 'HOOD', 'RIVN', 'LCID', 'SOFI', 'NKLA',
+        'SPCE', 'WISH', 'CLOV', 'MVIS', 'SNDL', 'NOK', 'BBBY', 'EXPR', 'KOSS', 'NAKD',
+        'F', 'GE', 'T', 'PFE', 'KO', 'DIS', 'WMT', 'CVX', 'XOM', 'CAT',
+        'CRWD', 'ZS', 'SNOW', 'DDOG', 'NET', 'OKTA', 'TWLO', 'DOCN', 'ESTC', 'MDB'
+    ]
+    popular_unique = [s for s in popular_options_stocks if s not in all_symbols]
+    all_symbols.update(popular_options_stocks)
+    print(f"✅ Added {len(popular_unique)} new popular options stocks")
+
+    # 7. High-volume discovery (expanded list)
     try:
-        screener_symbols = discover_high_volume_movers()
+        screener_symbols = discover_high_volume_movers_expanded()
+        screener_unique = [s for s in screener_symbols if s not in all_symbols]
         all_symbols.update(screener_symbols)
-        print(f"✅ Added {len(screener_symbols)} high-volume movers")
+        print(f"✅ Added {len(screener_unique)} new high-volume movers")
     except Exception as e:
         print(f"⚠️ Volume screener failed: {e}")
 
-    # 5. Sector rotation discovery (dynamic based on recent performance)
-    try:
-        sector_symbols = discover_sector_rotation_plays()
-        all_symbols.update(sector_symbols)
-        print(f"✅ Added {len(sector_symbols)} sector rotation plays")
-    except Exception as e:
-        print(f"⚠️ Sector rotation discovery failed: {e}")
-
-    # 6. News-driven discovery (current trending stocks)
-    try:
-        news_symbols = discover_news_driven_stocks()
-        all_symbols.update(news_symbols)
-        print(f"✅ Added {len(news_symbols)} news-driven stocks")
-    except Exception as e:
-        print(f"⚠️ News discovery failed: {e}")
-
-    # 7. Select mega caps (but rotate them to avoid always scanning the same ones)
-    import random
+    # 8. All mega caps (no rotation - process all)
     all_mega_caps = [
-        'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'TSLA', 'META', 'JPM', 
-        'BAC', 'AMD', 'CRM', 'NFLX', 'COIN', 'HOOD', 'PLTR', 'GME', 'AMC',
-        'INTC', 'ORCL', 'CSCO', 'PFE', 'JNJ', 'WMT', 'HD', 'V', 'MA'
+        'AAPL', 'MSFT', 'GOOGL', 'GOOG', 'AMZN', 'NVDA', 'TSLA', 'META', 'BRK-B',
+        'UNH', 'JNJ', 'JPM', 'V', 'PG', 'HD', 'MA', 'CVX', 'LLY', 'ABBV', 'AVGO',
+        'PFE', 'KO', 'MRK', 'PEP', 'TMO', 'COST', 'WMT', 'DIS', 'ABT', 'ADBE',
+        'CRM', 'VZ', 'NKE', 'NFLX', 'DHR', 'XOM', 'CMCSA', 'AMD', 'LIN', 'TXN'
     ]
-    # Use all mega caps instead of rotating selection
+    mega_unique = [s for s in all_mega_caps if s not in all_symbols]
     all_symbols.update(all_mega_caps)
-    print(f"✅ Added all {len(all_mega_caps)} mega caps: {all_mega_caps[:5]}...")
+    print(f"✅ Added {len(mega_unique)} new mega cap symbols")
+
+    print(f"📊 Total unique symbols before filtering: {len(all_symbols)}")
 
     # Filter and prioritize with emphasis on fresh momentum
     final_symbols = filter_and_prioritize_symbols_dynamic(list(all_symbols))
@@ -191,6 +214,38 @@ def discover_high_volume_movers():
         return high_volume_stocks
     except Exception as e:
         print(f"   High volume discovery error: {e}")
+        return []
+
+
+def discover_high_volume_movers_expanded():
+    """Expanded high volume moving stocks discovery"""
+    try:
+        # More comprehensive list of high-volume optionable stocks
+        high_volume_stocks = [
+            # Technology stocks with heavy options volume
+            'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'META', 'TSLA', 'AMD', 'INTC', 'NFLX',
+            'CRM', 'ADBE', 'ORCL', 'CSCO', 'IBM', 'QCOM', 'TXN', 'AVGO', 'MU', 'AMAT',
+            # Financial stocks
+            'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'USB', 'PNC', 'TFC', 'COF',
+            # Healthcare/Pharma
+            'JNJ', 'PFE', 'UNH', 'ABBV', 'LLY', 'MRK', 'TMO', 'ABT', 'DHR', 'BMY',
+            # Consumer/Retail
+            'WMT', 'HD', 'COST', 'TGT', 'LOW', 'SBUX', 'NKE', 'MCD', 'DIS', 'AMZN',
+            # Energy
+            'XOM', 'CVX', 'COP', 'EOG', 'SLB', 'MPC', 'VLO', 'PSX', 'OXY', 'HAL',
+            # ETFs with high options volume
+            'SPY', 'QQQ', 'IWM', 'DIA', 'XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLP',
+            # Meme/Popular retail stocks
+            'GME', 'AMC', 'PLTR', 'BB', 'COIN', 'HOOD', 'RIVN', 'LCID', 'SOFI', 'NKLA',
+            # Volatility products
+            'UVXY', 'VXX', 'TVIX', 'SVXY', 'VIXY'
+        ]
+        # Remove duplicates while preserving order
+        unique_stocks = list(dict.fromkeys(high_volume_stocks))
+        print(f"   Found {len(unique_stocks)} expanded high-volume symbols")
+        return unique_stocks
+    except Exception as e:
+        print(f"   Expanded high volume discovery error: {e}")
         return []
 
 
@@ -302,30 +357,51 @@ def get_sp500_components():
                 cleaned_symbol = symbol.replace('.', '-')
                 cleaned.append(cleaned_symbol)
 
-        return cleaned  # Return all S&P 500 components
+        print(f"   Successfully fetched {len(cleaned)} S&P 500 symbols from Wikipedia")
+        return cleaned
 
     except Exception as e:
-        print(f"S&P 500 fetch error: {e}")
-        return []
+        print(f"   S&P 500 Wikipedia fetch failed: {e}, using fallback list")
+        # Fallback to major S&P 500 components
+        sp500_fallback = [
+            'AAPL', 'MSFT', 'AMZN', 'NVDA', 'GOOGL', 'GOOG', 'TSLA', 'META', 'BRK-B', 'UNH',
+            'JNJ', 'JPM', 'V', 'PG', 'HD', 'MA', 'CVX', 'LLY', 'ABBV', 'AVGO',
+            'PFE', 'KO', 'MRK', 'PEP', 'TMO', 'COST', 'WMT', 'DIS', 'ABT', 'ADBE',
+            'CRM', 'VZ', 'NKE', 'NFLX', 'DHR', 'XOM', 'CMCSA', 'AMD', 'LIN', 'TXN',
+            'QCOM', 'HON', 'UPS', 'UNP', 'IBM', 'RTX', 'INTC', 'CAT', 'AMAT', 'SPGI',
+            'LOW', 'GS', 'BKNG', 'INTU', 'ISRG', 'TJX', 'AXP', 'MDT', 'BLK', 'DE',
+            'SBUX', 'C', 'ADP', 'AMT', 'GILD', 'CVS', 'SCHW', 'PYPL', 'TMUS', 'MO',
+            'SYK', 'ZTS', 'CCI', 'EQIX', 'TGT', 'MMM', 'MDLZ', 'CI', 'SO', 'DUK'
+        ]
+        return sp500_fallback
 
 
 def get_nasdaq100_components():
     """Get NASDAQ 100 components"""
     try:
-        # Use a reliable source for NASDAQ 100
-        nasdaq100_core = [
+        # Comprehensive NASDAQ 100 list with high options volume
+        nasdaq100_expanded = [
+            # Top tier mega caps
             'AAPL', 'MSFT', 'AMZN', 'NVDA', 'GOOGL', 'GOOG', 'META', 'TSLA',
+            # Large tech
             'AVGO', 'COST', 'NFLX', 'ADBE', 'PEP', 'TMUS', 'CSCO', 'CMCSA',
             'INTC', 'TXN', 'QCOM', 'INTU', 'AMAT', 'AMD', 'ISRG', 'HON',
+            # Growth and cloud
             'BKNG', 'MU', 'ADI', 'VRTX', 'ADP', 'SBUX', 'GILD', 'MDLZ',
             'PANW', 'LRCX', 'PYPL', 'REGN', 'KLAC', 'SNPS', 'CDNS', 'MAR',
+            # Mid-tier growth
             'MRVL', 'ORLY', 'CSX', 'FTNT', 'ADSK', 'ABNB', 'CHTR', 'ASML',
             'NXPI', 'WDAY', 'MNST', 'TEAM', 'DXCM', 'KDP', 'AEP', 'FAST',
+            # Smaller growth and specialty
             'ROST', 'ODFL', 'VRSK', 'EXC', 'KHC', 'GEHC', 'CTSH', 'FANG',
             'BKR', 'DDOG', 'BIIB', 'ZS', 'IDXX', 'ANSS', 'CSGP', 'ON',
-            'TTD', 'ZM', 'ILMN', 'GFS', 'CRWD', 'WBD', 'LCID', 'ARM'
+            'TTD', 'ZM', 'ILMN', 'GFS', 'CRWD', 'WBD', 'LCID', 'ARM',
+            # Additional high-volume options stocks
+            'CRM', 'ORCL', 'IBM', 'NOW', 'SNOW', 'UBER', 'COIN', 'HOOD',
+            'RIVN', 'SOFI', 'PLTR', 'ROKU', 'SQ', 'TWTR', 'SNAP', 'PINS'
         ]
-        return nasdaq100_core
+        print(f"   Using expanded NASDAQ 100 list: {len(nasdaq100_expanded)} symbols")
+        return nasdaq100_expanded
 
     except Exception as e:
         print(f"NASDAQ 100 fetch error: {e}")
