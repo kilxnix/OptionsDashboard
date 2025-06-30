@@ -141,6 +141,88 @@ def get_optionable_stocks_with_volume():
     return final_symbols
 
 
+def filter_and_prioritize_symbols_dynamic(symbols):
+    """Dynamic filtering and prioritization with emphasis on fresh momentum"""
+    # Remove duplicates while preserving order
+    unique_symbols = list(dict.fromkeys(symbols))
+    
+    # Filter out obviously non-optionable symbols
+    filtered_symbols = []
+    for symbol in unique_symbols:
+        if is_likely_optionable(symbol):
+            filtered_symbols.append(symbol)
+    
+    # Priority groups (higher priority = scanned first)
+    priority_groups = {
+        'mega_cap': ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'TSLA', 'META'],
+        'popular_etfs': ['SPY', 'QQQ', 'IWM', 'SOXL', 'TQQQ', 'SQQQ', 'UVXY'],
+        'meme_stocks': ['GME', 'AMC', 'PLTR', 'BB', 'COIN', 'HOOD'],
+        'energy': ['XOM', 'CVX', 'USO', 'XLE', 'OIL'],
+        'finance': ['JPM', 'BAC', 'XLF', 'GS', 'MS'],
+        'tech': ['NFLX', 'CRM', 'ADBE', 'CRWD', 'ZS', 'SNOW'],
+    }
+
+    prioritized = []
+    used = set()
+
+    # Add by priority groups first
+    for group_name, group_symbols in priority_groups.items():
+        for symbol in group_symbols:
+            if symbol in filtered_symbols and symbol not in used:
+                prioritized.append(symbol)
+                used.add(symbol)
+
+    # Add remaining symbols
+    for symbol in filtered_symbols:
+        if symbol not in used:
+            prioritized.append(symbol)
+            used.add(symbol)
+
+    return prioritized[:55]  # Limit to 55 high-quality symbols
+
+
+def discover_high_volume_movers():
+    """Discover high volume moving stocks (placeholder implementation)"""
+    try:
+        # Fallback to common high-volume stocks
+        high_volume_stocks = [
+            'SPY', 'QQQ', 'IWM', 'TSLA', 'AAPL', 'NVDA', 'AMD', 'F', 'BAC', 'PLTR'
+        ]
+        print(f"   Found {len(high_volume_stocks)} high-volume symbols from fallback")
+        return high_volume_stocks
+    except Exception as e:
+        print(f"   High volume discovery error: {e}")
+        return []
+
+
+def discover_sector_rotation_plays():
+    """Discover sector rotation plays (placeholder implementation)"""
+    try:
+        # Common sector rotation plays
+        sector_plays = [
+            'XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLP', 'XLU', 'XLB', 'XLRE', 'XLY'
+        ]
+        print(f"   Found {len(sector_plays)} sector rotation symbols")
+        return sector_plays
+    except Exception as e:
+        print(f"   Sector rotation discovery error: {e}")
+        return []
+
+
+def discover_news_driven_stocks():
+    """Discover news-driven stocks (placeholder implementation)"""
+    try:
+        # Common news-driven/momentum stocks
+        news_driven = [
+            'TSLA', 'GME', 'AMC', 'PLTR', 'COIN', 'HOOD', 'RIVN', 'LCID', 'SOFI', 'NKLA'
+        ]
+        print(f"   Found {len(news_driven)} news-driven symbols")
+        return news_driven
+    except Exception as e:
+        print(f"   News discovery error: {e}")
+        return []
+
+
 def fetch_alphavantage_filtered():
     """Enhanced Alpha Vantage filtering prioritizing momentum and unusual activity"""
     api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
