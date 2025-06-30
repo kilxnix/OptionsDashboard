@@ -1,4 +1,3 @@
-
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
@@ -74,9 +73,9 @@ def get_optionable_stocks_with_volume():
     Fetches fresh data each time to ensure variety.
     """
     print("🔍 Aggregating optionable stocks from multiple sources...")
-    
+
     all_symbols = set()
-    
+
     # 1. FRESH Alpha Vantage discovery (primary source for current market movers)
     try:
         av_symbols = fetch_alphavantage_filtered()
@@ -84,7 +83,7 @@ def get_optionable_stocks_with_volume():
         print(f"✅ Added {len(av_symbols)} dynamic Alpha Vantage symbols")
     except Exception as e:
         print(f"⚠️ Alpha Vantage failed: {e}")
-    
+
     # 2. Database fallback (previously fetched fresh symbols)
     try:
         from db_client import fetch_tickers_from_db
@@ -93,12 +92,12 @@ def get_optionable_stocks_with_volume():
         print(f"✅ Added {len(db_symbols)} symbols from database")
     except Exception as e:
         print(f"⚠️ Database fallback failed: {e}")
-    
+
     # 3. Add minimal core ETFs (only most active)
     core_etfs = ['SPY', 'QQQ', 'IWM', 'XLF', 'XLE', 'XLK']
     all_symbols.update(core_etfs)
     print(f"✅ Added {len(core_etfs)} core ETFs")
-    
+
     # 4. Screener-based discovery for unusual volume spikes
     try:
         screener_symbols = discover_high_volume_movers()
@@ -106,7 +105,7 @@ def get_optionable_stocks_with_volume():
         print(f"✅ Added {len(screener_symbols)} high-volume movers")
     except Exception as e:
         print(f"⚠️ Volume screener failed: {e}")
-    
+
     # 5. Sector rotation discovery (dynamic based on recent performance)
     try:
         sector_symbols = discover_sector_rotation_plays()
@@ -114,7 +113,7 @@ def get_optionable_stocks_with_volume():
         print(f"✅ Added {len(sector_symbols)} sector rotation plays")
     except Exception as e:
         print(f"⚠️ Sector rotation discovery failed: {e}")
-    
+
     # 6. News-driven discovery (current trending stocks)
     try:
         news_symbols = discover_news_driven_stocks()
@@ -122,7 +121,7 @@ def get_optionable_stocks_with_volume():
         print(f"✅ Added {len(news_symbols)} news-driven stocks")
     except Exception as e:
         print(f"⚠️ News discovery failed: {e}")
-    
+
     # 7. Select mega caps (but rotate them to avoid always scanning the same ones)
     import random
     all_mega_caps = [
@@ -134,10 +133,10 @@ def get_optionable_stocks_with_volume():
     selected_mega_caps = random.sample(all_mega_caps, min(10, len(all_mega_caps)))
     all_symbols.update(selected_mega_caps)
     print(f"✅ Added {len(selected_mega_caps)} rotating mega caps: {selected_mega_caps[:5]}...")
-    
+
     # Filter and prioritize with emphasis on fresh momentum
     final_symbols = filter_and_prioritize_symbols_dynamic(list(all_symbols))
-    
+
     print(f"🎯 Final dynamic list: {len(final_symbols)} optionable stocks")
     return final_symbols
 
@@ -147,20 +146,20 @@ def fetch_alphavantage_filtered():
     api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
     if not api_key:
         return []
-    
+
     url = f'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey={api_key}'
-    
+
     try:
         response = requests.get(url, timeout=30)
         data = response.json()
-        
+
         if 'Error Message' in data or 'Information' in data:
             print(f"   Alpha Vantage API issue: {data.get('Error Message', data.get('Information', 'Unknown'))}")
             return []
-        
+
         # Get ALL symbols from all categories to maximize variety
         all_fresh_symbols = []
-        
+
         # 1. Most actively traded (all that meet basic criteria)
         if 'most_actively_traded' in data:
             for item in data['most_actively_traded']:
@@ -170,7 +169,7 @@ def fetch_alphavantage_filtered():
                     # Lower threshold to get more variety
                     if volume > 100000:  # Reduced from 1M
                         all_fresh_symbols.append(symbol)
-        
+
         # 2. Top gainers (all with reasonable movement)
         if 'top_gainers' in data:
             for item in data['top_gainers']:
@@ -181,7 +180,7 @@ def fetch_alphavantage_filtered():
                     # Lower thresholds for more variety
                     if change_pct > 2.0 and volume > 100000:  # Reduced thresholds
                         all_fresh_symbols.append(symbol)
-        
+
         # 3. Top losers (potential reversal plays)
         if 'top_losers' in data:
             for item in data['top_losers']:
@@ -192,14 +191,14 @@ def fetch_alphavantage_filtered():
                     # Lower thresholds for oversold plays
                     if change_pct > 3.0 and volume > 100000:  # Reduced thresholds
                         all_fresh_symbols.append(symbol)
-        
+
         # Shuffle to randomize selection order and avoid always picking the same symbols
         import random
         random.shuffle(all_fresh_symbols)
-        
+
         print(f"   Filtered {len(all_fresh_symbols)} high-momentum symbols from Alpha Vantage")
         return all_fresh_symbols[:25]  # Return more symbols for variety
-        
+
     except Exception as e:
         print(f"Alpha Vantage error: {e}")
         return []
@@ -213,7 +212,7 @@ def get_sp500_components():
         tables = pd.read_html(url)
         sp500_df = tables[0]
         symbols = sp500_df['Symbol'].tolist()
-        
+
         # Clean symbols (remove dots, etc.)
         cleaned = []
         for symbol in symbols:
@@ -221,9 +220,9 @@ def get_sp500_components():
                 # Replace dots with dashes for options compatibility
                 cleaned_symbol = symbol.replace('.', '-')
                 cleaned.append(cleaned_symbol)
-        
+
         return cleaned[:100]  # Top 100 by market cap
-        
+
     except Exception as e:
         print(f"S&P 500 fetch error: {e}")
         return []
@@ -246,7 +245,7 @@ def get_nasdaq100_components():
             'TTD', 'ZM', 'ILMN', 'GFS', 'CRWD', 'WBD', 'LCID', 'ARM'
         ]
         return nasdaq100_core
-        
+
     except Exception as e:
         print(f"NASDAQ 100 fetch error: {e}")
         return []
@@ -256,7 +255,7 @@ def is_likely_optionable(symbol):
     """Filter out symbols unlikely to have active options"""
     if not symbol or len(symbol) < 1:
         return False
-    
+
     # Remove obvious warrants, rights, units
     exclusion_patterns = [
         'W', 'WS', 'WT', 'WW', 'WI',  # Warrants
@@ -265,32 +264,32 @@ def is_likely_optionable(symbol):
         '+', '=', '-',  # Special characters
         'TEST', 'HALT'  # Test/halted symbols
     ]
-    
+
     for pattern in exclusion_patterns:
         if pattern in symbol.upper():
             return False
-    
+
     # Skip if contains numbers (often warrants)
     if any(char.isdigit() for char in symbol):
         return False
-    
+
     # Skip if too long (usually derivatives)
     if len(symbol) > 5:
         return False
-    
+
     # Skip if too short (often problematic)
     if len(symbol) < 2:
         return False
-    
+
     return True
 
 
 def filter_and_prioritize_symbols(symbols):
     """Filter and prioritize symbols for best options opportunities"""
-    
+
     # Remove duplicates while preserving order
     unique_symbols = list(dict.fromkeys(symbols))
-    
+
     # Priority groups (higher priority = scanned first)
     priority_groups = {
         'mega_cap': ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'TSLA', 'META'],
@@ -300,23 +299,23 @@ def filter_and_prioritize_symbols(symbols):
         'finance': ['JPM', 'BAC', 'XLF', 'GS', 'MS'],
         'tech': ['NFLX', 'CRM', 'ADBE', 'CRWD', 'ZS', 'SNOW'],
     }
-    
+
     prioritized = []
     used = set()
-    
+
     # Add by priority groups
     for group_name, group_symbols in priority_groups.items():
         for symbol in group_symbols:
             if symbol in unique_symbols and symbol not in used:
                 prioritized.append(symbol)
                 used.add(symbol)
-    
+
     # Add remaining symbols
     for symbol in unique_symbols:
         if symbol not in used and is_likely_optionable(symbol):
             prioritized.append(symbol)
             used.add(symbol)
-    
+
     return prioritized[:75]  # Limit to 75 high-quality symbols
 
 
@@ -592,7 +591,7 @@ class CompleteOptionsScanner:
         """Fetch options data with improved error handling and fallback"""
         self._check_rate_limit()
 
-        # Try historical options first
+        # Try historical options first (has Greeks)
         url = f"https://www.alphavantage.co/query?function=HISTORICAL_OPTIONS&symbol={symbol}&apikey={self.api_key}"
 
         try:
@@ -605,13 +604,19 @@ class CompleteOptionsScanner:
                 return self.fetch_options_data(symbol)
 
             if 'Error Message' in data:
-                print(f"❌ Alpha Vantage error for {symbol}: {data['Error Message']}")
-                return None
+                print(f"❌ Alpha Vantage historical options error for {symbol}: {data['Error Message']}")
+                # Try real-time options as fallback
+                print(f"🔄 Trying real-time options for {symbol}...")
+                return self._fetch_realtime_options(symbol)
 
             if 'data' in data and data['data'] and len(data['data']) > 0:
                 df = pd.DataFrame(data['data'])
-                print(f"✅ Options data found for {symbol}: {len(df)} contracts")
-                return df
+                # Verify this has Greeks
+                if all(col in df.columns for col in ['delta', 'gamma', 'theta']):
+                    print(f"✅ Historical options data found for {symbol}: {len(df)} contracts")
+                    return df
+                else:
+                    print(f"⚠️ Historical options data missing Greeks for {symbol}")
 
             # Try real-time options as fallback
             print(f"🔄 Trying real-time options for {symbol}...")
@@ -622,20 +627,20 @@ class CompleteOptionsScanner:
             return None
 
     def _fetch_realtime_options(self, symbol):
-        """Fallback method for real-time options data"""
+        """Fallback method for real-time options data (no Greeks available)"""
         try:
             url = f"https://www.alphavantage.co/query?function=REALTIME_OPTIONS&symbol={symbol}&apikey={self.api_key}"
             response = requests.get(url, timeout=15)
             data = response.json()
-            
+
             if 'data' in data and data['data']:
                 df = pd.DataFrame(data['data'])
-                print(f"✅ Real-time options found for {symbol}: {len(df)} contracts")
+                print(f"✅ Real-time options found for {symbol}: {len(df)} contracts (no Greeks)")
                 return df
-            
+
             print(f"❌ No options data available for {symbol}")
             return None
-            
+
         except Exception as e:
             print(f"❌ Real-time options fetch failed for {symbol}: {e}")
             return None
@@ -753,7 +758,7 @@ class CompleteOptionsScanner:
                                          & df['bull_cond2'] & df['bull_cond3'])
 
         df['bear_cond1'] = df['prev_close'] >= df['Open']
-        df['bear_cond2'] = df['Open'] <= df['High']
+        df['bear_cond2'] = df['Open <= df['High']
         df['bear_cond3'] = df['prev_close'] >= df['High']
         df['matching_candle_bearish'] = (df['is_prev_red'] & df['bear_cond1']
                                          & df['bear_cond2'] & df['bear_cond3'])
@@ -1015,969 +1020,12 @@ class CompleteOptionsScanner:
         if options_data is None or options_data.empty:
             return pd.DataFrame()
 
-        required_cols = {
-            'strike', 'type', 'expiration', 'delta', 'gamma', 'theta',
-            'implied_volatility', 'mark'
-        }
-        if not required_cols.issubset(options_data.columns):
-            print(
-                f"Error: Options data missing required columns. Found columns: {list(options_data.columns)}"
-            )
-            return pd.DataFrame()
-
-        # Convert expiration to datetime
-        options_data['expiration'] = pd.to_datetime(options_data['expiration'],
-                                                    errors='coerce')
-
-        # Start with a copy before filtering
-        filtered_data = options_data.copy()
-
-        # === Time to expiry filter ===
-        if time_to_expiry_range:
-            filtered_data['days_to_expiration'] = (
-                filtered_data['expiration'] - datetime.now()).dt.days
-            filtered_data = filtered_data[(
-                filtered_data['days_to_expiration'] >= time_to_expiry_range[0]
-            ) & (filtered_data['days_to_expiration'] <= time_to_expiry_range[1]
-                 )]
-
-        # === IV percentile filter ===
-        if iv_percentile_threshold is not None and 'iv_percentile' in filtered_data.columns:
-            filtered_data = filtered_data[filtered_data['iv_percentile'] >=
-                                          iv_percentile_threshold]
-
-        # Field normalization
-        field_mapping = {'implied_volatility': 'implied_vol', 'mark': 'price'}
-        for old_name, new_name in field_mapping.items():
-            if old_name in filtered_data.columns and new_name not in filtered_data.columns:
-                filtered_data[new_name] = filtered_data[old_name]
-
-        # Convert numeric fields
-        numeric_cols = [
-            'strike', 'delta', 'gamma', 'theta', 'vega', 'implied_vol', 'price'
-        ]
-        for col in numeric_cols:
-            if col in filtered_data.columns:
-                filtered_data[col] = pd.to_numeric(filtered_data[col],
-                                                   errors='coerce')
-
-        # Price filtering
-        if min_price is not None:
-            filtered_data = filtered_data[filtered_data['price'] >= min_price]
-        if max_price is not None:
-            filtered_data = filtered_data[filtered_data['price'] <= max_price]
-
-        # Delta filtering
-        mask = ((filtered_data['delta'].abs() >= self.min_delta) &
-                (filtered_data['delta'].abs() <= self.max_delta))
-        candidates = filtered_data[mask].copy()
-
-        if not candidates.empty:
-            candidates['score'] = candidates.apply(
-                lambda x: self._score_option(x, price_analysis), axis=1)
-            return candidates.sort_values('score', ascending=False)
-
-        return pd.DataFrame()
-
-    def _score_option(self, option, price_analysis):
-        """Score individual options"""
-        try:
-            # Delta score (preference for options closer to 0.4 delta)
-            delta_score = 1 - abs(abs(float(option['delta'])) - 0.6)
-
-            # Gamma/Theta ratio (preference for high gamma relative to theta)
-            gamma = abs(float(option['gamma']))
-            theta = abs(float(option['theta']))
-            gamma_theta_ratio = gamma / theta if theta != 0 else 0
-
-            # Volume score (preference for higher volume)
-            volume = float(option['volume'])
-            volume_score = min(volume / self.min_volume, 1.0)
-
-            # Combine scores with weights
-            total_score = (delta_score * 0.6 + gamma_theta_ratio * 0.4 +
-                           volume_score * 0.2)
-
-            return round(total_score, 4)
-        except Exception as e:
-            print(f"Error calculating option score: {e}")
-            return 0.0
-
-    def analyze_oi_skew(self, options_df):
-        """
-        Analyze Put/Call open interest ratio for directional sentiment.
-        Returns skew ratio and bias interpretation.
-        """
-        if options_df is None or options_df.empty:
-            return {'put_call_ratio': None, 'bias': 'Unknown'}
-
-        # Normalize type field and open_interest to ensure numeric
-        options_df = options_df.copy()
-        options_df['type'] = options_df['type'].str.lower().fillna('')
-        options_df['open_interest'] = pd.to_numeric(
-            options_df['open_interest'], errors='coerce').fillna(0)
-
-        total_put_oi = options_df[options_df['type'] ==
-                                  'put']['open_interest'].sum()
-        total_call_oi = options_df[options_df['type'] ==
-                                   'call']['open_interest'].sum()
-
-        if total_call_oi == 0:
-            return {'put_call_ratio': None, 'bias': 'Invalid'}
-
-        ratio = total_put_oi / total_call_oi
-
-        if ratio > 1.3:
-            bias = 'Bearish Skew'
-        elif ratio < 0.7:
-            bias = 'Bullish Skew'
-        else:
-            bias = 'Neutral Skew'
-
-        return {'put_call_ratio': round(ratio, 2), 'bias': bias}
-
-
-def discover_high_volume_movers(limit=15):
-    """
-    Discover stocks with unusual volume spikes using multiple screeners
-    """
-    symbols = []
-    
-    try:
-        # Method 1: Yahoo Finance volume leaders
-        url = "https://finance.yahoo.com/screener/predefined/volume_leaders"
-        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
-        response = requests.get(url, headers=headers, timeout=10)
-        
-        if response.status_code == 200:
-            # Simple regex to extract symbols from Yahoo's volume leaders
-            import re
-            symbol_pattern = r'"symbol":"([A-Z]{1,5})"'
-            found_symbols = re.findall(symbol_pattern, response.text)
-            
-            # Filter for likely optionable stocks
-            for symbol in found_symbols[:limit]:
-                if is_likely_optionable(symbol):
-                    symbols.append(symbol)
-        
-        print(f"   Found {len(symbols)} high-volume symbols from Yahoo")
-        
-    except Exception as e:
-        print(f"   Yahoo volume discovery failed: {e}")
-    
-    # Method 2: Use Alpha Vantage most active as backup
-    if len(symbols) < 10:
-        try:
-            api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
-            if api_key:
-                url = f'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey={api_key}'
-                response = requests.get(url, timeout=15)
-                data = response.json()
-                
-                if 'most_actively_traded' in data:
-                    for item in data['most_actively_traded'][:limit]:
-                        symbol = item['ticker']
-                        if is_likely_optionable(symbol) and symbol not in symbols:
-                            symbols.append(symbol)
-        except Exception as e:
-            print(f"   Alpha Vantage backup failed: {e}")
-    
-    return symbols[:limit]
-
-
-def discover_sector_rotation_plays(limit=10):
-    """
-    Discover stocks benefiting from sector rotation with randomization
-    """
-    import random
-    
-    # Representative stocks from each sector (expanded lists)
-    sector_stocks = {
-        'Financials': ['JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'USB', 'PNC', 'TFC', 'COF'],
-        'Energy': ['XOM', 'CVX', 'COP', 'EOG', 'SLB', 'PSX', 'VLO', 'MPC', 'OXY', 'KMI'],
-        'Technology': ['AAPL', 'MSFT', 'NVDA', 'CRM', 'ADBE', 'ORCL', 'INTC', 'IBM', 'NOW', 'SNOW'],
-        'Healthcare': ['JNJ', 'PFE', 'UNH', 'ABBV', 'BMY', 'MRK', 'AMGN', 'GILD', 'CVS', 'CI'],
-        'Industrials': ['BA', 'CAT', 'GE', 'HON', 'UPS', 'RTX', 'LMT', 'DE', 'MMM', 'EMR'],
-        'Materials': ['FCX', 'NEM', 'DOW', 'LIN', 'APD', 'SHW', 'DD', 'ECL', 'PPG', 'CF'],
-        'Consumer Staples': ['PG', 'KO', 'WMT', 'PEP', 'COST', 'CL', 'KMB', 'GIS', 'K', 'HSY'],
-        'Consumer Discretionary': ['AMZN', 'TSLA', 'HD', 'MCD', 'NKE', 'SBUX', 'TGT', 'LOW', 'TJX', 'BKNG'],
-    }
-    
-    symbols = []
-    
-    # Randomly select sectors and stocks within them for variety
-    selected_sectors = random.sample(list(sector_stocks.keys()), min(4, len(sector_stocks)))
-    
-    for sector in selected_sectors:
-        stocks = sector_stocks[sector]
-        # Randomly select 2-3 stocks from each selected sector
-        num_to_select = random.randint(2, min(3, len(stocks)))
-        selected_stocks = random.sample(stocks, num_to_select)
-        symbols.extend(selected_stocks)
-    
-    return symbols[:limit]
-
-
-def discover_news_driven_stocks(limit=10):
-    """
-    Discover stocks that are news-driven and potentially explosive with rotation
-    """
-    import random
-    
-    # Expanded categories of news-sensitive stocks
-    news_categories = {
-        'Biotech': ['MRNA', 'BNTX', 'GILD', 'BIIB', 'AMGN', 'REGN', 'VRTX', 'ILMN', 'INCY', 'ALNY'],
-        'Crypto': ['COIN', 'MSTR', 'RIOT', 'MARA', 'HOOD', 'SQ', 'PYPL', 'SOFI'],
-        'EV/Clean': ['TSLA', 'LCID', 'RIVN', 'NIO', 'XPEV', 'LI', 'PLUG', 'FCEL', 'ENPH', 'SEDG'],
-        'Meme/Social': ['GME', 'AMC', 'BB', 'PLTR', 'WISH', 'CLOV', 'RBLX', 'DWAC'],
-        'AI/Cloud': ['NVDA', 'AMD', 'CRWD', 'ZS', 'SNOW', 'PLTR', 'PALANTIR', 'C3AI', 'UPST'],
-        'Growth/SPAC': ['SOFI', 'OPEN', 'CLOV', 'SPCE', 'DKNG', 'PENN', 'SKLZ', 'TTCF']
-    }
-    
-    symbols = []
-    
-    # Randomly select categories and stocks for variety each scan
-    selected_categories = random.sample(list(news_categories.keys()), min(4, len(news_categories)))
-    
-    for category in selected_categories:
-        stocks = news_categories[category]
-        # Randomly select 2-3 stocks from each category
-        num_to_select = random.randint(2, min(3, len(stocks)))
-        selected_stocks = random.sample(stocks, num_to_select)
-        symbols.extend(selected_stocks)
-    
-    return symbols[:limit]
-
-
-def filter_and_prioritize_symbols_dynamic(symbols):
-    """
-    Enhanced filtering with dynamic prioritization based on momentum
-    """
-    # Remove duplicates while preserving order
-    unique_symbols = list(dict.fromkeys(symbols))
-    
-    # Priority groups with momentum focus
-    priority_groups = {
-        'high_momentum_etfs': ['SPY', 'QQQ', 'IWM', 'SOXL', 'TQQQ', 'UVXY'],
-        'momentum_stocks': ['NVDA', 'TSLA', 'AMD', 'COIN', 'PLTR', 'GME', 'AMC'],
-        'sector_rotation': ['XLF', 'XLE', 'XLK', 'JPM', 'XOM', 'AAPL'],
-        'volatile_plays': ['RIOT', 'MARA', 'LCID', 'NIO', 'PLUG', 'MRNA'],
-        'news_driven': ['HOOD', 'SOFI', 'CRWD', 'ZS', 'SNOW'],
-    }
-    
-    prioritized = []
-    used = set()
-    
-    # Add by priority groups (momentum-focused)
-    for group_name, group_symbols in priority_groups.items():
-        for symbol in group_symbols:
-            if symbol in unique_symbols and symbol not in used:
-                prioritized.append(symbol)
-                used.add(symbol)
-    
-    # Add remaining symbols (filtered)
-    for symbol in unique_symbols:
-        if symbol not in used and is_likely_optionable(symbol):
-            prioritized.append(symbol)
-            used.add(symbol)
-    
-    # Limit final output but ensure good mix
-    return prioritized[:60]  # Increased from 75 to catch more opportunities
-
-
-class CompleteOptionsScanner:
-
-    def __init__(self, api_key, min_delta=0.2, max_delta=0.7):
-        self.api_key = api_key
-        self.min_delta = min_delta
-        self.max_delta = max_delta
-        self.min_volume = 6
-        self.min_pattern_quality = 0.65
-        self.request_count = 0
-        self.last_request_time = 0
-        self.requests_per_minute = 75
-
-    def fetch_alpha_vantage_data(self, symbol, timeframe):
-        """Fetch price data using Alpha Vantage API with support for all timeframes"""
-        self._check_rate_limit()
-
-        try:
-            tf_config = TIMEFRAMES[timeframe]
-            function = tf_config['function']
-
-            # Build URL based on timeframe type
-            if function == 'TIME_SERIES_INTRADAY':
-                url = (f'https://www.alphavantage.co/query?function={function}'
-                       f'&symbol={symbol}&interval={tf_config["interval"]}'
-                       f'&outputsize=compact&apikey={self.api_key}')  # Use compact for faster response
-            elif function == 'TIME_SERIES_DAILY_ADJUSTED':
-                url = (
-                    f'https://www.alphavantage.co/query?function={function}'
-                    f'&symbol={symbol}&outputsize=compact&apikey={self.api_key}')
-            else:  # Weekly
-                url = (f'https://www.alphavantage.co/query?function={function}'
-                       f'&symbol={symbol}&apikey={self.api_key}')
-
-            response = requests.get(url, timeout=15)  # Add timeout
-            response.raise_for_status()  # Raise exception for bad status codes
-            data = response.json()
-
-            if 'Error Message' in data:
-                print(
-                    f"Error fetching data for {symbol}: {data['Error Message']}"
-                )
-                return None
-
-            key_prefix = tf_config['key_prefix']
-            if key_prefix not in data:
-                print(
-                    f"No data available for {symbol} at {timeframe} timeframe")
-                return None
-
-            # Convert to DataFrame
-            df = pd.DataFrame.from_dict(data[key_prefix], orient='index')
-
-            # Handle different column names based on timeframe
-            if function == 'TIME_SERIES_DAILY_ADJUSTED':
-                df.columns = [
-                    'Open', 'High', 'Low', 'Close', 'Adjusted_Close', 'Volume',
-                    'Dividend_Amount', 'Split_Coefficient'
-                ]
-            else:
-                df.columns = ['Open', 'High', 'Low', 'Close', 'Volume']
-
-            # Convert types
-            for col in df.columns:
-                if col != 'Volume':
-                    df[col] = pd.to_numeric(df[col], errors='coerce')
-                else:
-                    df['Volume'] = pd.to_numeric(df['Volume'], errors='coerce')
-
-            # Sort index
-            df.index = pd.to_datetime(df.index)
-            df.sort_index(inplace=True)
-
-            print(f"Successfully fetched {timeframe} data for {symbol}")
-            return df
-
-        except Exception as e:
-            print(f"Error fetching {timeframe} data for {symbol}: {e}")
-            return None
-
-    def fetch_multi_timeframe_data(self, symbol):
-        """Fetch price data for all timeframes using Alpha Vantage"""
-        timeframe_data = {}
-
-        for tf in TIMEFRAMES.keys():
-            df = self.fetch_alpha_vantage_data(symbol, tf)
-            if df is not None and not df.empty:
-                timeframe_data[tf] = df
-            time.sleep(0.5)  # Small delay between requests
-
-        return timeframe_data
-
-    def analyze_timeframes(self, symbol, price_data):
-        """Analyze patterns across all timeframes with extended candlestick support"""
-        analysis_results = {}
-
-        for timeframe, data in price_data.items():
-            try:
-                # Use Adjusted_Close for daily data if available
-                if 'Adjusted_Close' in data.columns:
-                    data['Close'] = data['Adjusted_Close']
-
-                gaps = self.analyze_gaps(data)
-                patterns = self.detect_patterns(data)
-                volume_analysis = self.analyze_volume(data)
-                candle_patterns = self.check_candlestick_conditions(data)
-
-                latest_gap = gaps.iloc[-1]
-                latest_patterns = patterns.iloc[-1]
-                latest_candles = candle_patterns.iloc[-1]
-                latest_volume = volume_analysis.iloc[-1]
-
-                analysis_results[timeframe] = {
-                    'gap_percent': latest_gap['gap_percent'],
-                    'gap_direction': latest_gap['gap_direction'],
-                    'gap_mitigated': latest_gap['gap_mitigated'],
-                    'unmitigated_gap_price':
-                    latest_gap['unmitigated_gap_price'],
-                    'patterns': {
-                        'falling_wedge':
-                        bool(latest_patterns['falling_wedge']),
-                        'rising_wedge': bool(latest_patterns['rising_wedge']),
-                        'high_slope': latest_patterns['high_slope'],
-                        'low_slope': latest_patterns['low_slope']
-                    },
-                    'candles': {
-                        'bullish':
-                        bool(latest_candles['matching_candle_bullish']),
-                        'bearish':
-                        bool(latest_candles['matching_candle_bearish']),
-                        'bullish_engulfing':
-                        bool(latest_candles['bullish_engulfing']),
-                        'bearish_engulfing':
-                        bool(latest_candles['bearish_engulfing']),
-                        'hammer':
-                        bool(latest_candles['hammer']),
-                        'inverted_hammer':
-                        bool(latest_candles['inverted_hammer']),
-                        'shooting_star':
-                        bool(latest_candles['shooting_star']),
-                        'doji':
-                        bool(latest_candles['doji']),
-                    },
-                    'volume': {
-                        'relative_volume': latest_volume['relative_volume'],
-                        'unusual_volume': bool(latest_volume['unusual_volume'])
-                    }
-                }
-
-            except Exception as e:
-                print(f"Error analyzing {timeframe} for {symbol}: {e}")
-                continue
-
-        return analysis_results
-
-    def calculate_pattern_confluence(self, analysis_results):
-        """Calculate pattern confluence with weighted timeframe importance"""
-        confluence_score = 0
-        bullish_signals = 0
-        bearish_signals = 0
-
-        # Define timeframe weights (higher weight for longer timeframes)
-        timeframe_weights = {
-            '5m': 0.5,
-            '15m': 0.75,
-            '30m': 1.0,
-            '1h': 1.25,
-            'D': 1.5,
-            'W': 2.0
-        }
-
-        for tf, results in analysis_results.items():
-            weight = timeframe_weights.get(tf, 1.0)
-
-            # === Gap Analysis ===
-            if abs(results['gap_percent']
-                   ) > 0 and not results['gap_mitigated']:
-                if results['gap_direction'] == 'Up':
-                    bullish_signals += weight
-                else:
-                    bearish_signals += weight
-
-            # === Pattern Analysis ===
-            if results['patterns']['falling_wedge']:
-                bullish_signals += weight
-            if results['patterns']['rising_wedge']:
-                bearish_signals += weight
-
-            # === Candlestick Patterns ===
-            candles = results['candles']
-
-            if candles.get('bullish'):
-                bullish_signals += weight
-            if candles.get('bearish'):
-                bearish_signals += weight
-
-            # New candlestick logic
-            if candles.get('bullish_engulfing'):
-                bullish_signals += weight
-            if candles.get('hammer') or candles.get('inverted_hammer'):
-                bullish_signals += 0.5 * weight
-
-            if candles.get('bearish_engulfing'):
-                bearish_signals += weight
-            if candles.get('shooting_star'):
-                bearish_signals += 0.5 * weight
-
-            if candles.get('doji'):
-                # Doji = indecision — light weight to both sides
-                bullish_signals += 0.2 * weight
-                bearish_signals += 0.2 * weight
-
-            # === Volume Confirmation ===
-            if results['volume']['unusual_volume']:
-                if bullish_signals > bearish_signals:
-                    bullish_signals += 0.5 * weight
-                elif bearish_signals > bullish_signals:
-                    bearish_signals += 0.5 * weight
-
-        # === Final Score ===
-        total_signals = bullish_signals + bearish_signals
-        if total_signals > 0:
-            if bullish_signals > bearish_signals:
-                confluence_score = (bullish_signals / total_signals) * 10
-                bias = 'Bullish'
-            else:
-                confluence_score = (bearish_signals / total_signals) * 10
-                bias = 'Bearish'
-        else:
-            confluence_score = 0
-            bias = 'Neutral'
-
-        return {
-            'score': round(confluence_score, 2),
-            'bias': bias,
-            'bullish_signals': round(bullish_signals, 2),
-            'bearish_signals': round(bearish_signals, 2)
-        }
-
-    def fetch_price_data(self, symbol, period='1mo', interval='15m'):
-        """Fetch price data using yfinance"""
-        try:
-            stock = yf.Ticker(symbol)
-            df = stock.history(period=period, interval=interval)
-            if df.empty:
-                print(f"No price data available for {symbol}")
-                return None
-            df.index = pd.to_datetime(df.index)
-            return df
-        except Exception as e:
-            print(f"Error fetching price data for {symbol}: {e}")
-            return None
-
-    def _check_rate_limit(self):
-        """Implement rate limiting"""
-        current_time = time.time()
-        if current_time - self.last_request_time < 60:  # Within the same minute
-            if self.request_count >= self.requests_per_minute:
-                sleep_time = 60 - (current_time - self.last_request_time)
-                if sleep_time > 0:
-                    time.sleep(sleep_time)
-                self.request_count = 0
-                self.last_request_time = time.time()
-        else:  # New minute
-            self.request_count = 0
-            self.last_request_time = current_time
-
-        self.request_count += 1
-
-    def fetch_options_data(self, symbol):
-        """Fetch options data with improved error handling and fallback"""
-        self._check_rate_limit()
-
-        # Try historical options first
-        url = f"https://www.alphavantage.co/query?function=HISTORICAL_OPTIONS&symbol={symbol}&apikey={self.api_key}"
-
-        try:
-            response = requests.get(url, timeout=15)
-            data = response.json()
-
-            if 'Information' in data and 'rate limit' in data['Information'].lower():
-                print(f"⏳ Rate limit reached for {symbol} - waiting...")
-                time.sleep(60)
-                return self.fetch_options_data(symbol)
-
-            if 'Error Message' in data:
-                print(f"❌ Alpha Vantage error for {symbol}: {data['Error Message']}")
-                return None
-
-            if 'data' in data and data['data'] and len(data['data']) > 0:
-                df = pd.DataFrame(data['data'])
-                print(f"✅ Options data found for {symbol}: {len(df)} contracts")
-                return df
-
-            # Try real-time options as fallback
-            print(f"🔄 Trying real-time options for {symbol}...")
-            return self._fetch_realtime_options(symbol)
-
-        except Exception as e:
-            print(f"❌ Error fetching options for {symbol}: {e}")
-            return None
-
-    def _fetch_realtime_options(self, symbol):
-        """Fallback method for real-time options data"""
-        try:
-            url = f"https://www.alphavantage.co/query?function=REALTIME_OPTIONS&symbol={symbol}&apikey={self.api_key}"
-            response = requests.get(url, timeout=15)
-            data = response.json()
-            
-            if 'data' in data and data['data']:
-                df = pd.DataFrame(data['data'])
-                print(f"✅ Real-time options found for {symbol}: {len(df)} contracts")
-                return df
-            
-            print(f"❌ No options data available for {symbol}")
-            return None
-            
-        except Exception as e:
-            print(f"❌ Real-time options fetch failed for {symbol}: {e}")
-            return None
-
-    def analyze_gaps(self, price_data):
-        """Identify and track gap mitigation"""
-        df = price_data.copy()
-
-        # Get prior candle values for comparison
-        df['prev_close'] = df['Close'].shift(1)
-        df['prev_open'] = df['Open'].shift(1)
-
-        # Calculate gaps
-        df['gap'] = df['Open'] - df['prev_close']
-        df['gap_percent'] = (df['gap'] / df['prev_close']) * 100
-
-        # Track gap direction
-        df['gap_direction'] = np.where(df['gap'] > 0, 'Up', 'Down')
-
-        # Track gap mitigation
-        df['gap_mitigated'] = False
-        df['unmitigated_gap_price'] = np.nan
-
-        # For each row, check if gap is mitigated
-        for i in range(1, len(df)):
-            if df.iloc[i]['gap'] != 0:  # If there's a gap
-                if df.iloc[i]['gap'] > 0:  # Bullish gap
-                    # Gap is mitigated if price falls back to previous close
-                    df.iloc[i, df.columns.get_loc('gap_mitigated')] = df.iloc[
-                        i]['Low'] <= df.iloc[i - 1]['Close']
-                    if not df.iloc[i]['gap_mitigated']:
-                        df.iloc[i,
-                                df.columns.get_loc('unmitigated_gap_price'
-                                                   )] = df.iloc[i - 1]['Close']
-                else:  # Bearish gap
-                    # Gap is mitigated if price rises back to previous close
-                    df.iloc[i, df.columns.get_loc('gap_mitigated')] = df.iloc[
-                        i]['High'] >= df.iloc[i - 1]['Close']
-                    if not df.iloc[i]['gap_mitigated']:
-                        df.iloc[i,
-                                df.columns.get_loc('unmitigated_gap_price'
-                                                   )] = df.iloc[i - 1]['Close']
-
-        # Track number of bars since last unmitigated gap
-        df['bars_since_gap'] = 0
-        last_gap_idx = None
-        for i in range(len(df) - 1, -1, -1):
-            if pd.notna(df.iloc[i]['unmitigated_gap_price']):
-                last_gap_idx = i
-                df.iloc[i, df.columns.get_loc('bars_since_gap')] = 0
-            elif last_gap_idx is not None:
-                df.iloc[
-                    i, df.columns.get_loc('bars_since_gap')] = last_gap_idx - i
-
-        return df
-
-    def check_candlestick_conditions(self, price_data):
-        """Check various candlestick patterns"""
-        df = price_data.copy()
-
-        # Previous candle values
-        df['prev_open'] = df['Open'].shift(1)
-        df['prev_close'] = df['Close'].shift(1)
-        df['prev_high'] = df['High'].shift(1)
-        df['prev_low'] = df['Low'].shift(1)
-
-        # Real body and shadows
-        df['body'] = abs(df['Close'] - df['Open'])
-        df['upper_shadow'] = df['High'] - df[['Close', 'Open']].max(axis=1)
-        df['lower_shadow'] = df[['Close', 'Open']].min(axis=1) - df['Low']
-        df['range'] = df['High'] - df['Low']
-
-        # === Pattern Conditions === #
-
-        # Bullish Engulfing
-        df['bullish_engulfing'] = ((df['prev_close'] < df['prev_open'])
-                                   &  # Previous red
-                                   (df['Close'] > df['Open'])
-                                   &  # Current green
-                                   (df['Open'] < df['prev_close']) &
-                                   (df['Close'] > df['prev_open']))
-
-        # Bearish Engulfing
-        df['bearish_engulfing'] = ((df['prev_close'] > df['prev_open'])
-                                   &  # Previous green
-                                   (df['Close'] < df['Open']) &  # Current red
-                                   (df['Open'] > df['prev_close']) &
-                                   (df['Close'] < df['prev_open']))
-
-        # Hammer
-        df['hammer'] = ((df['body'] <= df['range'] * 0.3) &
-                        (df['lower_shadow'] >= df['body'] * 2) &
-                        (df['upper_shadow'] <= df['body'] * 0.5))
-
-        # Inverted Hammer
-        df['inverted_hammer'] = ((df['body'] <= df['range'] * 0.3) &
-                                 (df['upper_shadow'] >= df['body'] * 2) &
-                                 (df['lower_shadow'] <= df['body'] * 0.5))
-
-        # Shooting Star (bearish inverted hammer)
-        df['shooting_star'] = ((df['body'] <= df['range'] * 0.3) &
-                               (df['upper_shadow'] >= df['body'] * 2) &
-                               (df['lower_shadow'] <= df['body'] * 0.2))
-
-        # Doji
-        df['doji'] = (df['body'] <= df['range'] * 0.1)
-
-        # === Existing Matching Candle Logic === #
-        df['is_prev_green'] = df['prev_close'] > df['prev_open']
-        df['is_prev_red'] = df['prev_close'] < df['prev_open']
-        df['bull_cond1'] = df['prev_close'] <= df['Open']
-        df['bull_cond2'] = df['Open'] >= df['Low']
-        df['bull_cond3'] = df['prev_close'] <= df['Low']
-        df['matching_candle_bullish'] = (df['is_prev_green'] & df['bull_cond1']
-                                         & df['bull_cond2'] & df['bull_cond3'])
-
-        df['bear_cond1'] = df['prev_close'] >= df['Open']
-        df['bear_cond2'] = df['Open'] <= df['High']
-        df['bear_cond3'] = df['prev_close'] >= df['High']
-        df['matching_candle_bearish'] = (df['is_prev_red'] & df['bear_cond1']
-                                         & df['bear_cond2'] & df['bear_cond3'])
-
-        return df
-
-    def detect_patterns(self, price_data):
-        df = price_data.copy()
-        patterns = pd.DataFrame(index=df.index)
-
-        x = np.arange(len(df))
-        high_trend = stats.linregress(x, df['High'])
-        low_trend = stats.linregress(x, df['Low'])
-
-        patterns['high_slope'] = high_trend.slope
-        patterns['low_slope'] = low_trend.slope
-        patterns['high_r2'] = high_trend.rvalue**2
-        patterns['low_r2'] = low_trend.rvalue**2
-
-        patterns['falling_wedge'] = (
-            (patterns['high_slope'] < -0.0001) &
-            (patterns['low_slope'] < -0.0001) &
-            (patterns['high_slope'] < patterns['low_slope']) &
-            (patterns['high_r2'] > self.min_pattern_quality) &
-            (patterns['low_r2'] > self.min_pattern_quality))
-
-        patterns['rising_wedge'] = (
-            (patterns['high_slope'] > 0.0001) &
-            (patterns['low_slope'] > 0.0001) &
-            (patterns['high_slope'] > patterns['low_slope']) &
-            (patterns['high_r2'] > self.min_pattern_quality) &
-            (patterns['low_r2'] > self.min_pattern_quality))
-
-        return patterns
-
-    def analyze_volume(self, price_data):
-        df = price_data.copy()
-        df['volume_sma'] = df['Volume'].expanding().mean()
-        df['volume_std'] = df['Volume'].expanding().std()
-        df['relative_volume'] = df['Volume'] / df['volume_sma']
-        df['unusual_volume'] = df['Volume'] > (df['volume_sma'] +
-                                               2 * df['volume_std'])
-        return df
-
-    def fetch_volume_profile(self,
-                             symbol,
-                             interval='15min',
-                             price_levels=20,
-                             lookback_days=10):
-        """
-        Volume profile using OHLC distribution (upgrade), fully backward-compatible.
-        """
-        self._check_rate_limit()
-
-        try:
-            url = (
-                f'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY'
-                f'&symbol={symbol}&interval={interval}&outputsize=full&apikey={self.api_key}'
-            )
-            response = requests.get(url)
-            data = response.json()
-
-            if 'Error Message' in data:
-                print(
-                    f"Error fetching data for {symbol}: {data['Error Message']}"
-                )
-                return None
-
-            key_prefix = f'Time Series ({interval})'
-            if key_prefix not in data:
-                print(f"No intraday data available for {symbol}")
-                return None
-
-            df = pd.DataFrame.from_dict(data[key_prefix], orient='index')
-            df.columns = ['Open', 'High', 'Low', 'Close', 'Volume']
-            df = df.apply(pd.to_numeric, errors='coerce')
-            df.index = pd.to_datetime(df.index)
-            df.sort_index(inplace=True)
-
-            df = df[df.index >= datetime.now() - timedelta(days=lookback_days)]
-
-            if df.empty:
-                print(
-                    f"No data available for {symbol} in the specified time period"
-                )
-                return None
-
-            price_min = df['Low'].min()
-            price_max = df['High'].max()
-            price_range = price_max - price_min
-
-            if price_range == 0:
-                print(f"Flat price range for {symbol}, skipping")
-                return None
-
-            level_size = price_range / price_levels
-            price_levels_array = [
-                price_min + (level_size * i) for i in range(price_levels + 1)
-            ]
-
-            volume_profile = {
-                'price_levels': price_levels_array,
-                'volumes': [0] * price_levels,
-                'relative_volumes': [0] * price_levels,
-                'dominant_levels': []
-            }
-
-            # More accurate distribution: split volume across OHLC range
-            for _, row in df.iterrows():
-                prices = [row['Open'], row['High'], row['Low'], row['Close']]
-                valid_prices = [p for p in prices if not pd.isna(p)]
-                if not valid_prices:
-                    continue
-
-                spread = np.linspace(min(valid_prices),
-                                     max(valid_prices),
-                                     num=len(valid_prices))
-                volume_share = row['Volume'] / len(
-                    spread) if row['Volume'] > 0 else 0
-
-                for price in spread:
-                    for i in range(price_levels):
-                        if price_levels_array[i] <= price < price_levels_array[
-                                i + 1]:
-                            volume_profile['volumes'][i] += volume_share
-                            break
-
-            total_volume = sum(volume_profile['volumes'])
-            if total_volume > 0:
-                volume_profile['relative_volumes'] = [
-                    (v / total_volume) * 100 for v in volume_profile['volumes']
-                ]
-
-            mean_volume = np.mean(volume_profile['volumes'])
-            std_volume = np.std(volume_profile['volumes'])
-            threshold = mean_volume + (1.5 * std_volume)
-
-            for i, volume in enumerate(volume_profile['volumes']):
-                if volume > threshold:
-                    price_level = (price_levels_array[i] +
-                                   price_levels_array[i + 1]) / 2
-                    volume_profile['dominant_levels'].append({
-                        'price':
-                        round(price_level, 2),
-                        'volume':
-                        int(volume),
-                        'percentage':
-                        round(volume_profile['relative_volumes'][i], 2)
-                    })
-
-            return volume_profile
-
-        except Exception as e:
-            print(f"Error creating volume profile for {symbol}: {e}")
-            return None
-
-    def analyze_with_volume_profile(self, symbol, analysis_results):
-        """
-      Enhance analysis with volume profile data
-      """
-        # Get volume profile for intraday timeframes from TIMEFRAMES dict
-        volume_profiles = {}
-
-        # Extract intraday timeframes only (daily/weekly don't work with volume profiles)
-        intraday_timeframes = [
-            tf for tf, config in TIMEFRAMES.items()
-            if config['function'] == 'TIME_SERIES_INTRADAY'
-        ]
-
-        for tf in intraday_timeframes:
-            # Convert timeframe key to interval format
-            interval = TIMEFRAMES[tf]['interval']
-            volume_profiles[interval] = self.fetch_volume_profile(
-                symbol, interval=interval)
-
-        # Rest of the function remains the same
-        confluences = []
-
-        # Check if any key levels from volume profile match gap levels
-        for tf, results in analysis_results.items():
-            if 'gap_percent' in results and abs(results['gap_percent']) > 0:
-                gap_price = results['unmitigated_gap_price']
-                if pd.isna(gap_price):
-                    continue
-
-                # Check if gap aligns with a high volume node
-                for profile_tf, profile in volume_profiles.items():
-                    if profile and 'dominant_levels' in profile:
-                        for level in profile['dominant_levels']:
-                            # If gap price is near a high volume node (+/- 1%)
-                            price_diff_percent = abs(
-                                (level['price'] - gap_price) / gap_price * 100)
-                            if price_diff_percent < 1.0:
-                                confluences.append({
-                                    'type':
-                                    'gap_volume_confluence',
-                                    'gap_timeframe':
-                                    tf,
-                                    'volume_timeframe':
-                                    profile_tf,
-                                    'gap_price':
-                                    gap_price,
-                                    'volume_level':
-                                    level['price'],
-                                    'volume_strength':
-                                    level['percentage']
-                                })
-
-        return {'volume_profiles': volume_profiles, 'confluences': confluences}
-
-    def print_multi_timeframe_analysis(self, symbol, analysis_results,
-                                       confluence):
-        """Print detailed multi-timeframe analysis"""
-        print(f"\n=== {symbol} Multi-Timeframe Analysis ===")
-        print(
-            f"Overall Confluence Score: {confluence['score']}/10 ({confluence['bias']})"
-        )
-        print(f"Bullish Signals: {confluence['bullish_signals']}")
-        print(f"Bearish Signals: {confluence['bearish_signals']}\n")
-
-        headers = [
-            'Timeframe', 'Gap %', 'Direction', 'Patterns', 'Candles', 'Volume'
-        ]
-        rows = []
-
-        for tf, data in analysis_results.items():
-            patterns = []
-            if data['patterns']['falling_wedge']:
-                patterns.append('Falling Wedge')
-            if data['patterns']['rising_wedge']:
-                patterns.append('Rising Wedge')
-
-            candles = []
-            if data['candles']['bullish']:
-                candles.append('Bullish')
-            if data['candles']['bearish']:
-                candles.append('Bearish')
-
-            rows.append([
-                tf, f"{data['gap_percent']:.2f}%", data['gap_direction'],
-                ', '.join(patterns) if patterns else 'None',
-                ', '.join(candles) if candles else 'None',
-                'Unusual' if data['volume']['unusual_volume'] else 'Normal'
-            ])
-
-        print(tabulate(rows, headers=headers, tablefmt='pretty'))
-
-    def screen_options(self,
-                       options_data,
-                       price_analysis,
-                       min_price=None,
-                       max_price=None,
-                       iv_percentile_threshold=None,
-                       time_to_expiry_range=None):
-        """
-        Filters options by price, delta, IV percentile, and days to expiration.
-        Returns scored candidates.
-        """
-        if options_data is None or options_data.empty:
+        # Check if this is real-time options data (missing Greeks)
+        has_greeks = all(col in options_data.columns for col in ['delta', 'gamma', 'theta'])
+
+        if not has_greeks:
+            print(f"⚠️ Real-time options data detected (no Greeks available). Found columns: {list(options_data.columns)}")
+            print(f"⏭️ Skipping options screening for this symbol - Greeks required for analysis")
             return pd.DataFrame()
 
         required_cols = {
@@ -2113,14 +1161,14 @@ def print_volume_profile(symbol, volume_profile, tf='15min'):
         return
 
     print(f"\n📊 {symbol} Key Volume Levels ({tf}):")
-    
+
     # Show only top 3 dominant levels
     top_levels = sorted(profile['dominant_levels'], 
                        key=lambda x: x['percentage'], reverse=True)[:3]
-    
+
     for i, level in enumerate(top_levels, 1):
         print(f"  {i}. ${level['price']:.2f} ({level['percentage']:.1f}% volume)")
-    
+
     # Show volume confluence if multiple timeframes agree
     if len(profile['dominant_levels']) > 2:
         print(f"  💡 Strong volume confluence at {len(profile['dominant_levels'])} levels")
@@ -2401,23 +1449,23 @@ def save_individual_result(symbol, result_data, base_dir='./TradingPlans'):
         # Create a filename with current date
         date_str = datetime.now().strftime('%Y-%m-%d')
         individual_file = os.path.join(base_dir, f'progressive_results_{date_str}.json')
-        
+
         # Load existing data or create new
         if os.path.exists(individual_file):
             with open(individual_file, 'r') as f:
                 existing_data = json.load(f)
         else:
             existing_data = {}
-        
+
         # Add the new result
         existing_data[symbol] = convert_numpy_types(result_data)
-        
+
         # Save back to file
         with open(individual_file, 'w') as f:
             json.dump(existing_data, f, indent=2, default=str)
-        
+
         print(f"✅ Saved {symbol} to {individual_file}")
-        
+
         # Also append to human-readable format
         human_readable_file = os.path.join(base_dir, f'progressive_plans_{date_str}.txt')
         with open(human_readable_file, 'a') as f:
@@ -2425,11 +1473,11 @@ def save_individual_result(symbol, result_data, base_dir='./TradingPlans'):
             f.write(f"Symbol: {symbol} - {datetime.now().strftime('%H:%M:%S')}\n")
             f.write(f"Confluence Score: {result_data.get('confluence', {}).get('score', 'N/A')}/10\n")
             f.write(f"Bias: {result_data.get('confluence', {}).get('bias', 'N/A')}\n")
-            
+
             # Add options details
             if 'options' in result_data and not isinstance(result_data['options'], bool) and not result_data['options'].empty:
                 f.write(f"\nTop Options Found: {len(result_data['options'])}\n")
-                
+
                 # Show top 3 options
                 for i, option in enumerate(result_data['options'].head(3).itertuples(), 1):
                     f.write(f"\nOption {i}:\n")
@@ -2443,7 +1491,7 @@ def save_individual_result(symbol, result_data, base_dir='./TradingPlans'):
                     if hasattr(option, 'implied_volatility'):
                         iv_value = float(option.implied_volatility) if option.implied_volatility else 0
                         f.write(f"  IV: {iv_value:.2%}\n")
-            
+
             if 'trade_plan' in result_data and result_data['trade_plan']:
                 tp = result_data['trade_plan']
                 f.write(f"\nTrade Plan:\n")
@@ -2454,11 +1502,11 @@ def save_individual_result(symbol, result_data, base_dir='./TradingPlans'):
                 f.write(f"  Strike: {tp.get('strike', 'N/A')} {tp.get('type', 'N/A').capitalize()}\n")
                 f.write(f"  Expiration: {tp.get('expiration', 'N/A')}\n")
                 f.write(f"  Max Hold: {tp.get('max_hold_time', 'N/A')}\n")
-            
+
             f.write(f"{'='*60}\n")
-        
+
         return True
-        
+
     except Exception as e:
         print(f"❌ Error saving individual result for {symbol}: {e}")
         return False
@@ -2476,8 +1524,7 @@ def save_detailed_options_data(results, base_dir, timestamp):
             f.write(f"Symbol: {symbol}\n")
             f.write(f"Analysis Date: {timestamp}\n")
 
-            # FIX: Check if options exists and is not empty
-            if 'options' in data and not isinstance(
+            # FIX: Check if options exists and ist isinstance(
                     data['options'], bool) and not data['options'].empty:
                 f.write("\nOptions Chain Analysis:\n")
                 for idx, option in enumerate(data['options'].itertuples(), 1):
@@ -2640,7 +1687,7 @@ def run_scanner(symbols=None,
     scanner = CompleteOptionsScanner(ALPHA_VANTAGE_API_KEY,
                                      min_delta=min_delta,
                                      max_delta=max_delta)
-    
+
     # Use the new multi-source approach if no symbols provided
     if symbols is None:
         symbols = get_optionable_stocks_with_volume()
@@ -2653,7 +1700,7 @@ def run_scanner(symbols=None,
                 filtered_symbols.append(symbol)
             else:
                 print(f"⏭️  Skipping {symbol} (likely not optionable)")
-        
+
         symbols = filtered_symbols[:30]  # Limit to 30 symbols for faster processing
         print(f"🔍 Processing {len(symbols)} filtered symbols...")
 
@@ -2671,7 +1718,7 @@ def run_scanner(symbols=None,
             if daily_data is None or daily_data.empty:
                 print(f"⚠️  No daily data for {symbol}, skipping...")
                 continue
-            
+
             # If daily data exists, proceed with full analysis
             multi_tf_data = scanner.fetch_multi_timeframe_data(symbol)
             if not multi_tf_data or len(multi_tf_data) < 2:  # Need at least 2 timeframes
@@ -2718,14 +1765,14 @@ def run_scanner(symbols=None,
             # Only show detailed analysis for high-scoring symbols
             if confluence['score'] >= 6.0:
                 scanner.print_multi_timeframe_analysis(symbol, analysis_results, confluence)
-                
+
                 # Show gap info more concisely
                 gap_info = "No gap"
                 if '15m' in analysis_results and analysis_results['15m']['gap_percent'] != 0:
                     gap_info = f"{analysis_results['15m']['gap_percent']:.2f}% gap"
                 elif 'D' in analysis_results and analysis_results['D']['gap_percent'] != 0:
                     gap_info = f"{analysis_results['D']['gap_percent']:.2f}% daily gap"
-                
+
                 print(f"\n🎯 {symbol}: {confluence['score']:.1f}/10 {confluence['bias']} | {gap_info}")
 
                 # Show only the most relevant volume profile (15m or 1h)
@@ -2832,9 +1879,9 @@ def run_scanner(symbols=None,
                             'trade_plan': trade_plan,
                             'oi_skew': oi_skew
                         }
-                        
+
                         results[symbol] = result_data
-                        
+
                         # Save this result immediately
                         save_individual_result(symbol, result_data)
                     else:
@@ -3010,3 +2057,5 @@ def save_summary_report(results, filepath):
                             )
 
         f.write("\n=== End of Summary ===\n")
+
+# The CompleteOptionsScanner class is updated to handle real-time and historical options data.
