@@ -1,0 +1,875 @@
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Serving Flask app 'main'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://172.31.128.28:8080
+Press CTRL+C to quit
+ * Restarting with stat
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Debugger is active!
+ * Debugger PIN: 337-328-652
+
+📡 Starting autonomous scan at 2025-06-30 15:29:18...
+🔄 Auto-refreshing symbols from Alpha Vantage...
+   Fetching top gainers, losers, and most active...
+   ✅ 20 symbols from top_gainers
+   ✅ 20 symbols from top_losers
+   ✅ 20 symbols from most_actively_traded
+Cleared existing tickers
+Database update complete: 59 symbols processed, 59 total in DB
+🔄 Database updated with 59 fresh symbols
+🔍 Aggregating optionable stocks from multiple sources...
+   Filtered 15 high-momentum symbols from Alpha Vantage
+✅ Added 15 dynamic Alpha Vantage symbols
+✅ Added 30 symbols from database
+✅ Added 6 core ETFs
+   Found 0 high-volume symbols from Yahoo
+✅ Added 10 high-volume movers
+✅ Added 10 sector rotation plays
+✅ Added 10 news-driven stocks
+✅ Added 10 rotating mega caps: ['CRM', 'PFE', 'NFLX', 'GME', 'COIN']...
+🎯 Final dynamic list: 55 optionable stocks
+🎯 Processing 25 curated optionable stocks: ['SPY', 'QQQ', 'IWM', 'SOXL', 'NVDA']...
+🔄 Running optimized scanner...
+⏭️  Skipping IWM (likely not optionable)
+⏭️  Skipping RIOT (likely not optionable)
+⏭️  Skipping PLUG (likely not optionable)
+🔍 Processing 22 filtered symbols...
+
+Analyzing 22 symbols across 7 timeframes...
+Looking for options expiring: (3, 21)
+Scanning:   0%|                                                                                                | 0/22 [00:00<?, ?it/s]Successfully fetched D data for SPY
+Successfully fetched 1m data for SPY
+Successfully fetched 5m data for SPY
+Successfully fetched 15m data for SPY
+Successfully fetched 30m data for SPY
+Successfully fetched 1h data for SPY
+Successfully fetched D data for SPY
+Successfully fetched W data for SPY
+
+=== SPY Multi-Timeframe Analysis ===
+Overall Confluence Score: 8.23/10 (Bullish)
+Bullish Signals: 23.9
+Bearish Signals: 5.15
+
++-----------+-------+-----------+--------------+---------+---------+
+| Timeframe | Gap % | Direction |   Patterns   | Candles | Volume  |
++-----------+-------+-----------+--------------+---------+---------+
+|    1m     | 0.24% |    Up     |     None     | Bullish | Unusual |
+|    5m     | 0.24% |    Up     |     None     |  None   | Normal  |
+|    15m    | 0.24% |    Up     |     None     |  None   | Normal  |
+|    30m    | 0.24% |    Up     |     None     | Bullish | Normal  |
+|    1h     | 0.24% |    Up     |     None     | Bullish | Normal  |
+|     D     | 0.17% |    Up     |     None     |  None   | Normal  |
+|     W     | 0.13% |    Up     | Rising Wedge |  None   | Normal  |
++-----------+-------+-----------+--------------+---------+---------+
+
+🎯 SPY: 8.2/10 Bullish | 0.24% gap
+✅ Options data found for SPY: 9178 contracts
+Options Data Fetched: 9178 contracts
+
+Top Options Candidates:
++-----+--------+------+---------------------+----------+---------+----------+--------+
+|     | strike | type |     expiration      |  delta   |  gamma  |  theta   | score  |
++-----+--------+------+---------------------+----------+---------+----------+--------+
+| 213 | 615.0  | put  | 2025-06-27 00:00:00 | -0.50428 | 0.27836 |  -0.249  | 1.1897 |
+| 656 | 617.0  | call | 2025-06-30 00:00:00 | 0.29969  | 0.09828 | -0.22659 | 0.7933 |
++-----+--------+------+---------------------+----------+---------+----------+--------+
+📈 Trade Plan for SPY (Bullish Bias)
+
+🔹 Option: $$615.0 Put expiring 2025-06-27
+🔹 Entry Price: $0.61
+🔹 Stop Loss: $0.46
+🔹 Initial Target: $1.07
+🔹 Final Target: $2.13
+🔹 Position Size: 3 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.50428 | Gamma: 0.27836 | Theta: -0.24900 | Score: 1.19
+
+Recommended Trade Plan:
++----------------+-------------+
+|  Entry Price   |    $0.61    |
+|   Stop Loss    |    $0.46    |
+| Initial Target |    $1.07    |
+|  Final Target  |    $2.13    |
+| Position Size  | 3 contracts |
+| Max Hold Time  |   4 hours   |
+| Delta Exposure |  $-151.28   |
+|  Gamma/Theta   |    1.12     |
+|  Implied Vol   |    4.45%    |
++----------------+-------------+
+✅ Saved SPY to ./TradingPlans/progressive_results_2025-06-30.json
+Scanning:   5%|████                                                                                    | 1/22 [00:11<03:54, 11.15s/it]Successfully fetched D data for QQQ
+Successfully fetched 1m data for QQQ
+Successfully fetched 5m data for QQQ
+Successfully fetched 15m data for QQQ
+Successfully fetched 30m data for QQQ
+Successfully fetched 1h data for QQQ
+Successfully fetched D data for QQQ
+Successfully fetched W data for QQQ
+⚪ QQQ: 5.8/10 Bearish (below threshold)
+Scanning:   9%|████████                                                                                | 2/22 [00:18<02:56,  8.81s/it]Successfully fetched D data for SOXL
+Successfully fetched 1m data for SOXL
+Successfully fetched 5m data for SOXL
+Successfully fetched 15m data for SOXL
+Successfully fetched 30m data for SOXL
+Successfully fetched 1h data for SOXL
+Successfully fetched D data for SOXL
+Successfully fetched W data for SOXL
+
+=== SOXL Multi-Timeframe Analysis ===
+Overall Confluence Score: 8.42/10 (Bullish)
+Bullish Signals: 26.45
+Bearish Signals: 4.95
+
++-----------+--------+-----------+----------+---------+---------+
+| Timeframe | Gap %  | Direction | Patterns | Candles | Volume  |
++-----------+--------+-----------+----------+---------+---------+
+|    1m     | 0.48%  |    Up     |   None   | Bullish | Unusual |
+|    5m     | 0.48%  |    Up     |   None   | Bullish | Normal  |
+|    15m    | 0.48%  |    Up     |   None   | Bullish | Normal  |
+|    30m    | 0.48%  |    Up     |   None   | Bullish | Normal  |
+|    1h     | 0.48%  |    Up     |   None   | Bullish | Normal  |
+|     D     | 0.04%  |    Up     |   None   |  None   | Normal  |
+|     W     | -0.14% |   Down    |   None   |  None   | Unusual |
++-----------+--------+-----------+----------+---------+---------+
+
+🎯 SOXL: 8.4/10 Bullish | 0.48% gap
+✅ Options data found for SOXL: 1110 contracts
+Options Data Fetched: 1110 contracts
+
+Top Options Candidates:
++-----+--------+------+---------------------+----------+---------+----------+--------+
+|     | strike | type |     expiration      |  delta   |  gamma  |  theta   | score  |
++-----+--------+------+---------------------+----------+---------+----------+--------+
+| 174 |  26.0  | call | 2025-07-03 00:00:00 |  0.3717  | 0.16467 | -0.0734  | 1.5604 |
+| 171 |  24.5  | put  | 2025-07-03 00:00:00 | -0.38038 | 0.15274 | -0.07793 | 1.4522 |
+| 274 |  28.0  | call | 2025-07-11 00:00:00 |  0.2518  | 0.08777 | -0.04209 | 1.4252 |
+| 169 |  24.0  | put  | 2025-07-03 00:00:00 | -0.30899 | 0.13668 | -0.07468 | 1.3575 |
++-----+--------+------+---------------------+----------+---------+----------+--------+
+📈 Trade Plan for SOXL (Bullish Bias)
+
+🔹 Option: $$26.0 Call expiring 2025-07-03
+🔹 Entry Price: $0.58
+🔹 Stop Loss: $0.43
+🔹 Initial Target: $1.01
+🔹 Final Target: $2.03
+🔹 Position Size: 3 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.37170 | Gamma: 0.16467 | Theta: -0.07340 | Score: 1.56
+
+Recommended Trade Plan:
++----------------+-------------+
+|  Entry Price   |    $0.58    |
+|   Stop Loss    |    $0.43    |
+| Initial Target |    $1.01    |
+|  Final Target  |    $2.03    |
+| Position Size  | 3 contracts |
+| Max Hold Time  |   4 hours   |
+| Delta Exposure |   $111.51   |
+|  Gamma/Theta   |    2.24     |
+|  Implied Vol   |   71.33%    |
++----------------+-------------+
+✅ Saved SOXL to ./TradingPlans/progressive_results_2025-06-30.json
+Scanning:  14%|████████████                                                                            | 3/22 [00:29<03:06,  9.84s/it]Successfully fetched D data for NVDA
+Successfully fetched 1m data for NVDA
+Successfully fetched 5m data for NVDA
+Successfully fetched 15m data for NVDA
+Successfully fetched 30m data for NVDA
+Successfully fetched 1h data for NVDA
+Successfully fetched D data for NVDA
+Successfully fetched W data for NVDA
+
+=== NVDA Multi-Timeframe Analysis ===
+Overall Confluence Score: 9.55/10 (Bullish)
+Bullish Signals: 5.25
+Bearish Signals: 0.25
+
++-----------+--------+-----------+----------+---------+---------+
+| Timeframe | Gap %  | Direction | Patterns | Candles | Volume  |
++-----------+--------+-----------+----------+---------+---------+
+|    1m     | 0.00%  |   Down    |   None   |  None   | Normal  |
+|    5m     | 0.00%  |   Down    |   None   |  None   | Normal  |
+|    15m    | -0.00% |   Down    |   None   |  None   | Normal  |
+|    30m    | -0.01% |   Down    |   None   |  None   | Normal  |
+|    1h     | 0.01%  |    Up     |   None   |  None   | Normal  |
+|     D     | 0.66%  |    Up     |   None   |  None   | Normal  |
+|     W     | -0.94% |   Down    |   None   |  None   | Unusual |
++-----------+--------+-----------+----------+---------+---------+
+
+🎯 NVDA: 9.6/10 Bullish | -0.00% gap
+✅ Options data found for NVDA: 4294 contracts
+Options Data Fetched: 4294 contracts
+No valid options found matching criteria
+Scanning:  18%|████████████████                                                                        | 4/22 [00:41<03:13, 10.76s/it]Successfully fetched D data for COIN
+Successfully fetched 1m data for COIN
+Successfully fetched 5m data for COIN
+Successfully fetched 15m data for COIN
+Successfully fetched 30m data for COIN
+Successfully fetched 1h data for COIN
+Successfully fetched D data for COIN
+Successfully fetched W data for COIN
+⚪ COIN: 5.0/10 Bearish (below threshold)
+Scanning:  23%|████████████████████                                                                    | 5/22 [00:49<02:44,  9.65s/it]Successfully fetched D data for GME
+Successfully fetched 1m data for GME
+Successfully fetched 5m data for GME
+Successfully fetched 15m data for GME
+Successfully fetched 30m data for GME
+Successfully fetched 1h data for GME
+Successfully fetched D data for GME
+Successfully fetched W data for GME
+
+=== GME Multi-Timeframe Analysis ===
+Overall Confluence Score: 10.0/10 (Bullish)
+Bullish Signals: 1.0
+Bearish Signals: 0
+
++-----------+--------+-----------+----------+---------+--------+
+| Timeframe | Gap %  | Direction | Patterns | Candles | Volume |
++-----------+--------+-----------+----------+---------+--------+
+|    1m     | -0.34% |   Down    |   None   |  None   | Normal |
+|    5m     | 0.16%  |    Up     |   None   |  None   | Normal |
+|    15m    | 0.04%  |    Up     |   None   |  None   | Normal |
+|    30m    | -0.08% |   Down    |   None   |  None   | Normal |
+|    1h     | 0.08%  |    Up     |   None   |  None   | Normal |
+|     D     | 0.46%  |    Up     |   None   |  None   | Normal |
+|     W     | -1.83% |   Down    |   None   |  None   | Normal |
++-----------+--------+-----------+----------+---------+--------+
+
+🎯 GME: 10.0/10 Bullish | 0.04% gap
+✅ Options data found for GME: 1228 contracts
+Options Data Fetched: 1228 contracts
+
+Top Options Candidates:
++-----+--------+------+---------------------+----------+---------+----------+--------+
+|     | strike | type |     expiration      |  delta   |  gamma  |  theta   | score  |
++-----+--------+------+---------------------+----------+---------+----------+--------+
+| 183 |  23.5  | put  | 2025-07-03 00:00:00 | -0.4546  | 0.32761 | -0.03864 | 4.1042 |
+| 181 |  23.0  | put  | 2025-07-03 00:00:00 | -0.29553 | 0.28773 | -0.03368 | 4.0345 |
+| 313 |  23.0  | put  | 2025-07-11 00:00:00 | -0.35443 | 0.19452 | -0.02437 | 3.8454 |
+| 311 |  22.5  | put  | 2025-07-11 00:00:00 | -0.25883 | 0.16993 | -0.02125 | 3.794  |
+| 182 |  23.5  | call | 2025-07-03 00:00:00 | 0.54474  | 0.31881 | -0.04254 | 3.7646 |
++-----+--------+------+---------------------+----------+---------+----------+--------+
+📈 Trade Plan for GME (Bullish Bias)
+
+🔹 Option: $$23.5 Put expiring 2025-07-03
+🔹 Entry Price: $0.45
+🔹 Stop Loss: $0.34
+🔹 Initial Target: $0.79
+🔹 Final Target: $1.57
+🔹 Position Size: 4 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.45460 | Gamma: 0.32761 | Theta: -0.03864 | Score: 4.10
+
+Recommended Trade Plan:
++----------------+-------------+
+|  Entry Price   |    $0.45    |
+|   Stop Loss    |    $0.34    |
+| Initial Target |    $0.79    |
+|  Final Target  |    $1.57    |
+| Position Size  | 4 contracts |
+| Max Hold Time  |   4 hours   |
+| Delta Exposure |  $-181.84   |
+|  Gamma/Theta   |    8.48     |
+|  Implied Vol   |    40.0%    |
++----------------+-------------+
+✅ Saved GME to ./TradingPlans/progressive_results_2025-06-30.json
+Scanning:  27%|████████████████████████                                                                | 6/22 [01:00<02:43, 10.20s/it]Successfully fetched D data for AMC
+Successfully fetched 1m data for AMC
+Successfully fetched 5m data for AMC
+Successfully fetched 15m data for AMC
+Successfully fetched 30m data for AMC
+Successfully fetched 1h data for AMC
+Successfully fetched D data for AMC
+Successfully fetched W data for AMC
+
+=== AMC Multi-Timeframe Analysis ===
+Overall Confluence Score: 7.3/10 (Bullish)
+Bullish Signals: 2.58
+Bearish Signals: 0.95
+
++-----------+--------+-----------+----------+---------+--------+
+| Timeframe | Gap %  | Direction | Patterns | Candles | Volume |
++-----------+--------+-----------+----------+---------+--------+
+|    1m     | 0.00%  |   Down    |   None   | Bullish | Normal |
+|    5m     | -0.33% |   Down    |   None   |  None   | Normal |
+|    15m    | -0.16% |   Down    |   None   |  None   | Normal |
+|    30m    | 0.32%  |    Up     |   None   |  None   | Normal |
+|    1h     | 0.16%  |    Up     |   None   |  None   | Normal |
+|     D     | 0.00%  |   Down    |   None   |  None   | Normal |
+|     W     | -1.66% |   Down    |   None   |  None   | Normal |
++-----------+--------+-----------+----------+---------+--------+
+
+🎯 AMC: 7.3/10 Bullish | -0.16% gap
+✅ Options data found for AMC: 318 contracts
+Options Data Fetched: 318 contracts
+
+Top Options Candidates:
++-----+--------+------+---------------------+----------+---------+----------+----------+
+|     | strike | type |     expiration      |  delta   |  gamma  |  theta   |  score   |
++-----+--------+------+---------------------+----------+---------+----------+----------+
+| 120 |  3.0   | call | 2025-07-25 00:00:00 | 0.60954  | 1.03028 | -0.00275 | 150.6532 |
+| 121 |  3.0   | put  | 2025-07-25 00:00:00 | -0.39425 | 0.96617 | -0.00258 | 150.4703 |
+| 67  |  3.0   | put  | 2025-07-11 00:00:00 | -0.3782  | 1.31856 | -0.00377 | 140.5672 |
+| 96  |  3.0   | call | 2025-07-18 00:00:00 | 0.61069  | 1.0953  | -0.0034  | 129.6524 |
+| 66  |  3.0   | call | 2025-07-11 00:00:00 | 0.61823  | 1.26446 | -0.00431 | 118.1403 |
++-----+--------+------+---------------------+----------+---------+----------+----------+
+📈 Trade Plan for AMC (Bullish Bias)
+
+🔹 Option: $$3.0 Call expiring 2025-07-25
+🔹 Entry Price: $0.25
+🔹 Stop Loss: $0.19
+🔹 Initial Target: $0.44
+🔹 Final Target: $0.88
+🔹 Position Size: 8 contracts
+🔹 Max Hold Time: 10 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.60954 | Gamma: 1.03028 | Theta: -0.00275 | Score: 150.65
+
+Recommended Trade Plan:
++----------------+-------------+
+|  Entry Price   |    $0.25    |
+|   Stop Loss    |    $0.19    |
+| Initial Target |    $0.44    |
+|  Final Target  |    $0.88    |
+| Position Size  | 8 contracts |
+| Max Hold Time  |  10 hours   |
+| Delta Exposure |   $487.63   |
+|  Gamma/Theta   |   374.65    |
+|  Implied Vol   |   43.81%    |
++----------------+-------------+
+✅ Saved AMC to ./TradingPlans/progressive_results_2025-06-30.json
+Scanning:  32%|████████████████████████████                                                            | 7/22 [01:10<02:31, 10.07s/it]Successfully fetched D data for XLF
+Successfully fetched 1m data for XLF
+Successfully fetched 5m data for XLF
+Successfully fetched 15m data for XLF
+Successfully fetched 30m data for XLF
+Successfully fetched 1h data for XLF
+Successfully fetched D data for XLF
+Successfully fetched W data for XLF
+
+=== XLF Multi-Timeframe Analysis ===
+Overall Confluence Score: 8.97/10 (Bearish)
+Bullish Signals: 3.15
+Bearish Signals: 27.4
+
++-----------+--------+-----------+--------------+---------+---------+
+| Timeframe | Gap %  | Direction |   Patterns   | Candles | Volume  |
++-----------+--------+-----------+--------------+---------+---------+
+|    1m     | -0.19% |   Down    |     None     |  None   | Unusual |
+|    5m     | -0.19% |   Down    |     None     | Bearish | Normal  |
+|    15m    | -0.19% |   Down    |     None     |  None   | Normal  |
+|    30m    | -0.19% |   Down    |     None     |  None   | Normal  |
+|    1h     | -0.19% |   Down    | Rising Wedge |  None   | Normal  |
+|     D     | -0.08% |   Down    |     None     |  None   | Normal  |
+|     W     | -0.32% |   Down    |     None     |  None   | Normal  |
++-----------+--------+-----------+--------------+---------+---------+
+
+🎯 XLF: 9.0/10 Bearish | -0.19% gap
+✅ Options data found for XLF: 1690 contracts
+Options Data Fetched: 1690 contracts
+
+Top Options Candidates:
++-----+--------+------+---------------------+----------+---------+----------+--------+
+|     | strike | type |     expiration      |  delta   |  gamma  |  theta   | score  |
++-----+--------+------+---------------------+----------+---------+----------+--------+
+| 259 |  51.5  | put  | 2025-07-11 00:00:00 | -0.34484 | 0.26932 | -0.01583 | 7.4522 |
+| 262 |  52.5  | call | 2025-07-11 00:00:00 | 0.36089  | 0.29302 | -0.01928 | 6.7358 |
+| 446 |  53.0  | call | 2025-07-25 00:00:00 | 0.32298  | 0.19533 | -0.01373 | 6.3244 |
+| 260 |  52.0  | call | 2025-07-11 00:00:00 | 0.51296  | 0.29621 | -0.02226 | 6.0705 |
+| 354 |  53.0  | call | 2025-07-18 00:00:00 | 0.29723  | 0.20644 | -0.01562 | 5.9049 |
++-----+--------+------+---------------------+----------+---------+----------+--------+
+📈 Trade Plan for XLF (Bearish Bias)
+
+🔹 Option: $$51.5 Put expiring 2025-07-11
+🔹 Entry Price: $0.57
+🔹 Stop Loss: $0.43
+🔹 Initial Target: $1.00
+🔹 Final Target: $1.99
+🔹 Position Size: 3 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.34484 | Gamma: 0.26932 | Theta: -0.01583 | Score: 7.45
+
+Recommended Trade Plan:
++----------------+-------------+
+|  Entry Price   |    $0.57    |
+|   Stop Loss    |    $0.43    |
+| Initial Target |    $1.00    |
+|  Final Target  |    $1.99    |
+| Position Size  | 3 contracts |
+| Max Hold Time  |   8 hours   |
+| Delta Exposure |  $-103.45   |
+|  Gamma/Theta   |    17.01    |
+|  Implied Vol   |   13.45%    |
++----------------+-------------+
+✅ Saved XLF to ./TradingPlans/progressive_results_2025-06-30.json
+Scanning:  36%|████████████████████████████████                                                        | 8/22 [01:22<02:28, 10.60s/it]Successfully fetched D data for XLE
+Successfully fetched 1m data for XLE
+Successfully fetched 5m data for XLE
+Successfully fetched 15m data for XLE
+Successfully fetched 30m data for XLE
+Successfully fetched 1h data for XLE
+Successfully fetched D data for XLE
+Successfully fetched W data for XLE
+
+=== XLE Multi-Timeframe Analysis ===
+Overall Confluence Score: 8.73/10 (Bullish)
+Bullish Signals: 45.65
+Bearish Signals: 6.65
+
++-----------+--------+-----------+----------+---------+---------+
+| Timeframe | Gap %  | Direction | Patterns | Candles | Volume  |
++-----------+--------+-----------+----------+---------+---------+
+|    1m     | 0.05%  |    Up     |   None   | Bullish | Unusual |
+|    5m     | 0.05%  |    Up     |   None   | Bullish | Normal  |
+|    15m    | 0.05%  |    Up     |   None   | Bullish | Normal  |
+|    30m    | 0.05%  |    Up     |   None   | Bullish | Normal  |
+|    1h     | 0.05%  |    Up     |   None   | Bullish | Normal  |
+|     D     | -0.06% |   Down    |   None   |  None   | Normal  |
+|     W     | 0.44%  |    Up     |   None   |  None   | Normal  |
++-----------+--------+-----------+----------+---------+---------+
+
+🎯 XLE: 8.7/10 Bullish | 0.05% gap
+✅ Options data found for XLE: 2176 contracts
+Options Data Fetched: 2176 contracts
+
+Top Options Candidates:
++-----+--------+------+---------------------+----------+---------+----------+--------+
+|     | strike | type |     expiration      |  delta   |  gamma  |  theta   | score  |
++-----+--------+------+---------------------+----------+---------+----------+--------+
+| 432 |  86.0  | call | 2025-07-11 00:00:00 |  0.4132  | 0.16355 | -0.03722 | 2.4456 |
+| 181 |  85.0  | put  | 2025-06-30 00:00:00 | -0.39277 | 0.30764 | -0.07606 | 2.2935 |
+| 308 |  86.0  | call | 2025-07-03 00:00:00 | 0.36032  | 0.21624 | -0.05757 | 2.1586 |
+| 544 |  87.5  | call | 2025-07-18 00:00:00 | 0.27137  | 0.10606 | -0.02735 | 2.154  |
+| 303 |  84.5  | put  | 2025-07-03 00:00:00 | -0.3156  | 0.19298 | -0.05134 | 2.1329 |
++-----+--------+------+---------------------+----------+---------+----------+--------+
+📈 Trade Plan for XLE (Bullish Bias)
+
+🔹 Option: $$86.0 Call expiring 2025-07-11
+🔹 Entry Price: $1.18
+🔹 Stop Loss: $0.89
+🔹 Initial Target: $2.06
+🔹 Final Target: $4.13
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.41320 | Gamma: 0.16355 | Theta: -0.03722 | Score: 2.45
+
+Recommended Trade Plan:
++----------------+-------------+
+|  Entry Price   |    $1.18    |
+|   Stop Loss    |    $0.89    |
+| Initial Target |    $2.06    |
+|  Final Target  |    $4.13    |
+| Position Size  | 1 contracts |
+| Max Hold Time  |   8 hours   |
+| Delta Exposure |   $41.32    |
+|  Gamma/Theta   |    4.39     |
+|  Implied Vol   |   14.25%    |
++----------------+-------------+
+✅ Saved XLE to ./TradingPlans/progressive_results_2025-06-30.json
+Scanning:  41%|████████████████████████████████████                                                    | 9/22 [01:33<02:20, 10.79s/it]Successfully fetched D data for XLK
+Successfully fetched 1m data for XLK
+Successfully fetched 5m data for XLK
+Successfully fetched 15m data for XLK
+Successfully fetched 30m data for XLK
+Successfully fetched 1h data for XLK
+Successfully fetched D data for XLK
+Successfully fetched W data for XLK
+
+=== XLK Multi-Timeframe Analysis ===
+Overall Confluence Score: 9.18/10 (Bullish)
+Bullish Signals: 35.4
+Bearish Signals: 3.15
+
++-----------+--------+-----------+----------+---------+---------+
+| Timeframe | Gap %  | Direction | Patterns | Candles | Volume  |
++-----------+--------+-----------+----------+---------+---------+
+|    1m     | 0.01%  |    Up     |   None   | Bullish | Unusual |
+|    5m     | 0.01%  |    Up     |   None   | Bullish | Unusual |
+|    15m    | 0.01%  |    Up     |   None   |  None   | Normal  |
+|    30m    | 0.01%  |    Up     |   None   | Bullish | Normal  |
+|    1h     | 0.01%  |    Up     |   None   |  None   | Normal  |
+|     D     | 0.27%  |    Up     |   None   |  None   | Normal  |
+|     W     | -0.07% |   Down    |   None   |  None   | Normal  |
++-----------+--------+-----------+----------+---------+---------+
+
+🎯 XLK: 9.2/10 Bullish | 0.01% gap
+✅ Options data found for XLK: 2044 contracts
+Options Data Fetched: 2044 contracts
+No valid options found matching criteria
+Scanning:  45%|███████████████████████████████████████▌                                               | 10/22 [01:45<02:16, 11.34s/it]Successfully fetched D data for JPM
+Successfully fetched 1m data for JPM
+Successfully fetched 5m data for JPM
+Successfully fetched 15m data for JPM
+Successfully fetched 30m data for JPM
+Successfully fetched 1h data for JPM
+Successfully fetched D data for JPM
+Successfully fetched W data for JPM
+
+=== JPM Multi-Timeframe Analysis ===
+Overall Confluence Score: 9.01/10 (Bearish)
+Bullish Signals: 1.7
+Bearish Signals: 15.45
+
++-----------+--------+-----------+----------+---------+--------+
+| Timeframe | Gap %  | Direction | Patterns | Candles | Volume |
++-----------+--------+-----------+----------+---------+--------+
+|    1m     | -0.01% |   Down    |   None   | Bearish | Normal |
+|    5m     | 0.00%  |    Up     |   None   | Bullish | Normal |
+|    15m    | 0.11%  |    Up     |   None   |  None   | Normal |
+|    30m    | 0.00%  |   Down    |   None   |  None   | Normal |
+|    1h     | -0.60% |   Down    |   None   |  None   | Normal |
+|     D     | -1.02% |   Down    |   None   |  None   | Normal |
+|     W     | 0.02%  |    Up     |   None   |  None   | Normal |
++-----------+--------+-----------+----------+---------+--------+
+
+🎯 JPM: 9.0/10 Bearish | 0.11% gap
+✅ Options data found for JPM: 1916 contracts
+Options Data Fetched: 1916 contracts
+
+Top Options Candidates:
++----+--------+------+---------------------+---------+---------+---------+-------+
+|    | strike | type |     expiration      |  delta  |  gamma  |  theta  | score |
++----+--------+------+---------------------+---------+---------+---------+-------+
+| 82 | 287.5  | call | 2025-06-27 00:00:00 | 0.42461 | 0.21296 | -0.3748 | 0.922 |
++----+--------+------+---------------------+---------+---------+---------+-------+
+📈 Trade Plan for JPM (Bearish Bias)
+
+🔹 Option: $$287.5 Call expiring 2025-06-27
+🔹 Entry Price: $0.68
+🔹 Stop Loss: $0.51
+🔹 Initial Target: $1.19
+🔹 Final Target: $2.38
+🔹 Position Size: 2 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.42461 | Gamma: 0.21296 | Theta: -0.37480 | Score: 0.92
+
+Recommended Trade Plan:
++----------------+-------------+
+|  Entry Price   |    $0.68    |
+|   Stop Loss    |    $0.51    |
+| Initial Target |    $1.19    |
+|  Final Target  |    $2.38    |
+| Position Size  | 2 contracts |
+| Max Hold Time  |   4 hours   |
+| Delta Exposure |   $84.92    |
+|  Gamma/Theta   |    0.57     |
+|  Implied Vol   |   12.24%    |
++----------------+-------------+
+✅ Saved JPM to ./TradingPlans/progressive_results_2025-06-30.json
+Scanning:  50%|███████████████████████████████████████████▌                                           | 11/22 [01:58<02:08, 11.71s/it]Successfully fetched D data for AAPL
+Successfully fetched 1m data for AAPL
+Successfully fetched 5m data for AAPL
+Successfully fetched 15m data for AAPL
+Successfully fetched 30m data for AAPL
+Successfully fetched 1h data for AAPL
+Successfully fetched D data for AAPL
+Successfully fetched W data for AAPL
+
+=== AAPL Multi-Timeframe Analysis ===
+Overall Confluence Score: 10.0/10 (Bullish)
+Bullish Signals: 0.5
+Bearish Signals: 0
+
++-----------+--------+-----------+----------+---------+--------+
+| Timeframe | Gap %  | Direction | Patterns | Candles | Volume |
++-----------+--------+-----------+----------+---------+--------+
+|    1m     | 0.01%  |    Up     |   None   |  None   | Normal |
+|    5m     | -0.01% |   Down    |   None   |  None   | Normal |
+|    15m    | 0.00%  |    Up     |   None   |  None   | Normal |
+|    30m    | -0.00% |   Down    |   None   |  None   | Normal |
+|    1h     | 0.00%  |    Up     |   None   |  None   | Normal |
+|     D     | 0.44%  |    Up     |   None   |  None   | Normal |
+|     W     | 0.31%  |    Up     |   None   |  None   | Normal |
++-----------+--------+-----------+----------+---------+--------+
+
+🎯 AAPL: 10.0/10 Bullish | 0.00% gap
+✅ Options data found for AAPL: 2532 contracts
+Options Data Fetched: 2532 contracts
+No valid options found matching criteria
+Scanning:  55%|███████████████████████████████████████████████▍                                       | 12/22 [02:09<01:56, 11.61s/it]Successfully fetched D data for LCID
+Successfully fetched 1m data for LCID
+Successfully fetched 5m data for LCID
+Successfully fetched 15m data for LCID
+Successfully fetched 30m data for LCID
+Successfully fetched 1h data for LCID
+Successfully fetched D data for LCID
+Successfully fetched W data for LCID
+⚪ LCID: 5.0/10 Bearish (below threshold)
+Scanning:  59%|███████████████████████████████████████████████████▍                                   | 13/22 [02:16<01:31, 10.14s/it]Successfully fetched D data for HOOD
+Successfully fetched 1m data for HOOD
+Successfully fetched 5m data for HOOD
+Successfully fetched 15m data for HOOD
+Successfully fetched 30m data for HOOD
+Successfully fetched 1h data for HOOD
+Successfully fetched D data for HOOD
+Successfully fetched W data for HOOD
+⚪ HOOD: 5.6/10 Bearish (below threshold)
+Scanning:  64%|███████████████████████████████████████████████████████▎                               | 14/22 [02:22<01:11,  8.99s/it]Successfully fetched D data for BBAI
+Successfully fetched 1m data for BBAI
+Successfully fetched 5m data for BBAI
+Successfully fetched 15m data for BBAI
+Successfully fetched 30m data for BBAI
+Successfully fetched 1h data for BBAI
+Successfully fetched D data for BBAI
+Successfully fetched W data for BBAI
+
+=== BBAI Multi-Timeframe Analysis ===
+Overall Confluence Score: 8.81/10 (Bearish)
+Bullish Signals: 0.53
+Bearish Signals: 3.9
+
++-----------+--------+-----------+--------------+---------+---------+
+| Timeframe | Gap %  | Direction |   Patterns   | Candles | Volume  |
++-----------+--------+-----------+--------------+---------+---------+
+|    1m     | -0.17% |   Down    |     None     |  None   | Normal  |
+|    5m     | 0.00%  |   Down    |     None     |  None   | Normal  |
+|    15m    | 0.00%  |   Down    |     None     | Bearish | Normal  |
+|    30m    | 0.00%  |    Up     |     None     |  None   | Normal  |
+|    1h     | 0.17%  |    Up     | Rising Wedge |  None   | Normal  |
+|     D     | 1.72%  |    Up     |     None     |  None   | Unusual |
+|     W     | -2.50% |   Down    |     None     |  None   | Unusual |
++-----------+--------+-----------+--------------+---------+---------+
+
+🎯 BBAI: 8.8/10 Bearish | 1.72% daily gap
+✅ Options data found for BBAI: 506 contracts
+Options Data Fetched: 506 contracts
+
+Top Options Candidates:
++-----+--------+------+---------------------+----------+---------+----------+--------+
+|     | strike | type |     expiration      |  delta   |  gamma  |  theta   | score  |
++-----+--------+------+---------------------+----------+---------+----------+--------+
+| 115 |  6.0   | put  | 2025-07-11 00:00:00 | -0.49319 | 0.28113 | -0.01979 | 6.4182 |
+| 113 |  5.5   | put  | 2025-07-11 00:00:00 | -0.3546  | 0.25772 | -0.0189  | 6.1072 |
+| 69  |  6.0   | put  | 2025-07-03 00:00:00 | -0.53116 | 0.41478 | -0.03136 | 6.0493 |
+| 203 |  5.0   | put  | 2025-07-25 00:00:00 | -0.26515 | 0.15992 | -0.01176 | 6.0385 |
+| 472 |  17.0  | call | 2026-01-16 00:00:00 |  0.2526  | 0.05914 | -0.00436 | 6.0172 |
++-----+--------+------+---------------------+----------+---------+----------+--------+
+📈 Trade Plan for BBAI (Bearish Bias)
+
+🔹 Option: $$6.0 Put expiring 2025-07-11
+🔹 Entry Price: $0.70
+🔹 Stop Loss: $0.52
+🔹 Initial Target: $1.22
+🔹 Final Target: $2.45
+🔹 Position Size: 2 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.49319 | Gamma: 0.28113 | Theta: -0.01979 | Score: 6.42
+
+Recommended Trade Plan:
++----------------+-------------+
+|  Entry Price   |    $0.70    |
+|   Stop Loss    |    $0.52    |
+| Initial Target |    $1.22    |
+|  Final Target  |    $2.45    |
+| Position Size  | 2 contracts |
+| Max Hold Time  |   6 hours   |
+| Delta Exposure |   $-98.64   |
+|  Gamma/Theta   |    14.21    |
+|  Implied Vol   |   124.05%   |
++----------------+-------------+
+✅ Saved BBAI to ./TradingPlans/progressive_results_2025-06-30.json
+Scanning:  68%|███████████████████████████████████████████████████████████▎                           | 15/22 [02:33<01:05,  9.39s/it]Successfully fetched D data for SOXS
+Successfully fetched 1m data for SOXS
+Successfully fetched 5m data for SOXS
+Successfully fetched 15m data for SOXS
+Successfully fetched 30m data for SOXS
+Successfully fetched 1h data for SOXS
+Successfully fetched D data for SOXS
+Successfully fetched W data for SOXS
+
+=== SOXS Multi-Timeframe Analysis ===
+Overall Confluence Score: 8.42/10 (Bearish)
+Bullish Signals: 4.4
+Bearish Signals: 23.4
+
++-----------+--------+-----------+---------------+---------+---------+
+| Timeframe | Gap %  | Direction |   Patterns    | Candles | Volume  |
++-----------+--------+-----------+---------------+---------+---------+
+|    1m     | -0.38% |   Down    |     None      |  None   | Unusual |
+|    5m     | -0.38% |   Down    |     None      |  None   | Normal  |
+|    15m    | -0.38% |   Down    |     None      |  None   | Normal  |
+|    30m    | -0.38% |   Down    |     None      | Bearish | Normal  |
+|    1h     | -0.38% |   Down    | Falling Wedge |  None   | Normal  |
+|     D     | -0.51% |   Down    |     None      |  None   | Unusual |
+|     W     | 0.21%  |    Up     |     None      |  None   | Unusual |
++-----------+--------+-----------+---------------+---------+---------+
+
+🎯 SOXS: 8.4/10 Bearish | -0.38% gap
+✅ Options data found for SOXS: 984 contracts
+Options Data Fetched: 984 contracts
+
+Top Options Candidates:
++-----+--------+------+---------------------+----------+---------+----------+--------+
+|     | strike | type |     expiration      |  delta   |  gamma  |  theta   | score  |
++-----+--------+------+---------------------+----------+---------+----------+--------+
+| 427 |  7.0   | put  | 2025-08-08 00:00:00 | -0.26448 |  0.171  | -0.00717 | 9.9384 |
+| 103 |  7.5   | put  | 2025-07-03 00:00:00 | -0.28373 | 0.44929 | -0.02101 | 9.1641 |
+| 105 |  8.0   | put  | 2025-07-03 00:00:00 | -0.5367  | 0.49921 | -0.0258  | 8.5017 |
+| 177 |  7.5   | put  | 2025-07-11 00:00:00 | -0.34115 | 0.30305 | -0.01551 | 8.4603 |
+| 179 |  8.0   | put  | 2025-07-11 00:00:00 | -0.50308 | 0.32349 | -0.01703 |  8.34  |
++-----+--------+------+---------------------+----------+---------+----------+--------+
+📈 Trade Plan for SOXS (Bearish Bias)
+
+🔹 Option: $$7.0 Put expiring 2025-08-08
+🔹 Entry Price: $0.69
+🔹 Stop Loss: $0.52
+🔹 Initial Target: $1.21
+🔹 Final Target: $2.42
+🔹 Position Size: 2 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.26448 | Gamma: 0.17100 | Theta: -0.00717 | Score: 9.94
+
+Recommended Trade Plan:
++----------------+-------------+
+|  Entry Price   |    $0.69    |
+|   Stop Loss    |    $0.52    |
+| Initial Target |    $1.21    |
+|  Final Target  |    $2.42    |
+| Position Size  | 2 contracts |
+| Max Hold Time  |  12 hours   |
+| Delta Exposure |   $-52.90   |
+|  Gamma/Theta   |    23.85    |
+|  Implied Vol   |   71.58%    |
++----------------+-------------+
+✅ Saved SOXS to ./TradingPlans/progressive_results_2025-06-30.json
+Scanning:  73%|███████████████████████████████████████████████████████████████▎                       | 16/22 [02:45<01:02, 10.38s/it]Successfully fetched D data for GVH
+Successfully fetched 1m data for GVH
+Successfully fetched 5m data for GVH
+Successfully fetched 15m data for GVH
+Successfully fetched 30m data for GVH
+Successfully fetched 1h data for GVH
+Successfully fetched D data for GVH
+Successfully fetched W data for GVH
+
+=== GVH Multi-Timeframe Analysis ===
+Overall Confluence Score: 8.46/10 (Bullish)
+Bullish Signals: 2.75
+Bearish Signals: 0.5
+
++-----------+--------+-----------+---------------+---------+---------+
+| Timeframe | Gap %  | Direction |   Patterns    | Candles | Volume  |
++-----------+--------+-----------+---------------+---------+---------+
+|    1m     | -0.58% |   Down    |     None      |  None   | Unusual |
+|    5m     | -1.91% |   Down    |     None      |  None   | Normal  |
+|    15m    | 0.43%  |    Up     |     None      |  None   | Normal  |
+|    30m    | 0.29%  |    Up     | Falling Wedge |  None   | Normal  |
+|    1h     | -0.07% |   Down    |     None      |  None   | Normal  |
+|     D     | 63.25% |    Up     |     None      |  None   | Unusual |
+|     W     | 5.52%  |    Up     |     None      |  None   | Unusual |
++-----------+--------+-----------+---------------+---------+---------+
+
+🎯 GVH: 8.5/10 Bullish | 0.43% gap
+🔄 Trying real-time options for GVH...
+✅ Real-time options found for GVH: 4 contracts
+Options Data Fetched: 4 contracts
+Error: Options data missing required columns. Found columns: ['contractID', 'symbol', 'expiration', 'strike', 'type', 'last', 'mark', 'bid', 'bid_size', 'ask', 'ask_size', 'volume', 'open_interest', 'date']
+No valid options found matching criteria
+Scanning:  77%|███████████████████████████████████████████████████████████████████▏                   | 17/22 [02:54<00:49,  9.90s/it]Successfully fetched D data for PNC
+Successfully fetched 1m data for PNC
+Successfully fetched 5m data for PNC
+Successfully fetched 15m data for PNC
+Successfully fetched 30m data for PNC
+Successfully fetched 1h data for PNC
+Successfully fetched D data for PNC
+Successfully fetched W data for PNC
+⚪ PNC: 5.0/10 Bearish (below threshold)
+Scanning:  82%|███████████████████████████████████████████████████████████████████████▏               | 18/22 [03:03<00:38,  9.64s/it]Successfully fetched D data for DAIC
+Successfully fetched 1m data for DAIC
+Successfully fetched 5m data for DAIC
+Successfully fetched 15m data for DAIC
+Successfully fetched 30m data for DAIC
+Successfully fetched 1h data for DAIC
+Successfully fetched D data for DAIC
+Error fetching data for DAIC: Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_WEEKLY.
+⚪ DAIC: 5.9/10 Bullish (below threshold)
+Scanning:  86%|███████████████████████████████████████████████████████████████████████████▏           | 19/22 [03:09<00:25,  8.38s/it]Successfully fetched D data for ODYS
+Successfully fetched 1m data for ODYS
+Successfully fetched 5m data for ODYS
+Successfully fetched 15m data for ODYS
+Successfully fetched 30m data for ODYS
+Successfully fetched 1h data for ODYS
+Successfully fetched D data for ODYS
+Successfully fetched W data for ODYS
+
+=== ODYS Multi-Timeframe Analysis ===
+Overall Confluence Score: 10.0/10 (Bullish)
+Bullish Signals: 4.25
+Bearish Signals: 0
+
++-----------+---------+-----------+----------+---------+--------+
+| Timeframe |  Gap %  | Direction | Patterns | Candles | Volume |
++-----------+---------+-----------+----------+---------+--------+
+|    1m     |  2.76%  |    Up     |   None   |  None   | Normal |
+|    5m     |  2.76%  |    Up     |   None   |  None   | Normal |
+|    15m    |  2.76%  |    Up     |   None   |  None   | Normal |
+|    30m    |  0.92%  |    Up     |   None   |  None   | Normal |
+|    1h     |  0.92%  |    Up     |   None   |  None   | Normal |
+|     D     |  0.00%  |   Down    |   None   |  None   | Normal |
+|     W     | -11.61% |   Down    |   None   |  None   | Normal |
++-----------+---------+-----------+----------+---------+--------+
+
+🎯 ODYS: 10.0/10 Bullish | 2.76% gap
+🔄 Trying real-time options for ODYS...
+✅ Real-time options found for ODYS: 4 contracts
+Options Data Fetched: 4 contracts
+Error: Options data missing required columns. Found columns: ['contractID', 'symbol', 'expiration', 'strike', 'type', 'last', 'mark', 'bid', 'bid_size', 'ask', 'ask_size', 'volume', 'open_interest', 'date']
+No valid options found matching criteria
+Scanning:  91%|███████████████████████████████████████████████████████████████████████████████        | 20/22 [03:16<00:16,  8.17s/it]Successfully fetched D data for TGT
+Successfully fetched 1m data for TGT
+Successfully fetched 5m data for TGT
+Successfully fetched 15m data for TGT
+Successfully fetched 30m data for TGT
+Successfully fetched 1h data for TGT
+Successfully fetched D data for TGT
+Successfully fetched W data for TGT
