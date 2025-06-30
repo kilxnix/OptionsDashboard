@@ -158,3 +158,50 @@ Option 1:
   Theta: -0.0015
   Volume: 20
   Score: 259.63
+
+============================================================
+Symbol: AMC - 15:24:26
+Confluence Score: 7.3/10
+Bias: Bullish
+
+Top Options Found: 9
+
+Option 1:
+  Strike: $3.0 Call
+  Expiration: 2025-07-25 00:00:00
+  Delta: 0.6095
+  Gamma: 1.0303
+  Theta: -0.0027
+  Volume: 859
+  Score: 150.65
+  IV: 43.81%
+
+Option 2:
+  Strike: $3.0 Call
+  Expiration: 2025-07-18 00:00:00
+  Delta: 0.6107
+  Gamma: 1.0953
+  Theta: -0.0034
+  Volume: 2372
+  Score: 129.65
+  IV: 47.55%
+
+Option 3:
+  Strike: $3.0 Call
+  Expiration: 2025-07-11 00:00:00
+  Delta: 0.6182
+  Gamma: 1.2645
+  Theta: -0.0043
+  Volume: 1142
+  Score: 118.14
+  IV: 50.15%
+
+Trade Plan:
+  Entry: $0.25
+  Stop: $0.19
+  Target: $0.44
+  Position Size: 8 contracts
+  Strike: $3.0 Call
+  Expiration: 2025-07-25
+  Max Hold: 10 hours
+============================================================

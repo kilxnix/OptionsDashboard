@@ -7180,3 +7180,21 @@ Delta: 0.34928 | Gamma: 0.97116 | Theta: -0.00150 | Score: 259.63
 
 ================================================================================
 
+📈 Trade Plan for AMC (Bullish Bias)
+
+🔹 Option: $$3.0 Call expiring 2025-07-25
+🔹 Entry Price: $0.25
+🔹 Stop Loss: $0.19
+🔹 Initial Target: $0.44
+🔹 Final Target: $0.88
+🔹 Position Size: 8 contracts
+🔹 Max Hold Time: 10 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.60954 | Gamma: 1.03028 | Theta: -0.00275 | Score: 150.65
+
+================================================================================
+
