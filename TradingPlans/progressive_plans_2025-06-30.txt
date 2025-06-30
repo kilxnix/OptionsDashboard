@@ -672,3 +672,396 @@ Trade Plan:
   Expiration: 2025-07-03
   Max Hold: 4 hours
 ============================================================
+
+============================================================
+Symbol: SPY - 15:55:18
+Confluence Score: 8.23/10
+Bias: Bullish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $615.0 Put
+  Expiration: 2025-06-27 00:00:00
+  Delta: -0.5043
+  Gamma: 0.2784
+  Theta: -0.2490
+  Volume: 445451
+  Score: 1.19
+  IV: 4.45%
+
+Option 2:
+  Strike: $617.0 Call
+  Expiration: 2025-06-30 00:00:00
+  Delta: 0.2997
+  Gamma: 0.0983
+  Theta: -0.2266
+  Volume: 53867
+  Score: 0.79
+  IV: 6.34%
+
+Trade Plan:
+  Entry: $0.61
+  Stop: $0.46
+  Target: $1.07
+  Position Size: 3 contracts
+  Strike: $615.0 Put
+  Expiration: 2025-06-27
+  Max Hold: 4 hours
+============================================================
+
+============================================================
+Symbol: SOXL - 15:55:36
+Confluence Score: 8.42/10
+Bias: Bullish
+
+Top Options Found: 4
+
+Option 1:
+  Strike: $26.0 Call
+  Expiration: 2025-07-03 00:00:00
+  Delta: 0.3717
+  Gamma: 0.1647
+  Theta: -0.0734
+  Volume: 9242
+  Score: 1.56
+  IV: 71.33%
+
+Option 2:
+  Strike: $24.5 Put
+  Expiration: 2025-07-03 00:00:00
+  Delta: -0.3804
+  Gamma: 0.1527
+  Theta: -0.0779
+  Volume: 2356
+  Score: 1.45
+  IV: 77.45%
+
+Option 3:
+  Strike: $28.0 Call
+  Expiration: 2025-07-11 00:00:00
+  Delta: 0.2518
+  Gamma: 0.0878
+  Theta: -0.0421
+  Volume: 2669
+  Score: 1.43
+  IV: 73.90%
+
+Trade Plan:
+  Entry: $0.58
+  Stop: $0.43
+  Target: $1.01
+  Position Size: 3 contracts
+  Strike: $26.0 Call
+  Expiration: 2025-07-03
+  Max Hold: 4 hours
+============================================================
+
+============================================================
+Symbol: GME - 15:55:47
+Confluence Score: 10.0/10
+Bias: Bullish
+
+Top Options Found: 17
+
+Option 1:
+  Strike: $23.5 Put
+  Expiration: 2025-07-03 00:00:00
+  Delta: -0.4546
+  Gamma: 0.3276
+  Theta: -0.0386
+  Volume: 2342
+  Score: 4.10
+  IV: 40.00%
+
+Option 2:
+  Strike: $23.0 Put
+  Expiration: 2025-07-03 00:00:00
+  Delta: -0.2955
+  Gamma: 0.2877
+  Theta: -0.0337
+  Volume: 3403
+  Score: 4.03
+  IV: 39.68%
+
+Option 3:
+  Strike: $23.0 Put
+  Expiration: 2025-07-11 00:00:00
+  Delta: -0.3544
+  Gamma: 0.1945
+  Theta: -0.0244
+  Volume: 581
+  Score: 3.85
+  IV: 41.40%
+
+Trade Plan:
+  Entry: $0.45
+  Stop: $0.34
+  Target: $0.79
+  Position Size: 4 contracts
+  Strike: $23.5 Put
+  Expiration: 2025-07-03
+  Max Hold: 4 hours
+============================================================
+
+============================================================
+Symbol: AMC - 15:55:57
+Confluence Score: 7.3/10
+Bias: Bullish
+
+Top Options Found: 37
+
+Option 1:
+  Strike: $3.0 Call
+  Expiration: 2025-07-25 00:00:00
+  Delta: 0.6095
+  Gamma: 1.0303
+  Theta: -0.0027
+  Volume: 859
+  Score: 150.65
+  IV: 43.81%
+
+Option 2:
+  Strike: $3.0 Put
+  Expiration: 2025-07-25 00:00:00
+  Delta: -0.3942
+  Gamma: 0.9662
+  Theta: -0.0026
+  Volume: 13
+  Score: 150.47
+  IV: 46.84%
+
+Option 3:
+  Strike: $3.0 Put
+  Expiration: 2025-07-11 00:00:00
+  Delta: -0.3782
+  Gamma: 1.3186
+  Theta: -0.0038
+  Volume: 101
+  Score: 140.57
+  IV: 47.96%
+
+Trade Plan:
+  Entry: $0.25
+  Stop: $0.19
+  Target: $0.44
+  Position Size: 8 contracts
+  Strike: $3.0 Call
+  Expiration: 2025-07-25
+  Max Hold: 10 hours
+============================================================
+
+============================================================
+Symbol: XLE - 15:56:22
+Confluence Score: 8.73/10
+Bias: Bullish
+
+Top Options Found: 12
+
+Option 1:
+  Strike: $86.0 Call
+  Expiration: 2025-07-11 00:00:00
+  Delta: 0.4132
+  Gamma: 0.1636
+  Theta: -0.0372
+  Volume: 44
+  Score: 2.45
+  IV: 14.25%
+
+Option 2:
+  Strike: $85.0 Put
+  Expiration: 2025-06-30 00:00:00
+  Delta: -0.3928
+  Gamma: 0.3076
+  Theta: -0.0761
+  Volume: 182
+  Score: 2.29
+  IV: 16.16%
+
+Option 3:
+  Strike: $86.0 Call
+  Expiration: 2025-07-03 00:00:00
+  Delta: 0.3603
+  Gamma: 0.2162
+  Theta: -0.0576
+  Volume: 176
+  Score: 2.16
+  IV: 15.82%
+
+Trade Plan:
+  Entry: $1.18
+  Stop: $0.89
+  Target: $2.06
+  Position Size: 1 contracts
+  Strike: $86.0 Call
+  Expiration: 2025-07-11
+  Max Hold: 8 hours
+============================================================
+
+============================================================
+Symbol: JPM - 15:56:34
+Confluence Score: 9.01/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $287.5 Call
+  Expiration: 2025-06-27 00:00:00
+  Delta: 0.4246
+  Gamma: 0.2130
+  Theta: -0.3748
+  Volume: 3183
+  Score: 0.92
+  IV: 12.24%
+
+Trade Plan:
+  Entry: $0.68
+  Stop: $0.51
+  Target: $1.19
+  Position Size: 2 contracts
+  Strike: $287.5 Call
+  Expiration: 2025-06-27
+  Max Hold: 4 hours
+============================================================
+
+============================================================
+Symbol: XLF - 15:56:53
+Confluence Score: 8.97/10
+Bias: Bearish
+
+Top Options Found: 29
+
+Option 1:
+  Strike: $51.5 Put
+  Expiration: 2025-07-11 00:00:00
+  Delta: -0.3448
+  Gamma: 0.2693
+  Theta: -0.0158
+  Volume: 36
+  Score: 7.45
+  IV: 13.45%
+
+Option 2:
+  Strike: $52.5 Call
+  Expiration: 2025-07-11 00:00:00
+  Delta: 0.3609
+  Gamma: 0.2930
+  Theta: -0.0193
+  Volume: 84
+  Score: 6.74
+  IV: 12.56%
+
+Option 3:
+  Strike: $53.0 Call
+  Expiration: 2025-07-25 00:00:00
+  Delta: 0.3230
+  Gamma: 0.1953
+  Theta: -0.0137
+  Volume: 116
+  Score: 6.32
+  IV: 12.78%
+
+Trade Plan:
+  Entry: $0.57
+  Stop: $0.43
+  Target: $1.00
+  Position Size: 3 contracts
+  Strike: $51.5 Put
+  Expiration: 2025-07-11
+  Max Hold: 8 hours
+============================================================
+
+============================================================
+Symbol: DNN - 15:57:28
+Confluence Score: 7.33/10
+Bias: Bearish
+
+Top Options Found: 14
+
+Option 1:
+  Strike: $2.0 Call
+  Expiration: 2025-08-15 00:00:00
+  Delta: 0.3493
+  Gamma: 0.9712
+  Theta: -0.0015
+  Volume: 20
+  Score: 259.63
+  IV: 58.11%
+
+Option 2:
+  Strike: $2.0 Put
+  Expiration: 2026-01-16 00:00:00
+  Delta: -0.4724
+  Gamma: 0.4523
+  Theta: -0.0007
+  Volume: 1
+  Score: 255.38
+  IV: 65.92%
+
+Option 3:
+  Strike: $1.5 Put
+  Expiration: 2026-01-16 00:00:00
+  Delta: -0.2548
+  Gamma: 0.3760
+  Theta: -0.0006
+  Volume: 0
+  Score: 251.05
+  IV: 63.95%
+
+Trade Plan:
+  Entry: $0.10
+  Stop: $0.08
+  Target: $0.18
+  Position Size: 24 contracts
+  Strike: $2.0 Call
+  Expiration: 2025-08-15
+  Max Hold: 12 hours
+============================================================
+
+============================================================
+Symbol: SOXS - 15:57:58
+Confluence Score: 8.42/10
+Bias: Bearish
+
+Top Options Found: 37
+
+Option 1:
+  Strike: $7.0 Put
+  Expiration: 2025-08-08 00:00:00
+  Delta: -0.2645
+  Gamma: 0.1710
+  Theta: -0.0072
+  Volume: 0
+  Score: 9.94
+  IV: 71.58%
+
+Option 2:
+  Strike: $7.5 Put
+  Expiration: 2025-07-03 00:00:00
+  Delta: -0.2837
+  Gamma: 0.4493
+  Theta: -0.0210
+  Volume: 1013
+  Score: 9.16
+  IV: 74.63%
+
+Option 3:
+  Strike: $8.0 Put
+  Expiration: 2025-07-03 00:00:00
+  Delta: -0.5367
+  Gamma: 0.4992
+  Theta: -0.0258
+  Volume: 1614
+  Score: 8.50
+  IV: 78.77%
+
+Trade Plan:
+  Entry: $0.69
+  Stop: $0.52
+  Target: $1.21
+  Position Size: 2 contracts
+  Strike: $7.0 Put
+  Expiration: 2025-08-08
+  Max Hold: 12 hours
+============================================================
