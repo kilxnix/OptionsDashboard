@@ -59,7 +59,7 @@ def run_autonomous_scan(min_delta=0.25,
                         discovery_limit=50,  # still accepted but unused now
                         dry_run=False,
                         auto_refresh_symbols=True,
-                        symbol_limit=25):
+                        symbol_limit=0):  # 0 = unlimited
     """
     Autonomous scan pipeline that:
       1. Optionally refreshes symbols from Yahoo Finance screeners
@@ -137,9 +137,12 @@ def run_autonomous_scan(min_delta=0.25,
             "symbols_processed": 0
         }
     
-    # Apply symbol limit
-    symbols = symbols[:symbol_limit]
-    print(f"🎯 Processing {len(symbols)} curated optionable stocks: {symbols[:5]}...")
+    # Process all symbols (no limit)
+    if symbol_limit and symbol_limit > 0:
+        symbols = symbols[:symbol_limit]
+        print(f"🎯 Processing {len(symbols)} curated optionable stocks (limited): {symbols[:5]}...")
+    else:
+        print(f"🎯 Processing all {len(symbols)} curated optionable stocks: {symbols[:5]}...")
 
     # ── Run your existing scanner_core logic with progressive saving ──
     print("🔄 Running optimized scanner...")

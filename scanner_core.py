@@ -87,7 +87,7 @@ def get_optionable_stocks_with_volume():
     # 2. Database fallback (previously fetched fresh symbols)
     try:
         from db_client import fetch_tickers_from_db
-        db_symbols = fetch_tickers_from_db()[:30]  # Limit to first 30 from DB
+        db_symbols = fetch_tickers_from_db()  # Get all symbols from DB
         all_symbols.update(db_symbols)
         print(f"✅ Added {len(db_symbols)} symbols from database")
     except Exception as e:
@@ -129,10 +129,9 @@ def get_optionable_stocks_with_volume():
         'BAC', 'AMD', 'CRM', 'NFLX', 'COIN', 'HOOD', 'PLTR', 'GME', 'AMC',
         'INTC', 'ORCL', 'CSCO', 'PFE', 'JNJ', 'WMT', 'HD', 'V', 'MA'
     ]
-    # Randomly select 10 mega caps each time
-    selected_mega_caps = random.sample(all_mega_caps, min(10, len(all_mega_caps)))
-    all_symbols.update(selected_mega_caps)
-    print(f"✅ Added {len(selected_mega_caps)} rotating mega caps: {selected_mega_caps[:5]}...")
+    # Use all mega caps instead of rotating selection
+    all_symbols.update(all_mega_caps)
+    print(f"✅ Added all {len(all_mega_caps)} mega caps: {all_mega_caps[:5]}...")
 
     # Filter and prioritize with emphasis on fresh momentum
     final_symbols = filter_and_prioritize_symbols_dynamic(list(all_symbols))
@@ -178,7 +177,7 @@ def filter_and_prioritize_symbols_dynamic(symbols):
             prioritized.append(symbol)
             used.add(symbol)
 
-    return prioritized[:55]  # Limit to 55 high-quality symbols
+    return prioritized  # No limit - return all prioritized symbols
 
 
 def discover_high_volume_movers():
@@ -279,7 +278,7 @@ def fetch_alphavantage_filtered():
         random.shuffle(all_fresh_symbols)
 
         print(f"   Filtered {len(all_fresh_symbols)} high-momentum symbols from Alpha Vantage")
-        return all_fresh_symbols[:25]  # Return more symbols for variety
+        return all_fresh_symbols  # Return all discovered symbols
 
     except Exception as e:
         print(f"Alpha Vantage error: {e}")
@@ -303,7 +302,7 @@ def get_sp500_components():
                 cleaned_symbol = symbol.replace('.', '-')
                 cleaned.append(cleaned_symbol)
 
-        return cleaned[:100]  # Top 100 by market cap
+        return cleaned  # Return all S&P 500 components
 
     except Exception as e:
         print(f"S&P 500 fetch error: {e}")
@@ -1783,8 +1782,8 @@ def run_scanner(symbols=None,
             else:
                 print(f"⏭️  Skipping {symbol} (likely not optionable)")
 
-        symbols = filtered_symbols[:30]  # Limit to 30 symbols for faster processing
-        print(f"🔍 Processing {len(symbols)} filtered symbols...")
+        symbols = filtered_symbols  # Process all filtered symbols
+        print(f"🔍 Processing all {len(symbols)} filtered symbols...")
 
     print(
         f"\nAnalyzing {len(symbols)} symbols across {len(TIMEFRAMES)} timeframes..."

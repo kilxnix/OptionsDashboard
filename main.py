@@ -88,7 +88,7 @@ def trigger_scan():
     if request.method == 'POST' and request.is_json:
         data = request.get_json()
         auto_refresh = data.get('auto_refresh', True)
-        limit = int(data.get('limit', 25))
+        limit = int(data.get('limit', 0))  # 0 = unlimited
         min_delta = float(data.get('min_delta', 0.25))
         max_delta = float(data.get('max_delta', 0.68))
         min_price = float(data.get('min_price', 0.01))
@@ -99,7 +99,7 @@ def trigger_scan():
     else:
         # GET request - use query parameters
         auto_refresh = request.args.get('auto_refresh', 'true').lower() == 'true'
-        limit = int(request.args.get('limit', 25))
+        limit = int(request.args.get('limit', 0))  # 0 = unlimited
         min_delta = float(request.args.get('min_delta', 0.25))
         max_delta = float(request.args.get('max_delta', 0.68))
         min_price = float(request.args.get('min_price', 0.01))
