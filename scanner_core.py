@@ -1524,8 +1524,8 @@ def save_detailed_options_data(results, base_dir, timestamp):
             f.write(f"Symbol: {symbol}\n")
             f.write(f"Analysis Date: {timestamp}\n")
 
-            # FIX: Check if options exists and ist isinstance(
-                    data['options'], bool) and not data['options'].empty:
+            # FIX: Check if options exists and is not boolean and not empty
+            if ('options' in data and not isinstance(data['options'], bool) and not data['options'].empty):
                 f.write("\nOptions Chain Analysis:\n")
                 for idx, option in enumerate(data['options'].itertuples(), 1):
                     f.write(f"\nOption {idx}:\n")
