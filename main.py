@@ -26,16 +26,99 @@ def health():
     return "OK", 200
 
 
-@app.route("/scan", methods=["GET"])
+@app.route("/scan/parameters", methods=["GET"])
+def get_scan_parameters():
+    """Get available scan parameters and their default values"""
+    return jsonify({
+        "status": "success",
+        "parameters": {
+            "auto_refresh": {
+                "type": "boolean",
+                "default": True,
+                "description": "Auto-refresh symbols from Alpha Vantage before scanning"
+            },
+            "limit": {
+                "type": "integer", 
+                "default": 25,
+                "description": "Maximum number of symbols to process"
+            },
+            "min_delta": {
+                "type": "float",
+                "default": 0.25,
+                "description": "Minimum option delta (0.0 to 1.0)"
+            },
+            "max_delta": {
+                "type": "float", 
+                "default": 0.68,
+                "description": "Maximum option delta (0.0 to 1.0)"
+            },
+            "min_price": {
+                "type": "float",
+                "default": 0.01,
+                "description": "Minimum option price in dollars"
+            },
+            "max_price": {
+                "type": "float",
+                "default": 0.10, 
+                "description": "Maximum option price in dollars"
+            },
+            "min_days": {
+                "type": "integer",
+                "default": 2,
+                "description": "Minimum days to expiration"
+            },
+            "max_days": {
+                "type": "integer",
+                "default": 16,
+                "description": "Maximum days to expiration"
+            },
+            "iv_percentile": {
+                "type": "integer",
+                "default": 85,
+                "description": "Minimum IV percentile threshold (0-100)"
+            }
+        },
+        "example_usage": "/scan?min_delta=0.3&max_delta=0.7&min_price=0.05&max_price=0.20&min_days=1&max_days=30&iv_percentile=90"
+    })
+
+
+@app.route("/scan", methods=["GET", "POST"])
 def trigger_scan():
-    # Check if auto-refresh is requested (default: True)
-    auto_refresh = request.args.get('auto_refresh', 'true').lower() == 'true'
-    limit = int(request.args.get('limit', 25))  # Allow limiting symbol count
+    # Handle both GET (query params) and POST (JSON body) requests
+    if request.method == 'POST' and request.is_json:
+        data = request.get_json()
+        auto_refresh = data.get('auto_refresh', True)
+        limit = int(data.get('limit', 25))
+        min_delta = float(data.get('min_delta', 0.25))
+        max_delta = float(data.get('max_delta', 0.68))
+        min_price = float(data.get('min_price', 0.01))
+        max_price = float(data.get('max_price', 0.10))
+        min_days = int(data.get('min_days', 2))
+        max_days = int(data.get('max_days', 16))
+        iv_percentile = int(data.get('iv_percentile', 85))
+    else:
+        # GET request - use query parameters
+        auto_refresh = request.args.get('auto_refresh', 'true').lower() == 'true'
+        limit = int(request.args.get('limit', 25))
+        min_delta = float(request.args.get('min_delta', 0.25))
+        max_delta = float(request.args.get('max_delta', 0.68))
+        min_price = float(request.args.get('min_price', 0.01))
+        max_price = float(request.args.get('max_price', 0.10))
+        min_days = int(request.args.get('min_days', 2))
+        max_days = int(request.args.get('max_days', 16))
+        iv_percentile = request.args.get('iv_percentile')
+        iv_percentile = int(iv_percentile) if iv_percentile else 85
     
     result = run_autonomous_scan(
         dry_run=False, 
         auto_refresh_symbols=auto_refresh,
-        symbol_limit=limit
+        symbol_limit=limit,
+        min_delta=min_delta,
+        max_delta=max_delta,
+        min_price=min_price,
+        max_price=max_price,
+        time_to_expiry_range=(min_days, max_days),
+        iv_percentile_threshold=iv_percentile
     )
 
     if not result or not result.get("results"):
@@ -57,7 +140,17 @@ def trigger_scan():
         "digest": result["digest"],
         "symbols_processed": result.get("symbols_processed", 0),
         "opportunities_found": len(results),
-        "top_3_symbols": [f"{sym} ({score:.1f})" for sym, score in top_scores[:3]]
+        "top_3_symbols": [f"{sym} ({score:.1f})" for sym, score in top_scores[:3]],
+        "scan_parameters": {
+            "min_delta": min_delta,
+            "max_delta": max_delta,
+            "min_price": min_price,
+            "max_price": max_price,
+            "days_to_expiry": f"{min_days}-{max_days}",
+            "iv_percentile_threshold": iv_percentile,
+            "auto_refresh": auto_refresh,
+            "symbol_limit": limit
+        }
     }), 200
 
 
