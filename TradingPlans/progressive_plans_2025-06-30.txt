@@ -1,0 +1,80 @@
+
+============================================================
+Symbol: SPY - 00:21:02
+Confluence Score: 8.23/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $615.0 Call
+  Expiration: 2025-06-27 00:00:00
+  Delta: 0.4792
+  Gamma: 1.2284
+  Theta: -0.0995
+  Volume: 583403
+  Score: 5.66
+
+============================================================
+Symbol: SOXL - 00:21:23
+Confluence Score: 8.42/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $25.0 Put
+  Expiration: 2025-06-27 00:00:00
+  Delta: -0.2960
+  Gamma: 1.6226
+  Theta: -0.0359
+  Volume: 15329
+  Score: 18.69
+
+============================================================
+Symbol: AMD - 00:22:09
+Confluence Score: 8.95/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $144.0 Call
+  Expiration: 2025-06-27 00:00:00
+  Delta: 0.2548
+  Gamma: 1.2264
+  Theta: -0.0464
+  Volume: 41167
+  Score: 11.18
+
+============================================================
+Symbol: AMC - 00:22:41
+Confluence Score: 7.3/10
+Bias: Bullish
+
+Top Options Found: 4
+
+Option 1:
+  Strike: $3.0 Put
+  Expiration: 2025-07-03 00:00:00
+  Delta: -0.3305
+  Gamma: 2.0333
+  Theta: -0.0053
+  Volume: 1719
+  Score: 155.26
+
+============================================================
+Symbol: XLE - 00:23:09
+Confluence Score: 8.65/10
+Bias: Bullish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $85.5 Put
+  Expiration: 2025-07-11 00:00:00
+  Delta: -0.6346
+  Gamma: 2.2337
+  Theta: 0.0042
+  Volume: 502
+  Score: 215.04

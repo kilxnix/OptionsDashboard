@@ -7000,3 +7000,93 @@ Delta: -0.29604 | Gamma: 1.62258 | Theta: -0.03592 | Score: 18.69
 
 ================================================================================
 
+📈 Trade Plan for SPY (Bullish Bias)
+
+🔹 Option: $$615.0 Call expiring 2025-06-27
+🔹 Entry Price: $0.04
+🔹 Stop Loss: $0.03
+🔹 Initial Target: $0.07
+🔹 Final Target: $0.14
+🔹 Position Size: 49 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.47915 | Gamma: 1.22844 | Theta: -0.09954 | Score: 5.66
+
+================================================================================
+
+📈 Trade Plan for SOXL (Bullish Bias)
+
+🔹 Option: $$25.0 Put expiring 2025-06-27
+🔹 Entry Price: $0.05
+🔹 Stop Loss: $0.04
+🔹 Initial Target: $0.09
+🔹 Final Target: $0.18
+🔹 Position Size: 49 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.29604 | Gamma: 1.62258 | Theta: -0.03592 | Score: 18.69
+
+================================================================================
+
+📈 Trade Plan for AMD (Bullish Bias)
+
+🔹 Option: $$144.0 Call expiring 2025-06-27
+🔹 Entry Price: $0.05
+🔹 Stop Loss: $0.04
+🔹 Initial Target: $0.09
+🔹 Final Target: $0.18
+🔹 Position Size: 49 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.25483 | Gamma: 1.22644 | Theta: -0.04635 | Score: 11.18
+
+================================================================================
+
+📈 Trade Plan for AMC (Bullish Bias)
+
+🔹 Option: $$3.0 Put expiring 2025-07-03
+🔹 Entry Price: $0.04
+🔹 Stop Loss: $0.03
+🔹 Initial Target: $0.07
+🔹 Final Target: $0.14
+🔹 Position Size: 49 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.33046 | Gamma: 2.03332 | Theta: -0.00526 | Score: 155.26
+
+================================================================================
+
+📈 Trade Plan for XLE (Bullish Bias)
+
+🔹 Option: $$85.5 Put expiring 2025-07-11
+🔹 Entry Price: $3.70
+🔹 Stop Loss: $2.78
+🔹 Initial Target: $6.48
+🔹 Final Target: $12.95
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.63463 | Gamma: 2.23371 | Theta: 0.00417 | Score: 215.04
+
+================================================================================
+
