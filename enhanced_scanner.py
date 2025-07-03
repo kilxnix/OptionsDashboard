@@ -437,7 +437,7 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
         
         return min(max(confidence, 0), 100)  # Clamp between 0-100
 
-def discover_pre_earnings_stocks():
+def discover_pre_earnings_stocks(verbose=True):
     """
     Discover stocks with upcoming earnings announcements
     """
@@ -468,45 +468,87 @@ def discover_pre_earnings_stocks():
         'SPY', 'QQQ', 'IWM', 'XLF', 'XLK', 'XLE', 'XLV', 'XLI'
     ]
     
-    print(f"🎯 Scanning {len(earnings_candidates)} potential pre-earnings candidates...")
+    if verbose:
+        print(f"🎯 Scanning {len(earnings_candidates)} potential pre-earnings candidates...")
+        print(f"📅 Current time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
     # Quick validation for actual earnings timing
     try:
         import yfinance as yf
         current_time = datetime.now()
+        checked_count = 0
+        error_count = 0
         
         for symbol in earnings_candidates:
             try:
+                if verbose:
+                    print(f"  🔍 Checking {symbol}...")
+                
                 ticker = yf.Ticker(symbol)
                 info = ticker.info
                 earnings_date = info.get('earningsDate', None)
                 
+                if verbose:
+                    print(f"    📊 Raw earnings data for {symbol}: {earnings_date}")
+                
                 if earnings_date:
                     if isinstance(earnings_date, list) and len(earnings_date) > 0:
                         earnings_date = earnings_date[0]
+                        if verbose:
+                            print(f"    📋 Using first date from list: {earnings_date}")
                     
                     earnings_dt = pd.to_datetime(earnings_date)
                     days_to_earnings = (earnings_dt - current_time).days
+                    
+                    if verbose:
+                        print(f"    ⏰ {symbol}: {days_to_earnings} days to earnings ({earnings_dt.strftime('%Y-%m-%d')})")
                     
                     # Include if earnings are within 21 days
                     if 0 <= days_to_earnings <= 21:
                         pre_earnings_stocks.append(symbol)
                         window = "🔥CRITICAL" if days_to_earnings <= 3 else "⚡HIGH" if days_to_earnings <= 7 else "📅MEDIUM"
-                        print(f"  {window}: {symbol} earnings in {days_to_earnings} days")
+                        if verbose:
+                            print(f"    ✅ {window}: {symbol} earnings in {days_to_earnings} days - ADDED")
+                    else:
+                        if verbose:
+                            print(f"    ❌ {symbol}: {days_to_earnings} days (outside 0-21 day window)")
+                else:
+                    if verbose:
+                        print(f"    ⚠️ {symbol}: No earnings date found in yfinance data")
+                    # If we can't get earnings data, include it anyway (might be manual update needed)
+                    pre_earnings_stocks.append(symbol)
+                    if verbose:
+                        print(f"    🔄 {symbol}: Added as fallback (no earnings date)")
                 
-                time.sleep(0.1)  # Rate limiting
+                checked_count += 1
+                time.sleep(0.2)  # Rate limiting
                 
             except Exception as e:
+                error_count += 1
+                if verbose:
+                    print(f"    ❌ Error checking {symbol}: {e}")
                 # If we can't get earnings data, include it anyway (might be manual update needed)
                 pre_earnings_stocks.append(symbol)
+                if verbose:
+                    print(f"    🔄 {symbol}: Added as fallback due to error")
                 continue
+        
+        if verbose:
+            print(f"📈 Summary: Checked {checked_count} symbols, {error_count} errors")
                 
     except Exception as e:
-        print(f"⚠️ Could not validate earnings timing: {e}")
+        if verbose:
+            print(f"⚠️ Could not validate earnings timing: {e}")
         # Fallback to all candidates
         pre_earnings_stocks = earnings_candidates
+        if verbose:
+            print(f"🔄 Using all {len(earnings_candidates)} candidates as fallback")
     
-    print(f"✅ Found {len(pre_earnings_stocks)} pre-earnings candidates")
+    if verbose:
+        print(f"✅ Found {len(pre_earnings_stocks)} pre-earnings candidates")
+        if pre_earnings_stocks:
+            print(f"📋 Candidates: {pre_earnings_stocks[:10]}{'...' if len(pre_earnings_stocks) > 10 else ''}")
+    
     return pre_earnings_stocks
 
 def run_enhanced_scanner(symbols=None, **kwargs):

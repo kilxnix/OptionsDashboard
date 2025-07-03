@@ -684,10 +684,12 @@ def run_enhanced_scan():
             symbol_limit = int(data.get('limit', 50))  # Increased default limit
             min_delta = float(data.get('min_delta', 0.25))
             max_delta = float(data.get('max_delta', 0.68))
+            verbose = data.get('verbose', True)
         else:
             symbol_limit = int(request.args.get('limit', 50))
             min_delta = float(request.args.get('min_delta', 0.25))
             max_delta = float(request.args.get('max_delta', 0.68))
+            verbose = request.args.get('verbose', 'true').lower() == 'true'
 
         from enhanced_scanner import run_enhanced_scanner
 
@@ -736,6 +738,30 @@ def run_enhanced_scan():
         }), 500
 
 
+@app.route("/test-earnings-verbose", methods=["GET"])
+def test_earnings_verbose():
+    """Test endpoint to debug earnings discovery with full verbose output"""
+    try:
+        from enhanced_scanner import discover_pre_earnings_stocks
+        
+        print("🧪 Running verbose earnings test...")
+        pre_earnings_stocks = discover_pre_earnings_stocks(verbose=True)
+        
+        return jsonify({
+            "status": "success",
+            "test_type": "verbose_earnings_discovery",
+            "candidates_found": len(pre_earnings_stocks),
+            "candidates": pre_earnings_stocks,
+            "message": f"Verbose test complete - found {len(pre_earnings_stocks)} candidates"
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Verbose test failed: {str(e)}"
+        }), 500
+
+
 @app.route("/pre-earnings-scan", methods=["GET", "POST"])
 def run_pre_earnings_scan():
     """Run specialized scan focused on pre-earnings opportunities"""
@@ -755,8 +781,8 @@ def run_pre_earnings_scan():
 
         from enhanced_scanner import discover_pre_earnings_stocks, run_enhanced_scanner
 
-        # Get pre-earnings candidates
-        pre_earnings_stocks = discover_pre_earnings_stocks()
+        # Get pre-earnings candidates with verbose output
+        pre_earnings_stocks = discover_pre_earnings_stocks(verbose=True)
 
         if not pre_earnings_stocks:
             return jsonify({
