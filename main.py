@@ -779,6 +779,7 @@ def get_earnings_calendar():
         
         # Get horizon parameter (default 3month)
         horizon = request.args.get('horizon', '3month')
+        show_all = request.args.get('show_all', 'false').lower() == 'true'
         
         url = f'https://www.alphavantage.co/query?function=EARNINGS_CALENDAR&horizon={horizon}&apikey={api_key}'
         
@@ -811,28 +812,48 @@ def get_earnings_calendar():
         # Filter for next 21 days
         current_date = datetime.now().date()
         upcoming_earnings = []
+        alphabet_breakdown = {}
         
         for record in earnings_data:
             try:
+                symbol = record.get('symbol', '')
                 earnings_date_str = record.get('reportDate', '')
-                if earnings_date_str:
+                if earnings_date_str and symbol:
                     earnings_date = datetime.strptime(earnings_date_str, '%Y-%m-%d').date()
                     days_to_earnings = (earnings_date - current_date).days
                     
                     if 0 <= days_to_earnings <= 21:
                         record['days_to_earnings'] = days_to_earnings
                         upcoming_earnings.append(record)
+                        
+                        # Track alphabet distribution
+                        first_letter = symbol[0] if symbol else 'Unknown'
+                        alphabet_breakdown[first_letter] = alphabet_breakdown.get(first_letter, 0) + 1
             except:
                 continue
         
-        return jsonify({
+        # Sort upcoming earnings by date
+        upcoming_earnings.sort(key=lambda x: x.get('days_to_earnings', 999))
+        
+        response_data = {
             "status": "success",
             "horizon": horizon,
             "total_records": len(earnings_data),
             "upcoming_21_days": len(upcoming_earnings),
-            "sample_upcoming": upcoming_earnings[:10],
+            "alphabet_breakdown": alphabet_breakdown,
             "query_time": datetime.now().isoformat()
-        })
+        }
+        
+        if show_all:
+            response_data["all_upcoming"] = upcoming_earnings
+        else:
+            response_data["sample_upcoming"] = upcoming_earnings[:20]
+            response_data["major_stocks_upcoming"] = [
+                record for record in upcoming_earnings 
+                if record.get('symbol', '') in ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'NFLX', 'JPM', 'BAC']
+            ]
+        
+        return jsonify(response_data)
         
     except Exception as e:
         return jsonify({

@@ -486,7 +486,9 @@ def discover_pre_earnings_stocks(verbose=True):
         if verbose:
             print(f"📋 Processing earnings calendar data...")
         
-        # Process each earnings announcement
+        # First pass: collect ALL eligible earnings announcements
+        all_earnings_candidates = []
+        
         for line in lines[1:]:  # Skip header
             try:
                 fields = line.split(',')
@@ -505,19 +507,53 @@ def discover_pre_earnings_stocks(verbose=True):
                 
                 # Filter for next 21 days and optionable stocks
                 if 0 <= days_to_earnings <= 21 and is_likely_optionable(symbol):
-                    if symbol not in pre_earnings_stocks:  # Avoid duplicates
-                        pre_earnings_stocks.append(symbol)
-                        earnings_found += 1
+                    all_earnings_candidates.append({
+                        'symbol': symbol,
+                        'days_to_earnings': days_to_earnings,
+                        'earnings_date': earnings_date,
+                        'priority': ("critical" if days_to_earnings <= 3 else 
+                                   "high" if days_to_earnings <= 7 else 
+                                   "medium" if days_to_earnings <= 14 else "low")
+                    })
                         
-                        if verbose:
-                            priority = ("🔥CRITICAL" if days_to_earnings <= 3 else 
-                                      "⚡HIGH" if days_to_earnings <= 7 else 
-                                      "📅MEDIUM" if days_to_earnings <= 14 else "📆LOW")
-                            print(f"    ✅ {priority}: {symbol} earnings in {days_to_earnings} days ({earnings_date})")
-                
-                # Stop if we have enough candidates
-                if len(pre_earnings_stocks) >= 50:
-                    break
+            except Exception as e:
+                if verbose:
+                    print(f"    ⚠️ Error parsing line: {line[:50]}... - {e}")
+                continue
+        
+        if verbose:
+            print(f"📋 Found {len(all_earnings_candidates)} total earnings candidates")
+        
+        # Sort by priority and days to earnings (critical first, then by proximity)
+        priority_order = {'critical': 0, 'high': 1, 'medium': 2, 'low': 3}
+        all_earnings_candidates.sort(key=lambda x: (priority_order[x['priority']], x['days_to_earnings']))
+        
+        # Select diverse symbols, prioritizing by timing but ensuring variety
+        selected_symbols = set()
+        
+        # First, add all critical and high priority
+        for candidate in all_earnings_candidates:
+            if candidate['priority'] in ['critical', 'high']:
+                selected_symbols.add(candidate['symbol'])
+                if verbose:
+                    emoji = "🔥CRITICAL" if candidate['priority'] == 'critical' else "⚡HIGH"
+                    print(f"    ✅ {emoji}: {candidate['symbol']} earnings in {candidate['days_to_earnings']} days ({candidate['earnings_date']})")
+        
+        # Then add medium/low priority with alphabet diversity
+        alphabet_counts = {}
+        for candidate in all_earnings_candidates:
+            if candidate['priority'] in ['medium', 'low'] and len(selected_symbols) < 75:
+                first_letter = candidate['symbol'][0]
+                # Limit symbols per letter to ensure alphabet diversity
+                if alphabet_counts.get(first_letter, 0) < 3:  # Max 3 per letter
+                    selected_symbols.add(candidate['symbol'])
+                    alphabet_counts[first_letter] = alphabet_counts.get(first_letter, 0) + 1
+                    
+                    if verbose:
+                        emoji = "📅MEDIUM" if candidate['priority'] == 'medium' else "📆LOW"
+                        print(f"    ✅ {emoji}: {candidate['symbol']} earnings in {candidate['days_to_earnings']} days ({candidate['earnings_date']})")
+        
+        pre_earnings_stocks = list(selected_symbols)
                     
             except Exception as e:
                 if verbose:
@@ -587,27 +623,52 @@ def get_fallback_earnings_candidates():
 
 def is_likely_optionable(symbol):
     """
-    Quick check if a symbol is likely to have liquid options
+    Enhanced check if a symbol is likely to have liquid options
     """
     # ETFs and major stocks almost always have options
     major_etfs = ['SPY', 'QQQ', 'IWM', 'XLF', 'XLK', 'XLE', 'XLV', 'XLI', 'XLY', 'XLP']
     if symbol in major_etfs:
         return True
     
-    # Major tech stocks
-    mega_caps = ['AAPL', 'MSFT', 'GOOGL', 'GOOG', 'AMZN', 'META', 'TSLA', 'NVDA', 'AMD', 'INTC']
-    if symbol in mega_caps:
+    # Major stocks that definitely have options
+    major_stocks = [
+        # Tech mega-caps
+        'AAPL', 'MSFT', 'GOOGL', 'GOOG', 'AMZN', 'META', 'TSLA', 'NVDA', 'AMD', 'INTC',
+        'NFLX', 'CRM', 'ADBE', 'ORCL', 'CSCO', 'UBER', 'LYFT', 'SNAP', 'PINS', 'ZOOM',
+        # Major financials
+        'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'USB', 'PNC', 'COF', 'AXP',
+        # Healthcare/Pharma
+        'JNJ', 'PFE', 'MRNA', 'GILD', 'AMGN', 'BIIB', 'REGN', 'VRTX', 'ABBV',
+        # Major retail/consumer
+        'WMT', 'TGT', 'COST', 'HD', 'LOW', 'SBUX', 'NKE', 'DIS', 'MCD',
+        # Energy
+        'XOM', 'CVX', 'COP', 'EOG', 'SLB', 'HAL', 'OXY',
+        # Industrials
+        'BA', 'GE', 'CAT', 'MMM', 'HON', 'UPS', 'FDX',
+        # Other major names
+        'TSLA', 'F', 'GM', 'T', 'VZ', 'KO', 'PEP', 'AA', 'X'
+    ]
+    if symbol in major_stocks:
         return True
     
-    # Skip penny stocks and very small symbols
-    if len(symbol) > 5:  # Skip complex symbols
+    # Skip obvious foreign/ADR patterns
+    if any(suffix in symbol for suffix in ['F', 'Y', 'RF']):  # Common ADR suffixes
         return False
     
-    # Skip obvious non-optionable patterns
+    # Skip symbols with special characters
     if any(c in symbol for c in ['.', '-', '^', '=']):
         return False
     
-    return True
+    # Skip very long symbols (usually foreign or complex instruments)
+    if len(symbol) > 5:
+        return False
+    
+    # For 3-4 letter symbols, more likely to be optionable US stocks
+    if 3 <= len(symbol) <= 4:
+        return True
+    
+    # For 1-2 letter symbols, only if they're known tickers
+    return len(symbol) <= 2 and symbol.isalpha()
 
 def run_enhanced_scanner(symbols=None, **kwargs):
     """
