@@ -172,7 +172,7 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
     
     def get_comprehensive_market_data(self, symbol):
         """
-        Get comprehensive market data including fundamentals
+        Get comprehensive market data including fundamentals and earnings timing
         """
         try:
             ticker = yf.Ticker(symbol)
@@ -195,6 +195,10 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
             returns = hist['Close'].pct_change().dropna()
             volatility_30d = returns.std() * np.sqrt(252) * 100  # Annualized
             
+            # Enhanced earnings analysis
+            earnings_date = info.get('earningsDate', None)
+            earnings_info = self.analyze_earnings_timing(symbol, earnings_date, info)
+            
             market_data = {
                 'symbol': symbol,
                 'current_price': recent_price,
@@ -205,7 +209,8 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
                 'beta': info.get('beta', 1.0),
                 'sector': info.get('sector', 'Unknown'),
                 'industry': info.get('industry', 'Unknown'),
-                'earnings_date': info.get('earningsDate', None),
+                'earnings_date': earnings_date,
+                'earnings_info': earnings_info,
                 'analyst_targets': {
                     'mean': info.get('targetMeanPrice', 0),
                     'high': info.get('targetHighPrice', 0),
@@ -219,9 +224,62 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
             print(f"Error fetching market data for {symbol}: {e}")
             return None
     
+    def analyze_earnings_timing(self, symbol, earnings_date, info):
+        """
+        Analyze earnings timing and opportunity windows
+        """
+        earnings_info = {
+            'is_pre_earnings': False,
+            'days_to_earnings': None,
+            'earnings_window': 'unknown',
+            'iv_expansion_opportunity': False,
+            'earnings_priority': 'low'
+        }
+        
+        try:
+            if earnings_date:
+                if isinstance(earnings_date, list) and len(earnings_date) > 0:
+                    earnings_date = earnings_date[0]
+                
+                earnings_dt = pd.to_datetime(earnings_date)
+                current_dt = pd.Timestamp.now()
+                days_to_earnings = (earnings_dt - current_dt).days
+                
+                earnings_info.update({
+                    'days_to_earnings': days_to_earnings,
+                    'is_pre_earnings': 0 <= days_to_earnings <= 21,  # Within 3 weeks
+                })
+                
+                # Categorize earnings windows
+                if 0 <= days_to_earnings <= 3:
+                    earnings_info['earnings_window'] = 'immediate'  # This week
+                    earnings_info['earnings_priority'] = 'critical'
+                elif 4 <= days_to_earnings <= 7:
+                    earnings_info['earnings_window'] = 'near_term'  # Next week
+                    earnings_info['earnings_priority'] = 'high'
+                elif 8 <= days_to_earnings <= 14:
+                    earnings_info['earnings_window'] = 'medium_term'  # 2 weeks out
+                    earnings_info['earnings_priority'] = 'medium'
+                elif 15 <= days_to_earnings <= 21:
+                    earnings_info['earnings_window'] = 'long_term'  # 3 weeks out
+                    earnings_info['earnings_priority'] = 'low'
+                
+                # IV expansion opportunity (before earnings, IV typically rises)
+                earnings_info['iv_expansion_opportunity'] = (
+                    earnings_info['is_pre_earnings'] and 
+                    days_to_earnings >= 1  # Not same day
+                )
+                
+                print(f"📅 {symbol}: {days_to_earnings} days to earnings ({earnings_info['earnings_window']})")
+                
+        except Exception as e:
+            print(f"Error analyzing earnings timing for {symbol}: {e}")
+        
+        return earnings_info
+    
     def enhanced_option_scoring(self, option_data, market_data, analysis_results):
         """
-        Enhanced option scoring with additional market factors
+        Enhanced option scoring with pre-earnings prioritization
         """
         try:
             base_score = self._score_option(option_data, analysis_results)
@@ -243,25 +301,42 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
             
             if option_iv > market_vol * 1.5:  # High IV
                 vol_factor = 1.15
-            elif option_iv < market_vol * 0.8:  # Low IV
-                vol_factor = 0.9
+            elif option_iv < market_vol * 0.8:  # Low IV (good for pre-earnings)
+                vol_factor = 1.25  # Enhanced boost for low IV before earnings
             
-            # Earnings proximity factor
+            # PRE-EARNINGS MULTIPLIER (This is the key enhancement!)
             earnings_factor = 1.0
-            if market_data.get('earnings_date'):
-                try:
-                    earnings_date = pd.to_datetime(market_data['earnings_date'])
-                    option_exp = pd.to_datetime(option_data.get('expiration'))
-                    days_to_earnings = (earnings_date - datetime.now()).days
-                    days_to_exp = (option_exp - datetime.now()).days
-                    
-                    # Boost if option expires after earnings
-                    if 0 <= days_to_earnings <= days_to_exp <= 30:
-                        earnings_factor = 1.3
-                except:
-                    pass
+            earnings_info = market_data.get('earnings_info', {})
             
-            # Market cap factor (favor liquid stocks)
+            if earnings_info.get('is_pre_earnings', False):
+                days_to_earnings = earnings_info.get('days_to_earnings', 999)
+                option_exp = pd.to_datetime(option_data.get('expiration'))
+                days_to_exp = (option_exp - datetime.now()).days
+                
+                # CRITICAL: Option must expire AFTER earnings
+                if days_to_earnings <= days_to_exp:
+                    priority = earnings_info.get('earnings_priority', 'low')
+                    
+                    if priority == 'critical':  # 0-3 days to earnings
+                        earnings_factor = 2.0
+                        print(f"🔥 CRITICAL EARNINGS PLAY: {market_data['symbol']} in {days_to_earnings} days!")
+                    elif priority == 'high':     # 4-7 days to earnings
+                        earnings_factor = 1.7
+                        print(f"⚡ HIGH PRIORITY EARNINGS: {market_data['symbol']} in {days_to_earnings} days")
+                    elif priority == 'medium':   # 8-14 days to earnings
+                        earnings_factor = 1.4
+                    elif priority == 'low':      # 15-21 days to earnings
+                        earnings_factor = 1.2
+                    
+                    # Extra boost for IV expansion opportunity
+                    if earnings_info.get('iv_expansion_opportunity', False):
+                        earnings_factor *= 1.1
+                        
+                else:
+                    # Option expires before earnings - reduce score
+                    earnings_factor = 0.8
+            
+            # Market cap factor (favor liquid stocks for earnings plays)
             market_cap = market_data.get('market_cap', 0)
             cap_factor = 1.0
             if market_cap > 10e9:  # > $10B
@@ -362,9 +437,81 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
         
         return min(max(confidence, 0), 100)  # Clamp between 0-100
 
+def discover_pre_earnings_stocks():
+    """
+    Discover stocks with upcoming earnings announcements
+    """
+    pre_earnings_stocks = []
+    
+    # Common stocks that frequently have earnings plays
+    earnings_candidates = [
+        # Tech giants (quarterly earnings movers)
+        'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'TSLA', 'NVDA', 'AMD', 'INTC', 'NFLX',
+        'CRM', 'ADBE', 'ORCL', 'CSCO', 'UBER', 'LYFT', 'SNAP', 'TWTR', 'PINS', 'ZOOM',
+        
+        # Financial sector (quarterly earnings)
+        'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'USB', 'PNC', 'COF', 'AXP',
+        
+        # Healthcare/Biotech (earnings + FDA news)
+        'JNJ', 'PFE', 'MRNA', 'BNTX', 'GILD', 'AMGN', 'BIIB', 'REGN', 'VRTX',
+        
+        # Retail/Consumer (quarterly + guidance)
+        'AMZN', 'WMT', 'TGT', 'COST', 'HD', 'LOW', 'SBUX', 'NKE', 'DIS', 'NFLX',
+        
+        # Energy (quarterly + commodity plays)
+        'XOM', 'CVX', 'COP', 'EOG', 'SLB', 'HAL', 'OXY', 'MRO', 'DVN',
+        
+        # Meme/High IV stocks
+        'GME', 'AMC', 'PLTR', 'BB', 'COIN', 'HOOD', 'RIVN', 'LCID', 'SOFI',
+        
+        # ETFs that track earnings seasons
+        'SPY', 'QQQ', 'IWM', 'XLF', 'XLK', 'XLE', 'XLV', 'XLI'
+    ]
+    
+    print(f"🎯 Scanning {len(earnings_candidates)} potential pre-earnings candidates...")
+    
+    # Quick validation for actual earnings timing
+    try:
+        import yfinance as yf
+        current_time = datetime.now()
+        
+        for symbol in earnings_candidates:
+            try:
+                ticker = yf.Ticker(symbol)
+                info = ticker.info
+                earnings_date = info.get('earningsDate', None)
+                
+                if earnings_date:
+                    if isinstance(earnings_date, list) and len(earnings_date) > 0:
+                        earnings_date = earnings_date[0]
+                    
+                    earnings_dt = pd.to_datetime(earnings_date)
+                    days_to_earnings = (earnings_dt - current_time).days
+                    
+                    # Include if earnings are within 21 days
+                    if 0 <= days_to_earnings <= 21:
+                        pre_earnings_stocks.append(symbol)
+                        window = "🔥CRITICAL" if days_to_earnings <= 3 else "⚡HIGH" if days_to_earnings <= 7 else "📅MEDIUM"
+                        print(f"  {window}: {symbol} earnings in {days_to_earnings} days")
+                
+                time.sleep(0.1)  # Rate limiting
+                
+            except Exception as e:
+                # If we can't get earnings data, include it anyway (might be manual update needed)
+                pre_earnings_stocks.append(symbol)
+                continue
+                
+    except Exception as e:
+        print(f"⚠️ Could not validate earnings timing: {e}")
+        # Fallback to all candidates
+        pre_earnings_stocks = earnings_candidates
+    
+    print(f"✅ Found {len(pre_earnings_stocks)} pre-earnings candidates")
+    return pre_earnings_stocks
+
 def run_enhanced_scanner(symbols=None, **kwargs):
     """
-    Run the enhanced scanner with improved data collection and resumption
+    Run the enhanced scanner with pre-earnings prioritization
     """
     from scanner_core import ALPHA_VANTAGE_API_KEY
     import json
@@ -378,8 +525,14 @@ def run_enhanced_scanner(symbols=None, **kwargs):
     )
     
     if symbols is None:
+        # PRIORITIZE PRE-EARNINGS STOCKS
+        pre_earnings = discover_pre_earnings_stocks()
         from scanner_core import get_optionable_stocks_with_volume
-        symbols = get_optionable_stocks_with_volume()
+        regular_stocks = get_optionable_stocks_with_volume()
+        
+        # Put pre-earnings stocks first
+        symbols = pre_earnings + [s for s in regular_stocks if s not in pre_earnings]
+        print(f"🎯 Prioritizing {len(pre_earnings)} pre-earnings stocks out of {len(symbols)} total")
     
     # Check for existing results to resume from
     date_str = datetime.now().strftime('%Y-%m-%d')

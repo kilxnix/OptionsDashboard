@@ -810,6 +810,102 @@ def run_enhanced_scan():
         }), 500
 
 
+@app.route("/pre-earnings-scan", methods=["GET", "POST"])
+def run_pre_earnings_scan():
+    """Run specialized scan focused on pre-earnings opportunities"""
+    try:
+        # Get parameters
+        if request.method == 'POST' and request.is_json:
+            data = request.get_json()
+            days_ahead = int(data.get('days_ahead', 21))  # Look 21 days ahead
+            min_delta = float(data.get('min_delta', 0.25))
+            max_delta = float(data.get('max_delta', 0.68))
+            priority_only = data.get('priority_only', True)  # Only critical/high priority
+        else:
+            days_ahead = int(request.args.get('days_ahead', 21))
+            min_delta = float(request.args.get('min_delta', 0.25))
+            max_delta = float(request.args.get('max_delta', 0.68))
+            priority_only = request.args.get('priority_only', 'true').lower() == 'true'
+        
+        from enhanced_scanner import discover_pre_earnings_stocks, run_enhanced_scanner
+        
+        # Get pre-earnings candidates
+        pre_earnings_stocks = discover_pre_earnings_stocks()
+        
+        if not pre_earnings_stocks:
+            return jsonify({
+                "status": "no-results", 
+                "message": "No stocks found with upcoming earnings"
+            })
+        
+        # Run enhanced scanner on just these stocks
+        results = run_enhanced_scanner(
+            symbols=pre_earnings_stocks,
+            min_delta=min_delta,
+            max_delta=max_delta
+        )
+        
+        # Filter by earnings priority if requested
+        if priority_only and results:
+            priority_results = {}
+            for symbol, data in results.items():
+                earnings_info = data.get('market_data', {}).get('earnings_info', {})
+                priority = earnings_info.get('earnings_priority', 'low')
+                if priority in ['critical', 'high']:
+                    priority_results[symbol] = data
+            results = priority_results
+        
+        if not results:
+            return jsonify({
+                "status": "no-results",
+                "message": "No high-priority pre-earnings opportunities found",
+                "candidates_scanned": len(pre_earnings_stocks)
+            })
+        
+        # Calculate earnings-specific stats
+        earnings_stats = {}
+        for symbol, data in results.items():
+            earnings_info = data.get('market_data', {}).get('earnings_info', {})
+            priority = earnings_info.get('earnings_priority', 'unknown')
+            days_to_earnings = earnings_info.get('days_to_earnings', 999)
+            
+            if priority not in earnings_stats:
+                earnings_stats[priority] = []
+            earnings_stats[priority].append({
+                'symbol': symbol,
+                'days_to_earnings': days_to_earnings,
+                'confluence_score': data.get('confluence', {}).get('score', 0)
+            })
+        
+        return jsonify({
+            "status": "completed",
+            "scan_type": "pre_earnings",
+            "message": f"Pre-earnings scan completed successfully",
+            "candidates_scanned": len(pre_earnings_stocks),
+            "opportunities_found": len(results),
+            "priority_filter": priority_only,
+            "earnings_breakdown": {
+                priority: len(stocks) for priority, stocks in earnings_stats.items()
+            },
+            "top_earnings_plays": [
+                {
+                    "symbol": symbol,
+                    "days_to_earnings": data.get('market_data', {}).get('earnings_info', {}).get('days_to_earnings', 999),
+                    "earnings_priority": data.get('market_data', {}).get('earnings_info', {}).get('earnings_priority', 'unknown'),
+                    "confluence_score": data.get('confluence', {}).get('score', 0),
+                    "confidence": data.get('trade_plan', {}).get('validation_score', 0)
+                }
+                for symbol, data in list(results.items())[:10]
+            ]
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Pre-earnings scan failed: {str(e)}"
+        }), 500
+
+
 @app.route("/plans/formatted", methods=["GET"])
 def get_formatted_plans():
     """Return human-readable formatted trading plans"""
