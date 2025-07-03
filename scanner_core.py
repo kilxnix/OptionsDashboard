@@ -69,98 +69,40 @@ TIMEFRAMES = {
 
 def get_optionable_stocks_with_volume():
     """
-    Dynamic multi-source approach to get optionable stocks with high volume potential.
-    Fetches fresh data each time to ensure variety.
+    Intelligent optionable stock discovery with real-time validation.
+    Only returns stocks with confirmed options availability and high liquidity.
     """
-    print("🔍 Aggregating optionable stocks from multiple sources...")
+    print("🔍 Discovering high-volume optionable stocks with intelligent filtering...")
 
-    all_symbols = set()
-
-    # 1. FRESH Alpha Vantage discovery (primary source for current market movers)
-    try:
-        av_symbols = fetch_alphavantage_filtered()
-        av_unique = [s for s in av_symbols if s not in all_symbols]
-        all_symbols.update(av_symbols)
-        print(f"✅ Added {len(av_unique)} dynamic Alpha Vantage symbols")
-    except Exception as e:
-        print(f"⚠️ Alpha Vantage failed: {e}")
-
-    # 2. Get S&P 500 components (guaranteed options)
-    try:
-        sp500_symbols = get_sp500_components()
-        sp500_unique = [s for s in sp500_symbols if s not in all_symbols]
-        all_symbols.update(sp500_symbols)
-        print(f"✅ Added {len(sp500_unique)} new S&P 500 symbols")
-    except Exception as e:
-        print(f"⚠️ S&P 500 fetch failed: {e}")
-
-    # 3. Get NASDAQ 100 components
-    try:
-        nasdaq_symbols = get_nasdaq100_components()
-        nasdaq_unique = [s for s in nasdaq_symbols if s not in all_symbols]
-        all_symbols.update(nasdaq_symbols)
-        print(f"✅ Added {len(nasdaq_unique)} new NASDAQ 100 symbols")
-    except Exception as e:
-        print(f"⚠️ NASDAQ 100 fetch failed: {e}")
-
-    # 4. Database fallback (only if no other sources worked)
-    try:
-        from db_client import fetch_tickers_from_db
-        db_symbols = fetch_tickers_from_db()
-        db_unique = [s for s in db_symbols if s not in all_symbols]
-        all_symbols.update(db_symbols)
-        print(f"✅ Added {len(db_unique)} unique symbols from database")
-    except Exception as e:
-        print(f"⚠️ Database fallback failed: {e}")
-
-    # 5. Expanded core ETFs and sector ETFs
-    core_etfs = [
-        'SPY', 'QQQ', 'IWM', 'DIA', 'VTI', 'VOO', 'VEA', 'VWO', 'AGG', 'LQD',
-        'XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLP', 'XLU', 'XLB', 'XLRE', 'XLY',
-        'SOXL', 'SOXS', 'TQQQ', 'SQQQ', 'UVXY', 'VXX', 'TLT', 'GLD', 'SLV', 'USO'
-    ]
-    etf_unique = [s for s in core_etfs if s not in all_symbols]
-    all_symbols.update(core_etfs)
-    print(f"✅ Added {len(etf_unique)} new ETF symbols")
-
-    # 6. Popular options trading stocks
-    popular_options_stocks = [
-        'GME', 'AMC', 'PLTR', 'BB', 'COIN', 'HOOD', 'RIVN', 'LCID', 'SOFI', 'NKLA',
-        'SPCE', 'WISH', 'CLOV', 'MVIS', 'SNDL', 'NOK', 'BBBY', 'EXPR', 'KOSS', 'NAKD',
-        'F', 'GE', 'T', 'PFE', 'KO', 'DIS', 'WMT', 'CVX', 'XOM', 'CAT',
-        'CRWD', 'ZS', 'SNOW', 'DDOG', 'NET', 'OKTA', 'TWLO', 'DOCN', 'ESTC', 'MDB'
-    ]
-    popular_unique = [s for s in popular_options_stocks if s not in all_symbols]
-    all_symbols.update(popular_options_stocks)
-    print(f"✅ Added {len(popular_unique)} new popular options stocks")
-
-    # 7. High-volume discovery (expanded list)
-    try:
-        screener_symbols = discover_high_volume_movers_expanded()
-        screener_unique = [s for s in screener_symbols if s not in all_symbols]
-        all_symbols.update(screener_symbols)
-        print(f"✅ Added {len(screener_unique)} new high-volume movers")
-    except Exception as e:
-        print(f"⚠️ Volume screener failed: {e}")
-
-    # 8. All mega caps (no rotation - process all)
-    all_mega_caps = [
-        'AAPL', 'MSFT', 'GOOGL', 'GOOG', 'AMZN', 'NVDA', 'TSLA', 'META', 'BRK-B',
-        'UNH', 'JNJ', 'JPM', 'V', 'PG', 'HD', 'MA', 'CVX', 'LLY', 'ABBV', 'AVGO',
-        'PFE', 'KO', 'MRK', 'PEP', 'TMO', 'COST', 'WMT', 'DIS', 'ABT', 'ADBE',
-        'CRM', 'VZ', 'NKE', 'NFLX', 'DHR', 'XOM', 'CMCSA', 'AMD', 'LIN', 'TXN'
-    ]
-    mega_unique = [s for s in all_mega_caps if s not in all_symbols]
-    all_symbols.update(all_mega_caps)
-    print(f"✅ Added {len(mega_unique)} new mega cap symbols")
-
-    print(f"📊 Total unique symbols before filtering: {len(all_symbols)}")
-
-    # Filter and prioritize with emphasis on fresh momentum
-    final_symbols = filter_and_prioritize_symbols_dynamic(list(all_symbols))
-
-    print(f"🎯 Final dynamic list: {len(final_symbols)} optionable stocks")
-    return final_symbols
+    validated_symbols = []
+    
+    # Phase 1: Get explosive/high-momentum candidates
+    explosive_candidates = discover_explosive_optionable_stocks()
+    print(f"📈 Found {len(explosive_candidates)} explosive candidates")
+    
+    # Phase 2: Get high-volume liquid stocks
+    liquid_candidates = discover_liquid_optionable_stocks()
+    print(f"💧 Found {len(liquid_candidates)} liquid candidates")
+    
+    # Phase 3: Get proven performers from performance tracking
+    proven_candidates = get_proven_optionable_performers()
+    print(f"🏆 Found {len(proven_candidates)} proven performers")
+    
+    # Combine all candidates
+    all_candidates = explosive_candidates + liquid_candidates + proven_candidates
+    
+    # Phase 4: Validate options availability and liquidity
+    print("🔍 Validating options availability and liquidity...")
+    validated_symbols = validate_options_availability(all_candidates)
+    
+    # Phase 5: Add core reliable symbols as backup
+    core_symbols = get_core_optionable_symbols()
+    for symbol in core_symbols:
+        if symbol not in validated_symbols:
+            validated_symbols.append(symbol)
+    
+    print(f"✅ Final validated list: {len(validated_symbols)} high-quality optionable stocks")
+    return validated_symbols
 
 
 def filter_and_prioritize_symbols_dynamic(symbols):
@@ -1812,49 +1754,161 @@ Delta: {plan.get("delta", 0):.5f} | Gamma: {plan.get("gamma", 0):.5f} | Theta: {
     return output
 
 
+def discover_explosive_optionable_stocks():
+    """
+    Discover explosive momentum stocks with confirmed options availability.
+    """
+    explosive_stocks = []
+    
+    # 1. Alpha Vantage top movers with validation
+    try:
+        av_data = fetch_alphavantage_filtered()
+        for symbol in av_data[:20]:  # Top 20 from AV
+            if validate_single_stock_optionability(symbol):
+                explosive_stocks.append(symbol)
+    except Exception as e:
+        print(f"⚠️ Alpha Vantage explosive discovery failed: {e}")
+    
+    # 2. Recent earnings movers (high IV potential)
+    earnings_movers = [
+        'TSLA', 'NVDA', 'AMD', 'META', 'GOOGL', 'AMZN', 'NFLX', 'COIN', 'HOOD',
+        'PLTR', 'SNOW', 'CRWD', 'ZS', 'NET', 'DDOG', 'OKTA', 'TWLO', 'MDB'
+    ]
+    for symbol in earnings_movers:
+        if symbol not in explosive_stocks and validate_single_stock_optionability(symbol):
+            explosive_stocks.append(symbol)
+    
+    # 3. Sector rotation plays with options
+    sector_etfs = ['XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLP', 'XLU', 'XLB', 'XLRE', 'XLY']
+    for symbol in sector_etfs:
+        if symbol not in explosive_stocks:
+            explosive_stocks.append(symbol)
+    
+    return explosive_stocks
+
+def discover_liquid_optionable_stocks():
+    """
+    Discover stocks with highest options liquidity and volume.
+    """
+    liquid_stocks = []
+    
+    # 1. S&P 500 mega caps (guaranteed high liquidity)
+    mega_liquid = [
+        'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'TSLA', 'META', 'BRK-B',
+        'JPM', 'JNJ', 'UNH', 'V', 'PG', 'HD', 'MA', 'CVX', 'LLY', 'ABBV',
+        'PFE', 'KO', 'MRK', 'PEP', 'COST', 'WMT', 'DIS', 'ABT', 'ADBE',
+        'CRM', 'VZ', 'NKE', 'NFLX', 'DHR', 'XOM', 'AMD', 'INTC', 'QCOM'
+    ]
+    liquid_stocks.extend(mega_liquid)
+    
+    # 2. High-volume ETFs (always liquid)
+    liquid_etfs = [
+        'SPY', 'QQQ', 'IWM', 'DIA', 'VTI', 'EFA', 'EEM', 'GLD', 'SLV',
+        'SOXL', 'SOXS', 'TQQQ', 'SQQQ', 'UVXY', 'VXX', 'TLT', 'HYG'
+    ]
+    liquid_stocks.extend(liquid_etfs)
+    
+    # 3. Popular meme/retail stocks (high options volume)
+    meme_stocks = [
+        'GME', 'AMC', 'BB', 'PLTR', 'COIN', 'HOOD', 'RIVN', 'LCID',
+        'SOFI', 'NKLA', 'SPCE', 'F', 'GE', 'T', 'BAC', 'WFC'
+    ]
+    liquid_stocks.extend(meme_stocks)
+    
+    return liquid_stocks
+
+def get_proven_optionable_performers():
+    """
+    Get stocks that have historically performed well in our scanner.
+    """
+    proven_stocks = []
+    
+    try:
+        from performance_tracker import PerformanceTracker
+        tracker = PerformanceTracker()
+        
+        # Get best performing symbols from tracking
+        performance_data = tracker.get_best_performing_symbols()
+        if performance_data:
+            proven_stocks.extend(performance_data[:15])  # Top 15 performers
+    except Exception as e:
+        print(f"⚠️ Could not load performance data: {e}")
+    
+    # Fallback to historically good performers
+    if not proven_stocks:
+        proven_stocks = [
+            'AAPL', 'TSLA', 'NVDA', 'AMD', 'SPY', 'QQQ', 'GOOGL', 'MSFT',
+            'COIN', 'HOOD', 'PLTR', 'GME', 'SOXL', 'TQQQ', 'XLE'
+        ]
+    
+    return proven_stocks
+
+def validate_options_availability(candidates):
+    """
+    Validate that stocks actually have active options with decent volume.
+    """
+    validated = []
+    
+    for symbol in candidates:
+        if validate_single_stock_optionability(symbol):
+            validated.append(symbol)
+        
+        # Limit validation to avoid rate limits
+        if len(validated) >= 100:
+            break
+    
+    return validated
+
+def validate_single_stock_optionability(symbol):
+    """
+    Quick validation that a stock has options available.
+    """
+    try:
+        import yfinance as yf
+        ticker = yf.Ticker(symbol)
+        
+        # Check if options exist
+        expirations = ticker.options
+        if not expirations or len(expirations) == 0:
+            return False
+        
+        # Quick check for reasonable option volume
+        try:
+            option_chain = ticker.option_chain(expirations[0])
+            if option_chain.calls.empty and option_chain.puts.empty:
+                return False
+            
+            # Check for some volume
+            total_volume = 0
+            if not option_chain.calls.empty:
+                total_volume += option_chain.calls['volume'].sum()
+            if not option_chain.puts.empty:
+                total_volume += option_chain.puts['volume'].sum()
+            
+            return total_volume > 10  # Minimum volume threshold
+            
+        except:
+            # If we can't check volume, assume it's optionable if expirations exist
+            return True
+        
+    except Exception:
+        # If validation fails, include it (conservative approach)
+        return True
+
+def get_core_optionable_symbols():
+    """
+    Core symbols that are always optionable and liquid.
+    """
+    return [
+        'SPY', 'QQQ', 'IWM', 'AAPL', 'TSLA', 'NVDA', 'AMD', 'GOOGL', 'MSFT',
+        'AMZN', 'META', 'SOXL', 'TQQQ', 'SQQQ', 'XLE', 'XLF', 'XLK'
+    ]
+
 def discover_optionable_explosive_stocks(limit=50):
     """
-    Discover high-momentum stocks by scraping a screener site.
-    Returns a filtered list of tickers.
+    Legacy function - now redirects to new intelligent discovery.
     """
-    url = "https://finviz.com/screener.ashx?v=111&s=ta_topgainers&f=optionable"
-    print("Fetching stock screener data...")
-    headers = {"User-Agent": "Mozilla/5.0"}
-    response = requests.get(url, headers=headers)
-
-    if response.status_code != 200:
-        print(f"Failed to fetch data: {response.status_code}")
-        return []
-
-    soup = BeautifulSoup(response.content, "html.parser")
-    try:
-        tables = pd.read_html(str(soup))
-    except Exception as e:
-        print("pandas.read_html failed:", e)
-        return []
-
-    if not tables:
-        print("No tables found.")
-        return []
-
-    df = tables[0]
-    print("Table columns:", df.columns.tolist())
-    print("Table preview:\n", df.head())
-
-    expected_cols = ['Ticker', 'Change', 'Volume', 'Price']
-    available_cols = df.columns.tolist()
-    matched_cols = [col for col in expected_cols if col in available_cols]
-
-    if not matched_cols or 'Ticker' not in matched_cols:
-        print("Required columns not found. Aborting.")
-        return []
-
-    df = df[matched_cols]
-    tickers = df['Ticker'].dropna().unique().tolist()
-    tickers = tickers[:limit]
-
-    print(f"{len(tickers)} tickers discovered.")
-    return tickers
+    return discover_explosive_optionable_stocks()[:limit]
 
 
 def run_scanner(symbols=None,

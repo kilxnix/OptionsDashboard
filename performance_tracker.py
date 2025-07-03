@@ -1,4 +1,3 @@
-
 import pandas as pd
 import numpy as np
 import yfinance as yf
@@ -13,28 +12,28 @@ class PerformanceTracker:
         self.data_dir = data_dir
         self.performance_file = os.path.join(data_dir, "performance_tracking.json")
         self.metrics_file = os.path.join(data_dir, "performance_metrics.json")
-        
+
     def load_performance_data(self):
         """Load existing performance tracking data"""
         if os.path.exists(self.performance_file):
             with open(self.performance_file, 'r') as f:
                 return json.load(f)
         return {}
-    
+
     def save_performance_data(self, data):
         """Save performance tracking data"""
         with open(self.performance_file, 'w') as f:
             json.dump(data, f, indent=2, default=str)
-    
+
     def track_option_performance(self, symbol, option_data, trade_plan, prediction_date):
         """
         Track an option's performance over time
         """
         performance_data = self.load_performance_data()
-        
+
         # Create unique tracking ID
         track_id = f"{symbol}_{option_data.get('strike')}_{option_data.get('type')}_{option_data.get('expiration')}_{prediction_date}"
-        
+
         if track_id not in performance_data:
             performance_data[track_id] = {
                 'symbol': symbol,
@@ -60,47 +59,47 @@ class PerformanceTracker:
                 'hit_target': False,
                 'hit_stop': False
             }
-        
+
         self.save_performance_data(performance_data)
         return track_id
-    
+
     def update_daily_performance(self):
         """
         Update performance for all tracked options daily
         """
         performance_data = self.load_performance_data()
         today = datetime.now().strftime('%Y-%m-%d')
-        
+
         print(f"📊 Updating daily performance for {len(performance_data)} tracked options...")
-        
+
         updated_count = 0
         for track_id, track_data in performance_data.items():
             try:
                 if track_data.get('final_outcome') is not None:
                     continue  # Already finalized
-                
+
                 symbol = track_data['symbol']
                 option_details = track_data['option_details']
                 expiration = pd.to_datetime(option_details['expiration'])
-                
+
                 # Skip if expired
                 if datetime.now() > expiration:
                     if track_data.get('final_outcome') is None:
                         track_data['final_outcome'] = 'EXPIRED'
                         track_data['final_price'] = 0.0
                     continue
-                
+
                 # Get current option price
                 current_price = self.get_current_option_price(symbol, option_details)
-                
+
                 if current_price is not None:
                     entry_price = option_details['entry_price']
                     target_price = option_details['predicted_target']
                     stop_price = entry_price * 0.75  # Assuming 25% stop loss
-                    
+
                     # Calculate P&L
                     pnl_percent = ((current_price - entry_price) / entry_price) * 100
-                    
+
                     # Update daily tracking
                     track_data['daily_tracking'][today] = {
                         'price': current_price,
@@ -108,38 +107,38 @@ class PerformanceTracker:
                         'pnl_dollar': current_price - entry_price,
                         'days_held': (datetime.now() - pd.to_datetime(track_data['prediction_date'])).days
                     }
-                    
+
                     # Update max profit/loss
                     if pnl_percent > track_data['max_profit']:
                         track_data['max_profit'] = pnl_percent
                     if pnl_percent < track_data['max_loss']:
                         track_data['max_loss'] = pnl_percent
-                    
+
                     # Check if target or stop hit
                     if current_price >= target_price and not track_data['hit_target']:
                         track_data['hit_target'] = True
                         track_data['target_hit_date'] = today
                         track_data['final_outcome'] = 'TARGET_HIT'
                         track_data['final_price'] = current_price
-                    
+
                     elif current_price <= stop_price and not track_data['hit_stop']:
                         track_data['hit_stop'] = True
                         track_data['stop_hit_date'] = today
                         track_data['final_outcome'] = 'STOP_HIT'
                         track_data['final_price'] = current_price
-                    
+
                     track_data['days_tracked'] += 1
                     updated_count += 1
-                
+
             except Exception as e:
                 print(f"Error updating {track_id}: {e}")
                 continue
-        
+
         self.save_performance_data(performance_data)
         print(f"✅ Updated {updated_count} options")
-        
+
         return updated_count
-    
+
     def get_current_option_price(self, symbol, option_details):
         """
         Get current option price using yfinance
@@ -147,37 +146,37 @@ class PerformanceTracker:
         try:
             ticker = yf.Ticker(symbol)
             expiration_date = pd.to_datetime(option_details['expiration']).strftime('%Y-%m-%d')
-            
+
             # Get option chain
             options = ticker.option_chain(expiration_date)
-            
+
             if option_details['type'].lower() == 'call':
                 chain = options.calls
             else:
                 chain = options.puts
-            
+
             # Find matching strike
             strike = float(option_details['strike'])
             matching_options = chain[chain['strike'] == strike]
-            
+
             if not matching_options.empty:
                 return float(matching_options.iloc[0]['lastPrice'])
-            
+
             return None
-            
+
         except Exception as e:
             print(f"Error fetching option price for {symbol}: {e}")
             return None
-    
+
     def calculate_performance_metrics(self):
         """
         Calculate overall performance metrics and accuracy
         """
         performance_data = self.load_performance_data()
-        
+
         if not performance_data:
             return {}
-        
+
         metrics = {
             'total_predictions': len(performance_data),
             'targets_hit': 0,
@@ -192,17 +191,17 @@ class PerformanceTracker:
             'best_performers': [],
             'worst_performers': []
         }
-        
+
         all_outcomes = []
         confluence_outcomes = {}
         bias_outcomes = {'Bullish': [], 'Bearish': [], 'Neutral': []}
-        
+
         for track_id, data in performance_data.items():
             outcome = data.get('final_outcome')
             confluence_score = data['option_details'].get('confluence_score', 0)
             predicted_bias = data['option_details'].get('predicted_bias', 'Unknown')
             max_profit = data.get('max_profit', 0)
-            
+
             # Count outcomes
             if outcome == 'TARGET_HIT':
                 metrics['targets_hit'] += 1
@@ -216,17 +215,17 @@ class PerformanceTracker:
             else:
                 metrics['still_active'] += 1
                 continue
-            
+
             # Track by confluence score ranges
             score_range = f"{int(confluence_score//2)*2}-{int(confluence_score//2)*2+2}"
             if score_range not in confluence_outcomes:
                 confluence_outcomes[score_range] = []
             confluence_outcomes[score_range].append(outcome)
-            
+
             # Track by bias
             if predicted_bias in bias_outcomes:
                 bias_outcomes[predicted_bias].append(outcome)
-            
+
             # Track best/worst performers
             performance_record = {
                 'symbol': data['symbol'],
@@ -235,17 +234,17 @@ class PerformanceTracker:
                 'outcome': outcome,
                 'predicted_bias': predicted_bias
             }
-            
+
             if max_profit > 50:  # > 50% gain
                 metrics['best_performers'].append(performance_record)
             elif max_profit < -25:  # > 25% loss
                 metrics['worst_performers'].append(performance_record)
-        
+
         # Calculate win rate
         if all_outcomes:
             wins = all_outcomes.count('WIN')
             metrics['win_rate'] = (wins / len(all_outcomes)) * 100
-        
+
         # Calculate confluence score accuracy
         for score_range, outcomes in confluence_outcomes.items():
             if outcomes:
@@ -255,7 +254,7 @@ class PerformanceTracker:
                     'wins': outcomes.count('TARGET_HIT'),
                     'win_rate': win_rate
                 }
-        
+
         # Calculate bias accuracy
         for bias, outcomes in bias_outcomes.items():
             if outcomes:
@@ -265,54 +264,112 @@ class PerformanceTracker:
                     'wins': outcomes.count('TARGET_HIT'),
                     'win_rate': win_rate
                 }
-        
+
         # Sort performers
         metrics['best_performers'] = sorted(metrics['best_performers'], 
                                           key=lambda x: x['max_profit'], reverse=True)[:10]
         metrics['worst_performers'] = sorted(metrics['worst_performers'], 
                                            key=lambda x: x['max_profit'])[:10]
-        
+
         # Save metrics
         with open(self.metrics_file, 'w') as f:
             json.dump(metrics, f, indent=2, default=str)
-        
+
         return metrics
-    
+
     def get_improvement_suggestions(self):
-        """
-        Analyze performance data to suggest improvements
-        """
+        """Generate specific improvement suggestions based on performance data"""
         metrics = self.calculate_performance_metrics()
-        
         suggestions = []
-        
-        # Confluence score analysis
-        if 'confluence_score_accuracy' in metrics:
-            best_score_range = None
-            best_win_rate = 0
-            
-            for score_range, data in metrics['confluence_score_accuracy'].items():
-                if data['total'] >= 5 and data['win_rate'] > best_win_rate:
-                    best_win_rate = data['win_rate']
-                    best_score_range = score_range
-            
-            if best_score_range:
-                suggestions.append(f"Focus on confluence scores in range {best_score_range} (win rate: {best_win_rate:.1f}%)")
-        
-        # Bias accuracy analysis
-        if 'bias_accuracy' in metrics:
-            for bias, data in metrics['bias_accuracy'].items():
-                if data['total'] >= 3:
-                    if data['win_rate'] < 40:
-                        suggestions.append(f"{bias} bias predictions are underperforming ({data['win_rate']:.1f}% win rate)")
-                    elif data['win_rate'] > 70:
-                        suggestions.append(f"{bias} bias predictions are performing well ({data['win_rate']:.1f}% win rate)")
-        
-        # Overall win rate
-        if metrics.get('win_rate', 0) < 50:
+
+        # Win rate suggestions
+        if metrics['win_rate'] < 50:
             suggestions.append("Overall win rate is below 50% - consider tightening entry criteria")
-        
+
+        # Confluence score suggestions
+        confluence_accuracy = metrics.get('confluence_score_accuracy', {})
+        for score_range, data in confluence_accuracy.items():
+            if data['total'] >= 5 and data['win_rate'] < 40:
+                suggestions.append(f"Low win rate for {score_range} confluence scores - review pattern detection")
+
+        # Bias accuracy suggestions
+        bias_accuracy = metrics.get('bias_accuracy', {})
+        for bias, data in bias_accuracy.items():
+            if data['total'] >= 3 and data['win_rate'] < 45:
+                suggestions.append(f"{bias} bias predictions underperforming - review directional analysis")
+
+        # Position sizing suggestions
+        if metrics.get('avg_loss', 0) > metrics.get('avg_win', 0):
+            suggestions.append("Average losses exceed average wins - consider tighter stop losses")
+
         return suggestions
+
+    def get_best_performing_symbols(self, min_trades=2):
+        """
+        Get symbols that have historically performed best in our scanner.
+        Returns list of symbols sorted by performance.
+        """
+        try:
+            if not os.path.exists(self.performance_file):
+                return []
+
+            with open(self.performance_file, 'r') as f:
+                tracking_data = json.load(f)
+
+            symbol_performance = {}
+
+            for track_id, data in tracking_data.items():
+                symbol = data.get('symbol', '')
+                if not symbol:
+                    continue
+
+                # Initialize symbol tracking
+                if symbol not in symbol_performance:
+                    symbol_performance[symbol] = {
+                        'total_trades': 0,
+                        'wins': 0,
+                        'total_profit': 0,
+                        'max_profit': 0
+                    }
+
+                symbol_performance[symbol]['total_trades'] += 1
+
+                # Check if this trade was profitable
+                max_profit = data.get('max_profit', 0)
+                symbol_performance[symbol]['total_profit'] += max_profit
+                symbol_performance[symbol]['max_profit'] = max(
+                    symbol_performance[symbol]['max_profit'], max_profit
+                )
+
+                if max_profit > 10:  # Consider 10%+ a win
+                    symbol_performance[symbol]['wins'] += 1
+
+            # Filter symbols with minimum trades and calculate win rates
+            qualified_symbols = []
+            for symbol, perf in symbol_performance.items():
+                if perf['total_trades'] >= min_trades:
+                    win_rate = perf['wins'] / perf['total_trades'] * 100
+                    avg_profit = perf['total_profit'] / perf['total_trades']
+
+                    qualified_symbols.append({
+                        'symbol': symbol,
+                        'win_rate': win_rate,
+                        'avg_profit': avg_profit,
+                        'total_trades': perf['total_trades'],
+                        'max_profit': perf['max_profit']
+                    })
+
+            # Sort by combined score (win rate + avg profit)
+            qualified_symbols.sort(
+                key=lambda x: (x['win_rate'] * 0.6 + x['avg_profit'] * 0.4), 
+                reverse=True
+            )
+
+            return [item['symbol'] for item in qualified_symbols]
+
+        except Exception as e:
+            print(f"Error getting best performing symbols: {e}")
+            return []
 
 def update_performance_tracking():
     """Standalone function to update performance tracking"""
@@ -324,7 +381,7 @@ def analyze_performance():
     tracker = PerformanceTracker()
     metrics = tracker.calculate_performance_metrics()
     suggestions = tracker.get_improvement_suggestions()
-    
+
     print("\n📊 PERFORMANCE ANALYSIS")
     print("=" * 50)
     print(f"Total Predictions: {metrics.get('total_predictions', 0)}")
@@ -332,19 +389,19 @@ def analyze_performance():
     print(f"Targets Hit: {metrics.get('targets_hit', 0)}")
     print(f"Stops Hit: {metrics.get('stops_hit', 0)}")
     print(f"Still Active: {metrics.get('still_active', 0)}")
-    
+
     print("\n🎯 CONFLUENCE SCORE ACCURACY:")
     for score_range, data in metrics.get('confluence_score_accuracy', {}).items():
         print(f"  {score_range}: {data['win_rate']:.1f}% ({data['wins']}/{data['total']})")
-    
+
     print("\n📈 BIAS ACCURACY:")
     for bias, data in metrics.get('bias_accuracy', {}).items():
         print(f"  {bias}: {data['win_rate']:.1f}% ({data['wins']}/{data['total']})")
-    
+
     print("\n💡 IMPROVEMENT SUGGESTIONS:")
     for suggestion in suggestions:
         print(f"  • {suggestion}")
-    
+
     return metrics, suggestions
 
 if __name__ == "__main__":
