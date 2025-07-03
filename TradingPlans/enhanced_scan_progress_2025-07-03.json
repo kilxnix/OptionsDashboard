@@ -1,0 +1,768 @@
+{
+  "results": {
+    "AAPL": {
+      "market_data": {
+        "symbol": "AAPL",
+        "current_price": 212.44000244140625,
+        "market_cap": 3172961353728,
+        "volume_avg_30d": 57698490.47619048,
+        "price_change_30d": 4.5112402106579115,
+        "volatility_30d": 20.021158758152524,
+        "beta": 1.211,
+        "sector": "Technology",
+        "industry": "Consumer Electronics",
+        "earnings_date": null,
+        "earnings_info": {
+          "is_pre_earnings": false,
+          "days_to_earnings": null,
+          "earnings_window": "unknown",
+          "iv_expansion_opportunity": false,
+          "earnings_priority": "low"
+        },
+        "analyst_targets": {
+          "mean": 228.60326,
+          "high": 300.0,
+          "low": 170.62
+        }
+      },
+      "timeframe_analysis": {
+        "1m": {
+          "gap_percent": 0.0090051480215354,
+          "gap_direction": "Up",
+          "gap_mitigated": "False",
+          "unmitigated_gap_price": 212.1009,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": 0.0004406000600059606,
+            "low_slope": 0.0009568556855685824
+          },
+          "candles": {
+            "bullish": true,
+            "bearish": false,
+            "bullish_engulfing": false,
+            "bearish_engulfing": false,
+            "hammer": false,
+            "inverted_hammer": true,
+            "shooting_star": true,
+            "doji": false
+          },
+          "volume": {
+            "relative_volume": 5.247288503253796,
+            "unusual_volume": true
+          }
+        },
+        "5m": {
+          "gap_percent": -0.004714757190000427,
+          "gap_direction": "Down",
+          "gap_mitigated": "True",
+          "unmitigated_gap_price": NaN,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": 0.016932085808580893,
+            "low_slope": 0.011712883288328828
+          },
+          "candles": {
+            "bullish": false,
+            "bearish": false,
+            "bullish_engulfing": false,
+            "bearish_engulfing": false,
+            "hammer": false,
+            "inverted_hammer": false,
+            "shooting_star": false,
+            "doji": false
+          },
+          "volume": {
+            "relative_volume": 0.017817520523804496,
+            "unusual_volume": false
+          }
+        },
+        "15m": {
+          "gap_percent": 0.0,
+          "gap_direction": "Down",
+          "gap_mitigated": "False",
+          "unmitigated_gap_price": NaN,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": 0.06368264326432646,
+            "low_slope": 0.05903033543354336
+          },
+          "candles": {
+            "bullish": false,
+            "bearish": false,
+            "bullish_engulfing": false,
+            "bearish_engulfing": false,
+            "hammer": false,
+            "inverted_hammer": false,
+            "shooting_star": false,
+            "doji": false
+          },
+          "volume": {
+            "relative_volume": 0.01182214337199206,
+            "unusual_volume": false
+          }
+        },
+        "30m": {
+          "gap_percent": 0.0,
+          "gap_direction": "Down",
+          "gap_mitigated": "False",
+          "unmitigated_gap_price": NaN,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": 0.13946545274527453,
+            "low_slope": 0.12262883768376834
+          },
+          "candles": {
+            "bullish": false,
+            "bearish": false,
+            "bullish_engulfing": false,
+            "bearish_engulfing": false,
+            "hammer": false,
+            "inverted_hammer": false,
+            "shooting_star": false,
+            "doji": false
+          },
+          "volume": {
+            "relative_volume": 0.0076328854043479335,
+            "unusual_volume": false
+          }
+        },
+        "1h": {
+          "gap_percent": 0.0006601326112196392,
+          "gap_direction": "Up",
+          "gap_mitigated": "True",
+          "unmitigated_gap_price": NaN,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": 0.12499548274827484,
+            "low_slope": 0.10325103330333027
+          },
+          "candles": {
+            "bullish": false,
+            "bearish": false,
+            "bullish_engulfing": false,
+            "bearish_engulfing": false,
+            "hammer": false,
+            "inverted_hammer": false,
+            "shooting_star": false,
+            "doji": false
+          },
+          "volume": {
+            "relative_volume": 0.00739450105567275,
+            "unusual_volume": false
+          }
+        },
+        "D": {
+          "gap_percent": 0.5244923491483031,
+          "gap_direction": "Up",
+          "gap_mitigated": "False",
+          "unmitigated_gap_price": 207.82,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": -0.4327326354635462,
+            "low_slope": -0.40058005400540053
+          },
+          "candles": {
+            "bullish": true,
+            "bearish": false,
+            "bullish_engulfing": false,
+            "bearish_engulfing": false,
+            "hammer": false,
+            "inverted_hammer": false,
+            "shooting_star": false,
+            "doji": false
+          },
+          "volume": {
+            "relative_volume": 1.1634418944774996,
+            "unusual_volume": false
+          }
+        },
+        "W": {
+          "gap_percent": 0.4625024865724977,
+          "gap_direction": "Up",
+          "gap_mitigated": "True",
+          "unmitigated_gap_price": NaN,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": 0.1357178369488071,
+            "low_slope": 0.1315370681873972
+          },
+          "candles": {
+            "bullish": false,
+            "bearish": false,
+            "bullish_engulfing": false,
+            "bearish_engulfing": false,
+            "hammer": false,
+            "inverted_hammer": false,
+            "shooting_star": false,
+            "doji": false
+          },
+          "volume": {
+            "relative_volume": 1.4684916909390904,
+            "unusual_volume": false
+          }
+        }
+      },
+      "confluence": {
+        "score": 9.23,
+        "bias": "Bullish",
+        "bullish_signals": 6.0,
+        "bearish_signals": 0.5
+      },
+      "options": "               contractID symbol  ... price_difference enhanced_score\n569   AAPL250808P00240000   AAPL  ...              NaN       2.338710\n2365  AAPL271217P00300000   AAPL  ...              NaN       1.693203\n2361  AAPL271217P00290000   AAPL  ...              NaN       1.598201\n2363  AAPL271217P00295000   AAPL  ...              NaN       1.428185\n2117  AAPL270115P00280000   AAPL  ...              NaN       1.383151\n\n[5 rows x 24 columns]",
+      "trade_plan": {
+        "entry_price": 28.15,
+        "stop_loss": 21.11,
+        "initial_target": 49.26,
+        "final_target": 70.375,
+        "position_size": 1,
+        "max_hold_time": "10 hours",
+        "support": null,
+        "resistance": null,
+        "skew": "Neutral Skew",
+        "strike": "$240.0",
+        "type": "Put",
+        "expiration": "2025-08-08",
+        "risk_metrics": {
+          "delta_exposure": -94.03,
+          "gamma_theta_ratio": 4.33,
+          "implied_vol": 23.17
+        },
+        "delta": -0.94026,
+        "gamma": 0.00757,
+        "theta": 0.00175,
+        "score": 0.0,
+        "bias": "Bullish",
+        "option_symbol": "AAPL",
+        "risk_level": "LOW",
+        "market_context": {
+          "sector": "Technology",
+          "volatility_regime": "LOW",
+          "analyst_target": 228.60326,
+          "beta": 1.211
+        },
+        "validation_timestamp": "2025-07-03T03:03:21.012289",
+        "validation_score": 85
+      },
+      "enhancement_timestamp": "2025-07-03T03:03:21.012351"
+    },
+    "MSFT": {
+      "market_data": {
+        "symbol": "MSFT",
+        "current_price": 491.0899963378906,
+        "market_cap": 3650046132224,
+        "volume_avg_30d": 20042133.333333332,
+        "price_change_30d": 6.073826607133099,
+        "volatility_30d": 11.660285398369687,
+        "beta": 1.026,
+        "sector": "Technology",
+        "industry": "Software - Infrastructure",
+        "earnings_date": null,
+        "earnings_info": {
+          "is_pre_earnings": false,
+          "days_to_earnings": null,
+          "earnings_window": "unknown",
+          "iv_expansion_opportunity": false,
+          "earnings_priority": "low"
+        },
+        "analyst_targets": {
+          "mean": 522.2628,
+          "high": 700.0,
+          "low": 432.0
+        }
+      },
+      "timeframe_analysis": {
+        "1m": {
+          "gap_percent": 0.0020143236725181767,
+          "gap_direction": "Up",
+          "gap_mitigated": "True",
+          "unmitigated_gap_price": NaN,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": -0.00047081428142817846,
+            "low_slope": 0.0008001038103810536
+          },
+          "candles": {
+            "bullish": false,
+            "bearish": false,
+            "bullish_engulfing": false,
+            "bearish_engulfing": false,
+            "hammer": false,
+            "inverted_hammer": false,
+            "shooting_star": false,
+            "doji": true
+          },
+          "volume": {
+            "relative_volume": 8.094962362478286,
+            "unusual_volume": true
+          }
+        },
+        "5m": {
+          "gap_percent": 0.037730109380662964,
+          "gap_direction": "Up",
+          "gap_mitigated": "True",
+          "unmitigated_gap_price": NaN,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": 0.007276388838883952,
+            "low_slope": -0.07090255865586553
+          },
+          "candles": {
+            "bullish": false,
+            "bearish": false,
+            "bullish_engulfing": false,
+            "bearish_engulfing": false,
+            "hammer": false,
+            "inverted_hammer": false,
+            "shooting_star": false,
+            "doji": false
+          },
+          "volume": {
+            "relative_volume": 0.008549885143879384,
+            "unusual_volume": false
+          }
+        },
+        "15m": {
+          "gap_percent": -0.030533729593286093,
+          "gap_direction": "Down",
+          "gap_mitigated": "True",
+          "unmitigated_gap_price": NaN,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": -0.01332222982298232,
+            "low_slope": -0.14021601500150008
+          },
+          "candles": {
+            "bullish": false,
+            "bearish": false,
+            "bullish_engulfing": true,
+            "bearish_engulfing": false,
+            "hammer": false,
+            "inverted_hammer": false,
+            "shooting_star": false,
+            "doji": false
+          },
+          "volume": {
+            "relative_volume": 0.003422046429032577,
+            "unusual_volume": false
+          }
+        },
+        "30m": {
+          "gap_percent": 0.002035416242619765,
+          "gap_direction": "Up",
+          "gap_mitigated": "True",
+          "unmitigated_gap_price": NaN,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": -0.09729995079507955,
+            "low_slope": -0.2222454917491749
+          },
+          "candles": {
+            "bullish": false,
+            "bearish": false,
+            "bullish_engulfing": false,
+            "bearish_engulfing": false,
+            "hammer": false,
+            "inverted_hammer": false,
+            "shooting_star": false,
+            "doji": false
+          },
+          "volume": {
+            "relative_volume": 0.0032830794526142156,
+            "unusual_volume": false
+          }
+        },
+        "1h": {
+          "gap_percent": -0.04476184662964196,
+          "gap_direction": "Down",
+          "gap_mitigated": "True",
+          "unmitigated_gap_price": NaN,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": 0.012027966396639661,
+            "low_slope": -0.12446767476747678
+          },
+          "candles": {
+            "bullish": false,
+            "bearish": false,
+            "bullish_engulfing": false,
+            "bearish_engulfing": false,
+            "hammer": false,
+            "inverted_hammer": false,
+            "shooting_star": false,
+            "doji": false
+          },
+          "volume": {
+            "relative_volume": 0.002542085438513421,
+            "unusual_volume": false
+          }
+        },
+        "D": {
+          "gap_percent": -0.4186566405853068,
+          "gap_direction": "Down",
+          "gap_mitigated": "True",
+          "unmitigated_gap_price": NaN,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": 1.0869868706870687,
+            "low_slope": 1.1228921350135015
+          },
+          "candles": {
+            "bullish": false,
+            "bearish": false,
+            "bullish_engulfing": false,
+            "bearish_engulfing": false,
+            "hammer": false,
+            "inverted_hammer": false,
+            "shooting_star": false,
+            "doji": false
+          },
+          "volume": {
+            "relative_volume": 0.7025846872183003,
+            "unusual_volume": false
+          }
+        },
+        "W": {
+          "gap_percent": 0.22180102431746235,
+          "gap_direction": "Up",
+          "gap_mitigated": "True",
+          "unmitigated_gap_price": NaN,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": 0.22650016405129286,
+            "low_slope": 0.21697650976989452
+          },
+          "candles": {
+            "bullish": false,
+            "bearish": false,
+            "bullish_engulfing": false,
+            "bearish_engulfing": false,
+            "hammer": false,
+            "inverted_hammer": false,
+            "shooting_star": false,
+            "doji": false
+          },
+          "volume": {
+            "relative_volume": 0.30090267300929474,
+            "unusual_volume": false
+          }
+        }
+      },
+      "confluence": {
+        "score": 8.26,
+        "bias": "Bullish",
+        "bullish_signals": 0.95,
+        "bearish_signals": 0.2
+      },
+      "options": "               contractID symbol  ... price_difference enhanced_score\n156   MSFT250703C00490000   MSFT  ...              NaN       1.262217\n1465  MSFT250919P00510000   MSFT  ...              NaN       1.261762\n780   MSFT250725C00485000   MSFT  ...              NaN       1.224874\n1456  MSFT250919C00490000   MSFT  ...              NaN       1.214552\n2380  MSFT260320C00500000   MSFT  ...              NaN       1.208783\n\n[5 rows x 24 columns]",
+      "trade_plan": {
+        "entry_price": 2.6,
+        "stop_loss": 1.95,
+        "initial_target": 4.55,
+        "final_target": 6.5,
+        "position_size": 1,
+        "max_hold_time": "4 hours",
+        "support": null,
+        "resistance": null,
+        "skew": "Neutral Skew",
+        "strike": "$490.0",
+        "type": "Call",
+        "expiration": "2025-07-03",
+        "risk_metrics": {
+          "delta_exposure": 59.66,
+          "gamma_theta_ratio": 0.08,
+          "implied_vol": 18.66
+        },
+        "delta": 0.59659,
+        "gamma": 0.08072,
+        "theta": -0.96302,
+        "score": 0.0,
+        "bias": "Bullish",
+        "option_symbol": "MSFT",
+        "risk_level": "LOW",
+        "market_context": {
+          "sector": "Technology",
+          "volatility_regime": "LOW",
+          "analyst_target": 522.2628,
+          "beta": 1.026
+        },
+        "validation_timestamp": "2025-07-03T03:03:39.611342",
+        "validation_score": 90
+      },
+      "enhancement_timestamp": "2025-07-03T03:03:39.611398"
+    },
+    "GOOGL": {
+      "market_data": {
+        "symbol": "GOOGL",
+        "current_price": 178.63999938964844,
+        "market_cap": 2173691363328,
+        "volume_avg_30d": 41608314.28571428,
+        "price_change_30d": 7.628030952404592,
+        "volatility_30d": 27.296341702079868,
+        "beta": 1.014,
+        "sector": "Communication Services",
+        "industry": "Internet Content & Information",
+        "earnings_date": null,
+        "earnings_info": {
+          "is_pre_earnings": false,
+          "days_to_earnings": null,
+          "earnings_window": "unknown",
+          "iv_expansion_opportunity": false,
+          "earnings_priority": "low"
+        },
+        "analyst_targets": {
+          "mean": 201.4698,
+          "high": 250.0,
+          "low": 160.0
+        }
+      },
+      "timeframe_analysis": {
+        "1m": {
+          "gap_percent": 0.0,
+          "gap_direction": "Down",
+          "gap_mitigated": "False",
+          "unmitigated_gap_price": NaN,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": 1.3573357335539494e-06,
+            "low_slope": 0.00041659945994603994
+          },
+          "candles": {
+            "bullish": false,
+            "bearish": false,
+            "bullish_engulfing": false,
+            "bearish_engulfing": false,
+            "hammer": false,
+            "inverted_hammer": false,
+            "shooting_star": false,
+            "doji": false
+          },
+          "volume": {
+            "relative_volume": 8.683601150796436,
+            "unusual_volume": true
+          }
+        },
+        "5m": {
+          "gap_percent": 0.0,
+          "gap_direction": "Down",
+          "gap_mitigated": "False",
+          "unmitigated_gap_price": NaN,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": 0.01014154215421541,
+            "low_slope": -0.047941080708070766
+          },
+          "candles": {
+            "bullish": false,
+            "bearish": false,
+            "bullish_engulfing": false,
+            "bearish_engulfing": false,
+            "hammer": false,
+            "inverted_hammer": false,
+            "shooting_star": false,
+            "doji": false
+          },
+          "volume": {
+            "relative_volume": 0.02338259707111421,
+            "unusual_volume": false
+          }
+        },
+        "15m": {
+          "gap_percent": 0.0,
+          "gap_direction": "Down",
+          "gap_mitigated": "False",
+          "unmitigated_gap_price": NaN,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": 0.0560597755775577,
+            "low_slope": -0.038255613561356115
+          },
+          "candles": {
+            "bullish": false,
+            "bearish": false,
+            "bullish_engulfing": false,
+            "bearish_engulfing": false,
+            "hammer": false,
+            "inverted_hammer": false,
+            "shooting_star": false,
+            "doji": false
+          },
+          "volume": {
+            "relative_volume": 0.011464593232149153,
+            "unusual_volume": false
+          }
+        },
+        "30m": {
+          "gap_percent": -0.011205737337506618,
+          "gap_direction": "Down",
+          "gap_mitigated": "True",
+          "unmitigated_gap_price": NaN,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": -0.005179175517551749,
+            "low_slope": -0.06828792019201915
+          },
+          "candles": {
+            "bullish": false,
+            "bearish": false,
+            "bullish_engulfing": false,
+            "bearish_engulfing": false,
+            "hammer": false,
+            "inverted_hammer": false,
+            "shooting_star": false,
+            "doji": false
+          },
+          "volume": {
+            "relative_volume": 0.008423472763862258,
+            "unusual_volume": false
+          }
+        },
+        "1h": {
+          "gap_percent": 0.016809547823164194,
+          "gap_direction": "Up",
+          "gap_mitigated": "True",
+          "unmitigated_gap_price": NaN,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": 0.08444639603960392,
+            "low_slope": 0.06067955355535553
+          },
+          "candles": {
+            "bullish": false,
+            "bearish": false,
+            "bullish_engulfing": false,
+            "bearish_engulfing": false,
+            "hammer": false,
+            "inverted_hammer": false,
+            "shooting_star": false,
+            "doji": false
+          },
+          "volume": {
+            "relative_volume": 0.004570691750799457,
+            "unusual_volume": false
+          }
+        },
+        "D": {
+          "gap_percent": -0.17060964513194457,
+          "gap_direction": "Down",
+          "gap_mitigated": "True",
+          "unmitigated_gap_price": NaN,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": -0.03767301710171024,
+            "low_slope": -0.032946060006000595
+          },
+          "candles": {
+            "bullish": false,
+            "bearish": false,
+            "bullish_engulfing": false,
+            "bearish_engulfing": false,
+            "hammer": false,
+            "inverted_hammer": false,
+            "shooting_star": false,
+            "doji": false
+          },
+          "volume": {
+            "relative_volume": 0.7492182888067032,
+            "unusual_volume": false
+          }
+        },
+        "W": {
+          "gap_percent": 1.2602923878339773,
+          "gap_direction": "Up",
+          "gap_mitigated": "True",
+          "unmitigated_gap_price": NaN,
+          "patterns": {
+            "falling_wedge": false,
+            "rising_wedge": false,
+            "high_slope": 0.677278096438989,
+            "low_slope": 0.6443319633218935
+          },
+          "candles": {
+            "bullish": false,
+            "bearish": false,
+            "bullish_engulfing": false,
+            "bearish_engulfing": false,
+            "hammer": true,
+            "inverted_hammer": false,
+            "shooting_star": false,
+            "doji": false
+          },
+          "volume": {
+            "relative_volume": 2.6989153138765274,
+            "unusual_volume": false
+          }
+        }
+      },
+      "confluence": {
+        "score": 10.0,
+        "bias": "Bullish",
+        "bullish_signals": 1.0,
+        "bearish_signals": 0
+      },
+      "options": "               contractID symbol  ... price_difference enhanced_score\n433  GOOGL250801P00210000  GOOGL  ...              NaN       1.356740\n155  GOOGL250711P00180000  GOOGL  ...              NaN       1.241856\n911  GOOGL251121P00195000  GOOGL  ...              NaN       1.228920\n152  GOOGL250711C00177500  GOOGL  ...              NaN       1.222056\n249  GOOGL250718P00180000  GOOGL  ...              NaN       1.210176\n\n[5 rows x 24 columns]",
+      "trade_plan": {
+        "entry_price": 31.9,
+        "stop_loss": 23.92,
+        "initial_target": 55.82,
+        "final_target": 79.75,
+        "position_size": 1,
+        "max_hold_time": "10 hours",
+        "support": null,
+        "resistance": null,
+        "skew": "Neutral Skew",
+        "strike": "$210.0",
+        "type": "Put",
+        "expiration": "2025-08-01",
+        "risk_metrics": {
+          "delta_exposure": -95.33,
+          "gamma_theta_ratio": 2.11,
+          "implied_vol": 32.01
+        },
+        "delta": -0.95328,
+        "gamma": 0.00596,
+        "theta": -0.00282,
+        "score": 0.0,
+        "bias": "Bullish",
+        "option_symbol": "GOOGL",
+        "risk_level": "LOW",
+        "market_context": {
+          "sector": "Communication Services",
+          "volatility_regime": "LOW",
+          "analyst_target": 201.4698,
+          "beta": 1.014
+        },
+        "validation_timestamp": "2025-07-03T03:03:55.392869",
+        "validation_score": 90
+      },
+      "enhancement_timestamp": "2025-07-03T03:03:55.392929"
+    }
+  },
+  "processed_symbols": [
+    "GOOGL",
+    "MSFT",
+    "AAPL"
+  ],
+  "last_updated": "2025-07-03T03:03:55.392966",
+  "total_symbols": 75,
+  "remaining": 72
+}
