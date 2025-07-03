@@ -108,7 +108,7 @@ def trigger_scan():
         max_days = int(request.args.get('max_days', 16))
         iv_percentile = request.args.get('iv_percentile')
         iv_percentile = int(iv_percentile) if iv_percentile else 85
-    
+
     result = run_autonomous_scan(
         dry_run=False, 
         auto_refresh_symbols=auto_refresh,
@@ -134,7 +134,7 @@ def trigger_scan():
     top_scores = sorted([(k, v.get("confluence", {}).get("score", 0)) 
                         for k, v in results.items()], 
                        key=lambda x: x[1], reverse=True)
-    
+
     return jsonify({
         "status": "completed",
         "digest": result["digest"],
@@ -162,12 +162,12 @@ def get_sorted_plans():
         sort_by = request.args.get('sort_by', 'confluence_score')  # Default sort by confluence score
         order = request.args.get('order', 'desc')  # Default descending order
         date = request.args.get('date', datetime.now().strftime('%Y-%m-%d'))  # Default to today
-        
+
         # Find the most recent progressive results file
         base_dir = './TradingPlans'
         json_pattern = f'progressive_results_{date}.json'
         json_file = os.path.join(base_dir, json_pattern)
-        
+
         if not os.path.exists(json_file):
             # Try to find the most recent file if today's doesn't exist
             pattern = os.path.join(base_dir, 'progressive_results_*.json')
@@ -178,11 +178,11 @@ def get_sorted_plans():
                     "message": "No trading plans found"
                 }), 404
             json_file = max(files, key=os.path.getctime)
-        
+
         # Load the JSON data
         with open(json_file, 'r') as f:
             results = json.load(f)
-        
+
         # Convert to sortable format
         plans = []
         for symbol, data in results.items():
@@ -198,7 +198,7 @@ def get_sorted_plans():
                 'position_size': 0,
                 'max_hold_time': 'N/A'
             }
-            
+
             # Extract trade plan details if available
             if 'trade_plan' in data and data['trade_plan']:
                 tp = data['trade_plan']
@@ -211,12 +211,12 @@ def get_sorted_plans():
                     'position_size': tp.get('position_size', 0),
                     'max_hold_time': tp.get('max_hold_time', 'N/A')
                 })
-            
+
             plans.append(plan_data)
-        
+
         # Sort the plans
         reverse_order = order.lower() == 'desc'
-        
+
         if sort_by == 'confluence_score':
             plans.sort(key=lambda x: x['confluence_score'], reverse=reverse_order)
         elif sort_by == 'entry_price':
@@ -227,7 +227,7 @@ def get_sorted_plans():
             plans.sort(key=lambda x: x['symbol'], reverse=reverse_order)
         else:
             plans.sort(key=lambda x: x['confluence_score'], reverse=True)  # Default fallback
-        
+
         return jsonify({
             "status": "success",
             "total_plans": len(plans),
@@ -236,7 +236,7 @@ def get_sorted_plans():
             "date": date,
             "plans": plans
         })
-        
+
     except Exception as e:
         return jsonify({
             "status": "error",
@@ -252,31 +252,31 @@ def get_all_plans():
         sort_by = request.args.get('sort_by', 'confluence_score')
         order = request.args.get('order', 'desc')
         limit = request.args.get('limit', type=int)  # Optional limit
-        
+
         base_dir = './TradingPlans'
         pattern = os.path.join(base_dir, 'progressive_results_*.json')
         files = glob.glob(pattern)
-        
+
         if not files:
             return jsonify({
                 "status": "error",
                 "message": "No trading plans found"
             }), 404
-        
+
         # Load and merge all files
         all_plans = []
         files_processed = []
-        
+
         for file_path in files:
             try:
                 with open(file_path, 'r') as f:
                     results = json.load(f)
-                
+
                 # Extract date from filename for tracking
                 filename = os.path.basename(file_path)
                 date_part = filename.replace('progressive_results_', '').replace('.json', '')
                 files_processed.append(date_part)
-                
+
                 # Convert each symbol's data to plan format
                 for symbol, data in results.items():
                     plan_data = {
@@ -293,7 +293,7 @@ def get_all_plans():
                         'position_size': 0,
                         'max_hold_time': 'N/A'
                     }
-                    
+
                     # Extract trade plan details if available
                     if 'trade_plan' in data and data['trade_plan']:
                         tp = data['trade_plan']
@@ -307,29 +307,29 @@ def get_all_plans():
                             'position_size': tp.get('position_size', 0),
                             'max_hold_time': tp.get('max_hold_time', 'N/A')
                         })
-                        
+
                         # Convert expiration to datetime for sorting
                         try:
                             if expiration_str != 'N/A':
                                 plan_data['expiration_date'] = pd.to_datetime(expiration_str)
                         except:
                             plan_data['expiration_date'] = None
-                    
+
                     all_plans.append(plan_data)
-                    
+
             except Exception as e:
                 print(f"Error processing file {file_path}: {e}")
                 continue
-        
+
         if not all_plans:
             return jsonify({
                 "status": "error",
                 "message": "No valid plans found in any files"
             }), 404
-        
+
         # Sort the plans
         reverse_order = order.lower() == 'desc'
-        
+
         if sort_by == 'confluence_score':
             all_plans.sort(key=lambda x: x['confluence_score'], reverse=reverse_order)
         elif sort_by == 'entry_price':
@@ -345,11 +345,11 @@ def get_all_plans():
             all_plans.sort(key=lambda x: x['expiration_date'] if x['expiration_date'] is not None else pd.Timestamp.max, reverse=reverse_order)
         else:
             all_plans.sort(key=lambda x: x['confluence_score'], reverse=True)
-        
+
         # Apply limit if specified
         if limit and limit > 0:
             all_plans = all_plans[:limit]
-        
+
         return jsonify({
             "status": "success",
             "total_plans": len(all_plans),
@@ -358,7 +358,7 @@ def get_all_plans():
             "order": order,
             "plans": all_plans
         })
-        
+
     except Exception as e:
         return jsonify({
             "status": "error",
@@ -371,30 +371,30 @@ def fetch_alphavantage_top_symbols():
     api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
     if not api_key:
         raise Exception("ALPHA_VANTAGE_API_KEY environment variable not set")
-    
+
     url = f'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey={api_key}'
-    
+
     try:
         print("Fetching top gainers, losers, and most active from Alpha Vantage...")
         response = requests.get(url, timeout=30)
         response.raise_for_status()
         data = response.json()
-        
+
         if 'Error Message' in data:
             raise Exception(f"Alpha Vantage error: {data['Error Message']}")
-        
+
         if 'Information' in data:
             raise Exception(f"Alpha Vantage info: {data['Information']}")
-        
+
         all_symbols = []
         categories = ['top_gainers', 'top_losers', 'most_actively_traded']
-        
+
         for category in categories:
             if category in data:
                 category_symbols = [item['ticker'] for item in data[category]]
                 all_symbols.extend(category_symbols)
                 print(f"Fetched {len(category_symbols)} symbols from {category}")
-        
+
         # Add common optionable stocks as backup
         backup_symbols = [
             'SPY', 'QQQ', 'IWM', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 
@@ -402,7 +402,7 @@ def fetch_alphavantage_top_symbols():
             'BABA', 'DIS', 'BA', 'GE', 'F', 'GM', 'T', 'VZ', 'JPM', 'BAC',
             'WFC', 'C', 'GS', 'MS', 'XOM', 'CVX', 'KO', 'PEP', 'WMT', 'TGT'
         ]
-        
+
         # Add backup symbols if we have fewer than 40 unique symbols
         if len(all_symbols) < 40:
             for symbol in backup_symbols:
@@ -410,18 +410,18 @@ def fetch_alphavantage_top_symbols():
                     all_symbols.append(symbol)
                     if len(all_symbols) >= 60:  # Cap at reasonable number
                         break
-        
+
         # Remove duplicates while preserving order
         unique_symbols = list(dict.fromkeys(all_symbols))
         print(f"Total unique symbols (including backup): {len(unique_symbols)}")
-        
+
         return {
             'all_symbols': unique_symbols,
             'top_gainers': [item['ticker'] for item in data.get('top_gainers', [])],
             'top_losers': [item['ticker'] for item in data.get('top_losers', [])],
             'most_active': [item['ticker'] for item in data.get('most_actively_traded', [])]
         }
-        
+
     except Exception as e:
         print(f"Error fetching Alpha Vantage data: {e}")
         # Return backup symbols as fallback
@@ -439,15 +439,15 @@ def get_screener_symbols():
         # Get category type from query params
         category = request.args.get('category', 'all')
         valid_categories = ['all', 'top_gainers', 'top_losers', 'most_active']
-        
+
         if category not in valid_categories:
             return jsonify({
                 "status": "error",
                 "message": f"Invalid category. Valid options: {valid_categories}"
             }), 400
-        
+
         data = fetch_alphavantage_top_symbols()
-        
+
         if category == 'all':
             symbols = data['all_symbols']
         elif category == 'top_gainers':
@@ -456,14 +456,14 @@ def get_screener_symbols():
             symbols = data['top_losers']
         elif category == 'most_active':
             symbols = data['most_active']
-        
+
         return jsonify({
             "status": "success",
             "category": category,
             "total_symbols": len(symbols),
             "symbols": symbols
         })
-        
+
     except Exception as e:
         return jsonify({
             "status": "error",
@@ -476,7 +476,7 @@ def get_all_screener_symbols():
     """Get symbols from Alpha Vantage top gainers, losers, and most active"""
     try:
         data = fetch_alphavantage_top_symbols()
-        
+
         response_data = {
             "status": "success",
             "source": "alpha_vantage",
@@ -493,9 +493,9 @@ def get_all_screener_symbols():
                 "most_active": len(data['most_active'])
             }
         }
-        
+
         return jsonify(response_data)
-        
+
     except Exception as e:
         return jsonify({
             "status": "error",
@@ -508,9 +508,9 @@ def get_fallback_symbols():
     """Get symbols from database when Yahoo Finance is rate limited"""
     try:
         from db_client import fetch_tickers_from_db
-        
+
         db_symbols = fetch_tickers_from_db()
-        
+
         return jsonify({
             "status": "success",
             "source": "database",
@@ -518,7 +518,7 @@ def get_fallback_symbols():
             "symbols": db_symbols,
             "message": "Using database symbols as fallback"
         })
-        
+
     except Exception as e:
         return jsonify({
             "status": "error",
@@ -541,7 +541,7 @@ def update_database_symbols():
             data = request.get_json() if request.is_json else {}
             mode = data.get('mode', 'replace')  # Default to replace
             custom_symbols = data.get('symbols', [])  # Allow custom symbol list
-        
+
         if custom_symbols:
             # Use provided symbols
             symbols_to_add = custom_symbols
@@ -551,17 +551,17 @@ def update_database_symbols():
             data = fetch_alphavantage_top_symbols()
             symbols_to_add = data['all_symbols']
             source = "alpha_vantage"
-        
+
         if not symbols_to_add:
             return jsonify({
                 "status": "error",
                 "message": "No symbols to add to database"
             }), 400
-        
+
         # Update database
         from db_client import update_tickers_in_db
         result = update_tickers_in_db(symbols_to_add, mode=mode)
-        
+
         return jsonify({
             "status": "success",
             "source": source,
@@ -570,7 +570,7 @@ def update_database_symbols():
             "total_in_database": result["total_in_db"],
             "message": f"Database updated successfully with {len(symbols_to_add)} symbols"
         })
-        
+
     except Exception as e:
         return jsonify({
             "status": "error", 
@@ -583,16 +583,16 @@ def update_performance():
     """Update performance tracking for all tracked options"""
     try:
         from performance_tracker import update_performance_tracking
-        
+
         updated_count = update_performance_tracking()
-        
+
         return jsonify({
             "status": "success",
             "message": f"Updated performance for {updated_count} options",
             "updated_count": updated_count,
             "timestamp": datetime.now().isoformat()
         })
-        
+
     except Exception as e:
         return jsonify({
             "status": "error",
@@ -605,16 +605,16 @@ def analyze_performance():
     """Get comprehensive performance analysis"""
     try:
         from performance_tracker import analyze_performance
-        
+
         metrics, suggestions = analyze_performance()
-        
+
         return jsonify({
             "status": "success",
             "performance_metrics": metrics,
             "improvement_suggestions": suggestions,
             "analysis_timestamp": datetime.now().isoformat()
         })
-        
+
     except Exception as e:
         return jsonify({
             "status": "error",
@@ -627,89 +627,15 @@ def get_performance_report():
     """Get human-readable performance report"""
     try:
         from performance_tracker import PerformanceTracker
-        
+
         tracker = PerformanceTracker()
         metrics = tracker.calculate_performance_metrics()
         suggestions = tracker.get_improvement_suggestions()
-        
+
         # Format as readable text
         report = f"""
 PERFORMANCE REPORT - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 {'='*60}
-
-
-
-@app.route("/enhanced-scan/progress", methods=["GET"])
-def get_enhanced_scan_progress():
-    """Check progress of enhanced scan"""
-    try:
-        from datetime import datetime
-        import glob
-        
-        date_str = request.args.get('date', datetime.now().strftime('%Y-%m-%d'))
-        progress_file = f'./TradingPlans/enhanced_scan_progress_{date_str}.json'
-        
-        if not os.path.exists(progress_file):
-            return jsonify({
-                "status": "not_found",
-                "message": "No enhanced scan in progress for this date"
-            })
-        
-        with open(progress_file, 'r') as f:
-            progress_data = json.load(f)
-        
-        results = progress_data.get('results', {})
-        processed_count = len(progress_data.get('processed_symbols', []))
-        total_count = progress_data.get('total_symbols', 0)
-        
-        return jsonify({
-            "status": "in_progress" if processed_count < total_count else "completed",
-            "progress": {
-                "processed": processed_count,
-                "total": total_count,
-                "percentage": (processed_count / total_count * 100) if total_count > 0 else 0,
-                "remaining": total_count - processed_count
-            },
-            "results_found": len(results),
-            "last_updated": progress_data.get('last_updated'),
-            "top_opportunities": [
-                {
-                    "symbol": symbol,
-                    "enhanced_score": data.get('confluence', {}).get('score', 0),
-                    "confidence": data.get('trade_plan', {}).get('validation_score', 0)
-                }
-                for symbol, data in list(results.items())[:5]
-            ]
-        })
-        
-    except Exception as e:
-        return jsonify({
-            "status": "error",
-            "message": f"Error checking progress: {str(e)}"
-        }), 500
-
-
-@app.route("/enhanced-scan/resume", methods=["POST"])
-def resume_enhanced_scan():
-    """Resume an interrupted enhanced scan"""
-    try:
-        from enhanced_scanner import run_enhanced_scanner
-        
-        # This will automatically detect and resume from existing progress
-        results = run_enhanced_scanner()
-        
-        return jsonify({
-            "status": "resumed",
-            "message": "Enhanced scan resumed from last checkpoint",
-            "opportunities_found": len(results) if results else 0
-        })
-        
-    except Exception as e:
-        return jsonify({
-            "status": "error",
-            "message": f"Failed to resume scan: {str(e)}"
-        }), 500
-
 
 OVERALL STATISTICS:
 • Total Predictions: {metrics.get('total_predictions', 0)}
@@ -720,30 +646,30 @@ OVERALL STATISTICS:
 
 CONFLUENCE SCORE ACCURACY:
 """
-        
+
         for score_range, data in metrics.get('confluence_score_accuracy', {}).items():
             report += f"• {score_range}: {data['win_rate']:.1f}% ({data['wins']}/{data['total']})\n"
-        
+
         report += "\nBIAS ACCURACY:\n"
         for bias, data in metrics.get('bias_accuracy', {}).items():
             report += f"• {bias}: {data['win_rate']:.1f}% ({data['wins']}/{data['total']})\n"
-        
+
         if metrics.get('best_performers'):
             report += "\nBEST PERFORMERS:\n"
             for performer in metrics['best_performers'][:5]:
                 report += f"• {performer['symbol']}: +{performer['max_profit']:.1f}% (Score: {performer['confluence_score']:.1f})\n"
-        
+
         if metrics.get('worst_performers'):
             report += "\nWORST PERFORMERS:\n"
             for performer in metrics['worst_performers'][:5]:
                 report += f"• {performer['symbol']}: {performer['max_profit']:.1f}% (Score: {performer['confluence_score']:.1f})\n"
-        
+
         report += "\nIMPROVEMENT SUGGESTIONS:\n"
         for suggestion in suggestions:
             report += f"• {suggestion}\n"
-        
+
         return report, 200, {'Content-Type': 'text/plain; charset=utf-8'}
-        
+
     except Exception as e:
         return f"Error generating performance report: {str(e)}", 500
 
@@ -762,29 +688,29 @@ def run_enhanced_scan():
             symbol_limit = int(request.args.get('limit', 50))
             min_delta = float(request.args.get('min_delta', 0.25))
             max_delta = float(request.args.get('max_delta', 0.68))
-        
+
         from enhanced_scanner import run_enhanced_scanner
-        
+
         results = run_enhanced_scanner(
             symbols=None,  # Use default symbol list
             min_delta=min_delta,
             max_delta=max_delta
         )
-        
+
         if not results:
             return jsonify({
                 "status": "no-results",
                 "message": "Enhanced scanner found no qualifying opportunities",
                 "symbols_processed": symbol_limit
             })
-        
+
         # Calculate summary stats
         confidence_scores = [
             result.get('trade_plan', {}).get('validation_score', 0) 
             for result in results.values()
         ]
         avg_confidence = sum(confidence_scores) / len(confidence_scores) if confidence_scores else 0
-        
+
         return jsonify({
             "status": "completed",
             "message": f"Enhanced scan completed successfully",
@@ -802,7 +728,7 @@ def run_enhanced_scan():
                 for symbol, data in list(results.items())[:5]
             ]
         })
-        
+
     except Exception as e:
         return jsonify({
             "status": "error",
@@ -826,25 +752,25 @@ def run_pre_earnings_scan():
             min_delta = float(request.args.get('min_delta', 0.25))
             max_delta = float(request.args.get('max_delta', 0.68))
             priority_only = request.args.get('priority_only', 'true').lower() == 'true'
-        
+
         from enhanced_scanner import discover_pre_earnings_stocks, run_enhanced_scanner
-        
+
         # Get pre-earnings candidates
         pre_earnings_stocks = discover_pre_earnings_stocks()
-        
+
         if not pre_earnings_stocks:
             return jsonify({
                 "status": "no-results", 
                 "message": "No stocks found with upcoming earnings"
             })
-        
+
         # Run enhanced scanner on just these stocks
         results = run_enhanced_scanner(
             symbols=pre_earnings_stocks,
             min_delta=min_delta,
             max_delta=max_delta
         )
-        
+
         # Filter by earnings priority if requested
         if priority_only and results:
             priority_results = {}
@@ -854,21 +780,21 @@ def run_pre_earnings_scan():
                 if priority in ['critical', 'high']:
                     priority_results[symbol] = data
             results = priority_results
-        
+
         if not results:
             return jsonify({
                 "status": "no-results",
                 "message": "No high-priority pre-earnings opportunities found",
                 "candidates_scanned": len(pre_earnings_stocks)
             })
-        
+
         # Calculate earnings-specific stats
         earnings_stats = {}
         for symbol, data in results.items():
             earnings_info = data.get('market_data', {}).get('earnings_info', {})
             priority = earnings_info.get('earnings_priority', 'unknown')
             days_to_earnings = earnings_info.get('days_to_earnings', 999)
-            
+
             if priority not in earnings_stats:
                 earnings_stats[priority] = []
             earnings_stats[priority].append({
@@ -876,7 +802,7 @@ def run_pre_earnings_scan():
                 'days_to_earnings': days_to_earnings,
                 'confluence_score': data.get('confluence', {}).get('score', 0)
             })
-        
+
         return jsonify({
             "status": "completed",
             "scan_type": "pre_earnings",
@@ -898,7 +824,7 @@ def run_pre_earnings_scan():
                 for symbol, data in list(results.items())[:10]
             ]
         })
-        
+
     except Exception as e:
         return jsonify({
             "status": "error",
@@ -915,47 +841,47 @@ def get_formatted_plans():
         order = request.args.get('order', 'desc')
         date = request.args.get('date', datetime.now().strftime('%Y-%m-%d'))
         limit = int(request.args.get('limit', 10))  # Limit number of results
-        
+
         # Get the sorted plans data
         base_dir = './TradingPlans'
         json_pattern = f'progressive_results_{date}.json'
         json_file = os.path.join(base_dir, json_pattern)
-        
+
         if not os.path.exists(json_file):
             pattern = os.path.join(base_dir, 'progressive_results_*.json')
             files = glob.glob(pattern)
             if not files:
                 return "No trading plans found", 404
             json_file = max(files, key=os.path.getctime)
-        
+
         with open(json_file, 'r') as f:
             results = json.load(f)
-        
+
         # Sort and format the results
         sorted_symbols = []
         for symbol, data in results.items():
             confluence_score = data.get('confluence', {}).get('score', 0)
             sorted_symbols.append((symbol, confluence_score, data))
-        
+
         reverse_order = order.lower() == 'desc'
         if sort_by == 'confluence_score':
             sorted_symbols.sort(key=lambda x: x[1], reverse=reverse_order)
         else:
             sorted_symbols.sort(key=lambda x: x[0], reverse=reverse_order)
-        
+
         # Limit results
         sorted_symbols = sorted_symbols[:limit]
-        
+
         # Format as human-readable text
         formatted_output = f"Trading Plans - Sorted by {sort_by} ({order})\n"
         formatted_output += f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
         formatted_output += f"Total Plans: {len(sorted_symbols)}\n"
         formatted_output += "=" * 80 + "\n\n"
-        
+
         for i, (symbol, score, data) in enumerate(sorted_symbols, 1):
             formatted_output += f"{i}. {symbol} - Confluence Score: {score:.1f}/10\n"
             formatted_output += f"   Bias: {data.get('confluence', {}).get('bias', 'N/A')}\n"
-            
+
             if 'trade_plan' in data and data['trade_plan']:
                 tp = data['trade_plan']
                 formatted_output += f"   Entry: ${tp.get('entry_price', 0):.2f}\n"
@@ -964,13 +890,85 @@ def get_formatted_plans():
                 formatted_output += f"   Expiration: {tp.get('expiration', 'N/A')}\n"
                 formatted_output += f"   Position Size: {tp.get('position_size', 0)} contracts\n"
                 formatted_output += f"   Max Hold: {tp.get('max_hold_time', 'N/A')}\n"
-            
+
             formatted_output += "\n" + "-" * 60 + "\n\n"
-        
+
         return formatted_output, 200, {'Content-Type': 'text/plain; charset=utf-8'}
-        
+
     except Exception as e:
         return f"Error retrieving formatted plans: {str(e)}", 500
+
+
+@app.route("/enhanced-scan/progress", methods=["GET"])
+def get_enhanced_scan_progress():
+    """Check progress of enhanced scan"""
+    try:
+        from datetime import datetime
+        import glob
+
+        date_str = request.args.get('date', datetime.now().strftime('%Y-%m-%d'))
+        progress_file = f'./TradingPlans/enhanced_scan_progress_{date_str}.json'
+
+        if not os.path.exists(progress_file):
+            return jsonify({
+                "status": "not_found",
+                "message": "No enhanced scan in progress for this date"
+            })
+
+        with open(progress_file, 'r') as f:
+            progress_data = json.load(f)
+
+        results = progress_data.get('results', {})
+        processed_count = len(progress_data.get('processed_symbols', []))
+        total_count = progress_data.get('total_symbols', 0)
+
+        return jsonify({
+            "status": "in_progress" if processed_count < total_count else "completed",
+            "progress": {
+                "processed": processed_count,
+                "total": total_count,
+                "percentage": (processed_count / total_count * 100) if total_count > 0 else 0,
+                "remaining": total_count - processed_count
+            },
+            "results_found": len(results),
+            "last_updated": progress_data.get('last_updated'),
+            "top_opportunities": [
+                {
+                    "symbol": symbol,
+                    "enhanced_score": data.get('confluence', {}).get('score', 0),
+                    "confidence": data.get('trade_plan', {}).get('validation_score', 0)
+                }
+                for symbol, data in list(results.items())[:5]
+            ]
+        })
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Error checking progress: {str(e)}"
+        }), 500
+
+
+@app.route("/enhanced-scan/resume", methods=["POST"])
+def resume_enhanced_scan():
+    """Resume an interrupted enhanced scan"""
+    try:
+        from enhanced_scanner import run_enhanced_scanner
+
+        # This will automatically detect and resume from existing progress
+        results = run_enhanced_scanner()
+
+        return jsonify({
+            "status": "resumed",
+            "message": "Enhanced scan resumed from last checkpoint",
+            "opportunities_found": len(results) if results else 0
+        })
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Failed to resume scan: {str(e)}"
+        }), 500
 
 
 if __name__ == "__main__":
