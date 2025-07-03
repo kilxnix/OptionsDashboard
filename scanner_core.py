@@ -1153,10 +1153,8 @@ class CompleteOptionsScanner:
             ) & (filtered_data['days_to_expiration'] <= time_to_expiry_range[1]
                  )]
 
-        # === IV percentile filter ===
-        if iv_percentile_threshold is not None and 'iv_percentile' in filtered_data.columns:
-            filtered_data = filtered_data[filtered_data['iv_percentile'] >=
-                                          iv_percentile_threshold]
+        # === IV percentile filter removed ===
+        # No longer filtering by IV percentile to allow more options through
 
         # Field normalization
         field_mapping = {'implied_volatility': 'implied_vol', 'mark': 'price'}

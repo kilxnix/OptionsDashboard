@@ -74,11 +74,11 @@ def get_scan_parameters():
             },
             "iv_percentile": {
                 "type": "integer",
-                "default": 85,
-                "description": "Minimum IV percentile threshold (0-100)"
+                "default": None,
+                "description": "Minimum IV percentile threshold (0-100) - DISABLED by default"
             }
         },
-        "example_usage": "/scan?min_delta=0.3&max_delta=0.7&min_price=0.05&max_price=0.20&min_days=1&max_days=30&iv_percentile=90"
+        "example_usage": "/scan?min_delta=0.3&max_delta=0.7&min_price=0.05&max_price=0.20&min_days=1&max_days=30"
     })
 
 
@@ -95,7 +95,9 @@ def trigger_scan():
         max_price = float(data.get('max_price', 0.10))
         min_days = int(data.get('min_days', 2))
         max_days = int(data.get('max_days', 16))
-        iv_percentile = int(data.get('iv_percentile', 85))
+        iv_percentile = data.get('iv_percentile', None)
+        if iv_percentile is not None:
+            iv_percentile = int(iv_percentile)
     else:
         # GET request - use query parameters
         auto_refresh = request.args.get('auto_refresh', 'true').lower() == 'true'
@@ -107,7 +109,7 @@ def trigger_scan():
         min_days = int(request.args.get('min_days', 2))
         max_days = int(request.args.get('max_days', 16))
         iv_percentile = request.args.get('iv_percentile')
-        iv_percentile = int(iv_percentile) if iv_percentile else 85
+        iv_percentile = int(iv_percentile) if iv_percentile else None
 
     result = run_autonomous_scan(
         dry_run=False, 

@@ -55,7 +55,7 @@ def run_autonomous_scan(min_delta=0.25,
                         min_price=0.01,
                         max_price=0.10,
                         time_to_expiry_range=(2, 16),
-                        iv_percentile_threshold=85,
+                        iv_percentile_threshold=None,
                         discovery_limit=50,  # still accepted but unused now
                         dry_run=False,
                         auto_refresh_symbols=True,
@@ -123,10 +123,10 @@ def run_autonomous_scan(min_delta=0.25,
 
     # ── USE ENHANCED OPTIONABLE STOCK AGGREGATION ──
     from scanner_core import get_optionable_stocks_with_volume
-    
+
     # Get curated optionable stocks from multiple sources
     symbols = get_optionable_stocks_with_volume()
-    
+
     if not symbols:
         print("❌ No optionable stocks found from aggregation.")
         return {
@@ -136,7 +136,7 @@ def run_autonomous_scan(min_delta=0.25,
             "output_path": None,
             "symbols_processed": 0
         }
-    
+
     # Process all symbols (no limit)
     if symbol_limit and symbol_limit > 0:
         symbols = symbols[:symbol_limit]
@@ -147,7 +147,7 @@ def run_autonomous_scan(min_delta=0.25,
     # ── Run your existing scanner_core logic with progressive saving ──
     print("🔄 Running optimized scanner...")
     start_time = datetime.now()
-    
+
     results = run_scanner(
         symbols=symbols,
         min_delta=min_delta,
@@ -157,7 +157,7 @@ def run_autonomous_scan(min_delta=0.25,
         time_to_expiry_range=time_to_expiry_range,
         iv_percentile_threshold=iv_percentile_threshold
     )
-    
+
     scan_duration = datetime.now() - start_time
     print(f"⏱️  Scan completed in {scan_duration.total_seconds():.1f} seconds")
 
