@@ -439,117 +439,175 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
 
 def discover_pre_earnings_stocks(verbose=True):
     """
-    Discover stocks with upcoming earnings announcements
+    Discover stocks with upcoming earnings announcements using Alpha Vantage earnings calendar
     """
-    pre_earnings_stocks = []
+    import os
+    import requests
+    from datetime import datetime, timedelta
     
-    # Common stocks that frequently have earnings plays
-    earnings_candidates = [
-        # Tech giants (quarterly earnings movers)
-        'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'TSLA', 'NVDA', 'AMD', 'INTC', 'NFLX',
-        'CRM', 'ADBE', 'ORCL', 'CSCO', 'UBER', 'LYFT', 'SNAP', 'TWTR', 'PINS', 'ZOOM',
-        
-        # Financial sector (quarterly earnings)
-        'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'USB', 'PNC', 'COF', 'AXP',
-        
-        # Healthcare/Biotech (earnings + FDA news)
-        'JNJ', 'PFE', 'MRNA', 'BNTX', 'GILD', 'AMGN', 'BIIB', 'REGN', 'VRTX',
-        
-        # Retail/Consumer (quarterly + guidance)
-        'AMZN', 'WMT', 'TGT', 'COST', 'HD', 'LOW', 'SBUX', 'NKE', 'DIS', 'NFLX',
-        
-        # Energy (quarterly + commodity plays)
-        'XOM', 'CVX', 'COP', 'EOG', 'SLB', 'HAL', 'OXY', 'MRO', 'DVN',
-        
-        # Meme/High IV stocks
-        'GME', 'AMC', 'PLTR', 'BB', 'COIN', 'HOOD', 'RIVN', 'LCID', 'SOFI',
-        
-        # ETFs that track earnings seasons
-        'SPY', 'QQQ', 'IWM', 'XLF', 'XLK', 'XLE', 'XLV', 'XLI'
-    ]
+    pre_earnings_stocks = []
+    api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
+    
+    if not api_key:
+        if verbose:
+            print("⚠️ No Alpha Vantage API key found, using fallback list")
+        return get_fallback_earnings_candidates()
     
     if verbose:
-        print(f"🎯 Scanning {len(earnings_candidates)} potential pre-earnings candidates...")
+        print(f"🎯 Fetching earnings calendar from Alpha Vantage...")
         print(f"📅 Current time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
-    # Quick validation for actual earnings timing
     try:
-        import yfinance as yf
-        current_time = datetime.now()
-        checked_count = 0
-        error_count = 0
+        # Get earnings calendar for next 3 months
+        url = f'https://www.alphavantage.co/query?function=EARNINGS_CALENDAR&horizon=3month&apikey={api_key}'
         
-        for symbol in earnings_candidates:
+        if verbose:
+            print(f"🌐 Calling Alpha Vantage earnings calendar API...")
+        
+        response = requests.get(url, timeout=30)
+        response.raise_for_status()
+        
+        # Alpha Vantage returns CSV format for earnings calendar
+        lines = response.text.strip().split('\n')
+        
+        if len(lines) < 2:
+            if verbose:
+                print("⚠️ No earnings data returned from Alpha Vantage")
+            return get_fallback_earnings_candidates()
+        
+        # Parse CSV header
+        headers = lines[0].split(',')
+        symbol_idx = headers.index('symbol') if 'symbol' in headers else 0
+        date_idx = headers.index('reportDate') if 'reportDate' in headers else 1
+        
+        current_date = datetime.now().date()
+        earnings_found = 0
+        
+        if verbose:
+            print(f"📋 Processing earnings calendar data...")
+        
+        # Process each earnings announcement
+        for line in lines[1:]:  # Skip header
             try:
-                if verbose:
-                    print(f"  🔍 Checking {symbol}...")
+                fields = line.split(',')
+                if len(fields) < max(symbol_idx + 1, date_idx + 1):
+                    continue
                 
-                ticker = yf.Ticker(symbol)
-                info = ticker.info
-                earnings_date = info.get('earningsDate', None)
+                symbol = fields[symbol_idx].strip().strip('"')
+                earnings_date_str = fields[date_idx].strip().strip('"')
                 
-                if verbose:
-                    print(f"    📊 Raw earnings data for {symbol}: {earnings_date}")
+                if not symbol or not earnings_date_str:
+                    continue
                 
-                if earnings_date:
-                    if isinstance(earnings_date, list) and len(earnings_date) > 0:
-                        earnings_date = earnings_date[0]
-                        if verbose:
-                            print(f"    📋 Using first date from list: {earnings_date}")
-                    
-                    earnings_dt = pd.to_datetime(earnings_date)
-                    days_to_earnings = (earnings_dt - current_time).days
-                    
-                    if verbose:
-                        print(f"    ⏰ {symbol}: {days_to_earnings} days to earnings ({earnings_dt.strftime('%Y-%m-%d')})")
-                    
-                    # Include if earnings are within 21 days
-                    if 0 <= days_to_earnings <= 21:
+                # Parse earnings date
+                earnings_date = datetime.strptime(earnings_date_str, '%Y-%m-%d').date()
+                days_to_earnings = (earnings_date - current_date).days
+                
+                # Filter for next 21 days and optionable stocks
+                if 0 <= days_to_earnings <= 21 and is_likely_optionable(symbol):
+                    if symbol not in pre_earnings_stocks:  # Avoid duplicates
                         pre_earnings_stocks.append(symbol)
-                        window = "🔥CRITICAL" if days_to_earnings <= 3 else "⚡HIGH" if days_to_earnings <= 7 else "📅MEDIUM"
+                        earnings_found += 1
+                        
                         if verbose:
-                            print(f"    ✅ {window}: {symbol} earnings in {days_to_earnings} days - ADDED")
-                    else:
-                        if verbose:
-                            print(f"    ❌ {symbol}: {days_to_earnings} days (outside 0-21 day window)")
-                else:
-                    if verbose:
-                        print(f"    ⚠️ {symbol}: No earnings date found in yfinance data")
-                    # If we can't get earnings data, include it anyway (might be manual update needed)
-                    pre_earnings_stocks.append(symbol)
-                    if verbose:
-                        print(f"    🔄 {symbol}: Added as fallback (no earnings date)")
+                            priority = ("🔥CRITICAL" if days_to_earnings <= 3 else 
+                                      "⚡HIGH" if days_to_earnings <= 7 else 
+                                      "📅MEDIUM" if days_to_earnings <= 14 else "📆LOW")
+                            print(f"    ✅ {priority}: {symbol} earnings in {days_to_earnings} days ({earnings_date})")
                 
-                checked_count += 1
-                time.sleep(0.2)  # Rate limiting
-                
+                # Stop if we have enough candidates
+                if len(pre_earnings_stocks) >= 50:
+                    break
+                    
             except Exception as e:
-                error_count += 1
                 if verbose:
-                    print(f"    ❌ Error checking {symbol}: {e}")
-                # If we can't get earnings data, include it anyway (might be manual update needed)
-                pre_earnings_stocks.append(symbol)
-                if verbose:
-                    print(f"    🔄 {symbol}: Added as fallback due to error")
+                    print(f"    ⚠️ Error parsing line: {line[:50]}... - {e}")
                 continue
         
         if verbose:
-            print(f"📈 Summary: Checked {checked_count} symbols, {error_count} errors")
-                
+            print(f"📈 Alpha Vantage earnings calendar: Found {earnings_found} earnings announcements")
+            print(f"📊 Total optionable pre-earnings stocks: {len(pre_earnings_stocks)}")
+        
+        # If we didn't find many, add some high-volume fallbacks
+        if len(pre_earnings_stocks) < 20:
+            fallback_candidates = get_fallback_earnings_candidates()
+            for symbol in fallback_candidates:
+                if symbol not in pre_earnings_stocks:
+                    pre_earnings_stocks.append(symbol)
+                    if len(pre_earnings_stocks) >= 30:
+                        break
+            
+            if verbose:
+                print(f"🔄 Added fallback candidates, total: {len(pre_earnings_stocks)}")
+    
     except Exception as e:
         if verbose:
-            print(f"⚠️ Could not validate earnings timing: {e}")
-        # Fallback to all candidates
-        pre_earnings_stocks = earnings_candidates
+            print(f"❌ Alpha Vantage earnings calendar failed: {e}")
+        # Use fallback list
+        pre_earnings_stocks = get_fallback_earnings_candidates()
         if verbose:
-            print(f"🔄 Using all {len(earnings_candidates)} candidates as fallback")
+            print(f"🔄 Using fallback candidate list: {len(pre_earnings_stocks)} symbols")
     
     if verbose:
         print(f"✅ Found {len(pre_earnings_stocks)} pre-earnings candidates")
         if pre_earnings_stocks:
-            print(f"📋 Candidates: {pre_earnings_stocks[:10]}{'...' if len(pre_earnings_stocks) > 10 else ''}")
+            print(f"📋 Top candidates: {pre_earnings_stocks[:10]}{'...' if len(pre_earnings_stocks) > 10 else ''}")
     
     return pre_earnings_stocks
+
+
+def get_fallback_earnings_candidates():
+    """
+    Fallback list of high-volume optionable stocks that frequently have earnings plays
+    """
+    return [
+        # Mega-cap tech (always have options, frequent earnings volatility)
+        'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'TSLA', 'NVDA', 'AMD', 'INTC', 'NFLX',
+        'CRM', 'ADBE', 'ORCL', 'CSCO', 'UBER', 'LYFT', 'SNAP', 'PINS', 'ZOOM',
+        
+        # Major financials (quarterly earnings movers)
+        'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'USB', 'PNC', 'COF', 'AXP',
+        
+        # Healthcare/Biotech leaders
+        'JNJ', 'PFE', 'MRNA', 'GILD', 'AMGN', 'BIIB', 'REGN', 'VRTX',
+        
+        # Major retail/consumer
+        'WMT', 'TGT', 'COST', 'HD', 'LOW', 'SBUX', 'NKE', 'DIS', 'MCD',
+        
+        # Energy sector leaders
+        'XOM', 'CVX', 'COP', 'EOG', 'SLB', 'HAL', 'OXY',
+        
+        # High-IV meme stocks
+        'GME', 'AMC', 'PLTR', 'BB', 'COIN', 'HOOD', 'RIVN', 'SOFI',
+        
+        # Liquid ETFs (always have options)
+        'SPY', 'QQQ', 'IWM', 'XLF', 'XLK', 'XLE', 'XLV', 'XLI'
+    ]
+
+
+def is_likely_optionable(symbol):
+    """
+    Quick check if a symbol is likely to have liquid options
+    """
+    # ETFs and major stocks almost always have options
+    major_etfs = ['SPY', 'QQQ', 'IWM', 'XLF', 'XLK', 'XLE', 'XLV', 'XLI', 'XLY', 'XLP']
+    if symbol in major_etfs:
+        return True
+    
+    # Major tech stocks
+    mega_caps = ['AAPL', 'MSFT', 'GOOGL', 'GOOG', 'AMZN', 'META', 'TSLA', 'NVDA', 'AMD', 'INTC']
+    if symbol in mega_caps:
+        return True
+    
+    # Skip penny stocks and very small symbols
+    if len(symbol) > 5:  # Skip complex symbols
+        return False
+    
+    # Skip obvious non-optionable patterns
+    if any(c in symbol for c in ['.', '-', '^', '=']):
+        return False
+    
+    return True
 
 def run_enhanced_scanner(symbols=None, **kwargs):
     """

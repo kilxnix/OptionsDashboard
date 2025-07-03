@@ -762,6 +762,85 @@ def test_earnings_verbose():
         }), 500
 
 
+@app.route("/earnings-calendar", methods=["GET"])
+def get_earnings_calendar():
+    """Get raw earnings calendar data from Alpha Vantage"""
+    try:
+        import os
+        import requests
+        from datetime import datetime
+        
+        api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
+        if not api_key:
+            return jsonify({
+                "status": "error",
+                "message": "ALPHA_VANTAGE_API_KEY not configured"
+            }), 500
+        
+        # Get horizon parameter (default 3month)
+        horizon = request.args.get('horizon', '3month')
+        
+        url = f'https://www.alphavantage.co/query?function=EARNINGS_CALENDAR&horizon={horizon}&apikey={api_key}'
+        
+        print(f"📅 Fetching earnings calendar from Alpha Vantage (horizon: {horizon})...")
+        response = requests.get(url, timeout=30)
+        response.raise_for_status()
+        
+        # Parse CSV response
+        lines = response.text.strip().split('\n')
+        
+        if len(lines) < 2:
+            return jsonify({
+                "status": "no_data",
+                "message": "No earnings data returned from Alpha Vantage",
+                "raw_response": response.text[:500]
+            })
+        
+        # Parse CSV into JSON
+        headers = lines[0].split(',')
+        earnings_data = []
+        
+        for line in lines[1:]:
+            fields = line.split(',')
+            if len(fields) >= len(headers):
+                earnings_record = {}
+                for i, header in enumerate(headers):
+                    earnings_record[header.strip().strip('"')] = fields[i].strip().strip('"')
+                earnings_data.append(earnings_record)
+        
+        # Filter for next 21 days
+        current_date = datetime.now().date()
+        upcoming_earnings = []
+        
+        for record in earnings_data:
+            try:
+                earnings_date_str = record.get('reportDate', '')
+                if earnings_date_str:
+                    earnings_date = datetime.strptime(earnings_date_str, '%Y-%m-%d').date()
+                    days_to_earnings = (earnings_date - current_date).days
+                    
+                    if 0 <= days_to_earnings <= 21:
+                        record['days_to_earnings'] = days_to_earnings
+                        upcoming_earnings.append(record)
+            except:
+                continue
+        
+        return jsonify({
+            "status": "success",
+            "horizon": horizon,
+            "total_records": len(earnings_data),
+            "upcoming_21_days": len(upcoming_earnings),
+            "sample_upcoming": upcoming_earnings[:10],
+            "query_time": datetime.now().isoformat()
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Failed to fetch earnings calendar: {str(e)}"
+        }), 500
+
+
 @app.route("/pre-earnings-scan", methods=["GET", "POST"])
 def run_pre_earnings_scan():
     """Run specialized scan focused on pre-earnings opportunities"""
