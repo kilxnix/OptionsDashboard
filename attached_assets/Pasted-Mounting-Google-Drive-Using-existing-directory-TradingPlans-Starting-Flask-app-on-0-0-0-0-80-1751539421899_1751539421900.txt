@@ -1,0 +1,70 @@
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Debugger is active!
+ * Debugger PIN: 274-668-085
+172.31.128.62 - - [03/Jul/2025 10:39:31] "GET / HTTP/1.1" 200 -
+📅 Fetching earnings calendar from Alpha Vantage (horizon: 3month)...
+172.31.128.62 - - [03/Jul/2025 10:40:14] "GET /earnings-calendar HTTP/1.1" 200 -
+🎯 Fetching earnings calendar from Alpha Vantage...
+📅 Current time: 2025-07-03 10:40:48
+🌐 Calling Alpha Vantage earnings calendar API...
+📋 Processing earnings calendar data...
+    ✅ 📅MEDIUM: AA earnings in 13 days (2025-07-16)
+    ✅ 📆LOW: AAFRF earnings in 21 days (2025-07-24)
+    ✅ 📆LOW: AAL earnings in 21 days (2025-07-24)
+    ✅ 📆LOW: AALBF earnings in 21 days (2025-07-24)
+    ✅ 🔥CRITICAL: AAPG earnings in 0 days (2025-07-03)
+    ✅ 📆LOW: AARTY earnings in 21 days (2025-07-24)
+    ✅ 📆LOW: AAVVF earnings in 20 days (2025-07-23)
+    ✅ 📆LOW: AB earnings in 21 days (2025-07-24)
+    ✅ 📅MEDIUM: ABBNY earnings in 14 days (2025-07-17)
+    ✅ 📆LOW: ABBV earnings in 20 days (2025-07-23)
+    ✅ 📆LOW: ABCB earnings in 20 days (2025-07-23)
+    ✅ 📅MEDIUM: ABDBY earnings in 13 days (2025-07-16)
+    ✅ 📆LOW: ABEPF earnings in 21 days (2025-07-24)
+    ✅ ⚡HIGH: ABGSF earnings in 5 days (2025-07-08)
+    ✅ 📅MEDIUM: ABLZF earnings in 14 days (2025-07-17)
+    ✅ 📆LOW: ABOIF earnings in 21 days (2025-07-24)
+    ✅ 📅MEDIUM: ABT earnings in 14 days (2025-07-17)
+    ✅ 📅MEDIUM: ABTI earnings in 13 days (2025-07-16)
+    ✅ 📆LOW: ACCYY earnings in 20 days (2025-07-23)
+    ✅ 📆LOW: ACEJF earnings in 21 days (2025-07-24)
+    ✅ 📅MEDIUM: ACI earnings in 12 days (2025-07-15)
+    ✅ 📆LOW: ACNB earnings in 21 days (2025-07-24)
+    ✅ 📅MEDIUM: ACRG earnings in 11 days (2025-07-14)
+    ✅ 📆LOW: ACRXF earnings in 21 days (2025-07-24)
+    ✅ 📆LOW: ACSAY earnings in 21 days (2025-07-24)
+    ✅ 📅MEDIUM: ACU earnings in 14 days (2025-07-17)
+    ✅ 📆LOW: ADC earnings in 18 days (2025-07-21)
+    ✅ ⚡HIGH: ADDHY earnings in 7 days (2025-07-10)
+    ✅ 📅MEDIUM: ADDLF earnings in 12 days (2025-07-15)
+    ✅ 📆LOW: ADRZY earnings in 20 days (2025-07-23)
+    ✅ ⚡HIGH: AEHR earnings in 5 days (2025-07-08)
+    ✅ ⚡HIGH: AEOJF earnings in 7 days (2025-07-10)
+    ✅ 📆LOW: AEP earnings in 21 days (2025-07-24)
+    ✅ 📆LOW: AFBI earnings in 21 days (2025-07-24)
+    ✅ 📆LOW: AFGYF earnings in 18 days (2025-07-21)
+    ✅ 📅MEDIUM: AFXXF earnings in 12 days (2025-07-15)
+    ✅ 📆LOW: AGCO earnings in 21 days (2025-07-24)
+    ✅ 📆LOW: AGNC earnings in 18 days (2025-07-21)
+    ✅ 📆LOW: AGNCL earnings in 18 days (2025-07-21)
+    ✅ 📆LOW: AGNCM earnings in 18 days (2025-07-21)
+    ✅ 📆LOW: AGNCN earnings in 18 days (2025-07-21)
+    ✅ 📆LOW: AGNCO earnings in 18 days (2025-07-21)
+    ✅ 📆LOW: AGNCP earnings in 18 days (2025-07-21)
+    ✅ 📆LOW: AGR earnings in 18 days (2025-07-21)
+    ✅ 📅MEDIUM: AGRDF earnings in 14 days (2025-07-17)
+    ✅ 📅MEDIUM: AILQF earnings in 14 days (2025-07-17)
+    ✅ 📆LOW: AIR earnings in 19 days (2025-07-22)
+    ✅ 📆LOW: AJG earnings in 20 days (2025-07-23)
+    ✅ 📆LOW: AJX earnings in 19 days (2025-07-22)
+    ✅ 📅MEDIUM: AKAAF earnings in 13 days (2025-07-16)
+📈 Alpha Vantage earnings calendar: Found 50 earnings announcements
+📊 Total optionable pre-earnings stocks: 50
+✅ Found 50 pre-earnings candidates
+📋 Top candidates: ['AA', 'AAFRF', 'AAL', 'AALBF', 'AAPG', 'AARTY', 'AAVVF', 'AB', 'ABBNY', 'ABBV']...
+📋 Resuming scan: 81 symbols already processed
+🚀 Running enhanced scanner on 0 remaining symbols...
+✅ Enhanced scan complete: 34 high-quality opportunities found
+172.31.128.62 - - [03/Jul/2025 10:40:48] "GET /pre-earnings-scan HTTP/1.1" 200 -
