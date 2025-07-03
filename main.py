@@ -637,6 +637,80 @@ def get_performance_report():
 PERFORMANCE REPORT - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 {'='*60}
 
+
+
+@app.route("/enhanced-scan/progress", methods=["GET"])
+def get_enhanced_scan_progress():
+    """Check progress of enhanced scan"""
+    try:
+        from datetime import datetime
+        import glob
+        
+        date_str = request.args.get('date', datetime.now().strftime('%Y-%m-%d'))
+        progress_file = f'./TradingPlans/enhanced_scan_progress_{date_str}.json'
+        
+        if not os.path.exists(progress_file):
+            return jsonify({
+                "status": "not_found",
+                "message": "No enhanced scan in progress for this date"
+            })
+        
+        with open(progress_file, 'r') as f:
+            progress_data = json.load(f)
+        
+        results = progress_data.get('results', {})
+        processed_count = len(progress_data.get('processed_symbols', []))
+        total_count = progress_data.get('total_symbols', 0)
+        
+        return jsonify({
+            "status": "in_progress" if processed_count < total_count else "completed",
+            "progress": {
+                "processed": processed_count,
+                "total": total_count,
+                "percentage": (processed_count / total_count * 100) if total_count > 0 else 0,
+                "remaining": total_count - processed_count
+            },
+            "results_found": len(results),
+            "last_updated": progress_data.get('last_updated'),
+            "top_opportunities": [
+                {
+                    "symbol": symbol,
+                    "enhanced_score": data.get('confluence', {}).get('score', 0),
+                    "confidence": data.get('trade_plan', {}).get('validation_score', 0)
+                }
+                for symbol, data in list(results.items())[:5]
+            ]
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Error checking progress: {str(e)}"
+        }), 500
+
+
+@app.route("/enhanced-scan/resume", methods=["POST"])
+def resume_enhanced_scan():
+    """Resume an interrupted enhanced scan"""
+    try:
+        from enhanced_scanner import run_enhanced_scanner
+        
+        # This will automatically detect and resume from existing progress
+        results = run_enhanced_scanner()
+        
+        return jsonify({
+            "status": "resumed",
+            "message": "Enhanced scan resumed from last checkpoint",
+            "opportunities_found": len(results) if results else 0
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Failed to resume scan: {str(e)}"
+        }), 500
+
+
 OVERALL STATISTICS:
 • Total Predictions: {metrics.get('total_predictions', 0)}
 • Win Rate: {metrics.get('win_rate', 0):.1f}%
@@ -681,11 +755,11 @@ def run_enhanced_scan():
         # Get parameters (similar to regular scan)
         if request.method == 'POST' and request.is_json:
             data = request.get_json()
-            symbol_limit = int(data.get('limit', 20))
+            symbol_limit = int(data.get('limit', 50))  # Increased default limit
             min_delta = float(data.get('min_delta', 0.25))
             max_delta = float(data.get('max_delta', 0.68))
         else:
-            symbol_limit = int(request.args.get('limit', 20))
+            symbol_limit = int(request.args.get('limit', 50))
             min_delta = float(request.args.get('min_delta', 0.25))
             max_delta = float(request.args.get('max_delta', 0.68))
         

@@ -21,11 +21,23 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
         """
         print(f"🔍 Fetching enhanced options data for {symbol}...")
         
-        # Try Alpha Vantage first
-        av_options = self.fetch_options_data(symbol)
+        # Add rate limiting delay
+        time.sleep(1)
+        
+        av_options = None
+        yf_options = None
+        
+        # Try Alpha Vantage first with timeout handling
+        try:
+            av_options = self.fetch_options_data(symbol)
+        except Exception as e:
+            print(f"⚠️ Alpha Vantage failed for {symbol}: {e}")
         
         # Try yfinance as backup/supplement
-        yf_options = self.fetch_yfinance_options(symbol)
+        try:
+            yf_options = self.fetch_yfinance_options(symbol)
+        except Exception as e:
+            print(f"⚠️ YFinance failed for {symbol}: {e}")
         
         # Combine and validate data
         if av_options is not None and not av_options.empty:
@@ -352,9 +364,12 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
 
 def run_enhanced_scanner(symbols=None, **kwargs):
     """
-    Run the enhanced scanner with improved data collection
+    Run the enhanced scanner with improved data collection and resumption
     """
     from scanner_core import ALPHA_VANTAGE_API_KEY
+    import json
+    import os
+    from datetime import datetime
     
     enhanced_scanner = EnhancedOptionsScanner(
         ALPHA_VANTAGE_API_KEY,
@@ -366,11 +381,33 @@ def run_enhanced_scanner(symbols=None, **kwargs):
         from scanner_core import get_optionable_stocks_with_volume
         symbols = get_optionable_stocks_with_volume()
     
-    print(f"🚀 Running enhanced scanner on {len(symbols)} symbols...")
-    
+    # Check for existing results to resume from
+    date_str = datetime.now().strftime('%Y-%m-%d')
+    resume_file = f'./TradingPlans/enhanced_scan_progress_{date_str}.json'
+    processed_symbols = set()
     enhanced_results = {}
     
-    for symbol in symbols[:20]:  # Limit for testing
+    if os.path.exists(resume_file):
+        try:
+            with open(resume_file, 'r') as f:
+                existing_data = json.load(f)
+                enhanced_results = existing_data.get('results', {})
+                processed_symbols = set(existing_data.get('processed_symbols', []))
+            print(f"📋 Resuming scan: {len(processed_symbols)} symbols already processed")
+        except Exception as e:
+            print(f"⚠️ Could not load resume file: {e}")
+    
+    # Filter out already processed symbols
+    remaining_symbols = [s for s in symbols if s not in processed_symbols]
+    print(f"🚀 Running enhanced scanner on {len(remaining_symbols)} remaining symbols...")
+    
+    # Process in smaller batches to avoid overwhelming the system
+    batch_size = 10
+    for i in range(0, len(remaining_symbols), batch_size):
+        batch = remaining_symbols[i:i+batch_size]
+        print(f"\n📦 Processing batch {i//batch_size + 1}/{(len(remaining_symbols) + batch_size - 1)//batch_size}: {batch}")
+        
+        for symbol in batch:
         try:
             print(f"\n🔍 Enhanced analysis for {symbol}...")
             
@@ -431,7 +468,30 @@ def run_enhanced_scanner(symbols=None, **kwargs):
         except Exception as e:
             print(f"❌ Enhanced analysis failed for {symbol}: {e}")
             continue
+        finally:
+            # Mark symbol as processed regardless of success/failure
+            processed_symbols.add(symbol)
+            
+            # Save progress after every symbol
+            progress_data = {
+                'results': enhanced_results,
+                'processed_symbols': list(processed_symbols),
+                'last_updated': datetime.now().isoformat(),
+                'total_symbols': len(symbols),
+                'remaining': len(symbols) - len(processed_symbols)
+            }
+            
+            try:
+                with open(resume_file, 'w') as f:
+                    json.dump(progress_data, f, indent=2, default=str)
+            except Exception as save_error:
+                print(f"⚠️ Could not save progress: {save_error}")
+        
+        # Add delay between symbols to avoid rate limiting
+        if symbol != batch[-1]:  # Don't delay after last symbol in batch
+            time.sleep(2)
     
+    print(f"✅ Enhanced scan complete: {len(enhanced_results)} high-quality opportunities found")
     return enhanced_results
 
 if __name__ == "__main__":
