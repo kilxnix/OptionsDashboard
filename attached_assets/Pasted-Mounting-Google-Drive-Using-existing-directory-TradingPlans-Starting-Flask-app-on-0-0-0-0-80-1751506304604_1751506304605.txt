@@ -1,0 +1,319 @@
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Serving Flask app 'main'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://172.31.128.54:8080
+Press CTRL+C to quit
+ * Restarting with stat
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Debugger is active!
+ * Debugger PIN: 124-552-044
+172.31.128.54 - - [03/Jul/2025 01:18:00] "GET / HTTP/1.1" 200 -
+📊 Updating daily performance for 0 tracked options...
+✅ Updated 0 options
+172.31.128.54 - - [03/Jul/2025 01:24:46] "GET /performance/update HTTP/1.1" 200 -
+172.31.128.54 - - [03/Jul/2025 01:24:47] "GET /favicon.ico HTTP/1.1" 404 -
+
+📊 PERFORMANCE ANALYSIS
+==================================================
+Total Predictions: 0
+Win Rate: 0.0%
+Targets Hit: 0
+Stops Hit: 0
+Still Active: 0
+
+🎯 CONFLUENCE SCORE ACCURACY:
+
+📈 BIAS ACCURACY:
+
+💡 IMPROVEMENT SUGGESTIONS:
+  • Overall win rate is below 50% - consider tightening entry criteria
+172.31.128.54 - - [03/Jul/2025 01:25:10] "GET /performance/analyze HTTP/1.1" 200 -
+🔍 Aggregating optionable stocks from multiple sources...
+   Filtered 18 high-momentum symbols from Alpha Vantage
+✅ Added 18 dynamic Alpha Vantage symbols
+   Successfully fetched 503 S&P 500 symbols from Wikipedia
+✅ Added 500 new S&P 500 symbols
+   Using expanded NASDAQ 100 list: 96 symbols
+✅ Added 18 new NASDAQ 100 symbols
+✅ Added 42 unique symbols from database
+✅ Added 28 new ETF symbols
+✅ Added 20 new popular options stocks
+   Found 84 expanded high-volume symbols
+✅ Added 3 new high-volume movers
+✅ Added 0 new mega cap symbols
+📊 Total unique symbols before filtering: 629
+🎯 Final dynamic list: 428 optionable stocks
+🚀 Running enhanced scanner on 428 symbols...
+
+🔍 Enhanced analysis for AAPL...
+Successfully fetched 1m data for AAPL
+Successfully fetched 5m data for AAPL
+Successfully fetched 15m data for AAPL
+Successfully fetched 30m data for AAPL
+Successfully fetched 1h data for AAPL
+Successfully fetched D data for AAPL
+Successfully fetched W data for AAPL
+🔍 Fetching enhanced options data for AAPL...
+✅ Historical options data found for AAPL: 2422 contracts
+✅ YFinance: 295 options for AAPL
+🔍 Cross-validating options data for AAPL...
+✅ AAPL: Enhanced score 9.2/10, Plan confidence: 85%
+
+🔍 Enhanced analysis for MSFT...
+Successfully fetched 1m data for MSFT
+Successfully fetched 5m data for MSFT
+Successfully fetched 15m data for MSFT
+Successfully fetched 30m data for MSFT
+Successfully fetched 1h data for MSFT
+Successfully fetched D data for MSFT
+Successfully fetched W data for MSFT
+🔍 Fetching enhanced options data for MSFT...
+✅ Historical options data found for MSFT: 3338 contracts
+✅ YFinance: 446 options for MSFT
+🔍 Cross-validating options data for MSFT...
+✅ MSFT: Enhanced score 8.3/10, Plan confidence: 90%
+
+🔍 Enhanced analysis for GOOGL...
+Successfully fetched 1m data for GOOGL
+Successfully fetched 5m data for GOOGL
+Successfully fetched 15m data for GOOGL
+Successfully fetched 30m data for GOOGL
+Successfully fetched 1h data for GOOGL
+Successfully fetched D data for GOOGL
+Successfully fetched W data for GOOGL
+🔍 Fetching enhanced options data for GOOGL...
+✅ Historical options data found for GOOGL: 2164 contracts
+✅ YFinance: 264 options for GOOGL
+🔍 Cross-validating options data for GOOGL...
+✅ GOOGL: Enhanced score 10.0/10, Plan confidence: 90%
+
+🔍 Enhanced analysis for AMZN...
+Successfully fetched 1m data for AMZN
+Successfully fetched 5m data for AMZN
+Successfully fetched 15m data for AMZN
+Successfully fetched 30m data for AMZN
+Successfully fetched 1h data for AMZN
+Successfully fetched D data for AMZN
+Successfully fetched W data for AMZN
+🔍 Fetching enhanced options data for AMZN...
+✅ Historical options data found for AMZN: 2112 contracts
+✅ YFinance: 300 options for AMZN
+🔍 Cross-validating options data for AMZN...
+✅ AMZN: Enhanced score 8.1/10, Plan confidence: 85%
+
+🔍 Enhanced analysis for NVDA...
+Successfully fetched 1m data for NVDA
+Successfully fetched 5m data for NVDA
+Successfully fetched 15m data for NVDA
+Successfully fetched 30m data for NVDA
+Successfully fetched 1h data for NVDA
+Successfully fetched D data for NVDA
+Successfully fetched W data for NVDA
+🔍 Fetching enhanced options data for NVDA...
+✅ Historical options data found for NVDA: 4352 contracts
+✅ YFinance: 441 options for NVDA
+🔍 Cross-validating options data for NVDA...
+✅ NVDA: Enhanced score 9.6/10, Plan confidence: 85%
+
+🔍 Enhanced analysis for TSLA...
+Successfully fetched 1m data for TSLA
+Successfully fetched 5m data for TSLA
+Successfully fetched 15m data for TSLA
+Successfully fetched 30m data for TSLA
+Successfully fetched 1h data for TSLA
+Successfully fetched D data for TSLA
+Successfully fetched W data for TSLA
+🔍 Fetching enhanced options data for TSLA...
+✅ Historical options data found for TSLA: 4652 contracts
+✅ YFinance: 792 options for TSLA
+🔍 Cross-validating options data for TSLA...
+✅ TSLA: Enhanced score 10.0/10, Plan confidence: 85%
+
+🔍 Enhanced analysis for META...
+Successfully fetched 1m data for META
+Successfully fetched 5m data for META
+Successfully fetched 15m data for META
+Successfully fetched 30m data for META
+Successfully fetched 1h data for META
+Successfully fetched D data for META
+Successfully fetched W data for META
+
+🔍 Enhanced analysis for SPY...
+Successfully fetched 1m data for SPY
+Successfully fetched 5m data for SPY
+Successfully fetched 15m data for SPY
+Successfully fetched 30m data for SPY
+Successfully fetched 1h data for SPY
+Successfully fetched D data for SPY
+Successfully fetched W data for SPY
+🔍 Fetching enhanced options data for SPY...
+✅ Historical options data found for SPY: 8758 contracts
+✅ YFinance: 562 options for SPY
+🔍 Cross-validating options data for SPY...
+✅ SPY: Enhanced score 6.4/10, Plan confidence: 90%
+
+🔍 Enhanced analysis for QQQ...
+Successfully fetched 1m data for QQQ
+Successfully fetched 5m data for QQQ
+Successfully fetched 15m data for QQQ
+Successfully fetched 30m data for QQQ
+Successfully fetched 1h data for QQQ
+Successfully fetched D data for QQQ
+Successfully fetched W data for QQQ
+
+🔍 Enhanced analysis for SOXL...
+Successfully fetched 1m data for SOXL
+Successfully fetched 5m data for SOXL
+Successfully fetched 15m data for SOXL
+Successfully fetched 30m data for SOXL
+Successfully fetched 1h data for SOXL
+Successfully fetched D data for SOXL
+Successfully fetched W data for SOXL
+🔍 Fetching enhanced options data for SOXL...
+✅ Historical options data found for SOXL: 1006 contracts
+✅ YFinance: 252 options for SOXL
+🔍 Cross-validating options data for SOXL...
+✅ SOXL: Enhanced score 7.5/10, Plan confidence: 55%
+
+🔍 Enhanced analysis for TQQQ...
+Successfully fetched 1m data for TQQQ
+Successfully fetched 5m data for TQQQ
+Successfully fetched 15m data for TQQQ
+Successfully fetched 30m data for TQQQ
+Successfully fetched 1h data for TQQQ
+Successfully fetched D data for TQQQ
+Successfully fetched W data for TQQQ
+🔍 Fetching enhanced options data for TQQQ...
+✅ Historical options data found for TQQQ: 1468 contracts
+✅ YFinance: 324 options for TQQQ
+🔍 Cross-validating options data for TQQQ...
+✅ TQQQ: Enhanced score 8.3/10, Plan confidence: 55%
+
+🔍 Enhanced analysis for SQQQ...
+Successfully fetched 1m data for SQQQ
+Successfully fetched 5m data for SQQQ
+Successfully fetched 15m data for SQQQ
+Successfully fetched 30m data for SQQQ
+Successfully fetched 1h data for SQQQ
+Successfully fetched D data for SQQQ
+Successfully fetched W data for SQQQ
+
+🔍 Enhanced analysis for GME...
+Successfully fetched 1m data for GME
+Successfully fetched 5m data for GME
+Successfully fetched 15m data for GME
+Successfully fetched 30m data for GME
+Successfully fetched 1h data for GME
+Successfully fetched D data for GME
+Successfully fetched W data for GME
+🔍 Fetching enhanced options data for GME...
+✅ Historical options data found for GME: 1086 contracts
+✅ YFinance: 330 options for GME
+🔍 Cross-validating options data for GME...
+✅ GME: Enhanced score 10.0/10, Plan confidence: 65%
+
+🔍 Enhanced analysis for AMC...
+Successfully fetched 1m data for AMC
+Successfully fetched 5m data for AMC
+Successfully fetched 15m data for AMC
+Successfully fetched 30m data for AMC
+Successfully fetched 1h data for AMC
+Successfully fetched D data for AMC
+Successfully fetched W data for AMC
+🔍 Fetching enhanced options data for AMC...
+✅ Historical options data found for AMC: 290 contracts
+✅ YFinance: 75 options for AMC
+🔍 Cross-validating options data for AMC...
+✅ AMC: Enhanced score 7.2/10, Plan confidence: 60%
+
+🔍 Enhanced analysis for BB...
+Successfully fetched 1m data for BB
+Successfully fetched 5m data for BB
+Successfully fetched 15m data for BB
+Successfully fetched 30m data for BB
+Successfully fetched 1h data for BB
+Successfully fetched D data for BB
+Successfully fetched W data for BB
+🔍 Fetching enhanced options data for BB...
+✅ Historical options data found for BB: 370 contracts
+✅ YFinance: 82 options for BB
+🔍 Cross-validating options data for BB...
+✅ BB: Enhanced score 8.1/10, Plan confidence: 75%
+
+🔍 Enhanced analysis for COIN...
+Successfully fetched 1m data for COIN
+Successfully fetched 5m data for COIN
+Successfully fetched 15m data for COIN
+Successfully fetched 30m data for COIN
+Successfully fetched 1h data for COIN
+Successfully fetched D data for COIN
+Successfully fetched W data for COIN
+🔍 Fetching enhanced options data for COIN...
+✅ Historical options data found for COIN: 3218 contracts
+✅ YFinance: 683 options for COIN
+🔍 Cross-validating options data for COIN...
+✅ COIN: Enhanced score 6.5/10, Plan confidence: 65%
+
+🔍 Enhanced analysis for HOOD...
+Successfully fetched 1m data for HOOD
+Successfully fetched 5m data for HOOD
+Successfully fetched 15m data for HOOD
+Successfully fetched 30m data for HOOD
+Successfully fetched 1h data for HOOD
+Successfully fetched D data for HOOD
+Successfully fetched W data for HOOD
+🔍 Fetching enhanced options data for HOOD...
+✅ Historical options data found for HOOD: 1602 contracts
+✅ YFinance: 345 options for HOOD
+🔍 Cross-validating options data for HOOD...
+✅ HOOD: Enhanced score 8.8/10, Plan confidence: 65%
+
+🔍 Enhanced analysis for XOM...
+Successfully fetched 1m data for XOM
+Successfully fetched 5m data for XOM
+Successfully fetched 15m data for XOM
+Successfully fetched 30m data for XOM
+Successfully fetched 1h data for XOM
+Successfully fetched D data for XOM
+Successfully fetched W data for XOM
+🔍 Fetching enhanced options data for XOM...
+✅ Historical options data found for XOM: 1142 contracts
+✅ YFinance: 242 options for XOM
+🔍 Cross-validating options data for XOM...
+✅ XOM: Enhanced score 7.3/10, Plan confidence: 85%
+
+🔍 Enhanced analysis for CVX...
+Successfully fetched 1m data for CVX
+Successfully fetched 5m data for CVX
+Successfully fetched 15m data for CVX
+Successfully fetched 30m data for CVX
+Successfully fetched 1h data for CVX
+Successfully fetched D data for CVX
+Successfully fetched W data for CVX
+🔍 Fetching enhanced options data for CVX...
+✅ Historical options data found for CVX: 1112 contracts
+✅ YFinance: 186 options for CVX
+🔍 Cross-validating options data for CVX...
+✅ CVX: Enhanced score 8.6/10, Plan confidence: 90%
+
+🔍 Enhanced analysis for XLE...
+Successfully fetched 1m data for XLE
+Successfully fetched 5m data for XLE
+Successfully fetched 15m data for XLE
+Successfully fetched 30m data for XLE
+Successfully fetched 1h data for XLE
+Successfully fetched D data for XLE
+Successfully fetched W data for XLE
+🔍 Fetching enhanced options data for XLE...
+✅ Historical options data found for XLE: 2078 contracts
+✅ YFinance: 281 options for XLE
+🔍 Cross-validating options data for XLE...
+✅ XLE: Enhanced score 7.4/10, Plan confidence: 70%
+172.31.128.54 - - [03/Jul/2025 01:30:25] "GET /enhanced-scan HTTP/1.1" 200 -
