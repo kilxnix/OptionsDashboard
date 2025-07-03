@@ -578,6 +578,164 @@ def update_database_symbols():
         }), 500
 
 
+@app.route("/performance/update", methods=["POST", "GET"])
+def update_performance():
+    """Update performance tracking for all tracked options"""
+    try:
+        from performance_tracker import update_performance_tracking
+        
+        updated_count = update_performance_tracking()
+        
+        return jsonify({
+            "status": "success",
+            "message": f"Updated performance for {updated_count} options",
+            "updated_count": updated_count,
+            "timestamp": datetime.now().isoformat()
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Error updating performance: {str(e)}"
+        }), 500
+
+
+@app.route("/performance/analyze", methods=["GET"])
+def analyze_performance():
+    """Get comprehensive performance analysis"""
+    try:
+        from performance_tracker import analyze_performance
+        
+        metrics, suggestions = analyze_performance()
+        
+        return jsonify({
+            "status": "success",
+            "performance_metrics": metrics,
+            "improvement_suggestions": suggestions,
+            "analysis_timestamp": datetime.now().isoformat()
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Error analyzing performance: {str(e)}"
+        }), 500
+
+
+@app.route("/performance/report", methods=["GET"])
+def get_performance_report():
+    """Get human-readable performance report"""
+    try:
+        from performance_tracker import PerformanceTracker
+        
+        tracker = PerformanceTracker()
+        metrics = tracker.calculate_performance_metrics()
+        suggestions = tracker.get_improvement_suggestions()
+        
+        # Format as readable text
+        report = f"""
+PERFORMANCE REPORT - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+{'='*60}
+
+OVERALL STATISTICS:
+• Total Predictions: {metrics.get('total_predictions', 0)}
+• Win Rate: {metrics.get('win_rate', 0):.1f}%
+• Targets Hit: {metrics.get('targets_hit', 0)}
+• Stops Hit: {metrics.get('stops_hit', 0)}
+• Still Active: {metrics.get('still_active', 0)}
+
+CONFLUENCE SCORE ACCURACY:
+"""
+        
+        for score_range, data in metrics.get('confluence_score_accuracy', {}).items():
+            report += f"• {score_range}: {data['win_rate']:.1f}% ({data['wins']}/{data['total']})\n"
+        
+        report += "\nBIAS ACCURACY:\n"
+        for bias, data in metrics.get('bias_accuracy', {}).items():
+            report += f"• {bias}: {data['win_rate']:.1f}% ({data['wins']}/{data['total']})\n"
+        
+        if metrics.get('best_performers'):
+            report += "\nBEST PERFORMERS:\n"
+            for performer in metrics['best_performers'][:5]:
+                report += f"• {performer['symbol']}: +{performer['max_profit']:.1f}% (Score: {performer['confluence_score']:.1f})\n"
+        
+        if metrics.get('worst_performers'):
+            report += "\nWORST PERFORMERS:\n"
+            for performer in metrics['worst_performers'][:5]:
+                report += f"• {performer['symbol']}: {performer['max_profit']:.1f}% (Score: {performer['confluence_score']:.1f})\n"
+        
+        report += "\nIMPROVEMENT SUGGESTIONS:\n"
+        for suggestion in suggestions:
+            report += f"• {suggestion}\n"
+        
+        return report, 200, {'Content-Type': 'text/plain; charset=utf-8'}
+        
+    except Exception as e:
+        return f"Error generating performance report: {str(e)}", 500
+
+
+@app.route("/enhanced-scan", methods=["GET", "POST"])
+def run_enhanced_scan():
+    """Run enhanced scanner with better data validation"""
+    try:
+        # Get parameters (similar to regular scan)
+        if request.method == 'POST' and request.is_json:
+            data = request.get_json()
+            symbol_limit = int(data.get('limit', 20))
+            min_delta = float(data.get('min_delta', 0.25))
+            max_delta = float(data.get('max_delta', 0.68))
+        else:
+            symbol_limit = int(request.args.get('limit', 20))
+            min_delta = float(request.args.get('min_delta', 0.25))
+            max_delta = float(request.args.get('max_delta', 0.68))
+        
+        from enhanced_scanner import run_enhanced_scanner
+        
+        results = run_enhanced_scanner(
+            symbols=None,  # Use default symbol list
+            min_delta=min_delta,
+            max_delta=max_delta
+        )
+        
+        if not results:
+            return jsonify({
+                "status": "no-results",
+                "message": "Enhanced scanner found no qualifying opportunities",
+                "symbols_processed": symbol_limit
+            })
+        
+        # Calculate summary stats
+        confidence_scores = [
+            result.get('trade_plan', {}).get('validation_score', 0) 
+            for result in results.values()
+        ]
+        avg_confidence = sum(confidence_scores) / len(confidence_scores) if confidence_scores else 0
+        
+        return jsonify({
+            "status": "completed",
+            "message": f"Enhanced scan completed successfully",
+            "opportunities_found": len(results),
+            "average_confidence": round(avg_confidence, 1),
+            "high_confidence_count": len([s for s in confidence_scores if s >= 70]),
+            "symbols_with_market_data": len([r for r in results.values() if r.get('market_data')]),
+            "top_opportunities": [
+                {
+                    "symbol": symbol,
+                    "confluence_score": data.get('confluence', {}).get('score', 0),
+                    "confidence": data.get('trade_plan', {}).get('validation_score', 0),
+                    "risk_level": data.get('trade_plan', {}).get('risk_level', 'UNKNOWN')
+                }
+                for symbol, data in list(results.items())[:5]
+            ]
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Enhanced scan failed: {str(e)}"
+        }), 500
+
+
 @app.route("/plans/formatted", methods=["GET"])
 def get_formatted_plans():
     """Return human-readable formatted trading plans"""

@@ -1598,7 +1598,7 @@ def save_to_drive(results):
 
 
 def save_individual_result(symbol, result_data, base_dir='./TradingPlans'):
-    """Save individual result immediately when found"""
+    """Save individual result immediately when found and start performance tracking"""
     try:
         if not os.path.exists(base_dir):
             os.makedirs(base_dir)
@@ -1622,6 +1622,30 @@ def save_individual_result(symbol, result_data, base_dir='./TradingPlans'):
             json.dump(existing_data, f, indent=2, default=str)
 
         print(f"✅ Saved {symbol} to {individual_file}")
+
+        # START PERFORMANCE TRACKING
+        if ('options' in result_data and not isinstance(result_data['options'], bool) 
+            and not result_data['options'].empty and 'trade_plan' in result_data 
+            and result_data['trade_plan']):
+            
+            try:
+                from performance_tracker import PerformanceTracker
+                tracker = PerformanceTracker(base_dir)
+                
+                # Track the top option
+                top_option = result_data['options'].iloc[0].to_dict()
+                trade_plan = result_data['trade_plan']
+                
+                # Add confluence score to option data
+                top_option['score'] = result_data.get('confluence', {}).get('score', 0)
+                
+                track_id = tracker.track_option_performance(
+                    symbol, top_option, trade_plan, date_str
+                )
+                print(f"📊 Started tracking performance: {track_id}")
+                
+            except Exception as e:
+                print(f"⚠️ Performance tracking failed for {symbol}: {e}")
 
         # Also append to human-readable format
         human_readable_file = os.path.join(base_dir, f'progressive_plans_{date_str}.txt')
