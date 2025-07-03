@@ -561,88 +561,88 @@ def run_enhanced_scanner(symbols=None, **kwargs):
         print(f"\n📦 Processing batch {i//batch_size + 1}/{(len(remaining_symbols) + batch_size - 1)//batch_size}: {batch}")
         
         for symbol in batch:
-        try:
-            print(f"\n🔍 Enhanced analysis for {symbol}...")
-            
-            # Get comprehensive market data
-            market_data = enhanced_scanner.get_comprehensive_market_data(symbol)
-            
-            # Get multi-timeframe price analysis
-            multi_tf_data = enhanced_scanner.fetch_multi_timeframe_data(symbol)
-            if not multi_tf_data:
-                continue
-            
-            analysis_results = enhanced_scanner.analyze_timeframes(symbol, multi_tf_data)
-            confluence = enhanced_scanner.calculate_pattern_confluence(analysis_results)
-            
-            if confluence['score'] >= 6.0:
-                # Enhanced options data
-                options_data = enhanced_scanner.enhanced_fetch_options_data(symbol)
+            try:
+                print(f"\n🔍 Enhanced analysis for {symbol}...")
                 
-                if options_data is not None and not options_data.empty:
-                    # Enhanced scoring
-                    for idx, option in options_data.iterrows():
-                        enhanced_score = enhanced_scanner.enhanced_option_scoring(
-                            option, market_data, analysis_results
-                        )
-                        options_data.at[idx, 'enhanced_score'] = enhanced_score
+                # Get comprehensive market data
+                market_data = enhanced_scanner.get_comprehensive_market_data(symbol)
+                
+                # Get multi-timeframe price analysis
+                multi_tf_data = enhanced_scanner.fetch_multi_timeframe_data(symbol)
+                if not multi_tf_data:
+                    continue
+                
+                analysis_results = enhanced_scanner.analyze_timeframes(symbol, multi_tf_data)
+                confluence = enhanced_scanner.calculate_pattern_confluence(analysis_results)
+                
+                if confluence['score'] >= 6.0:
+                    # Enhanced options data
+                    options_data = enhanced_scanner.enhanced_fetch_options_data(symbol)
                     
-                    # Re-sort by enhanced score
-                    options_data = options_data.sort_values('enhanced_score', ascending=False)
-                    
-                    # Generate and validate trade plan
-                    top_option = options_data.iloc[0]
-                    symbol_context = {
-                        "support": None,
-                        "resistance": None,
-                        "skew": "Neutral",
-                        "bias": confluence["bias"]
-                    }
-                    
-                    from scanner_core import generate_trade_plan
-                    trade_plan = generate_trade_plan(top_option, symbol_context)
-                    
-                    if trade_plan:
-                        validated_plan = enhanced_scanner.validate_trade_plan(
-                            trade_plan, market_data, top_option
-                        )
+                    if options_data is not None and not options_data.empty:
+                        # Enhanced scoring
+                        for idx, option in options_data.iterrows():
+                            enhanced_score = enhanced_scanner.enhanced_option_scoring(
+                                option, market_data, analysis_results
+                            )
+                            options_data.at[idx, 'enhanced_score'] = enhanced_score
                         
-                        enhanced_results[symbol] = {
-                            'market_data': market_data,
-                            'timeframe_analysis': analysis_results,
-                            'confluence': confluence,
-                            'options': options_data.head(5),  # Top 5 options
-                            'trade_plan': validated_plan,
-                            'enhancement_timestamp': datetime.now().isoformat()
+                        # Re-sort by enhanced score
+                        options_data = options_data.sort_values('enhanced_score', ascending=False)
+                        
+                        # Generate and validate trade plan
+                        top_option = options_data.iloc[0]
+                        symbol_context = {
+                            "support": None,
+                            "resistance": None,
+                            "skew": "Neutral",
+                            "bias": confluence["bias"]
                         }
                         
-                        print(f"✅ {symbol}: Enhanced score {confluence['score']:.1f}/10, Plan confidence: {validated_plan.get('validation_score', 'N/A')}%")
-        
-        except Exception as e:
-            print(f"❌ Enhanced analysis failed for {symbol}: {e}")
-            continue
-        finally:
-            # Mark symbol as processed regardless of success/failure
-            processed_symbols.add(symbol)
+                        from scanner_core import generate_trade_plan
+                        trade_plan = generate_trade_plan(top_option, symbol_context)
+                        
+                        if trade_plan:
+                            validated_plan = enhanced_scanner.validate_trade_plan(
+                                trade_plan, market_data, top_option
+                            )
+                            
+                            enhanced_results[symbol] = {
+                                'market_data': market_data,
+                                'timeframe_analysis': analysis_results,
+                                'confluence': confluence,
+                                'options': options_data.head(5),  # Top 5 options
+                                'trade_plan': validated_plan,
+                                'enhancement_timestamp': datetime.now().isoformat()
+                            }
+                            
+                            print(f"✅ {symbol}: Enhanced score {confluence['score']:.1f}/10, Plan confidence: {validated_plan.get('validation_score', 'N/A')}%")
             
-            # Save progress after every symbol
-            progress_data = {
-                'results': enhanced_results,
-                'processed_symbols': list(processed_symbols),
-                'last_updated': datetime.now().isoformat(),
-                'total_symbols': len(symbols),
-                'remaining': len(symbols) - len(processed_symbols)
-            }
+            except Exception as e:
+                print(f"❌ Enhanced analysis failed for {symbol}: {e}")
+                continue
+            finally:
+                # Mark symbol as processed regardless of success/failure
+                processed_symbols.add(symbol)
+                
+                # Save progress after every symbol
+                progress_data = {
+                    'results': enhanced_results,
+                    'processed_symbols': list(processed_symbols),
+                    'last_updated': datetime.now().isoformat(),
+                    'total_symbols': len(symbols),
+                    'remaining': len(symbols) - len(processed_symbols)
+                }
+                
+                try:
+                    with open(resume_file, 'w') as f:
+                        json.dump(progress_data, f, indent=2, default=str)
+                except Exception as save_error:
+                    print(f"⚠️ Could not save progress: {save_error}")
             
-            try:
-                with open(resume_file, 'w') as f:
-                    json.dump(progress_data, f, indent=2, default=str)
-            except Exception as save_error:
-                print(f"⚠️ Could not save progress: {save_error}")
-        
-        # Add delay between symbols to avoid rate limiting
-        if symbol != batch[-1]:  # Don't delay after last symbol in batch
-            time.sleep(2)
+            # Add delay between symbols to avoid rate limiting
+            if symbol != batch[-1]:  # Don't delay after last symbol in batch
+                time.sleep(2)
     
     print(f"✅ Enhanced scan complete: {len(enhanced_results)} high-quality opportunities found")
     return enhanced_results
