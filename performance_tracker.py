@@ -277,6 +277,28 @@ class PerformanceTracker:
 
         return metrics
 
+    def track_enhanced_prediction(self, symbol, option_data, score_analysis, trade_plan):
+        """Track predictions from enhanced scanner"""
+        
+        track_id = self.track_option_performance(symbol, option_data, trade_plan, 
+                                               datetime.now().strftime('%Y-%m-%d'))
+        
+        # Store enhanced scoring data
+        performance_data = self.load_performance_data()
+        if track_id in performance_data:
+            performance_data[track_id]['enhanced_scoring'] = {
+                'total_score': score_analysis['total_score'],
+                'confidence': score_analysis['confidence'],
+                'components': score_analysis['components'],
+                'unusual_activity': {
+                    'volume_spike': option_data.get('volume', 0) / max(option_data.get('open_interest', 1), 1),
+                    'oi_change': 0  # Would calculate from historical
+                }
+            }
+        
+        self.save_performance_data(performance_data)
+        return track_id
+    
     def get_improvement_suggestions(self):
         """Generate specific improvement suggestions based on performance data"""
         metrics = self.calculate_performance_metrics()

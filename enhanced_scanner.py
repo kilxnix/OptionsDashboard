@@ -1,4 +1,3 @@
-
 import yfinance as yf
 import pandas as pd
 import numpy as np
@@ -10,35 +9,35 @@ from performance_tracker import PerformanceTracker
 
 class EnhancedOptionsScanner(CompleteOptionsScanner):
     """Enhanced scanner with better data validation and additional metrics"""
-    
+
     def __init__(self, api_key, min_delta=0.2, max_delta=0.7):
         super().__init__(api_key, min_delta, max_delta)
         self.performance_tracker = PerformanceTracker()
-        
+
     def enhanced_fetch_options_data(self, symbol):
         """
         Enhanced options data fetching with multiple sources and validation
         """
         print(f"🔍 Fetching enhanced options data for {symbol}...")
-        
+
         # Add rate limiting delay
         time.sleep(1)
-        
+
         av_options = None
         yf_options = None
-        
+
         # Try Alpha Vantage first with timeout handling
         try:
             av_options = self.fetch_options_data(symbol)
         except Exception as e:
             print(f"⚠️ Alpha Vantage failed for {symbol}: {e}")
-        
+
         # Try yfinance as backup/supplement
         try:
             yf_options = self.fetch_yfinance_options(symbol)
         except Exception as e:
             print(f"⚠️ YFinance failed for {symbol}: {e}")
-        
+
         # Combine and validate data
         if av_options is not None and not av_options.empty:
             if yf_options is not None and not yf_options.empty:
@@ -48,28 +47,28 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
             return av_options
         elif yf_options is not None and not yf_options.empty:
             return yf_options
-        
+
         return None
-    
+
     def fetch_yfinance_options(self, symbol):
         """
         Fetch options data using yfinance for cross-validation
         """
         try:
             ticker = yf.Ticker(symbol)
-            
+
             # Get all expiration dates
             expirations = ticker.options
             if not expirations:
                 return None
-            
+
             all_options = []
-            
+
             # Process first 3 expirations to avoid overloading
             for exp_date in expirations[:3]:
                 try:
                     option_chain = ticker.option_chain(exp_date)
-                    
+
                     # Process calls
                     if not option_chain.calls.empty:
                         calls = option_chain.calls.copy()
@@ -77,7 +76,7 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
                         calls['expiration'] = exp_date
                         calls['symbol'] = symbol
                         all_options.append(calls)
-                    
+
                     # Process puts
                     if not option_chain.puts.empty:
                         puts = option_chain.puts.copy()
@@ -85,16 +84,16 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
                         puts['expiration'] = exp_date
                         puts['symbol'] = symbol
                         all_options.append(puts)
-                    
+
                     time.sleep(0.1)  # Rate limiting
-                    
+
                 except Exception as e:
                     print(f"Error fetching {exp_date} for {symbol}: {e}")
                     continue
-            
+
             if all_options:
                 combined_df = pd.concat(all_options, ignore_index=True)
-                
+
                 # Standardize column names
                 column_mapping = {
                     'contractSymbol': 'contractID',
@@ -103,44 +102,44 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
                     'openInterest': 'open_interest',
                     'contractSize': 'multiplier'
                 }
-                
+
                 for old_name, new_name in column_mapping.items():
                     if old_name in combined_df.columns:
                         combined_df[new_name] = combined_df[old_name]
-                
+
                 # Add missing columns with defaults
                 required_columns = ['delta', 'gamma', 'theta', 'vega', 'rho']
                 for col in required_columns:
                     if col not in combined_df.columns:
                         combined_df[col] = np.nan
-                
+
                 print(f"✅ YFinance: {len(combined_df)} options for {symbol}")
                 return combined_df
-            
+
             return None
-            
+
         except Exception as e:
             print(f"YFinance options fetch failed for {symbol}: {e}")
             return None
-    
+
     def cross_validate_options(self, av_data, yf_data, symbol):
         """
         Cross-validate options data between sources
         """
         if av_data is None or yf_data is None:
             return av_data if av_data is not None else yf_data
-        
+
         print(f"🔍 Cross-validating options data for {symbol}...")
-        
+
         # Use Alpha Vantage as primary (has better Greeks)
         # Use yfinance for price validation
         validated_data = av_data.copy()
-        
+
         # Add validation flags
         validated_data['price_validated'] = False
         validated_data['yf_last_price'] = np.nan
         validated_data['price_difference'] = np.nan
-        
+
         try:
             for idx, row in validated_data.iterrows():
                 # Find matching option in yfinance data
@@ -150,55 +149,55 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
                     (pd.to_datetime(yf_data['expiration']).dt.date == 
                      pd.to_datetime(row['expiration']).date())
                 ]
-                
+
                 if not matching_yf.empty:
                     yf_price = matching_yf.iloc[0].get('lastPrice', np.nan)
                     av_price = row.get('mark', row.get('lastPrice', np.nan))
-                    
+
                     if not pd.isna(yf_price) and not pd.isna(av_price):
                         price_diff = abs(yf_price - av_price) / max(yf_price, av_price) * 100
-                        
+
                         validated_data.at[idx, 'yf_last_price'] = yf_price
                         validated_data.at[idx, 'price_difference'] = price_diff
-                        
+
                         # Mark as validated if prices are within 20%
                         if price_diff <= 20:
                             validated_data.at[idx, 'price_validated'] = True
-        
+
         except Exception as e:
             print(f"Cross-validation error for {symbol}: {e}")
-        
+
         return validated_data
-    
+
     def get_comprehensive_market_data(self, symbol):
         """
         Get comprehensive market data including fundamentals and earnings timing
         """
         try:
             ticker = yf.Ticker(symbol)
-            
+
             # Get basic info
             info = ticker.info
-            
+
             # Get recent price action
             hist = ticker.history(period="1mo", interval="1d")
-            
+
             if hist.empty:
                 return None
-            
+
             # Calculate additional metrics
             recent_price = hist['Close'].iloc[-1]
             volume_avg = hist['Volume'].mean()
             price_change_30d = ((recent_price - hist['Close'].iloc[0]) / hist['Close'].iloc[0]) * 100
-            
+
             # Volatility metrics
             returns = hist['Close'].pct_change().dropna()
             volatility_30d = returns.std() * np.sqrt(252) * 100  # Annualized
-            
+
             # Enhanced earnings analysis
             earnings_date = info.get('earningsDate', None)
             earnings_info = self.analyze_earnings_timing(symbol, earnings_date, info)
-            
+
             market_data = {
                 'symbol': symbol,
                 'current_price': recent_price,
@@ -217,13 +216,13 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
                     'low': info.get('targetLowPrice', 0)
                 }
             }
-            
+
             return market_data
-            
+
         except Exception as e:
             print(f"Error fetching market data for {symbol}: {e}")
             return None
-    
+
     def analyze_earnings_timing(self, symbol, earnings_date, info):
         """
         Analyze earnings timing and opportunity windows
@@ -235,21 +234,21 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
             'iv_expansion_opportunity': False,
             'earnings_priority': 'low'
         }
-        
+
         try:
             if earnings_date:
                 if isinstance(earnings_date, list) and len(earnings_date) > 0:
                     earnings_date = earnings_date[0]
-                
+
                 earnings_dt = pd.to_datetime(earnings_date)
                 current_dt = pd.Timestamp.now()
                 days_to_earnings = (earnings_dt - current_dt).days
-                
+
                 earnings_info.update({
                     'days_to_earnings': days_to_earnings,
                     'is_pre_earnings': 0 <= days_to_earnings <= 21,  # Within 3 weeks
                 })
-                
+
                 # Categorize earnings windows
                 if 0 <= days_to_earnings <= 3:
                     earnings_info['earnings_window'] = 'immediate'  # This week
@@ -263,104 +262,117 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
                 elif 15 <= days_to_earnings <= 21:
                     earnings_info['earnings_window'] = 'long_term'  # 3 weeks out
                     earnings_info['earnings_priority'] = 'low'
-                
+
                 # IV expansion opportunity (before earnings, IV typically rises)
                 earnings_info['iv_expansion_opportunity'] = (
                     earnings_info['is_pre_earnings'] and 
                     days_to_earnings >= 1  # Not same day
                 )
-                
+
                 print(f"📅 {symbol}: {days_to_earnings} days to earnings ({earnings_info['earnings_window']})")
-                
+
         except Exception as e:
             print(f"Error analyzing earnings timing for {symbol}: {e}")
-        
+
         return earnings_info
-    
+
     def enhanced_option_scoring(self, option_data, market_data, analysis_results):
         """
-        Enhanced option scoring with pre-earnings prioritization
+        Enhanced scoring algorithm using new grading system
         """
         try:
-            base_score = self._score_option(option_data, analysis_results)
-            
-            if market_data is None:
-                return base_score
-            
-            # Volume factor
-            volume_factor = 1.0
-            if float(option_data.get('volume', 0)) > 100:
-                volume_factor = 1.2
-            elif float(option_data.get('volume', 0)) > 50:
-                volume_factor = 1.1
-            
-            # Volatility factor
-            vol_factor = 1.0
-            market_vol = market_data.get('volatility_30d', 50)
-            option_iv = float(option_data.get('implied_volatility', 0.5)) * 100
-            
-            if option_iv > market_vol * 1.5:  # High IV
-                vol_factor = 1.15
-            elif option_iv < market_vol * 0.8:  # Low IV (good for pre-earnings)
-                vol_factor = 1.25  # Enhanced boost for low IV before earnings
-            
-            # PRE-EARNINGS MULTIPLIER (This is the key enhancement!)
-            earnings_factor = 1.0
+            from enhanced_options_grader import EnhancedOptionsGrader
+
+            grader = EnhancedOptionsGrader(self.api_key)
+            score, analysis = grader.calculate_option_score(
+                option_data.to_dict() if hasattr(option_data, 'to_dict') else option_data,
+                market_data
+            )
+
+            # Store the detailed analysis for later use
+            if hasattr(option_data, 'to_dict'):
+                option_data = option_data.to_dict()
+            option_data['score_analysis'] = analysis
+
+            return score
+
+        except ImportError:
+            # Fallback to original scoring if new grader not available
+            score = 0
+
+            # Base score from Greeks and fundamentals
+            delta = abs(option_data.get('delta', 0))
+            gamma = option_data.get('gamma', 0)
+            theta = option_data.get('theta', 0)
+            volume = option_data.get('volume', 0)
+            oi = option_data.get('open_interest', 1)
+
+            # Delta scoring (0-20 points)
+            if 0.15 <= delta <= 0.35:
+                score += 20
+            elif 0.10 <= delta <= 0.40:
+                score += 15
+            elif 0.05 <= delta <= 0.45:
+                score += 10
+            else:
+                score += 5
+
+            # Gamma scoring (0-15 points)
+            if gamma >= 0.02:
+                score += 15
+            elif gamma >= 0.01:
+                score += 10
+            elif gamma >= 0.005:
+                score += 5
+
+            # Volume/OI ratio (0-15 points)
+            if oi > 0:
+                vol_oi_ratio = volume / oi
+                if vol_oi_ratio >= 0.5:
+                    score += 15
+                elif vol_oi_ratio >= 0.2:
+                    score += 10
+                elif vol_oi_ratio >= 0.1:
+                    score += 5
+
+            # Theta penalty
+            if abs(theta) > 0.15:
+                score -= 10
+            elif abs(theta) > 0.10:
+                score -= 5
+
+            # Technical confluence bonus
+            if analysis_results:
+                confluence_score = analysis_results.get('confluence_score', 0)
+                score += min(confluence_score / 10, 20)  # Max 20 bonus points
+
+            # Market context adjustments
+            sector = market_data.get('sector', '')
+            if sector in ['Technology', 'Healthcare', 'Consumer Discretionary']:
+                score += 5  # Growth sectors bonus
+
+            # Earnings proximity bonus
             earnings_info = market_data.get('earnings_info', {})
-            
-            if earnings_info.get('is_pre_earnings', False):
-                days_to_earnings = earnings_info.get('days_to_earnings', 999)
-                option_exp = pd.to_datetime(option_data.get('expiration'))
-                days_to_exp = (option_exp - datetime.now()).days
-                
-                # CRITICAL: Option must expire AFTER earnings
-                if days_to_earnings <= days_to_exp:
-                    priority = earnings_info.get('earnings_priority', 'low')
-                    
-                    if priority == 'critical':  # 0-3 days to earnings
-                        earnings_factor = 2.0
-                        print(f"🔥 CRITICAL EARNINGS PLAY: {market_data['symbol']} in {days_to_earnings} days!")
-                    elif priority == 'high':     # 4-7 days to earnings
-                        earnings_factor = 1.7
-                        print(f"⚡ HIGH PRIORITY EARNINGS: {market_data['symbol']} in {days_to_earnings} days")
-                    elif priority == 'medium':   # 8-14 days to earnings
-                        earnings_factor = 1.4
-                    elif priority == 'low':      # 15-21 days to earnings
-                        earnings_factor = 1.2
-                    
-                    # Extra boost for IV expansion opportunity
-                    if earnings_info.get('iv_expansion_opportunity', False):
-                        earnings_factor *= 1.1
-                        
-                else:
-                    # Option expires before earnings - reduce score
-                    earnings_factor = 0.8
-            
-            # Market cap factor (favor liquid stocks for earnings plays)
-            market_cap = market_data.get('market_cap', 0)
-            cap_factor = 1.0
-            if market_cap > 10e9:  # > $10B
-                cap_factor = 1.1
-            elif market_cap > 1e9:  # > $1B
-                cap_factor = 1.05
-            
-            enhanced_score = base_score * volume_factor * vol_factor * earnings_factor * cap_factor
-            
-            return min(enhanced_score, 10.0)  # Cap at 10
-            
-        except Exception as e:
-            print(f"Error in enhanced scoring: {e}")
-            return base_score
-    
+            if earnings_info.get('is_pre_earnings'):
+                days_to_earnings = earnings_info.get('days_to_earnings', 30)
+                if days_to_earnings <= 7:
+                    score += 15
+                elif days_to_earnings <= 14:
+                    score += 10
+                elif days_to_earnings <= 21:
+                    score += 5
+
+            return min(score, 100)
+
     def validate_trade_plan(self, trade_plan, market_data, option_data):
         """
         Validate and improve trade plan based on market conditions
         """
         if not trade_plan or not market_data:
             return trade_plan
-        
+
         validated_plan = trade_plan.copy()
-        
+
         try:
             # Adjust position sizing based on market cap
             market_cap = market_data.get('market_cap', 0)
@@ -372,7 +384,7 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
                 validated_plan['risk_level'] = 'LOW'
             else:
                 validated_plan['risk_level'] = 'MEDIUM'
-            
+
             # Adjust targets based on volatility
             market_vol = market_data.get('volatility_30d', 50)
             if market_vol > 80:  # High volatility
@@ -382,7 +394,7 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
             elif market_vol < 30:  # Low volatility
                 # Normal stops, conservative targets
                 validated_plan['final_target'] = validated_plan['entry_price'] * 2.5
-            
+
             # Add market context
             validated_plan['market_context'] = {
                 'sector': market_data.get('sector'),
@@ -390,22 +402,22 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
                 'analyst_target': market_data.get('analyst_targets', {}).get('mean', 0),
                 'beta': market_data.get('beta', 1.0)
             }
-            
+
             # Add validation timestamp
             validated_plan['validation_timestamp'] = datetime.now().isoformat()
             validated_plan['validation_score'] = self.calculate_plan_confidence(validated_plan, market_data)
-            
+
         except Exception as e:
             print(f"Error validating trade plan: {e}")
-        
+
         return validated_plan
-    
+
     def calculate_plan_confidence(self, trade_plan, market_data):
         """
         Calculate confidence score for the trade plan
         """
         confidence = 50  # Base confidence
-        
+
         try:
             # Market cap confidence
             market_cap = market_data.get('market_cap', 0)
@@ -413,28 +425,28 @@ class EnhancedOptionsScanner(CompleteOptionsScanner):
                 confidence += 15
             elif market_cap > 1e9:
                 confidence += 10
-            
+
             # Volume confidence
             if trade_plan.get('risk_level') == 'LOW':
                 confidence += 10
             elif trade_plan.get('risk_level') == 'HIGH':
                 confidence -= 10
-            
+
             # Volatility alignment
             market_vol = market_data.get('volatility_30d', 50)
             option_iv = trade_plan.get('risk_metrics', {}).get('implied_vol', 50)
-            
+
             if abs(option_iv - market_vol) < 20:  # IV aligned with historical vol
                 confidence += 10
-            
+
             # Beta factor
             beta = market_data.get('beta', 1.0)
             if 0.8 <= beta <= 1.2:  # Moderate beta
                 confidence += 5
-            
+
         except Exception:
             pass
-        
+
         return min(max(confidence, 0), 100)  # Clamp between 0-100
 
 def discover_pre_earnings_stocks(verbose=True):
@@ -444,67 +456,67 @@ def discover_pre_earnings_stocks(verbose=True):
     import os
     import requests
     from datetime import datetime, timedelta
-    
+
     pre_earnings_stocks = []
     api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
-    
+
     if not api_key:
         if verbose:
             print("⚠️ No Alpha Vantage API key found, using fallback list")
         return get_fallback_earnings_candidates()
-    
+
     if verbose:
         print(f"🎯 Fetching earnings calendar from Alpha Vantage...")
         print(f"📅 Current time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    
+
     try:
         # Get earnings calendar for next 3 months
         url = f'https://www.alphavantage.co/query?function=EARNINGS_CALENDAR&horizon=3month&apikey={api_key}'
-        
+
         if verbose:
             print(f"🌐 Calling Alpha Vantage earnings calendar API...")
-        
+
         response = requests.get(url, timeout=30)
         response.raise_for_status()
-        
+
         # Alpha Vantage returns CSV format for earnings calendar
         lines = response.text.strip().split('\n')
-        
+
         if len(lines) < 2:
             if verbose:
                 print("⚠️ No earnings data returned from Alpha Vantage")
             return get_fallback_earnings_candidates()
-        
+
         # Parse CSV header
         headers = lines[0].split(',')
         symbol_idx = headers.index('symbol') if 'symbol' in headers else 0
         date_idx = headers.index('reportDate') if 'reportDate' in headers else 1
-        
+
         current_date = datetime.now().date()
         earnings_found = 0
-        
+
         if verbose:
             print(f"📋 Processing earnings calendar data...")
-        
+
         # First pass: collect ALL eligible earnings announcements
         all_earnings_candidates = []
-        
+
         for line in lines[1:]:  # Skip header
             try:
                 fields = line.split(',')
                 if len(fields) < max(symbol_idx + 1, date_idx + 1):
                     continue
-                
+
                 symbol = fields[symbol_idx].strip().strip('"')
                 earnings_date_str = fields[date_idx].strip().strip('"')
-                
+
                 if not symbol or not earnings_date_str:
                     continue
-                
+
                 # Parse earnings date
                 earnings_date = datetime.strptime(earnings_date_str, '%Y-%m-%d').date()
                 days_to_earnings = (earnings_date - current_date).days
-                
+
                 # Filter for next 21 days and optionable stocks
                 if 0 <= days_to_earnings <= 21 and is_likely_optionable(symbol):
                     all_earnings_candidates.append({
@@ -515,22 +527,22 @@ def discover_pre_earnings_stocks(verbose=True):
                                    "high" if days_to_earnings <= 7 else 
                                    "medium" if days_to_earnings <= 14 else "low")
                     })
-                        
+
             except Exception as e:
                 if verbose:
                     print(f"    ⚠️ Error parsing line: {line[:50]}... - {e}")
                 continue
-        
+
         if verbose:
             print(f"📋 Found {len(all_earnings_candidates)} total earnings candidates")
-        
+
         # Sort by priority and days to earnings (critical first, then by proximity)
         priority_order = {'critical': 0, 'high': 1, 'medium': 2, 'low': 3}
         all_earnings_candidates.sort(key=lambda x: (priority_order[x['priority']], x['days_to_earnings']))
-        
+
         # Select diverse symbols, prioritizing by timing but ensuring variety
         selected_symbols = set()
-        
+
         # First, add all critical and high priority
         for candidate in all_earnings_candidates:
             if candidate['priority'] in ['critical', 'high']:
@@ -538,7 +550,7 @@ def discover_pre_earnings_stocks(verbose=True):
                 if verbose:
                     emoji = "🔥CRITICAL" if candidate['priority'] == 'critical' else "⚡HIGH"
                     print(f"    ✅ {emoji}: {candidate['symbol']} earnings in {candidate['days_to_earnings']} days ({candidate['earnings_date']})")
-        
+
         # Then add medium/low priority with alphabet diversity
         alphabet_counts = {}
         for candidate in all_earnings_candidates:
@@ -548,22 +560,22 @@ def discover_pre_earnings_stocks(verbose=True):
                 if alphabet_counts.get(first_letter, 0) < 3:  # Max 3 per letter
                     selected_symbols.add(candidate['symbol'])
                     alphabet_counts[first_letter] = alphabet_counts.get(first_letter, 0) + 1
-                    
+
                     if verbose:
                         emoji = "📅MEDIUM" if candidate['priority'] == 'medium' else "📆LOW"
                         print(f"    ✅ {emoji}: {candidate['symbol']} earnings in {candidate['days_to_earnings']} days ({candidate['earnings_date']})")
-        
+
         pre_earnings_stocks = list(selected_symbols)
-                    
+
             except Exception as e:
                 if verbose:
                     print(f"    ⚠️ Error parsing line: {line[:50]}... - {e}")
                 continue
-        
+
         if verbose:
             print(f"📈 Alpha Vantage earnings calendar: Found {earnings_found} earnings announcements")
             print(f"📊 Total optionable pre-earnings stocks: {len(pre_earnings_stocks)}")
-        
+
         # If we didn't find many, add some high-volume fallbacks
         if len(pre_earnings_stocks) < 20:
             fallback_candidates = get_fallback_earnings_candidates()
@@ -572,10 +584,10 @@ def discover_pre_earnings_stocks(verbose=True):
                     pre_earnings_stocks.append(symbol)
                     if len(pre_earnings_stocks) >= 30:
                         break
-            
+
             if verbose:
                 print(f"🔄 Added fallback candidates, total: {len(pre_earnings_stocks)}")
-    
+
     except Exception as e:
         if verbose:
             print(f"❌ Alpha Vantage earnings calendar failed: {e}")
@@ -583,12 +595,12 @@ def discover_pre_earnings_stocks(verbose=True):
         pre_earnings_stocks = get_fallback_earnings_candidates()
         if verbose:
             print(f"🔄 Using fallback candidate list: {len(pre_earnings_stocks)} symbols")
-    
+
     if verbose:
         print(f"✅ Found {len(pre_earnings_stocks)} pre-earnings candidates")
         if pre_earnings_stocks:
             print(f"📋 Top candidates: {pre_earnings_stocks[:10]}{'...' if len(pre_earnings_stocks) > 10 else ''}")
-    
+
     return pre_earnings_stocks
 
 
@@ -600,22 +612,22 @@ def get_fallback_earnings_candidates():
         # Mega-cap tech (always have options, frequent earnings volatility)
         'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'TSLA', 'NVDA', 'AMD', 'INTC', 'NFLX',
         'CRM', 'ADBE', 'ORCL', 'CSCO', 'UBER', 'LYFT', 'SNAP', 'PINS', 'ZOOM',
-        
+
         # Major financials (quarterly earnings movers)
         'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'USB', 'PNC', 'COF', 'AXP',
-        
+
         # Healthcare/Biotech leaders
         'JNJ', 'PFE', 'MRNA', 'GILD', 'AMGN', 'BIIB', 'REGN', 'VRTX',
-        
+
         # Major retail/consumer
         'WMT', 'TGT', 'COST', 'HD', 'LOW', 'SBUX', 'NKE', 'DIS', 'MCD',
-        
+
         # Energy sector leaders
         'XOM', 'CVX', 'COP', 'EOG', 'SLB', 'HAL', 'OXY',
-        
+
         # High-IV meme stocks
         'GME', 'AMC', 'PLTR', 'BB', 'COIN', 'HOOD', 'RIVN', 'SOFI',
-        
+
         # Liquid ETFs (always have options)
         'SPY', 'QQQ', 'IWM', 'XLF', 'XLK', 'XLE', 'XLV', 'XLI'
     ]
@@ -629,7 +641,7 @@ def is_likely_optionable(symbol):
     major_etfs = ['SPY', 'QQQ', 'IWM', 'XLF', 'XLK', 'XLE', 'XLV', 'XLI', 'XLY', 'XLP']
     if symbol in major_etfs:
         return True
-    
+
     # Major stocks that definitely have options
     major_stocks = [
         # Tech mega-caps
@@ -650,23 +662,23 @@ def is_likely_optionable(symbol):
     ]
     if symbol in major_stocks:
         return True
-    
+
     # Skip obvious foreign/ADR patterns
     if any(suffix in symbol for suffix in ['F', 'Y', 'RF']):  # Common ADR suffixes
         return False
-    
+
     # Skip symbols with special characters
     if any(c in symbol for c in ['.', '-', '^', '=']):
         return False
-    
+
     # Skip very long symbols (usually foreign or complex instruments)
     if len(symbol) > 5:
         return False
-    
+
     # For 3-4 letter symbols, more likely to be optionable US stocks
     if 3 <= len(symbol) <= 4:
         return True
-    
+
     # For 1-2 letter symbols, only if they're known tickers
     return len(symbol) <= 2 and symbol.isalpha()
 
@@ -678,29 +690,29 @@ def run_enhanced_scanner(symbols=None, **kwargs):
     import json
     import os
     from datetime import datetime
-    
+
     enhanced_scanner = EnhancedOptionsScanner(
         ALPHA_VANTAGE_API_KEY,
         min_delta=kwargs.get('min_delta', 0.25),
         max_delta=kwargs.get('max_delta', 0.68)
     )
-    
+
     if symbols is None:
         # PRIORITIZE PRE-EARNINGS STOCKS
         pre_earnings = discover_pre_earnings_stocks()
         from scanner_core import get_optionable_stocks_with_volume
         regular_stocks = get_optionable_stocks_with_volume()
-        
+
         # Put pre-earnings stocks first
         symbols = pre_earnings + [s for s in regular_stocks if s not in pre_earnings]
         print(f"🎯 Prioritizing {len(pre_earnings)} pre-earnings stocks out of {len(symbols)} total")
-    
+
     # Check for existing results to resume from
     date_str = datetime.now().strftime('%Y-%m-%d')
     resume_file = f'./TradingPlans/enhanced_scan_progress_{date_str}.json'
     processed_symbols = set()
     enhanced_results = {}
-    
+
     if os.path.exists(resume_file):
         try:
             with open(resume_file, 'r') as f:
@@ -710,36 +722,36 @@ def run_enhanced_scanner(symbols=None, **kwargs):
             print(f"📋 Resuming scan: {len(processed_symbols)} symbols already processed")
         except Exception as e:
             print(f"⚠️ Could not load resume file: {e}")
-    
+
     # Filter out already processed symbols
     remaining_symbols = [s for s in symbols if s not in processed_symbols]
     print(f"🚀 Running enhanced scanner on {len(remaining_symbols)} remaining symbols...")
-    
+
     # Process in smaller batches to avoid overwhelming the system
     batch_size = 10
     for i in range(0, len(remaining_symbols), batch_size):
         batch = remaining_symbols[i:i+batch_size]
         print(f"\n📦 Processing batch {i//batch_size + 1}/{(len(remaining_symbols) + batch_size - 1)//batch_size}: {batch}")
-        
+
         for symbol in batch:
             try:
                 print(f"\n🔍 Enhanced analysis for {symbol}...")
-                
+
                 # Get comprehensive market data
                 market_data = enhanced_scanner.get_comprehensive_market_data(symbol)
-                
+
                 # Get multi-timeframe price analysis
                 multi_tf_data = enhanced_scanner.fetch_multi_timeframe_data(symbol)
                 if not multi_tf_data:
                     continue
-                
+
                 analysis_results = enhanced_scanner.analyze_timeframes(symbol, multi_tf_data)
                 confluence = enhanced_scanner.calculate_pattern_confluence(analysis_results)
-                
+
                 if confluence['score'] >= 6.0:
                     # Enhanced options data
                     options_data = enhanced_scanner.enhanced_fetch_options_data(symbol)
-                    
+
                     if options_data is not None and not options_data.empty:
                         # Enhanced scoring
                         for idx, option in options_data.iterrows():
@@ -747,10 +759,10 @@ def run_enhanced_scanner(symbols=None, **kwargs):
                                 option, market_data, analysis_results
                             )
                             options_data.at[idx, 'enhanced_score'] = enhanced_score
-                        
+
                         # Re-sort by enhanced score
                         options_data = options_data.sort_values('enhanced_score', ascending=False)
-                        
+
                         # Generate and validate trade plan
                         top_option = options_data.iloc[0]
                         symbol_context = {
@@ -759,15 +771,15 @@ def run_enhanced_scanner(symbols=None, **kwargs):
                             "skew": "Neutral",
                             "bias": confluence["bias"]
                         }
-                        
+
                         from scanner_core import generate_trade_plan
                         trade_plan = generate_trade_plan(top_option, symbol_context)
-                        
+
                         if trade_plan:
                             validated_plan = enhanced_scanner.validate_trade_plan(
                                 trade_plan, market_data, top_option
                             )
-                            
+
                             enhanced_results[symbol] = {
                                 'market_data': market_data,
                                 'timeframe_analysis': analysis_results,
@@ -776,16 +788,16 @@ def run_enhanced_scanner(symbols=None, **kwargs):
                                 'trade_plan': validated_plan,
                                 'enhancement_timestamp': datetime.now().isoformat()
                             }
-                            
+
                             print(f"✅ {symbol}: Enhanced score {confluence['score']:.1f}/10, Plan confidence: {validated_plan.get('validation_score', 'N/A')}%")
-            
+
             except Exception as e:
                 print(f"❌ Enhanced analysis failed for {symbol}: {e}")
                 continue
             finally:
                 # Mark symbol as processed regardless of success/failure
                 processed_symbols.add(symbol)
-                
+
                 # Save progress after every symbol
                 progress_data = {
                     'results': enhanced_results,
@@ -794,17 +806,17 @@ def run_enhanced_scanner(symbols=None, **kwargs):
                     'total_symbols': len(symbols),
                     'remaining': len(symbols) - len(processed_symbols)
                 }
-                
+
                 try:
                     with open(resume_file, 'w') as f:
                         json.dump(progress_data, f, indent=2, default=str)
                 except Exception as save_error:
                     print(f"⚠️ Could not save progress: {save_error}")
-            
+
             # Add delay between symbols to avoid rate limiting
             if symbol != batch[-1]:  # Don't delay after last symbol in batch
                 time.sleep(2)
-    
+
     print(f"✅ Enhanced scan complete: {len(enhanced_results)} high-quality opportunities found")
     return enhanced_results
 

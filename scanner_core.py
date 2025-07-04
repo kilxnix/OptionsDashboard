@@ -1717,6 +1717,48 @@ def convert_numpy_types(obj):
     return obj
 
 
+def analyze_option_enhanced(option_data, symbol, market_data=None):
+    """Enhanced option analysis using new grading system"""
+    try:
+        from enhanced_options_grader import EnhancedOptionsGrader
+        from intelligent_trade_planner import IntelligentTradePlanner
+        
+        # Initialize grader
+        grader = EnhancedOptionsGrader(os.getenv('ALPHA_VANTAGE_API_KEY'))
+        
+        # Calculate comprehensive score
+        score, analysis = grader.calculate_option_score(option_data, market_data)
+        
+        # Only proceed if score meets threshold
+        if score < 60:  # Minimum score
+            return None
+        
+        # Generate intelligent trade plan
+        if score >= 60:
+            planner = IntelligentTradePlanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
+            trade_plan = planner.generate_intelligent_plan(
+                option_data,
+                analysis,
+                market_data
+            )
+            
+            return {
+                'option_data': option_data,
+                'score': score,
+                'analysis': analysis,
+                'trade_plan': trade_plan
+            }
+        
+        return None
+        
+    except ImportError:
+        print("Enhanced grader not available, using fallback analysis")
+        return None
+    except Exception as e:
+        print(f"Enhanced analysis error: {e}")
+        return None
+
+
 def format_trade_plan_for_output(symbol: str,
                                  plan: dict,
                                  save_path: str = None,

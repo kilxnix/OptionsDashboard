@@ -677,66 +677,139 @@ CONFLUENCE SCORE ACCURACY:
 
 
 @app.route("/enhanced-scan", methods=["GET", "POST"])
-def run_enhanced_scan():
-    """Run enhanced scanner with better data validation"""
+def enhanced_scan():
+    """Enhanced options scanning with complex analysis"""
     try:
-        # Get parameters (similar to regular scan)
+        # Get scan parameters
         if request.method == 'POST' and request.is_json:
             data = request.get_json()
-            symbol_limit = int(data.get('limit', 50))  # Increased default limit
-            min_delta = float(data.get('min_delta', 0.25))
-            max_delta = float(data.get('max_delta', 0.68))
-            verbose = data.get('verbose', True)
+            symbols = data.get('symbols', [])
+            sector_filter = data.get('sector', None)
+            min_score = data.get('min_score', 65)
+            scan_date = data.get('date', datetime.now().strftime('%Y-%m-%d'))
         else:
-            symbol_limit = int(request.args.get('limit', 50))
-            min_delta = float(request.args.get('min_delta', 0.25))
-            max_delta = float(request.args.get('max_delta', 0.68))
-            verbose = request.args.get('verbose', 'true').lower() == 'true'
+            symbols = request.args.getlist('symbols')
+            sector_filter = request.args.get('sector', None)
+            min_score = float(request.args.get('min_score', 65))
+            scan_date = request.args.get('date', datetime.now().strftime('%Y-%m-%d'))
 
-        from enhanced_scanner import run_enhanced_scanner
-
-        results = run_enhanced_scanner(
-            symbols=None,  # Use default symbol list
-            min_delta=min_delta,
-            max_delta=max_delta
+        # Run enhanced scan
+        scanner = EnhancedOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
+        results = scanner.run_comprehensive_scan(
+            symbols=symbols if symbols else None,
+            sector_filter=sector_filter,
+            min_score=min_score
         )
 
-        if not results:
-            return jsonify({
-                "status": "no-results",
-                "message": "Enhanced scanner found no qualifying opportunities",
-                "symbols_processed": symbol_limit
-            })
+        return jsonify({
+            "status": "success",
+            "scan_date": scan_date,
+            "opportunities_found": len(results.get('opportunities', [])),
+            "top_picks": results.get('top_picks', [])[:10],
+            "market_regime": results.get('market_regime', {})
+        })
 
-        # Calculate summary stats
-        confidence_scores = [
-            result.get('trade_plan', {}).get('validation_score', 0) 
-            for result in results.values()
-        ]
-        avg_confidence = sum(confidence_scores) / len(confidence_scores) if confidence_scores else 0
+    except Exception as e:
+        return jsonify({
+            "status": "error", 
+            "message": f"Enhanced scan failed: {str(e)}"
+        }), 500
+
+
+@app.route("/explosive-scan", methods=["GET", "POST"])
+def run_explosive_scan():
+    """Run the new explosive options scanner"""
+    try:
+        from explosive_options_scanner import ExplosiveOptionsScanner
+
+        # Get parameters
+        if request.method == 'POST' and request.is_json:
+            data = request.get_json()
+            scan_type = data.get('scan_type', 'comprehensive')
+            symbols = data.get('symbols', None)
+            filters = data.get('filters', {})
+        else:
+            scan_type = request.args.get('scan_type', 'comprehensive')
+            symbols = request.args.getlist('symbols') or None
+            filters = {
+                'min_price': float(request.args.get('min_price', 0.05)),
+                'max_price': float(request.args.get('max_price', 5.00)),
+                'min_delta': float(request.args.get('min_delta', 0.10)),
+                'max_delta': float(request.args.get('max_delta', 0.40)),
+                'min_days': int(request.args.get('min_days', 1)),
+                'max_days': int(request.args.get('max_days', 30))
+            }
+
+        # Initialize scanner
+        scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
+
+        # Run scan
+        results = scanner.run_explosive_scan(
+            symbols=symbols,
+            scan_type=scan_type,
+            filters=filters
+        )
 
         return jsonify({
-            "status": "completed",
-            "message": f"Enhanced scan completed successfully",
-            "opportunities_found": len(results),
-            "average_confidence": round(avg_confidence, 1),
-            "high_confidence_count": len([s for s in confidence_scores if s >= 70]),
-            "symbols_with_market_data": len([r for r in results.values() if r.get('market_data')]),
-            "top_opportunities": [
-                {
-                    "symbol": symbol,
-                    "confluence_score": data.get('confluence', {}).get('score', 0),
-                    "confidence": data.get('trade_plan', {}).get('validation_score', 0),
-                    "risk_level": data.get('trade_plan', {}).get('risk_level', 'UNKNOWN')
-                }
-                for symbol, data in list(results.items())[:5]
-            ]
+            "status": "success",
+            "scan_type": scan_type,
+            "opportunities_found": len(results['opportunities']),
+            "top_picks": results['top_picks'][:5],
+            "summary": results['summary']
         })
 
     except Exception as e:
         return jsonify({
             "status": "error",
-            "message": f"Enhanced scan failed: {str(e)}"
+            "message": f"Explosive scan failed: {str(e)}"
+        }), 500
+
+
+@app.route("/monitor-positions", methods=["GET"])
+def monitor_positions():
+    """Monitor active positions with adaptive system"""
+    try:
+        from explosive_options_scanner import ExplosiveOptionsScanner
+
+        scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
+        monitoring_results = scanner.monitor_active_positions()
+
+        return jsonify({
+            "status": "success",
+            "positions_monitored": monitoring_results['positions_monitored'],
+            "alerts": monitoring_results['alerts'],
+            "exit_signals": monitoring_results['exit_signals'],
+            "summary_actions": monitoring_results['summary_actions']
+        })
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Monitoring failed: {str(e)}"
+        }), 500
+
+
+@app.route("/market-regime", methods=["GET"])
+def get_market_regime():
+    """Get current market regime and trading adjustments"""
+    try:
+        from adaptive_market_monitor import AdaptiveMarketMonitor
+
+        monitor = AdaptiveMarketMonitor(os.getenv('ALPHA_VANTAGE_API_KEY'))
+        regime_update = monitor.update_market_regime()
+
+        return jsonify({
+            "status": "success",
+            "current_regime": regime_update['current_regime'],
+            "changes": regime_update['changes'],
+            "trading_adjustments": regime_update['trading_adjustments'],
+            "timestamp": regime_update['timestamp']
+        })
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Market regime analysis failed: {str(e)}"
         }), 500
 
 
@@ -745,10 +818,10 @@ def test_earnings_verbose():
     """Test endpoint to debug earnings discovery with full verbose output"""
     try:
         from enhanced_scanner import discover_pre_earnings_stocks
-        
+
         print("🧪 Running verbose earnings test...")
         pre_earnings_stocks = discover_pre_earnings_stocks(verbose=True)
-        
+
         return jsonify({
             "status": "success",
             "test_type": "verbose_earnings_discovery",
@@ -756,7 +829,7 @@ def test_earnings_verbose():
             "candidates": pre_earnings_stocks,
             "message": f"Verbose test complete - found {len(pre_earnings_stocks)} candidates"
         })
-        
+
     except Exception as e:
         return jsonify({
             "status": "error",
@@ -771,38 +844,38 @@ def get_earnings_calendar():
         import os
         import requests
         from datetime import datetime
-        
+
         api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
         if not api_key:
             return jsonify({
                 "status": "error",
                 "message": "ALPHA_VANTAGE_API_KEY not configured"
             }), 500
-        
+
         # Get horizon parameter (default 3month)
         horizon = request.args.get('horizon', '3month')
         show_all = request.args.get('show_all', 'false').lower() == 'true'
-        
+
         url = f'https://www.alphavantage.co/query?function=EARNINGS_CALENDAR&horizon={horizon}&apikey={api_key}'
-        
+
         print(f"📅 Fetching earnings calendar from Alpha Vantage (horizon: {horizon})...")
         response = requests.get(url, timeout=30)
         response.raise_for_status()
-        
+
         # Parse CSV response
         lines = response.text.strip().split('\n')
-        
+
         if len(lines) < 2:
             return jsonify({
                 "status": "no_data",
                 "message": "No earnings data returned from Alpha Vantage",
                 "raw_response": response.text[:500]
             })
-        
+
         # Parse CSV into JSON
         headers = lines[0].split(',')
         earnings_data = []
-        
+
         for line in lines[1:]:
             fields = line.split(',')
             if len(fields) >= len(headers):
@@ -810,12 +883,12 @@ def get_earnings_calendar():
                 for i, header in enumerate(headers):
                     earnings_record[header.strip().strip('"')] = fields[i].strip().strip('"')
                 earnings_data.append(earnings_record)
-        
+
         # Filter for next 21 days
         current_date = datetime.now().date()
         upcoming_earnings = []
         alphabet_breakdown = {}
-        
+
         for record in earnings_data:
             try:
                 symbol = record.get('symbol', '')
@@ -823,20 +896,20 @@ def get_earnings_calendar():
                 if earnings_date_str and symbol:
                     earnings_date = datetime.strptime(earnings_date_str, '%Y-%m-%d').date()
                     days_to_earnings = (earnings_date - current_date).days
-                    
+
                     if 0 <= days_to_earnings <= 21:
                         record['days_to_earnings'] = days_to_earnings
                         upcoming_earnings.append(record)
-                        
+
                         # Track alphabet distribution
                         first_letter = symbol[0] if symbol else 'Unknown'
                         alphabet_breakdown[first_letter] = alphabet_breakdown.get(first_letter, 0) + 1
             except:
                 continue
-        
+
         # Sort upcoming earnings by date
         upcoming_earnings.sort(key=lambda x: x.get('days_to_earnings', 999))
-        
+
         response_data = {
             "status": "success",
             "horizon": horizon,
@@ -845,7 +918,7 @@ def get_earnings_calendar():
             "alphabet_breakdown": alphabet_breakdown,
             "query_time": datetime.now().isoformat()
         }
-        
+
         if show_all:
             response_data["all_upcoming"] = upcoming_earnings
         else:
@@ -854,9 +927,9 @@ def get_earnings_calendar():
                 record for record in upcoming_earnings 
                 if record.get('symbol', '') in ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'NFLX', 'JPM', 'BAC']
             ]
-        
+
         return jsonify(response_data)
-        
+
     except Exception as e:
         return jsonify({
             "status": "error",
