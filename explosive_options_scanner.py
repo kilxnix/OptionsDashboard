@@ -250,7 +250,7 @@ class ExplosiveOptionsScanner:
         if self.scan_config['focus_list']:
             symbols = self.scan_config['focus_list'] + [s for s in symbols if s not in self.scan_config['focus_list']]
 
-        return symbols[:100]  # Cap at 100 for performance
+        return symbols[:20]  # Cap at 20 to avoid rate limits
 
     def _get_pre_earnings_stocks(self) -> List[str]:
         """Get stocks with upcoming earnings"""
@@ -318,7 +318,7 @@ class ExplosiveOptionsScanner:
         """Fetch comprehensive market data for a symbol using Alpha Vantage"""
         try:
             # Add rate limiting delay
-            time.sleep(0.5)
+            time.sleep(1.0)  # Increased delay to avoid rate limits
             
             # Fetch daily data from Alpha Vantage
             url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=compact&apikey={self.av_key}'
@@ -326,11 +326,11 @@ class ExplosiveOptionsScanner:
             data = response.json()
 
             if 'Information' in data and 'premium@alphavantage.co' in data['Information']:
-                print(f"Alpha Vantage error for {symbol}: {data['Information']}")
+                print(f"⏳ API quota exceeded for {symbol}")
                 return None
                 
             if 'Information' in data and 'rate limit' in data['Information'].lower():
-                print(f"⏳ Rate limit reached for {symbol}")
+                print(f"⏳ Rate limit reached for {symbol} - waiting...")
                 time.sleep(60)
                 return None
 
@@ -507,11 +507,29 @@ class ExplosiveOptionsScanner:
                             elif col == 'mark':
                                 df[col] = 0.5  # Default mark
                     
-                    # Convert all numeric columns to proper types
+                    # Convert all numeric columns to proper types with comprehensive error handling
                     numeric_cols = ['mark', 'strike', 'volume', 'openInterest', 'delta', 'gamma', 'theta', 'impliedVolatility']
                     for col in numeric_cols:
                         if col in df.columns:
-                            df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0.1 if col == 'mark' else 0)
+                            # Convert to numeric, handling strings and other types
+                            df[col] = pd.to_numeric(df[col], errors='coerce')
+                            # Fill NaN values with appropriate defaults
+                            if col == 'mark':
+                                df[col] = df[col].fillna(0.5)
+                            elif col == 'strike':
+                                df[col] = df[col].fillna(100)
+                            elif col in ['volume', 'openInterest']:
+                                df[col] = df[col].fillna(50)
+                            elif col == 'delta':
+                                df[col] = df[col].fillna(0.3)
+                            elif col == 'gamma':
+                                df[col] = df[col].fillna(0.01)
+                            elif col == 'theta':
+                                df[col] = df[col].fillna(-0.05)
+                            elif col == 'impliedVolatility':
+                                df[col] = df[col].fillna(0.25)
+                            else:
+                                df[col] = df[col].fillna(0)
 
                     return df
 
@@ -569,11 +587,29 @@ class ExplosiveOptionsScanner:
                     if col not in df.columns:
                         df[col] = default_val
 
-                # Convert all numeric columns to proper types
+                # Convert all numeric columns to proper types with comprehensive error handling
                 numeric_cols = ['mark', 'strike', 'volume', 'openInterest', 'delta', 'gamma', 'theta', 'impliedVolatility']
                 for col in numeric_cols:
                     if col in df.columns:
-                        df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0 if col in ['volume', 'openInterest'] else 0.1)
+                        # Convert to numeric, handling strings and other types
+                        df[col] = pd.to_numeric(df[col], errors='coerce')
+                        # Fill NaN values with appropriate defaults
+                        if col == 'mark':
+                            df[col] = df[col].fillna(0.5)
+                        elif col == 'strike':
+                            df[col] = df[col].fillna(100)
+                        elif col in ['volume', 'openInterest']:
+                            df[col] = df[col].fillna(50)
+                        elif col == 'delta':
+                            df[col] = df[col].fillna(0.3)
+                        elif col == 'gamma':
+                            df[col] = df[col].fillna(0.01)
+                        elif col == 'theta':
+                            df[col] = df[col].fillna(-0.05)
+                        elif col == 'impliedVolatility':
+                            df[col] = df[col].fillna(0.25)
+                        else:
+                            df[col] = df[col].fillna(0)
 
                 return df
 

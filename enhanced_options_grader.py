@@ -110,8 +110,18 @@ class EnhancedOptionsGrader:
         """
         score = 0
         
+        # Convert strings to numbers safely
+        try:
+            volume = float(option_data.get('volume', 0))
+        except (ValueError, TypeError):
+            volume = 0
+            
+        try:
+            oi = float(option_data.get('open_interest', 0))
+        except (ValueError, TypeError):
+            oi = 0
+        
         # Volume check
-        volume = option_data.get('volume', 0)
         if volume >= 1000:
             score += 8
         elif volume >= 500:
@@ -124,7 +134,6 @@ class EnhancedOptionsGrader:
             return 0  # Reject if volume too low
         
         # Open Interest check
-        oi = option_data.get('open_interest', 0)
         if oi >= 5000:
             score += 5
         elif oi >= 1000:
@@ -143,8 +152,13 @@ class EnhancedOptionsGrader:
                 score += 2
         
         # Bid-ask spread
-        bid = option_data.get('bid', 0)
-        ask = option_data.get('ask', float('inf'))
+        try:
+            bid = float(option_data.get('bid', 0))
+            ask = float(option_data.get('ask', 0))
+        except (ValueError, TypeError):
+            bid = 0
+            ask = 0
+            
         if bid > 0 and ask > 0:
             spread = (ask - bid) / ask
             if spread <= 0.05:
@@ -165,10 +179,31 @@ class EnhancedOptionsGrader:
         """
         score = 0
         
-        delta = abs(option_data.get('delta', 0))
-        gamma = option_data.get('gamma', 0)
-        theta = option_data.get('theta', 0)
-        vega = option_data.get('vega', 0)
+        # Convert strings to numbers safely
+        try:
+            delta = abs(float(option_data.get('delta', 0)))
+        except (ValueError, TypeError):
+            delta = 0
+            
+        try:
+            gamma = float(option_data.get('gamma', 0))
+        except (ValueError, TypeError):
+            gamma = 0
+            
+        try:
+            theta = float(option_data.get('theta', 0))
+        except (ValueError, TypeError):
+            theta = 0
+            
+        try:
+            vega = float(option_data.get('vega', 0))
+        except (ValueError, TypeError):
+            vega = 0
+            
+        try:
+            mark = float(option_data.get('mark', 1))
+        except (ValueError, TypeError):
+            mark = 1
         
         # Delta scoring - prefer 0.15-0.35 for explosive moves
         if 0.15 <= delta <= 0.35:
@@ -189,7 +224,7 @@ class EnhancedOptionsGrader:
             score += 1
         
         # Theta scoring - penalize high decay
-        theta_per_dollar = abs(theta) / option_data.get('mark', 1)
+        theta_per_dollar = abs(theta) / max(mark, 0.01)
         if theta_per_dollar <= 0.05:
             score += 4  # Low decay rate
         elif theta_per_dollar <= 0.10:
@@ -213,15 +248,23 @@ class EnhancedOptionsGrader:
         """
         score = 0
         
+        # Convert strings to numbers safely
+        try:
+            volume = float(option_data.get('volume', 0))
+        except (ValueError, TypeError):
+            volume = 0
+            
+        try:
+            oi = float(option_data.get('open_interest', 0))
+        except (ValueError, TypeError):
+            oi = 0
+        
         # Get historical averages from Alpha Vantage
         symbol = option_data['symbol']
-        historical_data = self._fetch_option_history(symbol, option_data['strike'], option_data['type'])
+        historical_data = self._fetch_option_history(symbol, option_data.get('strike', 0), option_data.get('type', 'call'))
         
         if not historical_data:
             # Fallback to basic unusual activity detection
-            volume = option_data.get('volume', 0)
-            oi = option_data.get('open_interest', 0)
-            
             if volume > 0 and oi > 0:
                 vol_oi = volume / oi
                 if vol_oi >= 1.0:
