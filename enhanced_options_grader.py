@@ -415,9 +415,9 @@ class EnhancedOptionsGrader:
         try:
             # Handle different date formats from Alpha Vantage
             expiration = option_data.get('expiration', '')
-            if isinstance(expiration, str):
+            if isinstance(expiration, str) and expiration:
                 # Try different date formats
-                for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S']:
+                for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S', '%m-%d-%Y']:
                     try:
                         exp_date = datetime.strptime(expiration, fmt)
                         break
@@ -426,11 +426,17 @@ class EnhancedOptionsGrader:
                 else:
                     # If no format works, default to 30 days
                     exp_date = datetime.now() + timedelta(days=30)
+            elif expiration and not isinstance(expiration, str):
+                try:
+                    exp_date = pd.to_datetime(expiration)
+                except:
+                    exp_date = datetime.now() + timedelta(days=30)
             else:
-                exp_date = pd.to_datetime(expiration)
+                exp_date = datetime.now() + timedelta(days=30)
             
             days_to_expiry = max(1, (exp_date - datetime.now()).days)
-        except:
+        except Exception as e:
+            print(f"Error parsing expiration date '{expiration}': {e}")
             days_to_expiry = 30  # Default fallback
         
         # Base holding period on gamma level
@@ -530,9 +536,9 @@ class EnhancedOptionsGrader:
         # Time risk
         try:
             expiration = option_data.get('expiration', '')
-            if isinstance(expiration, str):
+            if isinstance(expiration, str) and expiration:
                 # Try different date formats
-                for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S']:
+                for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S', '%m-%d-%Y']:
                     try:
                         exp_date = datetime.strptime(expiration, fmt)
                         break
@@ -540,11 +546,17 @@ class EnhancedOptionsGrader:
                         continue
                 else:
                     exp_date = datetime.now() + timedelta(days=30)
+            elif expiration and not isinstance(expiration, str):
+                try:
+                    exp_date = pd.to_datetime(expiration)
+                except:
+                    exp_date = datetime.now() + timedelta(days=30)
             else:
-                exp_date = pd.to_datetime(expiration)
+                exp_date = datetime.now() + timedelta(days=30)
             
             days_to_expiry = max(1, (exp_date - datetime.now()).days)
-        except:
+        except Exception as e:
+            print(f"Error parsing expiration in risk assessment '{expiration}': {e}")
             days_to_expiry = 30
             
         if days_to_expiry < 7:
