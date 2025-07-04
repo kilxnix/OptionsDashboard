@@ -132,12 +132,14 @@ class ExplosiveOptionsScanner:
             
             # Get options chains
             options_data = self._fetch_all_options(symbol)
-            if not options_data or options_data.empty:
+            if options_data is None or options_data.empty:
                 return None
             
             # Apply initial filters
             if filters:
                 options_data = self._apply_filters(options_data, filters)
+                if options_data.empty:
+                    return None
             
             # Score all options
             scored_options = []
@@ -368,46 +370,70 @@ class ExplosiveOptionsScanner:
                     options = ticker.option_chain(exp_date)
                     
                     # Process calls
-                    calls = options.calls.copy()
-                    calls['type'] = 'call'
-                    calls['expiration'] = exp_date
-                    calls['symbol'] = symbol
+                    if not options.calls.empty:
+                        calls = options.calls.copy()
+                        calls['type'] = 'call'
+                        calls['expiration'] = exp_date
+                        calls['symbol'] = symbol
+                        all_options.append(calls)
                     
                     # Process puts
-                    puts = options.puts.copy()
-                    puts['type'] = 'put'
-                    puts['expiration'] = exp_date
-                    puts['symbol'] = symbol
+                    if not options.puts.empty:
+                        puts = options.puts.copy()
+                        puts['type'] = 'put'
+                        puts['expiration'] = exp_date
+                        puts['symbol'] = symbol
+                        all_options.append(puts)
                     
-                    all_options.extend([calls, puts])
-                    
-                except:
+                except Exception as e:
+                    print(f"Error fetching options for {symbol} {exp_date}: {e}")
                     continue
             
             if all_options:
                 combined = pd.concat(all_options, ignore_index=True)
                 
-                # Standardize columns
-                combined['mark'] = combined['lastPrice']
+                # Standardize columns - handle missing columns gracefully
+                if 'lastPrice' in combined.columns:
+                    combined['mark'] = combined['lastPrice']
+                elif 'ask' in combined.columns and 'bid' in combined.columns:
+                    combined['mark'] = (combined['ask'] + combined['bid']) / 2
+                else:
+                    combined['mark'] = 0.5  # Default fallback
                 
                 # Add days to expiration
                 combined['days_to_expiry'] = (pd.to_datetime(combined['expiration']) - datetime.now()).dt.days
+                
+                # Ensure required columns exist
+                required_columns = ['volume', 'openInterest', 'delta', 'gamma', 'theta', 'impliedVolatility']
+                for col in required_columns:
+                    if col not in combined.columns:
+                        combined[col] = 0  # Default value
+                
+                # Standardize column names
+                if 'openInterest' in combined.columns:
+                    combined['open_interest'] = combined['openInterest']
+                if 'impliedVolatility' in combined.columns:
+                    combined['implied_volatility'] = combined['impliedVolatility']
                 
                 return combined
             
             return None
             
-        except:
+        except Exception as e:
+            print(f"Error fetching options for {symbol}: {e}")
             return None
     
     def _apply_filters(self, options_data: pd.DataFrame, filters: Dict) -> pd.DataFrame:
         """Apply filters to options data"""
+        if options_data is None or options_data.empty:
+            return pd.DataFrame()
+            
         filtered = options_data.copy()
         
         # Price filters
-        if 'min_price' in filters:
+        if 'min_price' in filters and 'mark' in filtered.columns:
             filtered = filtered[filtered['mark'] >= filters['min_price']]
-        if 'max_price' in filters:
+        if 'max_price' in filters and 'mark' in filtered.columns:
             filtered = filtered[filtered['mark'] <= filters['max_price']]
         
         # Delta filters
@@ -417,13 +443,13 @@ class ExplosiveOptionsScanner:
             filtered = filtered[filtered['delta'].abs() <= filters['max_delta']]
         
         # Days to expiry
-        if 'min_days' in filters:
+        if 'min_days' in filters and 'days_to_expiry' in filtered.columns:
             filtered = filtered[filtered['days_to_expiry'] >= filters['min_days']]
-        if 'max_days' in filters:
+        if 'max_days' in filters and 'days_to_expiry' in filtered.columns:
             filtered = filtered[filtered['days_to_expiry'] <= filters['max_days']]
         
         # Volume filter
-        if 'min_volume' in filters:
+        if 'min_volume' in filters and 'volume' in filtered.columns:
             filtered = filtered[filtered['volume'] >= filters['min_volume']]
         
         return filtered
