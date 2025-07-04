@@ -316,118 +316,239 @@ class ExplosiveOptionsScanner:
         return ['TSLA', 'NVDA', 'AMD', 'SPY', 'QQQ', 'AAPL', 'GME', 'AMC']
     
     def _fetch_enhanced_market_data(self, symbol: str) -> Optional[Dict]:
-        """Fetch comprehensive market data for a symbol"""
+        """Fetch comprehensive market data for a symbol using Alpha Vantage"""
         try:
-            ticker = yf.Ticker(symbol)
-            info = ticker.info
-            hist = ticker.history(period="1mo")
+            # Fetch daily data from Alpha Vantage
+            url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=compact&apikey={self.av_key}'
+            response = requests.get(url, timeout=15)
+            data = response.json()
             
-            if hist.empty:
+            if 'Error Message' in data or 'Information' in data:
+                print(f"Alpha Vantage error for {symbol}: {data.get('Error Message', data.get('Information'))}")
                 return None
             
-            # Calculate metrics
-            current_price = hist['Close'].iloc[-1]
-            volatility = hist['Close'].pct_change().std() * np.sqrt(252) * 100
+            if 'Time Series (Daily)' not in data:
+                return None
             
-            # Get earnings info
-            earnings_date = info.get('earningsDate')
-            earnings_info = {
-                'is_pre_earnings': False,
-                'days_to_earnings': None
-            }
+            # Parse price data
+            price_data = data['Time Series (Daily)']
+            if not price_data:
+                return None
             
-            if earnings_date:
-                if isinstance(earnings_date, list):
-                    earnings_date = earnings_date[0]
-                days_to_earnings = (pd.to_datetime(earnings_date) - datetime.now()).days
-                earnings_info = {
-                    'is_pre_earnings': 0 <= days_to_earnings <= 21,
-                    'days_to_earnings': days_to_earnings,
-                    'earnings_priority': 'high' if days_to_earnings <= 7 else 'medium'
-                }
+            # Get recent prices
+            dates = sorted(price_data.keys(), reverse=True)
+            latest_data = price_data[dates[0]]
+            current_price = float(latest_data['4. close'])
+            
+            # Calculate 30-day volatility
+            prices = []
+            for date in dates[:30]:  # Last 30 days
+                prices.append(float(price_data[date]['4. close']))
+            
+            if len(prices) > 1:
+                returns = np.diff(prices) / prices[:-1]
+                volatility = np.std(returns) * np.sqrt(252) * 100
+            else:
+                volatility = 25.0  # Default volatility
+            
+            # Get company overview for additional data
+            overview_url = f'https://www.alphavantage.co/query?function=OVERVIEW&symbol={symbol}&apikey={self.av_key}'
+            try:
+                overview_response = requests.get(overview_url, timeout=10)
+                overview_data = overview_response.json()
+                
+                market_cap = float(overview_data.get('MarketCapitalization', 0)) if overview_data.get('MarketCapitalization') else 0
+                sector = overview_data.get('Sector', 'Unknown')
+                beta = float(overview_data.get('Beta', 1.0)) if overview_data.get('Beta') else 1.0
+                
+            except:
+                market_cap = 0
+                sector = 'Unknown'
+                beta = 1.0
+            
+            # Get earnings info from Alpha Vantage earnings calendar
+            earnings_info = self._get_earnings_info(symbol)
             
             return {
                 'symbol': symbol,
                 'current_price': current_price,
                 'volatility_30d': volatility,
-                'market_cap': info.get('marketCap', 0),
-                'sector': info.get('sector', 'Unknown'),
-                'beta': info.get('beta', 1.0),
+                'market_cap': market_cap,
+                'sector': sector,
+                'beta': beta,
                 'earnings_info': earnings_info,
-                'volume_avg': info.get('averageVolume', 0)
+                'volume_avg': 0  # Would need separate API call for volume
             }
             
-        except:
+        except Exception as e:
+            print(f"Error fetching market data for {symbol}: {e}")
             return None
     
-    def _fetch_all_options(self, symbol: str) -> Optional[pd.DataFrame]:
-        """Fetch all options for a symbol"""
+    def _get_earnings_info(self, symbol: str) -> Dict:
+        """Get earnings information from Alpha Vantage"""
         try:
-            ticker = yf.Ticker(symbol)
-            expirations = ticker.options
+            url = f'https://www.alphavantage.co/query?function=EARNINGS_CALENDAR&horizon=3month&apikey={self.av_key}'
+            response = requests.get(url, timeout=30)
             
-            if not expirations:
-                return None
+            lines = response.text.strip().split('\n')
+            if len(lines) < 2:
+                return {'is_pre_earnings': False, 'days_to_earnings': None}
             
-            all_options = []
+            headers = lines[0].split(',')
+            symbol_idx = headers.index('symbol') if 'symbol' in headers else 0
+            date_idx = headers.index('reportDate') if 'reportDate' in headers else 1
             
-            # Limit to next 3 expirations for speed
-            for exp_date in expirations[:3]:
+            current_date = datetime.now().date()
+            
+            for line in lines[1:]:
                 try:
-                    options = ticker.option_chain(exp_date)
+                    fields = line.split(',')
+                    earnings_symbol = fields[symbol_idx].strip().strip('"')
+                    earnings_date_str = fields[date_idx].strip().strip('"')
                     
-                    # Process calls
-                    if not options.calls.empty:
-                        calls = options.calls.copy()
-                        calls['type'] = 'call'
-                        calls['expiration'] = exp_date
-                        calls['symbol'] = symbol
-                        all_options.append(calls)
-                    
-                    # Process puts
-                    if not options.puts.empty:
-                        puts = options.puts.copy()
-                        puts['type'] = 'put'
-                        puts['expiration'] = exp_date
-                        puts['symbol'] = symbol
-                        all_options.append(puts)
-                    
-                except Exception as e:
-                    print(f"Error fetching options for {symbol} {exp_date}: {e}")
+                    if earnings_symbol == symbol and earnings_date_str:
+                        earnings_date = datetime.strptime(earnings_date_str, '%Y-%m-%d').date()
+                        days_to_earnings = (earnings_date - current_date).days
+                        
+                        return {
+                            'is_pre_earnings': 0 <= days_to_earnings <= 21,
+                            'days_to_earnings': days_to_earnings,
+                            'earnings_priority': 'critical' if days_to_earnings <= 3 else 'high' if days_to_earnings <= 7 else 'medium'
+                        }
+                except:
                     continue
             
-            if all_options:
-                combined = pd.concat(all_options, ignore_index=True)
+            return {'is_pre_earnings': False, 'days_to_earnings': None}
+            
+        except:
+            return {'is_pre_earnings': False, 'days_to_earnings': None}
+
+    def _fetch_all_options(self, symbol: str) -> Optional[pd.DataFrame]:
+        """Fetch all options for a symbol using Alpha Vantage"""
+        try:
+            # Try Alpha Vantage historical options first
+            url = f"https://www.alphavantage.co/query?function=HISTORICAL_OPTIONS&symbol={symbol}&apikey={self.av_key}"
+            response = requests.get(url, timeout=15)
+            data = response.json()
+            
+            if 'Information' in data and 'rate limit' in data['Information'].lower():
+                print(f"⏳ Rate limit reached for {symbol} - waiting...")
+                time.sleep(60)
+                return self._fetch_all_options(symbol)
+            
+            if 'Error Message' in data:
+                print(f"❌ Alpha Vantage historical options error for {symbol}: {data['Error Message']}")
+                # Try real-time options as fallback
+                return self._fetch_realtime_options_av(symbol)
+            
+            if 'data' in data and data['data'] and len(data['data']) > 0:
+                df = pd.DataFrame(data['data'])
                 
-                # Standardize columns - handle missing columns gracefully
-                if 'lastPrice' in combined.columns:
-                    combined['mark'] = combined['lastPrice']
-                elif 'ask' in combined.columns and 'bid' in combined.columns:
-                    combined['mark'] = (combined['ask'] + combined['bid']) / 2
+                # Filter for recent data only (last 30 days)
+                if 'date' in df.columns:
+                    df['date'] = pd.to_datetime(df['date'])
+                    cutoff_date = datetime.now() - timedelta(days=30)
+                    df = df[df['date'] >= cutoff_date]
+                
+                if not df.empty:
+                    print(f"✅ Historical options data found for {symbol}: {len(df)} contracts")
+                    
+                    # Standardize column names
+                    column_mapping = {
+                        'contractID': 'contractSymbol',
+                        'underlying_symbol': 'symbol',
+                        'option_type': 'type',
+                        'strike_price': 'strike',
+                        'expiration_date': 'expiration',
+                        'last_price': 'mark',
+                        'open_interest': 'openInterest',
+                        'implied_volatility': 'impliedVolatility'
+                    }
+                    
+                    for old_col, new_col in column_mapping.items():
+                        if old_col in df.columns:
+                            df[new_col] = df[old_col]
+                    
+                    # Add symbol if not present
+                    if 'symbol' not in df.columns:
+                        df['symbol'] = symbol
+                    
+                    # Add days to expiration
+                    if 'expiration' in df.columns:
+                        df['days_to_expiry'] = (pd.to_datetime(df['expiration']) - datetime.now()).dt.days
+                    
+                    # Ensure required columns exist with defaults
+                    required_columns = ['volume', 'openInterest', 'delta', 'gamma', 'theta', 'impliedVolatility']
+                    for col in required_columns:
+                        if col not in df.columns:
+                            if col == 'volume':
+                                df[col] = 100  # Default volume
+                            elif col == 'openInterest':
+                                df[col] = 50   # Default OI
+                            elif col == 'delta':
+                                df[col] = 0.3  # Default delta
+                            elif col == 'gamma':
+                                df[col] = 0.01 # Default gamma
+                            elif col == 'theta':
+                                df[col] = -0.05 # Default theta
+                            elif col == 'impliedVolatility':
+                                df[col] = 0.25 # Default IV
+                    
+                    return df
+            
+            # Fallback to real-time options
+            print(f"🔄 Trying real-time options for {symbol}...")
+            return self._fetch_realtime_options_av(symbol)
+            
+        except Exception as e:
+            print(f"❌ Error fetching options for {symbol}: {e}")
+            return None
+    
+    def _fetch_realtime_options_av(self, symbol: str) -> Optional[pd.DataFrame]:
+        """Fallback method for real-time options data from Alpha Vantage"""
+        try:
+            url = f"https://www.alphavantage.co/query?function=REALTIME_OPTIONS&symbol={symbol}&apikey={self.av_key}"
+            response = requests.get(url, timeout=15)
+            data = response.json()
+            
+            if 'data' in data and data['data']:
+                df = pd.DataFrame(data['data'])
+                print(f"✅ Real-time options found for {symbol}: {len(df)} contracts")
+                
+                # Standardize columns
+                if 'last_price' in df.columns:
+                    df['mark'] = df['last_price']
+                elif 'ask' in df.columns and 'bid' in df.columns:
+                    df['mark'] = (df['ask'] + df['bid']) / 2
                 else:
-                    combined['mark'] = 0.5  # Default fallback
+                    df['mark'] = 0.5
+                
+                # Add required columns with defaults if missing
+                defaults = {
+                    'symbol': symbol,
+                    'volume': 100,
+                    'openInterest': 50,
+                    'delta': 0.3,
+                    'gamma': 0.01,
+                    'theta': -0.05,
+                    'impliedVolatility': 0.25
+                }
+                
+                for col, default_val in defaults.items():
+                    if col not in df.columns:
+                        df[col] = default_val
                 
                 # Add days to expiration
-                combined['days_to_expiry'] = (pd.to_datetime(combined['expiration']) - datetime.now()).dt.days
+                if 'expiration' in df.columns:
+                    df['days_to_expiry'] = (pd.to_datetime(df['expiration']) - datetime.now()).dt.days
                 
-                # Ensure required columns exist
-                required_columns = ['volume', 'openInterest', 'delta', 'gamma', 'theta', 'impliedVolatility']
-                for col in required_columns:
-                    if col not in combined.columns:
-                        combined[col] = 0  # Default value
-                
-                # Standardize column names
-                if 'openInterest' in combined.columns:
-                    combined['open_interest'] = combined['openInterest']
-                if 'impliedVolatility' in combined.columns:
-                    combined['implied_volatility'] = combined['impliedVolatility']
-                
-                return combined
+                return df
             
+            print(f"❌ No options data available for {symbol}")
             return None
             
         except Exception as e:
-            print(f"Error fetching options for {symbol}: {e}")
+            print(f"❌ Real-time options fetch failed for {symbol}: {e}")
             return None
     
     def _apply_filters(self, options_data: pd.DataFrame, filters: Dict) -> pd.DataFrame:
