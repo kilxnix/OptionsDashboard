@@ -402,9 +402,36 @@ class EnhancedOptionsGrader:
         """
         Determine optimal holding period based on Greeks
         """
-        gamma = option_data.get('gamma', 0)
-        theta = option_data.get('theta', 0)
-        days_to_expiry = (pd.to_datetime(option_data['expiration']) - datetime.now()).days
+        try:
+            gamma = float(option_data.get('gamma', 0))
+        except (ValueError, TypeError):
+            gamma = 0
+            
+        try:
+            theta = float(option_data.get('theta', 0))
+        except (ValueError, TypeError):
+            theta = 0
+        
+        try:
+            # Handle different date formats from Alpha Vantage
+            expiration = option_data.get('expiration', '')
+            if isinstance(expiration, str):
+                # Try different date formats
+                for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S']:
+                    try:
+                        exp_date = datetime.strptime(expiration, fmt)
+                        break
+                    except ValueError:
+                        continue
+                else:
+                    # If no format works, default to 30 days
+                    exp_date = datetime.now() + timedelta(days=30)
+            else:
+                exp_date = pd.to_datetime(expiration)
+            
+            days_to_expiry = max(1, (exp_date - datetime.now()).days)
+        except:
+            days_to_expiry = 30  # Default fallback
         
         # Base holding period on gamma level
         if gamma >= 0.02:
@@ -501,7 +528,25 @@ class EnhancedOptionsGrader:
             risk_score += 20  # High decay
         
         # Time risk
-        days_to_expiry = (pd.to_datetime(option_data['expiration']) - datetime.now()).days
+        try:
+            expiration = option_data.get('expiration', '')
+            if isinstance(expiration, str):
+                # Try different date formats
+                for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S']:
+                    try:
+                        exp_date = datetime.strptime(expiration, fmt)
+                        break
+                    except ValueError:
+                        continue
+                else:
+                    exp_date = datetime.now() + timedelta(days=30)
+            else:
+                exp_date = pd.to_datetime(expiration)
+            
+            days_to_expiry = max(1, (exp_date - datetime.now()).days)
+        except:
+            days_to_expiry = 30
+            
         if days_to_expiry < 7:
             risk_score += 30
         

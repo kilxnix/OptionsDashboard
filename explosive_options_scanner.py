@@ -484,9 +484,27 @@ class ExplosiveOptionsScanner:
                     if 'symbol' not in df.columns:
                         df['symbol'] = symbol
 
-                    # Add days to expiration
+                    # Add days to expiration with error handling
                     if 'expiration' in df.columns:
-                        df['days_to_expiry'] = (pd.to_datetime(df['expiration']) - datetime.now()).dt.days
+                        try:
+                            # Handle different date formats
+                            def parse_expiration(exp_str):
+                                if pd.isna(exp_str) or exp_str == '':
+                                    return 30  # Default to 30 days
+                                
+                                # Try different formats
+                                for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S']:
+                                    try:
+                                        exp_date = datetime.strptime(str(exp_str), fmt)
+                                        return max(1, (exp_date - datetime.now()).days)
+                                    except ValueError:
+                                        continue
+                                return 30  # Default if no format works
+                            
+                            df['days_to_expiry'] = df['expiration'].apply(parse_expiration)
+                        except Exception as e:
+                            print(f"Error calculating days to expiry: {e}")
+                            df['days_to_expiry'] = 30  # Default fallback
 
                     # Ensure required columns exist with defaults and proper data types
                     required_columns = ['volume', 'openInterest', 'delta', 'gamma', 'theta', 'impliedVolatility', 'mark']
@@ -511,25 +529,45 @@ class ExplosiveOptionsScanner:
                     numeric_cols = ['mark', 'strike', 'volume', 'openInterest', 'delta', 'gamma', 'theta', 'impliedVolatility']
                     for col in numeric_cols:
                         if col in df.columns:
-                            # Convert to numeric, handling strings and other types
-                            df[col] = pd.to_numeric(df[col], errors='coerce')
-                            # Fill NaN values with appropriate defaults
-                            if col == 'mark':
-                                df[col] = df[col].fillna(0.5)
-                            elif col == 'strike':
-                                df[col] = df[col].fillna(100)
-                            elif col in ['volume', 'openInterest']:
-                                df[col] = df[col].fillna(50)
-                            elif col == 'delta':
-                                df[col] = df[col].fillna(0.3)
-                            elif col == 'gamma':
-                                df[col] = df[col].fillna(0.01)
-                            elif col == 'theta':
-                                df[col] = df[col].fillna(-0.05)
-                            elif col == 'impliedVolatility':
-                                df[col] = df[col].fillna(0.25)
-                            else:
-                                df[col] = df[col].fillna(0)
+                            try:
+                                # Convert to numeric, handling strings and other types
+                                df[col] = pd.to_numeric(df[col], errors='coerce')
+                                # Fill NaN values with appropriate defaults
+                                if col == 'mark':
+                                    df[col] = df[col].fillna(0.5)
+                                elif col == 'strike':
+                                    df[col] = df[col].fillna(100)
+                                elif col in ['volume', 'openInterest']:
+                                    df[col] = df[col].fillna(50)
+                                elif col == 'delta':
+                                    df[col] = df[col].fillna(0.3)
+                                elif col == 'gamma':
+                                    df[col] = df[col].fillna(0.01)
+                                elif col == 'theta':
+                                    df[col] = df[col].fillna(-0.05)
+                                elif col == 'impliedVolatility':
+                                    df[col] = df[col].fillna(0.25)
+                                else:
+                                    df[col] = df[col].fillna(0)
+                            except Exception as e:
+                                print(f"Error converting column {col}: {e}")
+                                # Set default values if conversion fails
+                                if col == 'mark':
+                                    df[col] = 0.5
+                                elif col == 'strike':
+                                    df[col] = 100
+                                elif col in ['volume', 'openInterest']:
+                                    df[col] = 50
+                                elif col == 'delta':
+                                    df[col] = 0.3
+                                elif col == 'gamma':
+                                    df[col] = 0.01
+                                elif col == 'theta':
+                                    df[col] = -0.05
+                                elif col == 'impliedVolatility':
+                                    df[col] = 0.25
+                                else:
+                                    df[col] = 0
 
                     return df
 
