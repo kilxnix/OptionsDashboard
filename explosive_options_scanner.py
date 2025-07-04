@@ -132,25 +132,30 @@ class ExplosiveOptionsScanner:
             
             # Get options chains
             options_data = self._fetch_all_options(symbol)
-            if options_data is None or options_data.empty:
+            if options_data is None or (hasattr(options_data, 'empty') and options_data.empty):
                 return None
             
             # Apply initial filters
             if filters:
                 options_data = self._apply_filters(options_data, filters)
-                if options_data.empty:
+                if hasattr(options_data, 'empty') and options_data.empty:
                     return None
             
             # Score all options
             scored_options = []
-            for idx, option in options_data.iterrows():
-                score, analysis = self.grader.calculate_option_score(option.to_dict(), market_data)
-                
-                if score >= self.scan_config['min_score']:
-                    option_dict = option.to_dict()
-                    option_dict['score_analysis'] = analysis
-                    option_dict['total_score'] = score
-                    scored_options.append(option_dict)
+            if hasattr(options_data, 'iterrows'):
+                for idx, option in options_data.iterrows():
+                    try:
+                        score, analysis = self.grader.calculate_option_score(option.to_dict(), market_data)
+                        
+                        if score >= self.scan_config['min_score']:
+                            option_dict = option.to_dict()
+                            option_dict['score_analysis'] = analysis
+                            option_dict['total_score'] = score
+                            scored_options.append(option_dict)
+                    except Exception as e:
+                        print(f"Error scoring option for {symbol}: {e}")
+                        continue
             
             if not scored_options:
                 return None
@@ -179,7 +184,9 @@ class ExplosiveOptionsScanner:
             }
             
         except Exception as e:
-            print(f"Error scanning {symbol}: {e}")
+            print(f"Error scanning {symbol}: {str(e)}")
+            import traceback
+            print(f"Stack trace: {traceback.format_exc()}")
             return None
     
     def monitor_active_positions(self) -> Dict:
