@@ -33,7 +33,7 @@ class ExplosiveOptionsScanner:
 
         # Scan configuration
         self.scan_config = {
-            'min_score': 60,  # Minimum score to consider
+            'min_score': 30,  # Minimum score to consider (lowered to find more opportunities)
             'max_positions': 10,  # Max concurrent positions
             'scan_frequency': 'continuous',  # or 'daily', 'hourly'
             'focus_list': []  # Symbols to prioritize
@@ -317,13 +317,25 @@ class ExplosiveOptionsScanner:
     def _fetch_enhanced_market_data(self, symbol: str) -> Optional[Dict]:
         """Fetch comprehensive market data for a symbol using Alpha Vantage"""
         try:
+            # Add rate limiting delay
+            time.sleep(0.5)
+            
             # Fetch daily data from Alpha Vantage
             url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=compact&apikey={self.av_key}'
             response = requests.get(url, timeout=15)
             data = response.json()
 
-            if 'Error Message' in data or 'Information' in data:
-                print(f"Alpha Vantage error for {symbol}: {data.get('Error Message', data.get('Information'))}")
+            if 'Information' in data and 'premium@alphavantage.co' in data['Information']:
+                print(f"Alpha Vantage error for {symbol}: {data['Information']}")
+                return None
+                
+            if 'Information' in data and 'rate limit' in data['Information'].lower():
+                print(f"⏳ Rate limit reached for {symbol}")
+                time.sleep(60)
+                return None
+
+            if 'Error Message' in data:
+                print(f"Alpha Vantage error for {symbol}: {data['Error Message']}")
                 return None
 
             if 'Time Series (Daily)' not in data:
@@ -476,8 +488,8 @@ class ExplosiveOptionsScanner:
                     if 'expiration' in df.columns:
                         df['days_to_expiry'] = (pd.to_datetime(df['expiration']) - datetime.now()).dt.days
 
-                    # Ensure required columns exist with defaults
-                    required_columns = ['volume', 'openInterest', 'delta', 'gamma', 'theta', 'impliedVolatility']
+                    # Ensure required columns exist with defaults and proper data types
+                    required_columns = ['volume', 'openInterest', 'delta', 'gamma', 'theta', 'impliedVolatility', 'mark']
                     for col in required_columns:
                         if col not in df.columns:
                             if col == 'volume':
@@ -492,6 +504,14 @@ class ExplosiveOptionsScanner:
                                 df[col] = -0.05 # Default theta
                             elif col == 'impliedVolatility':
                                 df[col] = 0.25 # Default IV
+                            elif col == 'mark':
+                                df[col] = 0.5  # Default mark
+                    
+                    # Convert all numeric columns to proper types
+                    numeric_cols = ['mark', 'strike', 'volume', 'openInterest', 'delta', 'gamma', 'theta', 'impliedVolatility']
+                    for col in numeric_cols:
+                        if col in df.columns:
+                            df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0.1 if col == 'mark' else 0)
 
                     return df
 
@@ -509,6 +529,16 @@ class ExplosiveOptionsScanner:
             url = f"https://www.alphavantage.co/query?function=REALTIME_OPTIONS&symbol={symbol}&apikey={self.av_key}"
             response = requests.get(url, timeout=15)
             data = response.json()
+
+            # Check for rate limiting
+            if 'Information' in data and 'rate limit' in data['Information'].lower():
+                print(f"⏳ Rate limit reached for {symbol} - waiting...")
+                time.sleep(60)
+                return None
+            
+            if 'Information' in data and 'premium@alphavantage.co' in data['Information']:
+                print(f"⏳ API quota exceeded for {symbol}")
+                return None
 
             if 'data' in data and data['data']:
                 df = pd.DataFrame(data['data'])
@@ -561,27 +591,38 @@ class ExplosiveOptionsScanner:
 
         filtered = options_data.copy()
 
+        # Ensure numeric columns are properly converted
+        numeric_cols = ['mark', 'delta', 'volume', 'days_to_expiry', 'strike']
+        for col in numeric_cols:
+            if col in filtered.columns:
+                filtered[col] = pd.to_numeric(filtered[col], errors='coerce')
+
         # Price filters
         if 'min_price' in filters and 'mark' in filtered.columns:
-            filtered = filtered[filtered['mark'] >= filters['min_price']]
+            filtered = filtered[pd.to_numeric(filtered['mark'], errors='coerce') >= filters['min_price']]
         if 'max_price' in filters and 'mark' in filtered.columns:
-            filtered = filtered[filtered['mark'] <= filters['max_price']]
+            filtered = filtered[pd.to_numeric(filtered['mark'], errors='coerce') <= filters['max_price']]
 
         # Delta filters
         if 'min_delta' in filters and 'delta' in filtered.columns:
-            filtered = filtered[filtered['delta'].abs() >= filters['min_delta']]
+            delta_numeric = pd.to_numeric(filtered['delta'], errors='coerce').abs()
+            filtered = filtered[delta_numeric >= filters['min_delta']]
         if 'max_delta' in filters and 'delta' in filtered.columns:
-            filtered = filtered[filtered['delta'].abs() <= filters['max_delta']]
+            delta_numeric = pd.to_numeric(filtered['delta'], errors='coerce').abs()
+            filtered = filtered[delta_numeric <= filters['max_delta']]
 
         # Days to expiry
         if 'min_days' in filters and 'days_to_expiry' in filtered.columns:
-            filtered = filtered[filtered['days_to_expiry'] >= filters['min_days']]
+            days_numeric = pd.to_numeric(filtered['days_to_expiry'], errors='coerce')
+            filtered = filtered[days_numeric >= filters['min_days']]
         if 'max_days' in filters and 'days_to_expiry' in filtered.columns:
-            filtered = filtered[filtered['days_to_expiry'] <= filters['max_days']]
+            days_numeric = pd.to_numeric(filtered['days_to_expiry'], errors='coerce')
+            filtered = filtered[days_numeric <= filters['max_days']]
 
         # Volume filter
         if 'min_volume' in filters and 'volume' in filtered.columns:
-            filtered = filtered[filtered['volume'] >= filters['min_volume']]
+            volume_numeric = pd.to_numeric(filtered['volume'], errors='coerce')
+            filtered = filtered[volume_numeric >= filters['min_volume']]
 
         return filtered
 
