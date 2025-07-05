@@ -983,7 +983,7 @@ class ExplosiveOptionsScanner:
 
             all_opps.append({
                 'symbol': symbol,
-                'option': f"{symbol} {best['strike']} {best['type'].upper()}",
+                'option': f"{symbol} {best['strike']} {best['type'].upper()} exp {best['expiration']}",
                 'expiration': best['expiration'],
                 'score': best['total_score'],
                 'confidence': best['score_analysis']['confidence'],
