@@ -64,12 +64,20 @@ class ExplosiveOptionsScanner:
 
         print(f"🔍 Scanning {len(symbols)} symbols for explosive opportunities...")
 
+        # STEP 1: Fetch bulk market data for all symbols at once
+        print("📊 Fetching bulk market data using REALTIME_BULK_QUOTES API...")
+        self._bulk_market_cache = self._fetch_bulk_market_data(symbols)
+        
+        # Filter symbols that have valid market data
+        valid_symbols = [s for s in symbols if s in self._bulk_market_cache]
+        print(f"✅ {len(valid_symbols)} symbols have valid market data")
+
         # Initialize results
         results = {
             'scan_metadata': {
                 'timestamp': datetime.now().isoformat(),
                 'scan_type': scan_type,
-                'symbols_scanned': len(symbols),
+                'symbols_scanned': len(valid_symbols),
                 'filters_applied': filters or {}
             },
             'opportunities': {},
@@ -82,11 +90,11 @@ class ExplosiveOptionsScanner:
             }
         }
 
-        # Process symbols in parallel
-        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+        # Process symbols in parallel (now with cached market data)
+        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
             future_to_symbol = {}
 
-            for symbol in symbols:
+            for symbol in valid_symbols:
                 future = executor.submit(self._scan_symbol, symbol, scan_type, filters)
                 future_to_symbol[future] = symbol
 
@@ -411,12 +419,90 @@ class ExplosiveOptionsScanner:
         # For now, return stocks known for options activity
         return ['TSLA', 'NVDA', 'AMD', 'SPY', 'QQQ', 'AAPL', 'GME', 'AMC']
 
-    def _fetch_enhanced_market_data(self, symbol: str) -> Optional[Dict]:
-        """Fetch comprehensive market data for a symbol using Alpha Vantage"""
-        try:
-            # Add rate limiting delay
-            time.sleep(1.0)  # Increased delay to avoid rate limits
+    def _fetch_bulk_market_data(self, symbols: List[str]) -> Dict[str, Dict]:
+        """Fetch market data for multiple symbols using bulk quotes API"""
+        bulk_data = {}
+        
+        # Process symbols in chunks of 100 (API limit)
+        for i in range(0, len(symbols), 100):
+            chunk = symbols[i:i+100]
+            symbol_string = ','.join(chunk)
+            
+            try:
+                print(f"📊 Fetching bulk quotes for {len(chunk)} symbols...")
+                
+                # Use REALTIME_BULK_QUOTES API
+                url = f'https://www.alphavantage.co/query?function=REALTIME_BULK_QUOTES&symbol={symbol_string}&apikey={self.av_key}'
+                response = requests.get(url, timeout=30)
+                data = response.json()
+                
+                if 'Information' in data and 'rate limit' in data['Information'].lower():
+                    print(f"⏳ Rate limit reached - waiting...")
+                    time.sleep(60)
+                    continue
+                
+                if 'Error Message' in data:
+                    print(f"❌ Bulk quotes error: {data['Error Message']}")
+                    continue
+                
+                # Parse bulk quote data
+                if 'data' in data:
+                    for quote in data['data']:
+                        symbol = quote.get('symbol', '')
+                        if symbol:
+                            bulk_data[symbol] = {
+                                'symbol': symbol,
+                                'current_price': float(quote.get('price', 0)),
+                                'change_percent': float(quote.get('change_percent', '0').replace('%', '')),
+                                'volume': int(quote.get('volume', 0)),
+                                'previous_close': float(quote.get('previous_close', 0)),
+                                'open': float(quote.get('open', 0)),
+                                'high': float(quote.get('high', 0)),
+                                'low': float(quote.get('low', 0))
+                            }
+                
+                # Small delay between chunks
+                if i + 100 < len(symbols):
+                    time.sleep(1)
+                
+            except Exception as e:
+                print(f"❌ Error fetching bulk data for chunk {i//100 + 1}: {e}")
+                continue
+        
+        print(f"✅ Successfully fetched bulk data for {len(bulk_data)} symbols")
+        return bulk_data
 
+    def _fetch_enhanced_market_data(self, symbol: str) -> Optional[Dict]:
+        """Fetch comprehensive market data for a symbol using cached bulk data or individual call"""
+        try:
+            # Check if we have cached bulk data for this symbol
+            if hasattr(self, '_bulk_market_cache') and symbol in self._bulk_market_cache:
+                base_data = self._bulk_market_cache[symbol]
+                
+                # Calculate volatility from price changes
+                change_percent = abs(base_data.get('change_percent', 0))
+                volatility = max(change_percent * 10, 25.0)  # Estimate volatility
+                
+                # Get earnings info
+                earnings_info = self._get_earnings_info(symbol)
+                
+                return {
+                    'symbol': symbol,
+                    'current_price': base_data['current_price'],
+                    'volatility_30d': volatility,
+                    'market_cap': 0,  # Would need separate API call
+                    'sector': 'Unknown',  # Would need separate API call
+                    'beta': 1.0,  # Default
+                    'earnings_info': earnings_info,
+                    'volume_avg': base_data.get('volume', 0),
+                    'change_percent': base_data.get('change_percent', 0),
+                    'high': base_data.get('high', 0),
+                    'low': base_data.get('low', 0)
+                }
+            
+            # Fallback to individual API call if not in cache
+            print(f"⚠️ Using individual API call for {symbol} (not in bulk cache)")
+            
             # Fetch daily data from Alpha Vantage
             url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=compact&apikey={self.av_key}'
             response = requests.get(url, timeout=15)
@@ -459,21 +545,6 @@ class ExplosiveOptionsScanner:
             else:
                 volatility = 25.0  # Default volatility
 
-            # Get company overview for additional data
-            overview_url = f'https://www.alphavantage.co/query?function=OVERVIEW&symbol={symbol}&apikey={self.av_key}'
-            try:
-                overview_response = requests.get(overview_url, timeout=10)
-                overview_data = overview_response.json()
-
-                market_cap = float(overview_data.get('MarketCapitalization', 0)) if overview_data.get('MarketCapitalization') else 0
-                sector = overview_data.get('Sector', 'Unknown')
-                beta = float(overview_data.get('Beta', 1.0)) if overview_data.get('Beta') else 1.0
-
-            except:
-                market_cap = 0
-                sector = 'Unknown'
-                beta = 1.0
-
             # Get earnings info from Alpha Vantage earnings calendar
             earnings_info = self._get_earnings_info(symbol)
 
@@ -481,11 +552,11 @@ class ExplosiveOptionsScanner:
                 'symbol': symbol,
                 'current_price': current_price,
                 'volatility_30d': volatility,
-                'market_cap': market_cap,
-                'sector': sector,
-                'beta': beta,
+                'market_cap': 0,
+                'sector': 'Unknown',
+                'beta': 1.0,
                 'earnings_info': earnings_info,
-                'volume_avg': 0  # Would need separate API call for volume
+                'volume_avg': 0
             }
 
         except Exception as e:
