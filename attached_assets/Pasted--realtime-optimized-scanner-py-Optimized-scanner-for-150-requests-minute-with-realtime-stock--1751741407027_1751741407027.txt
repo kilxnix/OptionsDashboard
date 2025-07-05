@@ -1,0 +1,763 @@
+# realtime_optimized_scanner.py
+"""
+Optimized scanner for 150 requests/minute with realtime stock data
+Fixes type errors and improves scoring for better opportunities
+"""
+
+import numpy as np
+import pandas as pd
+from datetime import datetime, timedelta
+import requests
+import time
+import json
+import os
+from typing import Dict, List, Optional, Union
+import logging
+import yfinance as yf
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+class RealtimeExplosiveScanner:
+    """
+    Optimized scanner that leverages realtime stock data
+    and handles historical options properly
+    """
+    
+    def __init__(self, alpha_vantage_key: str):
+        self.av_key = alpha_vantage_key
+        self.rate_limit = 150  # requests per minute
+        self.request_count = 0
+        self.minute_start = datetime.now()
+        
+        # Cache for realtime data
+        self.realtime_cache = {}
+        self.cache_duration = 300  # 5 minutes
+        
+        # Enhanced scoring thresholds
+        self.scoring_config = {
+            'min_volume': 50,
+            'min_oi': 100,
+            'max_spread_pct': 20,  # 20% max bid-ask spread
+            'min_stock_volume': 1000000,  # 1M daily volume
+            'unusual_volume_multiplier': 2.0,
+            'price_momentum_weight': 0.3,
+            'volume_surge_weight': 0.4,
+            'technical_weight': 0.3
+        }
+    
+    def get_realtime_stock_data(self, symbols: List[str]) -> Dict[str, Dict]:
+        """
+        Efficiently fetch realtime stock data using bulk API
+        """
+        market_data = {}
+        
+        # Check if market is open
+        is_market_open = self._is_market_open()
+        
+        if is_market_open:
+            logger.info("🔴 Market is OPEN - Using REALTIME data")
+        else:
+            logger.info("🔵 Market is CLOSED - Using end-of-day data")
+        
+        # Process in chunks to respect rate limits
+        chunk_size = 100  # Alpha Vantage bulk limit
+        
+        for i in range(0, len(symbols), chunk_size):
+            chunk = symbols[i:i+chunk_size]
+            
+            # Rate limit check
+            self._check_rate_limit()
+            
+            try:
+                # Use REALTIME_BULK_QUOTES endpoint
+                url = f'https://www.alphavantage.co/query?function=REALTIME_BULK_QUOTES&symbols={",".join(chunk)}&apikey={self.av_key}'
+                
+                response = requests.get(url, timeout=30)
+                response.raise_for_status()
+                data = response.json()
+                
+                if 'data' in data:
+                    for quote in data['data']:
+                        symbol = quote.get('symbol')
+                        if symbol:
+                            # Extract realtime data
+                            market_data[symbol] = {
+                                'current_price': float(quote.get('close', 0)),
+                                'high': float(quote.get('high', 0)),
+                                'low': float(quote.get('low', 0)),
+                                'volume': int(quote.get('volume', 0)),
+                                'change_percent': float(quote.get('change_percent', '0').replace('%', '')),
+                                'timestamp': quote.get('timestamp'),
+                                'is_realtime': is_market_open,
+                                
+                                # Calculate intraday metrics
+                                'price_range': float(quote.get('high', 0)) - float(quote.get('low', 0)),
+                                'volume_surge': self._calculate_volume_surge(symbol, int(quote.get('volume', 0))),
+                                'momentum_score': self._calculate_momentum_score(quote)
+                            }
+                            
+                            # Cache the data
+                            self.realtime_cache[symbol] = {
+                                'data': market_data[symbol],
+                                'timestamp': datetime.now()
+                            }
+                
+                self.request_count += 1
+                
+            except Exception as e:
+                logger.error(f"Error fetching realtime data for chunk: {e}")
+        
+        return market_data
+    
+    def scan_with_realtime_context(self, symbols: List[str]) -> Dict:
+        """
+        Scan options using realtime stock context for better scoring
+        """
+        results = {}
+        
+        # Get realtime stock data first
+        logger.info("📊 Fetching realtime stock data...")
+        realtime_data = self.get_realtime_stock_data(symbols)
+        
+        # Filter symbols based on realtime activity
+        active_symbols = self._filter_active_symbols(realtime_data)
+        logger.info(f"🎯 Found {len(active_symbols)} active symbols from {len(symbols)} total")
+        
+        # Process each active symbol
+        for symbol in active_symbols:
+            try:
+                stock_context = realtime_data.get(symbol, {})
+                
+                # Skip if no significant activity
+                if not self._has_significant_activity(stock_context):
+                    continue
+                
+                # Get options data (historical for now)
+                options_data = self._get_options_data(symbol)
+                if options_data is None or options_data.empty:
+                    continue
+                
+                # Score options with realtime context
+                scored_options = self._score_options_with_context(
+                    options_data, stock_context, symbol
+                )
+                
+                if scored_options:
+                    # Get best opportunity
+                    best_option = max(scored_options, key=lambda x: x['total_score'])
+                    
+                    if best_option['total_score'] >= 65:  # Higher threshold
+                        results[symbol] = {
+                            'best_option': best_option,
+                            'stock_context': stock_context,
+                            'other_opportunities': sorted(
+                                scored_options, 
+                                key=lambda x: x['total_score'], 
+                                reverse=True
+                            )[1:5]
+                        }
+                        
+                        logger.info(f"✅ {symbol}: Score {best_option['total_score']:.1f} - {best_option['recommendation']}")
+                
+            except Exception as e:
+                logger.error(f"Error scanning {symbol}: {e}")
+                continue
+        
+        return results
+    
+    def _score_options_with_context(self, options_df: pd.DataFrame, 
+                                   stock_context: Dict, symbol: str) -> List[Dict]:
+        """
+        Enhanced scoring using realtime stock context
+        """
+        scored_options = []
+        
+        # Fix data types first
+        options_df = self._fix_options_dataframe(options_df)
+        
+        for idx, option in options_df.iterrows():
+            try:
+                option_dict = option.to_dict()
+                
+                # Skip invalid options
+                if not self._is_valid_option(option_dict):
+                    continue
+                
+                # Calculate base score
+                base_score = self._calculate_base_score(option_dict)
+                
+                # Apply realtime context multipliers
+                context_multiplier = self._calculate_context_multiplier(
+                    option_dict, stock_context
+                )
+                
+                # Calculate final score
+                total_score = min(base_score * context_multiplier, 100)
+                
+                # Generate recommendation
+                recommendation = self._generate_recommendation(
+                    total_score, option_dict, stock_context
+                )
+                
+                # Calculate entry and targets
+                entry_targets = self._calculate_entry_targets(
+                    option_dict, stock_context, total_score
+                )
+                
+                scored_option = {
+                    **option_dict,
+                    'total_score': total_score,
+                    'base_score': base_score,
+                    'context_multiplier': context_multiplier,
+                    'recommendation': recommendation,
+                    'entry_plan': entry_targets['entry'],
+                    'targets': entry_targets['targets'],
+                    'stop_loss': entry_targets['stop'],
+                    'confidence': int(total_score)
+                }
+                
+                scored_options.append(scored_option)
+                
+            except Exception as e:
+                logger.debug(f"Error scoring option: {e}")
+                continue
+        
+        return scored_options
+    
+    def _calculate_base_score(self, option: Dict) -> float:
+        """
+        Calculate base score from option characteristics
+        """
+        score = 0
+        
+        # Volume score (0-25 points)
+        volume = option.get('volume', 0)
+        if volume >= 1000:
+            score += 25
+        elif volume >= 500:
+            score += 20
+        elif volume >= 100:
+            score += 15
+        elif volume >= 50:
+            score += 10
+        else:
+            return 0  # Too low volume
+        
+        # Open Interest score (0-20 points)
+        oi = option.get('open_interest', 0)
+        if oi >= 5000:
+            score += 20
+        elif oi >= 1000:
+            score += 15
+        elif oi >= 500:
+            score += 10
+        elif oi >= 100:
+            score += 5
+        
+        # Volume/OI ratio (0-20 points)
+        if oi > 0:
+            vol_oi_ratio = volume / oi
+            if vol_oi_ratio >= 0.5:
+                score += 20
+            elif vol_oi_ratio >= 0.3:
+                score += 15
+            elif vol_oi_ratio >= 0.1:
+                score += 10
+        
+        # Greeks score (0-20 points)
+        delta = abs(option.get('delta', 0))
+        if 0.20 <= delta <= 0.40:  # Sweet spot
+            score += 10
+        elif 0.15 <= delta <= 0.50:
+            score += 5
+        
+        # Low theta decay
+        theta = abs(option.get('theta', 0))
+        mark = option.get('mark', 1)
+        if mark > 0:
+            theta_decay_pct = theta / mark
+            if theta_decay_pct < 0.10:
+                score += 10
+            elif theta_decay_pct < 0.15:
+                score += 5
+        
+        # Spread score (0-15 points)
+        bid = option.get('bid', 0)
+        ask = option.get('ask', float('inf'))
+        if bid > 0 and ask > 0 and ask != float('inf'):
+            spread_pct = ((ask - bid) / ask) * 100
+            if spread_pct <= 5:
+                score += 15
+            elif spread_pct <= 10:
+                score += 10
+            elif spread_pct <= 15:
+                score += 5
+        
+        return score
+    
+    def _calculate_context_multiplier(self, option: Dict, stock_context: Dict) -> float:
+        """
+        Calculate multiplier based on realtime stock context
+        """
+        multiplier = 1.0
+        
+        # Volume surge multiplier
+        volume_surge = stock_context.get('volume_surge', 1.0)
+        if volume_surge >= 3.0:
+            multiplier *= 1.4
+        elif volume_surge >= 2.0:
+            multiplier *= 1.25
+        elif volume_surge >= 1.5:
+            multiplier *= 1.15
+        
+        # Momentum multiplier
+        momentum_score = stock_context.get('momentum_score', 0)
+        if momentum_score >= 80:
+            multiplier *= 1.3
+        elif momentum_score >= 60:
+            multiplier *= 1.2
+        elif momentum_score >= 40:
+            multiplier *= 1.1
+        
+        # Price range multiplier (volatility)
+        current_price = stock_context.get('current_price', 1)
+        price_range = stock_context.get('price_range', 0)
+        if current_price > 0:
+            range_pct = (price_range / current_price) * 100
+            if range_pct >= 3:  # 3%+ intraday range
+                multiplier *= 1.2
+            elif range_pct >= 2:
+                multiplier *= 1.1
+        
+        # Direction alignment
+        option_type = option.get('type', '').lower()
+        change_pct = stock_context.get('change_percent', 0)
+        
+        if option_type == 'call' and change_pct > 1:
+            multiplier *= 1.15
+        elif option_type == 'put' and change_pct < -1:
+            multiplier *= 1.15
+        elif (option_type == 'call' and change_pct < -2) or (option_type == 'put' and change_pct > 2):
+            multiplier *= 0.8  # Wrong direction
+        
+        return multiplier
+    
+    def _calculate_entry_targets(self, option: Dict, stock_context: Dict, score: float) -> Dict:
+        """
+        Calculate intelligent entry and exit points
+        """
+        mark = option.get('mark', 0)
+        
+        # Entry plan
+        entry = {
+            'ideal_price': mark * 0.98,  # 2% below current
+            'max_price': mark * 1.02,    # 2% above current
+            'current_mark': mark
+        }
+        
+        # Targets based on score and context
+        if score >= 80:
+            target_multipliers = [1.40, 1.80, 2.50]
+        elif score >= 70:
+            target_multipliers = [1.30, 1.60, 2.00]
+        else:
+            target_multipliers = [1.25, 1.50, 1.80]
+        
+        # Adjust for momentum
+        momentum = stock_context.get('momentum_score', 50)
+        if momentum >= 70:
+            target_multipliers = [m * 1.1 for m in target_multipliers]
+        
+        targets = {
+            f'target_{i+1}': {
+                'price': round(mark * mult, 2),
+                'percentage': round((mult - 1) * 100, 1)
+            }
+            for i, mult in enumerate(target_multipliers)
+        }
+        
+        # Stop loss
+        stop_multiplier = 0.75 if score >= 70 else 0.70
+        stop = {
+            'price': round(mark * stop_multiplier, 2),
+            'percentage': round((stop_multiplier - 1) * 100, 1)
+        }
+        
+        return {
+            'entry': entry,
+            'targets': targets,
+            'stop': stop
+        }
+    
+    def _generate_recommendation(self, score: float, option: Dict, context: Dict) -> str:
+        """
+        Generate actionable recommendation
+        """
+        if score >= 85:
+            return "🔥 EXPLOSIVE SETUP - Strong buy signal"
+        elif score >= 75:
+            return "⚡ HIGH POTENTIAL - Excellent opportunity"
+        elif score >= 65:
+            return "✅ GOOD SETUP - Worth considering"
+        elif score >= 55:
+            return "🤔 MODERATE - Needs confirmation"
+        else:
+            return "⚠️ WEAK SIGNAL - Better opportunities exist"
+    
+    def _fix_options_dataframe(self, df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Fix all data type issues in options DataFrame
+        """
+        if df.empty:
+            return df
+        
+        # Define numeric columns
+        numeric_cols = {
+            'strike': float,
+            'mark': float,
+            'lastPrice': float,
+            'bid': float,
+            'ask': float,
+            'volume': int,
+            'openInterest': int,
+            'open_interest': int,
+            'delta': float,
+            'gamma': float,
+            'theta': float,
+            'vega': float,
+            'rho': float,
+            'implied_volatility': float,
+            'impliedVolatility': float
+        }
+        
+        for col, dtype in numeric_cols.items():
+            if col in df.columns:
+                if dtype == float:
+                    df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0.0)
+                else:  # int
+                    df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0).astype(int)
+        
+        # Standardize column names
+        if 'openInterest' in df.columns and 'open_interest' not in df.columns:
+            df['open_interest'] = df['openInterest']
+        if 'impliedVolatility' in df.columns and 'implied_volatility' not in df.columns:
+            df['implied_volatility'] = df['impliedVolatility']
+        if 'lastPrice' in df.columns and 'mark' not in df.columns:
+            df['mark'] = df['lastPrice']
+        elif 'mark' not in df.columns:
+            df['mark'] = df.get('lastPrice', 0)
+        
+        # Ensure mark has valid values
+        df.loc[df['mark'] <= 0, 'mark'] = df.loc[df['mark'] <= 0, 'lastPrice']
+        
+        return df
+    
+    def _is_valid_option(self, option: Dict) -> bool:
+        """
+        Check if option meets minimum criteria
+        """
+        # Must have positive price
+        if option.get('mark', 0) <= 0:
+            return False
+        
+        # Must have minimum volume
+        if option.get('volume', 0) < self.scoring_config['min_volume']:
+            return False
+        
+        # Must have minimum OI
+        if option.get('open_interest', 0) < self.scoring_config['min_oi']:
+            return False
+        
+        # Check spread
+        bid = option.get('bid', 0)
+        ask = option.get('ask', float('inf'))
+        if bid > 0 and ask > 0 and ask != float('inf'):
+            spread_pct = ((ask - bid) / ask) * 100
+            if spread_pct > self.scoring_config['max_spread_pct']:
+                return False
+        
+        return True
+    
+    def _filter_active_symbols(self, realtime_data: Dict) -> List[str]:
+        """
+        Filter symbols showing significant activity
+        """
+        active = []
+        
+        for symbol, data in realtime_data.items():
+            # Check volume
+            if data.get('volume', 0) < self.scoring_config['min_stock_volume']:
+                continue
+            
+            # Check price movement or volume surge
+            if abs(data.get('change_percent', 0)) >= 1.0 or data.get('volume_surge', 1) >= 1.5:
+                active.append(symbol)
+        
+        return active
+    
+    def _has_significant_activity(self, stock_context: Dict) -> bool:
+        """
+        Check if stock has significant activity
+        """
+        # Volume check
+        if stock_context.get('volume', 0) < self.scoring_config['min_stock_volume']:
+            return False
+        
+        # Activity indicators
+        has_movement = abs(stock_context.get('change_percent', 0)) >= 0.5
+        has_volume = stock_context.get('volume_surge', 1) >= 1.2
+        has_range = stock_context.get('price_range', 0) > 0
+        
+        return has_movement or has_volume or has_range
+    
+    def _calculate_volume_surge(self, symbol: str, current_volume: int) -> float:
+        """
+        Calculate volume surge compared to average
+        """
+        # In production, would compare to 20-day average
+        # For now, use a simple heuristic
+        avg_volume = 10000000  # 10M default
+        
+        if current_volume > 0 and avg_volume > 0:
+            return current_volume / avg_volume
+        return 1.0
+    
+    def _calculate_momentum_score(self, quote: Dict) -> float:
+        """
+        Calculate momentum score from price action
+        """
+        score = 50  # Neutral
+        
+        # Price position in range
+        high = float(quote.get('high', 0))
+        low = float(quote.get('low', 0))
+        close = float(quote.get('close', 0))
+        
+        if high > low and close > 0:
+            position = (close - low) / (high - low)
+            score = position * 100
+        
+        # Adjust for change
+        change_pct = float(quote.get('change_percent', '0').replace('%', ''))
+        if change_pct > 2:
+            score = min(score + 20, 100)
+        elif change_pct > 1:
+            score = min(score + 10, 100)
+        elif change_pct < -2:
+            score = max(score - 20, 0)
+        elif change_pct < -1:
+            score = max(score - 10, 0)
+        
+        return score
+    
+    def _get_options_data(self, symbol: str) -> Optional[pd.DataFrame]:
+        """
+        Get options data (historical for now, realtime when available)
+        """
+        try:
+            # Try Alpha Vantage historical first
+            self._check_rate_limit()
+            url = f'https://www.alphavantage.co/query?function=HISTORICAL_OPTIONS&symbol={symbol}&apikey={self.av_key}'
+            
+            response = requests.get(url, timeout=10)
+            self.request_count += 1
+            
+            if response.status_code == 200:
+                data = response.json()
+                if 'data' in data and data['data']:
+                    return self._process_av_options_data(data['data'])
+            
+            # Fallback to Yahoo Finance
+            return self._get_yfinance_options(symbol)
+            
+        except Exception as e:
+            logger.debug(f"Error fetching options for {symbol}: {e}")
+            return None
+    
+    def _process_av_options_data(self, data: List[Dict]) -> pd.DataFrame:
+        """
+        Process Alpha Vantage options data into DataFrame
+        """
+        if not data:
+            return pd.DataFrame()
+        
+        df = pd.DataFrame(data)
+        
+        # Ensure numeric types
+        numeric_cols = ['strike', 'bid', 'ask', 'volume', 'open_interest', 
+                       'delta', 'gamma', 'theta', 'vega', 'implied_volatility']
+        
+        for col in numeric_cols:
+            if col in df.columns:
+                df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0)
+        
+        # Add mark price
+        if 'mark' not in df.columns:
+            df['mark'] = (df['bid'] + df['ask']) / 2
+        
+        return df
+    
+    def _get_yfinance_options(self, symbol: str) -> Optional[pd.DataFrame]:
+        """
+        Fallback to Yahoo Finance for options data
+        """
+        try:
+            ticker = yf.Ticker(symbol)
+            expirations = ticker.options[:3]  # Next 3 expirations
+            
+            all_options = []
+            for exp in expirations:
+                opt_chain = ticker.option_chain(exp)
+                
+                # Process calls
+                calls = opt_chain.calls.copy()
+                calls['type'] = 'call'
+                calls['expiration'] = exp
+                
+                # Process puts
+                puts = opt_chain.puts.copy()
+                puts['type'] = 'put'
+                puts['expiration'] = exp
+                
+                all_options.extend([calls, puts])
+            
+            if all_options:
+                df = pd.concat(all_options, ignore_index=True)
+                df['mark'] = df['lastPrice']
+                df['open_interest'] = df['openInterest']
+                return df
+                
+        except Exception as e:
+            logger.debug(f"YFinance error for {symbol}: {e}")
+        
+        return None
+    
+    def _check_rate_limit(self):
+        """
+        Ensure we don't exceed rate limits
+        """
+        current_time = datetime.now()
+        
+        # Reset counter if new minute
+        if (current_time - self.minute_start).total_seconds() >= 60:
+            self.request_count = 0
+            self.minute_start = current_time
+        
+        # If approaching limit, wait
+        if self.request_count >= self.rate_limit - 5:
+            sleep_time = 61 - (current_time - self.minute_start).total_seconds()
+            if sleep_time > 0:
+                logger.info(f"⏸️ Rate limit pause: {sleep_time:.1f}s")
+                time.sleep(sleep_time)
+                self.request_count = 0
+                self.minute_start = datetime.now()
+    
+    def _is_market_open(self) -> bool:
+        """
+        Check if US market is currently open
+        """
+        now = datetime.now()
+        
+        # Check if weekend
+        if now.weekday() >= 5:  # Saturday = 5, Sunday = 6
+            return False
+        
+        # Market hours in Eastern Time (9:30 AM - 4:00 PM)
+        # This is simplified - in production use pytz for proper timezone handling
+        hour = now.hour
+        minute = now.minute
+        
+        # Rough conversion assuming system is in ET or adjust accordingly
+        market_open = (hour == 9 and minute >= 30) or (10 <= hour < 16)
+        
+        return market_open
+
+# Fix for the recommendation error
+def fix_recommendation_attribute_error():
+    """
+    The 'recommendation' error is likely due to missing attributes in the score analysis
+    """
+    def safe_get_recommendation(score_analysis):
+        if isinstance(score_analysis, dict):
+            return score_analysis.get('recommendation', 'No recommendation available')
+        return 'Analysis pending'
+    
+    return safe_get_recommendation
+
+# Integration function to use with existing system
+def run_realtime_explosive_scan(api_key: str, symbols: List[str] = None, 
+                                scan_type: str = 'comprehensive') -> Dict:
+    """
+    Run explosive scan with realtime optimizations
+    """
+    scanner = RealtimeExplosiveScanner(api_key)
+    
+    # Use provided symbols or discover
+    if symbols is None:
+        # Use your existing symbol discovery
+        symbols = get_high_volume_symbols()  # You already have this
+    
+    # Run the scan
+    results = scanner.scan_with_realtime_context(symbols)
+    
+    # Format results for display
+    formatted_results = format_scan_results(results)
+    
+    return formatted_results
+
+def format_scan_results(results: Dict) -> Dict:
+    """
+    Format results for API response
+    """
+    formatted = {
+        'scan_time': datetime.now().isoformat(),
+        'opportunities_found': len(results),
+        'top_picks': [],
+        'by_score': []
+    }
+    
+    # Sort by score
+    sorted_symbols = sorted(
+        results.items(), 
+        key=lambda x: x[1]['best_option']['total_score'], 
+        reverse=True
+    )
+    
+    # Format top picks
+    for symbol, data in sorted_symbols[:10]:
+        option = data['best_option']
+        stock = data['stock_context']
+        
+        formatted['top_picks'].append({
+            'symbol': symbol,
+            'option': f"{symbol} {option['strike']} {option['type'].upper()}",
+            'expiration': option.get('expiration', 'N/A'),
+            'score': option['total_score'],
+            'entry': option['entry_plan']['current_mark'],
+            'target_1': option['targets']['target_1']['price'],
+            'stop': option['stop_loss']['price'],
+            'recommendation': option['recommendation'],
+            'stock_momentum': stock.get('momentum_score', 0),
+            'volume_surge': stock.get('volume_surge', 1.0),
+            'realtime': stock.get('is_realtime', False)
+        })
+    
+    return formatted
+
+def get_high_volume_symbols():
+    """
+    Get symbols with high volume for scanning
+    """
+    # Use your existing logic or this simplified version
+    return [
+        'SPY', 'QQQ', 'AAPL', 'MSFT', 'NVDA', 'AMZN', 'META', 'GOOGL',
+        'TSLA', 'AMD', 'NFLX', 'INTC', 'BABA', 'JPM', 'BAC', 'XLF',
+        'GLD', 'VXX', 'IWM', 'EEM', 'FXI', 'SOFI', 'PLTR', 'NIO'
+    ]
+
+if __name__ == "__main__":
+    # Test the scanner
+    api_key = os.getenv('ALPHA_VANTAGE_API_KEY')
+    results = run_realtime_explosive_scan(api_key)
+    print(json.dumps(results, indent=2))
