@@ -1,0 +1,103 @@
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Serving Flask app 'main'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://172.31.128.131:8080
+Press CTRL+C to quit
+ * Restarting with stat
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Debugger is active!
+ * Debugger PIN: 111-732-332
+172.31.128.131 - - [05/Jul/2025 13:15:39] "GET / HTTP/1.1" 200 -
+🚀 EXPLOSIVE OPTIONS SCANNER - 2025-07-05 13:15:52
+============================================================
+📊 Filtered from 2105 to 928 quality symbols
+🔍 Scanning 928 symbols for explosive opportunities...
+📊 Fetching bulk market data using REALTIME_BULK_QUOTES API...
+📊 Processing 928 symbols using REALTIME_BULK_QUOTES API...
+🔑 Using API key: 7CSZH1JP...TPTE
+📊 Processing chunk 1: symbols 1-100
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 2: symbols 101-200
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 3: symbols 201-300
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 4: symbols 301-400
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 5: symbols 401-500
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 6: symbols 501-600
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 7: symbols 601-700
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 8: symbols 701-800
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 9: symbols 801-900
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 10: symbols 901-928
+📊 Fetching bulk quotes for 28 symbols...
+✅ Successfully fetched bulk data for 0 symbols
+✅ 0 symbols have valid market data
+💾 Results saved to ./TradingPlans/explosive_scan_2025-07-05_131604.json
+
+
+📊 EXPLOSIVE OPTIONS SCAN SUMMARY
+==================================================
+Scan Time: 2025-07-05T13:16:04.806456
+Symbols Scanned: 0
+Opportunities Found: 0
+
+🏆 TOP 3 EXPLOSIVE PICKS:
+
+📈 OPPORTUNITIES BY CATEGORY:
+
+172.31.128.131 - - [05/Jul/2025 13:16:04] "GET /explosive-scan?scan_type=earnings&min_price=0.10 HTTP/1.1" 200 -
+🚀 EXPLOSIVE OPTIONS SCANNER - 2025-07-05 13:16:09
+============================================================
+📊 Filtered from 2105 to 928 quality symbols
+🔍 Scanning 928 symbols for explosive opportunities...
+📊 Fetching bulk market data using REALTIME_BULK_QUOTES API...
+📊 Processing 928 symbols using REALTIME_BULK_QUOTES API...
+🔑 Using API key: 7CSZH1JP...TPTE
+📊 Processing chunk 1: symbols 1-100
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 2: symbols 101-200
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 3: symbols 201-300
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 4: symbols 301-400
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 5: symbols 401-500
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 6: symbols 501-600
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 7: symbols 601-700
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 8: symbols 701-800
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 9: symbols 801-900
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 10: symbols 901-928
+📊 Fetching bulk quotes for 28 symbols...
+✅ Successfully fetched bulk data for 0 symbols
+✅ 0 symbols have valid market data
+💾 Results saved to ./TradingPlans/explosive_scan_2025-07-05_131620.json
+
+
+📊 EXPLOSIVE OPTIONS SCAN SUMMARY
+==================================================
+Scan Time: 2025-07-05T13:16:20.556847
+Symbols Scanned: 0
+Opportunities Found: 0
+
+🏆 TOP 3 EXPLOSIVE PICKS:
+
+📈 OPPORTUNITIES BY CATEGORY:
+
+172.31.128.131 - - [05/Jul/2025 13:16:20] "GET /explosive-scan?scan_type=earnings&min_price=0.10 HTTP/1.1" 200 -
