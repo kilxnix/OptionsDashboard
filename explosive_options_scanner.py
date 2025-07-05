@@ -731,7 +731,7 @@ class ExplosiveOptionsScanner:
 
                                 try:
                                     # Convert to string first
-                                                                   exp_str = str(exp_str).strip()
+                                    exp_str = str(exp_str).strip()
 
                                     # Try different formats
                                     for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S', '%m-%d-%Y']:
