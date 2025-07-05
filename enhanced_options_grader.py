@@ -443,7 +443,28 @@ class EnhancedOptionsGrader:
             if not isinstance(exp_date, datetime):
                 exp_date = datetime.now() + timedelta(days=30)
 
-            days_to_expiry = max(1, (exp_date - datetime.now()).days)
+            # Days to expiration analysis - ensure we always get an integer
+            if 'days_to_expiry' in option_data:
+                try:
+                    days_to_exp = int(float(option_data['days_to_expiry']))
+                except (ValueError, TypeError):
+                    days_to_exp = 30
+            elif 'expiration' in option_data:
+                try:
+                    if isinstance(expiration, str):
+                        exp_date = datetime.strptime(expiration, '%Y-%m-%d')
+                        days_to_exp = max(1, (exp_date - datetime.now()).days)
+                    else:
+                        days_to_exp = 30
+                except (ValueError, TypeError):
+                    days_to_exp = 30
+            else:
+                days_to_exp = 30
+
+            # Ensure days_to_exp is always an integer
+            days_to_exp = int(days_to_exp)
+
+            days_to_expiry = days_to_exp
         except Exception as e:
             print(f"Error parsing expiration date '{expiration}': {e}")
             days_to_expiry = 30  # Default fallback

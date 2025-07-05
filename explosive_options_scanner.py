@@ -673,17 +673,36 @@ class ExplosiveOptionsScanner:
                         try:
                             # Handle different date formats
                             def parse_expiration(exp_str):
-                                if pd.isna(exp_str) or exp_str == '':
+                                if pd.isna(exp_str) or exp_str == '' or exp_str is None:
                                     return 30  # Default to 30 days
 
-                                # Try different formats
-                                for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S']:
-                                    try:
-                                        exp_date = datetime.strptime(str(exp_str), fmt)
-                                        return max(1, (exp_date - datetime.now()).days)
-                                    except ValueError:
-                                        continue
-                                return 30  # Default if no format works
+                                try:
+                                    # Convert to string first
+                                    exp_str = str(exp_str).strip()
+                                    
+                                    # Try different formats
+                                    for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S', '%m-%d-%Y']:
+                                        try:
+                                            exp_date = datetime.strptime(exp_str, fmt)
+                                            days_diff = (exp_date - datetime.now()).days
+                                            return max(1, days_diff)
+                                        except ValueError:
+                                            continue
+                                    
+                                    # If no format works, try to extract just the date part
+                                    if ' ' in exp_str:
+                                        date_part = exp_str.split(' ')[0]
+                                        for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%m-%d-%Y']:
+                                            try:
+                                                exp_date = datetime.strptime(date_part, fmt)
+                                                days_diff = (exp_date - datetime.now()).days
+                                                return max(1, days_diff)
+                                            except ValueError:
+                                                continue
+                                    
+                                    return 30  # Default if no format works
+                                except Exception:
+                                    return 30
 
                             df['days_to_expiry'] = df['expiration'].apply(parse_expiration)
                         except Exception as e:
@@ -832,28 +851,36 @@ class ExplosiveOptionsScanner:
                     if col not in df.columns:
                         df[col] = default_val
 
-                # Fix expiration date format first - this is causing the main errors
+                # Fix expiration date format and add days_to_expiry calculation
                 if 'expiration' in df.columns:
-                    def standardize_expiration(exp_val):
+                    def standardize_expiration_and_days(exp_val):
                         if pd.isna(exp_val) or exp_val == '' or exp_val is None:
-                            return (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+                            default_date = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+                            return default_date, 30
 
                         exp_str = str(exp_val).strip()
                         if not exp_str:
-                            return (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+                            default_date = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+                            return default_date, 30
 
                         # Try to parse and standardize the date
                         for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S', '%m-%d-%Y']:
                             try:
                                 parsed_date = datetime.strptime(exp_str, fmt)
-                                return parsed_date.strftime('%Y-%m-%d')
+                                formatted_date = parsed_date.strftime('%Y-%m-%d')
+                                days_to_exp = max(1, (parsed_date - datetime.now()).days)
+                                return formatted_date, days_to_exp
                             except ValueError:
                                 continue
 
                         # If no format works, default to 30 days from now
-                        return (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+                        default_date = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+                        return default_date, 30
 
-                    df['expiration'] = df['expiration'].apply(standardize_expiration)
+                    # Apply the function and split the results
+                    exp_and_days = df['expiration'].apply(standardize_expiration_and_days)
+                    df['expiration'] = [x[0] for x in exp_and_days]
+                    df['days_to_expiry'] = [x[1] for x in exp_and_days]
 
                 # Convert all numeric columns to proper types with comprehensive error handling
                 numeric_cols = ['mark', 'strike', 'volume', 'openInterest', 'delta', 'gamma', 'theta', 'impliedVolatility']
