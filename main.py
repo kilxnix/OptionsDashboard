@@ -728,6 +728,7 @@ def run_explosive_scan():
             scan_type = data.get('scan_type', 'comprehensive')
             symbols = data.get('symbols', None)
             filters = data.get('filters', {})
+            market_data = data.get('market_data', {})
             max_symbols = data.get('max_symbols', 400)  # Default limit for efficiency
         else:
             scan_type = request.args.get('scan_type', 'comprehensive')
@@ -741,6 +742,7 @@ def run_explosive_scan():
                 'min_days': int(request.args.get('min_days', 1)),
                 'max_days': int(request.args.get('max_days', 21))
             }
+            market_data = {}
 
         # Initialize scanner
         scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
@@ -754,7 +756,8 @@ def run_explosive_scan():
         results = scanner.run_explosive_scan(
             symbols=symbols,
             scan_type=scan_type,
-            filters=filters
+            filters=filters,
+            market_data=market_data if request.method == 'POST' and request.is_json else None
         )
 
         return jsonify({

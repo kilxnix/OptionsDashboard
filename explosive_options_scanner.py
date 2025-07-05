@@ -75,10 +75,11 @@ class ExplosiveOptionsScanner:
 
 
 
-    def run_explosive_scan(self, 
+    def run_explosive_scan(self,
                           symbols: List[str] = None,
                           scan_type: str = 'comprehensive',
-                          filters: Dict = None) -> Dict:
+                          filters: Dict = None,
+                          market_data: Dict[str, Dict] = None) -> Dict:
         """
         Run the explosive options scanner
 
@@ -96,9 +97,17 @@ class ExplosiveOptionsScanner:
 
         print(f"🔍 Scanning {len(symbols)} symbols for explosive opportunities...")
 
-        # STEP 1: Fetch bulk market data for all symbols at once
-        print("📊 Fetching bulk market data using REALTIME_BULK_QUOTES API...")
-        self._bulk_market_cache = self._fetch_bulk_market_data(symbols)
+        # STEP 1: Use provided market data or fetch via API
+        self._bulk_market_cache = {}
+        if market_data:
+            self._bulk_market_cache.update({k.upper(): v for k, v in market_data.items()})
+            print(f"📊 Using supplied market data for {len(self._bulk_market_cache)} symbols")
+
+        remaining = [s for s in symbols if s not in self._bulk_market_cache]
+        if remaining:
+            print("📊 Fetching bulk market data using REALTIME_BULK_QUOTES API...")
+            fetched = self._fetch_bulk_market_data(remaining)
+            self._bulk_market_cache.update(fetched)
 
         # Filter symbols that have valid market data
         valid_symbols = [s for s in symbols if s in self._bulk_market_cache]
