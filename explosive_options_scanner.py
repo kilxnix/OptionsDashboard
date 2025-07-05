@@ -289,6 +289,20 @@ class ExplosiveOptionsScanner:
                         if score >= self.scan_config['min_score']:
                             option_dict['score_analysis'] = analysis
                             option_dict['total_score'] = score
+                            
+                            # Ensure recommendation exists in analysis
+                            if 'recommendation' not in analysis:
+                                if score >= 70:
+                                    analysis['recommendation'] = "🔥 STRONG BUY - High explosion potential"
+                                elif score >= 60:
+                                    analysis['recommendation'] = "✅ BUY - Good opportunity"
+                                elif score >= 45:
+                                    analysis['recommendation'] = "⚡ WATCH - Needs confirmation"
+                                elif score >= 30:
+                                    analysis['recommendation'] = "⚠️ WEAK - Better opportunities exist"
+                                else:
+                                    analysis['recommendation'] = "❌ REJECT - Does not meet criteria"
+                            
                             scored_options.append(option_dict)
                     except Exception as e:
                         print(f"⚠️ Skipping option for {symbol}: {e}")
