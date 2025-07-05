@@ -250,12 +250,12 @@ class IntelligentTradePlanner:
 
         # 5. Spread improvement trigger
         ask_price = option_data.get('ask', 0)
-            bid_price = option_data.get('bid', 0)
-            
-            if ask_price > 0:
-                bid_ask_spread = (ask_price - bid_price) / ask_price
-            else:
-                bid_ask_spread = 0.20  # Default 20% spread if ask is 0
+        bid_price = option_data.get('bid', 0)
+        
+        if ask_price > 0:
+            bid_ask_spread = (ask_price - bid_price) / ask_price
+        else:
+            bid_ask_spread = 0.20  # Default 20% spread if ask is 0
         if bid_ask_spread > 0.10:
             entry_triggers.append({
                 'type': 'SPREAD_IMPROVEMENT',
