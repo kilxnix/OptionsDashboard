@@ -10,6 +10,8 @@ import requests
 import yfinance as yf
 import time
 
+from immediate_fixes import safe_apply_filters, process_alpha_vantage_bulk_response
+
 from enhanced_options_grader import EnhancedOptionsGrader
 from intelligent_trade_planner import IntelligentTradePlanner
 from performance_tracker import PerformanceTracker
@@ -451,7 +453,6 @@ class ExplosiveOptionsScanner:
             try:
                 print(f"📊 Fetching bulk quotes for {len(chunk)} symbols...")
 
-                # Use REALTIME_BULK_QUOTES API
                 url = f'https://www.alphavantage.co/query?function=REALTIME_BULK_QUOTES&symbol={symbol_string}&apikey={self.av_key}'
                 response = requests.get(url, timeout=30)
                 data = response.json()
@@ -465,21 +466,8 @@ class ExplosiveOptionsScanner:
                     print(f"❌ Bulk quotes error: {data['Error Message']}")
                     continue
 
-                # Parse bulk quote data
-                if 'data' in data:
-                    for quote in data['data']:
-                        symbol = quote.get('symbol', '')
-                        if symbol:
-                            bulk_data[symbol] = {
-                                'symbol': symbol,
-                                'current_price': float(quote.get('price', 0)),
-                                'change_percent': float(quote.get('change_percent', '0').replace('%', '')),
-                                'volume': int(quote.get('volume', 0)),
-                                'previous_close': float(quote.get('previous_close', 0)),
-                                'open': float(quote.get('open', 0)),
-                                'high': float(quote.get('high', 0)),
-                                'low': float(quote.get('low', 0))
-                            }
+                parsed = process_alpha_vantage_bulk_response(data)
+                bulk_data.update(parsed)
 
                 # Small delay between chunks
                 if i + 100 < len(symbols):
@@ -921,46 +909,20 @@ class ExplosiveOptionsScanner:
             return None
 
     def _apply_filters(self, options_data: pd.DataFrame, filters: Dict) -> pd.DataFrame:
-        """Apply filters to options data"""
+        """Apply filters to options data using safe helpers"""
         if options_data is None or options_data.empty:
             return pd.DataFrame()
 
-        filtered = options_data.copy()
-
-        # Ensure numeric columns are properly converted
-        numeric_cols = ['mark', 'delta', 'volume', 'days_to_expiry', 'strike']
-        for col in numeric_cols:
-            if col in filtered.columns:
-                filtered[col] = pd.to_numeric(filtered[col], errors='coerce')
-
-        # Price filters
-        if 'min_price' in filters and 'mark' in filtered.columns:
-            filtered = filtered[pd.to_numeric(filtered['mark'], errors='coerce') >= filters['min_price']]
-        if 'max_price' in filters and 'mark' in filtered.columns:
-            filtered = filtered[pd.to_numeric(filtered['mark'], errors='coerce') <= filters['max_price']]
-
-        # Delta filters
-        if 'min_delta' in filters and 'delta' in filtered.columns:
-            delta_numeric = pd.to_numeric(filtered['delta'], errors='coerce').abs()
-            filtered = filtered[delta_numeric >= filters['min_delta']]
-        if 'max_delta' in filters and 'delta' in filtered.columns:
-            delta_numeric = pd.to_numeric(filtered['delta'], errors='coerce').abs()
-            filtered = filtered[delta_numeric <= filters['max_delta']]
-
-        # Days to expiry
-        if 'min_days' in filters and 'days_to_expiry' in filtered.columns:
-            days_numeric = pd.to_numeric(filtered['days_to_expiry'], errors='coerce')
-            filtered = filtered[days_numeric >= filters['min_days']]
-        if 'max_days' in filters and 'days_to_expiry' in filtered.columns:
-            days_numeric = pd.to_numeric(filtered['days_to_expiry'], errors='coerce')
-            filtered = filtered[days_numeric <= filters['max_days']]
-
-        # Volume filter
-        if 'min_volume' in filters and 'volume' in filtered.columns:
-            volume_numeric = pd.to_numeric(filtered['volume'], errors='coerce')
-            filtered = filtered[volume_numeric >= filters['min_volume']]
-
-        return filtered
+        return safe_apply_filters(
+            options_data,
+            min_price=filters.get('min_price', 0.01),
+            max_price=filters.get('max_price', 10.0),
+            min_delta=filters.get('min_delta', 0.0),
+            max_delta=filters.get('max_delta', 1.0),
+            min_volume=filters.get('min_volume', 0),
+            min_days=filters.get('min_days', 0),
+            max_days=filters.get('max_days', 365),
+        )
 
     def _categorize_opportunity(self, symbol_results: Dict, categories: Dict):
         """Categorize opportunity by type"""
