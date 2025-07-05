@@ -156,7 +156,7 @@ class ExplosiveOptionsScanner:
                         option_dict = option.to_dict()
 
                         # Ensure all required fields are present and properly typed
-                        required_fields = ['strike', 'expiration', 'type', 'delta', 'gamma', 'theta', 'volume', 'mark']
+                        required_fields = ['strike', 'expiration', 'type', 'delta', 'gamma', 'theta', 'volume', 'mark', 'open_interest']
                         for field in required_fields:
                             if field not in option_dict or pd.isna(option_dict[field]):
                                 if field == 'strike':
@@ -175,9 +175,11 @@ class ExplosiveOptionsScanner:
                                     option_dict[field] = 100
                                 elif field == 'mark':
                                     option_dict[field] = 0.5
+                                elif field == 'open_interest':
+                                    option_dict[field] = 50
 
                         # Convert numeric fields to float with comprehensive error handling
-                        numeric_fields = ['strike', 'delta', 'gamma', 'theta', 'volume', 'mark']
+                        numeric_fields = ['strike', 'delta', 'gamma', 'theta', 'volume', 'mark', 'open_interest']
                         for field in numeric_fields:
                             try:
                                 val = option_dict[field]
@@ -205,6 +207,8 @@ class ExplosiveOptionsScanner:
                                     option_dict[field] = 100.0
                                 elif field == 'mark':
                                     option_dict[field] = 0.5
+                                elif field == 'open_interest':
+                                    option_dict[field] = 50.0
 
                         # Ensure expiration is properly formatted as string
                         if 'expiration' in option_dict:
@@ -656,7 +660,8 @@ class ExplosiveOptionsScanner:
                         'strike_price': 'strike',
                         'expiration_date': 'expiration',
                         'last_price': 'mark',
-                        'open_interest': 'openInterest',
+                        'open_interest': 'open_interest',
+                        'openInterest': 'open_interest',
                         'implied_volatility': 'impliedVolatility'
                     }
 
@@ -752,7 +757,7 @@ class ExplosiveOptionsScanner:
                         df['expiration'] = df['expiration'].apply(standardize_expiration)
 
                     # Convert all numeric columns to proper types with comprehensive error handling
-                    numeric_cols = ['mark', 'strike', 'volume', 'openInterest', 'delta', 'gamma', 'theta', 'impliedVolatility']
+                    numeric_cols = ['mark', 'strike', 'volume', 'open_interest', 'delta', 'gamma', 'theta', 'impliedVolatility']
                     for col in numeric_cols:
                         if col in df.columns:
                             try:
@@ -763,7 +768,7 @@ class ExplosiveOptionsScanner:
                                     df[col] = df[col].fillna(0.5)
                                 elif col == 'strike':
                                     df[col] = df[col].fillna(100)
-                                elif col in ['volume', 'openInterest']:
+                                elif col in ['volume', 'open_interest']:
                                     df[col] = df[col].fillna(50)
                                 elif col == 'delta':
                                     df[col] = df[col].fillna(0.3)
@@ -883,7 +888,7 @@ class ExplosiveOptionsScanner:
                     df['days_to_expiry'] = [x[1] for x in exp_and_days]
 
                 # Convert all numeric columns to proper types with comprehensive error handling
-                numeric_cols = ['mark', 'strike', 'volume', 'openInterest', 'delta', 'gamma', 'theta', 'impliedVolatility']
+                numeric_cols = ['mark', 'strike', 'volume', 'open_interest', 'delta', 'gamma', 'theta', 'impliedVolatility']
                 for col in numeric_cols:
                     if col in df.columns:
                         # Convert to numeric, handling strings and other types
@@ -893,7 +898,7 @@ class ExplosiveOptionsScanner:
                             df[col] = df[col].fillna(0.5)
                         elif col == 'strike':
                             df[col] = df[col].fillna(100)
-                        elif col in ['volume', 'openInterest']:
+                        elif col in ['volume', 'open_interest']:
                             df[col] = df[col].fillna(50)
                         elif col == 'delta':
                             df[col] = df[col].fillna(0.3)
