@@ -900,3 +900,15 @@ class EnhancedOptionsGrader:
                 'delta_limit': option_data.get('delta', 0.1) * self.holding_matrix['delta_drift_limit']
             }
         }
+# Generate recommendation based on score
+        recommendation = self._generate_recommendation(total_score, score_components, option_data)
+
+        return total_score, {
+            'components': score_components,
+            'confidence': confidence,
+            'recommendation': recommendation,
+            'strengths': strengths,
+            'weaknesses': weaknesses,
+            'holding_period': holding_period,
+            'risk_level': risk_level
+        }
