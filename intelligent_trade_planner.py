@@ -115,10 +115,10 @@ class IntelligentTradePlanner:
                 'iv': cleaned_option_data.get('implied_volatility', cleaned_option_data.get('impliedVolatility', 0.25))
             },
             'scoring': {
-                'total_score': score_analysis['total_score'],
-                'confidence': score_analysis['confidence'],
-                'risk_level': score_analysis['risk_level'],
-                'recommendation': score_analysis['recommendation']
+                'total_score': score_analysis.get('total_score', 0),
+                'confidence': score_analysis.get('confidence', 0),
+                'risk_level': score_analysis.get('risk_level', 'MEDIUM'),
+                'recommendation': score_analysis.get('recommendation', 'No recommendation')
             },
             'position_sizing': position_size,
             'entry_plan': entry_plan,
@@ -477,7 +477,9 @@ class IntelligentTradePlanner:
             notes.append("⚠️ LOW OPEN INTEREST: May have difficulty exiting, size accordingly")
 
         # Spread warnings
-        spread = (option_data['ask'] - option_data['bid']) / option_data['ask']
+        ask_price = option_data.get('ask', 0)
+        bid_price = option_data.get('bid', 0)
+        spread = ((ask_price - bid_price) / ask_price) if ask_price else 0
         if spread > 0.15:
             notes.append(f"⚠️ WIDE SPREAD ({spread*100:.1f}%): Avoid market orders, work the bid/ask")
 
