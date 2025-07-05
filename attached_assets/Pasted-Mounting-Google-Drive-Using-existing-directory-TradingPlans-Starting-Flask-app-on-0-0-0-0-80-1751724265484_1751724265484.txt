@@ -1,0 +1,162 @@
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Serving Flask app 'main'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://172.31.128.131:8080
+Press CTRL+C to quit
+ * Restarting with stat
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Debugger is active!
+ * Debugger PIN: 136-677-124
+172.31.128.131 - - [05/Jul/2025 14:00:25] "GET / HTTP/1.1" 200 -
+🚀 EXPLOSIVE OPTIONS SCANNER - 2025-07-05 14:00:44
+============================================================
+📊 Filtered from 2105 to 928 quality symbols
+🔍 Scanning 928 symbols for explosive opportunities...
+📊 Fetching bulk market data using REALTIME_BULK_QUOTES API...
+📊 Processing 928 symbols using REALTIME_BULK_QUOTES API...
+🔑 Using API key: 7CSZH1JP...TPTE
+📊 Processing chunk 1: symbols 1-100
+📊 Fetching bulk quotes for 100 symbols...
+📊 API Response Status: 200
+📊 Response keys: ['endpoint', 'message', 'data']
+📋 Response keys: ['endpoint', 'message', 'data']
+📊 Found data array with 3 items
+✅ Successfully parsed 3 symbols from bulk response
+📋 Sample data for MSFT: {'current_price': 418.16, 'change_percent': 0.3456, 'volume': 17145307, 'high': 419.649, 'low': 416.2601}
+📊 Processing chunk 2: symbols 101-200
+📊 Fetching bulk quotes for 100 symbols...
+📊 API Response Status: 200
+📊 Response keys: ['endpoint', 'message', 'data']
+📋 Response keys: ['endpoint', 'message', 'data']
+📊 Found data array with 3 items
+✅ Successfully parsed 3 symbols from bulk response
+📋 Sample data for MSFT: {'current_price': 418.16, 'change_percent': 0.3456, 'volume': 17145307, 'high': 419.649, 'low': 416.2601}
+📊 Processing chunk 3: symbols 201-300
+📊 Fetching bulk quotes for 100 symbols...
+📊 API Response Status: 200
+📊 Response keys: ['endpoint', 'message', 'data']
+📋 Response keys: ['endpoint', 'message', 'data']
+📊 Found data array with 3 items
+✅ Successfully parsed 3 symbols from bulk response
+📋 Sample data for MSFT: {'current_price': 418.16, 'change_percent': 0.3456, 'volume': 17145307, 'high': 419.649, 'low': 416.2601}
+📊 Processing chunk 4: symbols 301-400
+📊 Fetching bulk quotes for 100 symbols...
+📊 API Response Status: 200
+📊 Response keys: ['endpoint', 'message', 'data']
+📋 Response keys: ['endpoint', 'message', 'data']
+📊 Found data array with 3 items
+✅ Successfully parsed 3 symbols from bulk response
+📋 Sample data for MSFT: {'current_price': 418.16, 'change_percent': 0.3456, 'volume': 17145307, 'high': 419.649, 'low': 416.2601}
+📊 Processing chunk 5: symbols 401-500
+📊 Fetching bulk quotes for 100 symbols...
+📊 API Response Status: 200
+📊 Response keys: ['endpoint', 'message', 'data']
+📋 Response keys: ['endpoint', 'message', 'data']
+📊 Found data array with 3 items
+✅ Successfully parsed 3 symbols from bulk response
+📋 Sample data for MSFT: {'current_price': 418.16, 'change_percent': 0.3456, 'volume': 17145307, 'high': 419.649, 'low': 416.2601}
+📊 Processing chunk 6: symbols 501-600
+📊 Fetching bulk quotes for 100 symbols...
+📊 API Response Status: 200
+📊 Response keys: ['endpoint', 'message', 'data']
+📋 Response keys: ['endpoint', 'message', 'data']
+📊 Found data array with 3 items
+✅ Successfully parsed 3 symbols from bulk response
+📋 Sample data for MSFT: {'current_price': 418.16, 'change_percent': 0.3456, 'volume': 17145307, 'high': 419.649, 'low': 416.2601}
+📊 Processing chunk 7: symbols 601-700
+📊 Fetching bulk quotes for 100 symbols...
+📊 API Response Status: 200
+📊 Response keys: ['endpoint', 'message', 'data']
+📋 Response keys: ['endpoint', 'message', 'data']
+📊 Found data array with 3 items
+✅ Successfully parsed 3 symbols from bulk response
+📋 Sample data for MSFT: {'current_price': 418.16, 'change_percent': 0.3456, 'volume': 17145307, 'high': 419.649, 'low': 416.2601}
+📊 Processing chunk 8: symbols 701-800
+📊 Fetching bulk quotes for 100 symbols...
+📊 API Response Status: 200
+📊 Response keys: ['endpoint', 'message', 'data']
+📋 Response keys: ['endpoint', 'message', 'data']
+📊 Found data array with 3 items
+✅ Successfully parsed 3 symbols from bulk response
+📋 Sample data for MSFT: {'current_price': 418.16, 'change_percent': 0.3456, 'volume': 17145307, 'high': 419.649, 'low': 416.2601}
+📊 Processing chunk 9: symbols 801-900
+📊 Fetching bulk quotes for 100 symbols...
+📊 API Response Status: 200
+📊 Response keys: ['endpoint', 'message', 'data']
+📋 Response keys: ['endpoint', 'message', 'data']
+📊 Found data array with 3 items
+✅ Successfully parsed 3 symbols from bulk response
+📋 Sample data for MSFT: {'current_price': 418.16, 'change_percent': 0.3456, 'volume': 17145307, 'high': 419.649, 'low': 416.2601}
+📊 Processing chunk 10: symbols 901-928
+📊 Fetching bulk quotes for 28 symbols...
+📊 API Response Status: 200
+📊 Response keys: ['endpoint', 'message', 'data']
+📋 Response keys: ['endpoint', 'message', 'data']
+📊 Found data array with 3 items
+✅ Successfully parsed 3 symbols from bulk response
+📋 Sample data for MSFT: {'current_price': 418.16, 'change_percent': 0.3456, 'volume': 17145307, 'high': 419.649, 'low': 416.2601}
+✅ Successfully fetched bulk data for 3 symbols
+✅ 3 symbols have valid market data
+✅ Historical options data found for MSFT: 3396 contracts
+✅ Historical options data found for IBM: 1656 contracts
+✅ Historical options data found for AAPL: 2488 contracts
+Error scanning IBM: name 'targets' is not defined
+Stack trace: Traceback (most recent call last):
+  File "/home/runner/workspace/explosive_options_scanner.py", line 260, in _scan_symbol
+    plan = self.planner.generate_intelligent_plan(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/intelligent_trade_planner.py", line 63, in generate_intelligent_plan
+    stop_loss = self._calculate_stop_loss(option_data, market_data, score_analysis)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/intelligent_trade_planner.py", line 328, in _calculate_stop_loss
+    target_1_price = targets['target_1']['price']
+                     ^^^^^^^
+NameError: name 'targets' is not defined
+
+Error scanning AAPL: name 'targets' is not defined
+Stack trace: Traceback (most recent call last):
+  File "/home/runner/workspace/explosive_options_scanner.py", line 260, in _scan_symbol
+    plan = self.planner.generate_intelligent_plan(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/intelligent_trade_planner.py", line 63, in generate_intelligent_plan
+    stop_loss = self._calculate_stop_loss(option_data, market_data, score_analysis)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/intelligent_trade_planner.py", line 328, in _calculate_stop_loss
+    target_1_price = targets['target_1']['price']
+                     ^^^^^^^
+NameError: name 'targets' is not defined
+
+Error scanning MSFT: name 'targets' is not defined
+Stack trace: Traceback (most recent call last):
+  File "/home/runner/workspace/explosive_options_scanner.py", line 260, in _scan_symbol
+    plan = self.planner.generate_intelligent_plan(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/intelligent_trade_planner.py", line 63, in generate_intelligent_plan
+    stop_loss = self._calculate_stop_loss(option_data, market_data, score_analysis)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/intelligent_trade_planner.py", line 328, in _calculate_stop_loss
+    target_1_price = targets['target_1']['price']
+                     ^^^^^^^
+NameError: name 'targets' is not defined
+
+💾 Results saved to ./TradingPlans/explosive_scan_2025-07-05_140218.json
+
+
+📊 EXPLOSIVE OPTIONS SCAN SUMMARY
+==================================================
+Scan Time: 2025-07-05T14:00:57.611810
+Symbols Scanned: 3
+Opportunities Found: 0
+
+🏆 TOP 3 EXPLOSIVE PICKS:
+
+📈 OPPORTUNITIES BY CATEGORY:
+
+172.31.128.131 - - [05/Jul/2025 14:02:18] "GET /explosive-scan?scan_type=earnings&min_price=0.10 HTTP/1.1" 200 -
