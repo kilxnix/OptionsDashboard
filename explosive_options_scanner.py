@@ -1172,3 +1172,227 @@ Opportunities Found: {len(results['opportunities'])}
 
         with open(filename, 'w') as f:
             json.dump(results, f, indent=2, default=str)
+    
+    def _calculate_score_analysis(self, option_data: Dict, market_data: Dict) -> Dict:
+        """
+        Calculate a comprehensive score analysis based on various factors.
+        """
+        # Extract relevant data
+        strike_price = option_data['strike']
+        current_price = market_data['current_price']
+        days_to_expiry = option_data['days_to_expiry']
+        implied_volatility = option_data['impliedVolatility']
+        delta = option_data['delta']
+        gamma = option_data['gamma']
+        theta = option_data['theta']
+        volume = option_data['volume']
+        open_interest = option_data['open_interest']
+
+        # Initialize scores
+        profitability_score = 0
+        risk_score = 0
+        volatility_score = 0
+        technical_score = 0
+        unusual_activity_score = 0
+        iv_opportunity_score = 0
+
+        # Profitability Score (Higher is better)
+        # Closer to the money is better, especially slightly OTM
+        distance_from_itm = abs(current_price - strike_price) / current_price
+        if distance_from_itm <= 0.05:
+            profitability_score += 20  # Very close to the money
+        elif 0.05 < distance_from_itm <= 0.15:
+            profitability_score += 15  # Slightly out of the money
+
+        # Days to expiry sweet spot is between 14-45 days
+        if 14 <= days_to_expiry <= 45:
+            profitability_score += 15
+        elif 7 <= days_to_expiry < 14 or 45 < days_to_expiry <= 60:
+            profitability_score += 8
+
+        # Delta near 0.5 is ideal
+        profitability_score += max(0, 15 - abs(delta - 0.5) * 30)
+
+        # Risk Score (Lower is better)
+        # Theta should be small (less negative)
+        risk_score += min(10, abs(theta) * 100)  # Penalize high theta
+
+        # Gamma should be small (lower risk)
+        risk_score += min(10, abs(gamma) * 1000) # Penalize high gamma
+
+        # Volatility Score (Higher can be better, depending)
+        # IV within reasonable range (20-50%)
+        if 0.20 <= implied_volatility <= 0.50:
+            volatility_score += 15
+        elif 0.15 <= implied_volatility < 0.20 or 0.50 < implied_volatility <= 0.60:
+            volatility_score += 8
+
+        # Technical Score (Based on volume/open interest)
+        if volume > 100 and open_interest > 50:
+            technical_score += 10  # Good liquidity
+        elif volume > 50 or open_interest > 25:
+            technical_score += 5
+
+        # Unusual Activity Score (Spikes in volume/OI)
+        volume_oi_ratio = (volume / (open_interest + 1e-6))  # Avoid division by zero
+        if volume_oi_ratio > 5:
+            unusual_activity_score += 18 # Significant activity
+        elif volume_oi_ratio > 2:
+            unusual_activity_score += 10
+
+        # IV Opportunity Score (High IV relative to historical)
+        # This requires historical IV data - using a simple estimate for now
+        iv_relative_to_average = implied_volatility / 0.3  # Assuming average IV is 30%
+        if iv_relative_to_average > 1.5:
+            iv_opportunity_score += 12
+        elif iv_relative_to_average > 1.2:
+            iv_opportunity_score += 6
+
+        # Combine scores
+        total_score = (
+            profitability_score +
+            volatility_score +
+            technical_score +
+            unusual_activity_score +
+            iv_opportunity_score -
+            risk_score
+        )
+
+        # Confidence level (adjust weights as needed)
+        confidence = (
+            (profitability_score * 0.2) +
+            (risk_score * -0.15) +
+            (volatility_score * 0.15) +
+            (technical_score * 0.2) +
+            (unusual_activity_score * 0.15) +
+            (iv_opportunity_score * 0.15)
+        )
+        confidence = min(100, max(0, confidence))  # Clamp between 0-100
+
+        # Generate recommendation and confidence
+        recommendation = self._generate_recommendation_from_score(total_score)
+
+        return {
+            'components': {
+                'profitability_score': profitability_score,
+                'risk_score': risk_score,
+                'volatility_score': volatility_score,
+                'technical_score': technical_score,
+                'unusual_activity_score': unusual_activity_score,
+                'iv_opportunity_score': iv_opportunity_score
+            },
+            'total_score': total_score,
+            'confidence': round(confidence, 1),
+            'recommendation': recommendation
+        }
+    
+    def _generate_recommendation_from_score(self, score: float) -> str:
+        """Generate recommendation based on score"""
+        if score >= 70:
+            return "🔥 STRONG BUY - Excellent setup"
+        elif score >= 60:
+            return "✅ BUY - Good opportunity"
+        elif score >= 50:
+            return "🤔 NEUTRAL - Consider with caution"
+        elif score >= 40:
+            return "⚠️ WEAK - Better opportunities exist"
+        else:
+            return "❌ AVOID - Poor risk/reward"
+
+    def _generate_trade_plan(self, option_data: Dict, market_data: Dict, score: float) -> Dict:
+        """
+        Generate an intelligent trade plan based on option data, market data, and calculated score.
+        """
+        # Basic plan structure
+        plan = {
+            'entry_details': {},
+            'targets': {},
+            'stop_loss': {},
+            'risk_analysis': {},
+            'position_sizing': {},
+            'contingency_plan': {},
+            'formatted_text': ''
+        }
+
+        # 1. Entry Details
+        entry_price = option_data['mark']  # Use the mark price as the entry
+        plan['entry_details'] = {
+            'entry_price': entry_price,
+            'description': f"Enter position at mark price: ${entry_price:.2f}"
+        }
+
+        # 2. Profit Targets (Scaling out)
+        # Define 3 targets based on potential profit percentage
+        target_1_percent = 0.20  # 20% profit
+        target_2_percent = 0.50  # 50% profit
+        target_3_percent = 1.00  # 100% profit
+
+        target_1_price = entry_price * (1 + target_1_percent)
+        target_2_price = entry_price * (1 + target_2_percent)
+        target_3_price = entry_price * (1 + target_3_percent)
+
+        plan['targets'] = {
+            'target_1': {'price': target_1_price, 'percent': target_1_percent, 'action': 'Take partial profit (30%)'},
+            'target_2': {'price': target_2_price, 'percent': target_2_percent, 'action': 'Take partial profit (30%)'},
+            'target_3': {'price': target_3_price, 'percent': target_3_percent, 'action': 'Close remaining position (40%)'}
+        }
+
+        # 3. Stop Loss (Protect Capital)
+        # Define a stop loss at a percentage below the entry price
+        stop_loss_percent = 0.10  # 10% loss
+        stop_price = entry_price * (1 - stop_loss_percent)
+        plan['stop_loss'] = {
+            'stop_price': stop_price,
+            'percent': stop_loss_percent,
+            'action': 'Exit position to limit losses'
+        }
+
+        # 4. Risk Analysis
+        # Basic risk metrics (more detailed analysis can be added)
+        risk_per_share = entry_price - stop_price
+        max_risk = risk_per_share  # Assuming 1 share/contract for simplicity
+        plan['risk_analysis'] = {
+            'risk_per_share': risk_per_share,
+            'max_risk': max_risk,
+            'risk_description': f"Max risk per contract: ${risk_per_share:.2f}"
+        }
+
+        # 5. Position Sizing (Determine Contracts)
+        # Example: Risk no more than 1% of trading capital
+        trading_capital = 10000  # Example
+        risk_allowance = trading_capital * 0.01
+        max_contracts = int(risk_allowance / risk_per_share)
+        plan['position_sizing'] = {
+            'trading_capital': trading_capital,
+            'risk_allowance': risk_allowance,
+            'max_contracts': max_contracts,
+            'sizing_description': f"Risk 1% of capital (${trading_capital:.2f}), max {max_contracts} contracts"
+        }
+
+        # 6. Contingency Plan
+        # What to do if the market moves against you quickly
+        plan['contingency_plan'] = {
+            'scenario': 'Rapid adverse movement',
+            'action': 'Evaluate market conditions, consider early exit if stop loss is breached significantly'
+        }
+
+        # 7. Formatted Plan Text
+        plan['formatted_text'] = f"""
+        --- INTELLIGENT TRADE PLAN ---
+        Entry: {plan['entry_details']['description']}
+        
+        Targets:
+        - Target 1: ${plan['targets']['target_1']['price']:.2f} (+{plan['targets']['target_1']['percent'] * 100:.1f}%) - {plan['targets']['target_1']['action']}
+        - Target 2: ${plan['targets']['target_2']['price']:.2f} (+{plan['targets']['target_2']['percent'] * 100:.1f}%) - {plan['targets']['target_2']['action']}
+        - Target 3: ${plan['targets']['target_3']['price']:.2f} (+{plan['targets']['target_3']['percent'] * 100:.1f}%) - {plan['targets']['target_3']['action']}
+        
+        Stop Loss: ${plan['stop_loss']['stop_price']:.2f} (-{plan['stop_loss']['percent'] * 100:.1f}%) - {plan['stop_loss']['action']}
+        
+        Risk: {plan['risk_analysis']['risk_description']}
+        
+        Position Sizing: {plan['position_sizing']['sizing_description']}
+        
+        Contingency: {plan['contingency_plan']['scenario']} - {plan['contingency_plan']['action']}
+        """
+
+        return plan
