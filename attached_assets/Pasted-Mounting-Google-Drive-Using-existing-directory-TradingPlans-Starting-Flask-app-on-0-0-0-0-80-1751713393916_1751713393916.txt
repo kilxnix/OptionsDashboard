@@ -1,0 +1,87 @@
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Serving Flask app 'main'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://172.31.128.131:8080
+Press CTRL+C to quit
+ * Restarting with stat
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Debugger is active!
+ * Debugger PIN: 783-292-218
+172.31.128.131 - - [05/Jul/2025 11:02:45] "GET / HTTP/1.1" 200 -
+🚀 EXPLOSIVE OPTIONS SCANNER - 2025-07-05 11:02:54
+============================================================
+🔍 Scanning 20 symbols for explosive opportunities...
+🔄 Trying real-time options for AACTF...
+✅ Historical options data found for AA: 638 contracts
+Error scoring option for AA: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AA: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AA: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AA: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AA: unsupported operand type(s) for -: 'str' and 'int'
+✅ Real-time options found for AACTF: 4 contracts
+🔄 Trying real-time options for AALBF...
+🔄 Trying real-time options for AAFRF...
+✅ Real-time options found for AALBF: 4 contracts
+✅ Real-time options found for AAFRF: 4 contracts
+✅ Historical options data found for AAL: 936 contracts
+Error scoring option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+🔄 Trying real-time options for AAPG...
+✅ Real-time options found for AAPG: 4 contracts
+🔄 Trying real-time options for AARTY...
+✅ Real-time options found for AARTY: 4 contracts
+🔄 Trying real-time options for AATGF...
+✅ Real-time options found for AATGF: 4 contracts
+✅ Historical options data found for AB: 72 contracts
+🔄 Trying real-time options for AAVVF...
+✅ Real-time options found for AAVVF: 4 contracts
+🔄 Trying real-time options for ABBNY...
+✅ Real-time options found for ABBNY: 4 contracts
+✅ Historical options data found for ABBV: 1230 contracts
+Error scoring option for ABBV: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for ABBV: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for ABBV: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for ABBV: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for ABBV: unsupported operand type(s) for -: 'str' and 'int'
+🔄 Trying real-time options for ABDBY...
+✅ Historical options data found for ABCB: 114 contracts
+✅ Real-time options found for ABDBY: 4 contracts
+🔄 Trying real-time options for ABEPF...
+✅ Real-time options found for ABEPF: 4 contracts
+🔄 Trying real-time options for ABGSF...
+✅ Real-time options found for ABGSF: 4 contracts
+🔄 Trying real-time options for ABLZF...
+🔄 Trying real-time options for ABOIF...
+✅ Real-time options found for ABLZF: 4 contracts
+✅ Real-time options found for ABOIF: 4 contracts
+✅ Historical options data found for ABR: 642 contracts
+✅ Historical options data found for ABT: 1178 contracts
+Error scoring option for ABT: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for ABT: unsupported operand type(s) for -: 'str' and 'int'
+Error scoring option for ABT: unsupported operand type(s) for -: 'str' and 'int'
+💾 Results saved to ./TradingPlans/explosive_scan_2025-07-05_110305.json
