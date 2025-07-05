@@ -88,7 +88,7 @@ class IntelligentTradePlanner:
                 'delta': option_data['delta'],
                 'gamma': option_data['gamma'],
                 'theta': option_data['theta'],
-                'iv': option_data['implied_volatility']
+                'iv': option_data.get('implied_volatility', option_data.get('impliedVolatility', 0.25))
             },
             'scoring': {
                 'total_score': score_analysis['total_score'],
