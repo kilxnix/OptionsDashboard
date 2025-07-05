@@ -444,26 +444,45 @@ class EnhancedOptionsGrader:
                 exp_date = datetime.now() + timedelta(days=30)
 
             # Days to expiration analysis - ensure we always get an integer
+            days_to_exp = 30  # Default fallback
+            
             if 'days_to_expiry' in option_data:
                 try:
-                    days_to_exp = int(float(option_data['days_to_expiry']))
+                    # Handle the case where days_to_expiry might be a string
+                    days_val = option_data['days_to_expiry']
+                    if isinstance(days_val, str):
+                        # Clean string and convert to int
+                        import re
+                        cleaned_days = re.sub(r'[^\d\-]', '', str(days_val))
+                        if cleaned_days and cleaned_days != '-':
+                            days_to_exp = int(float(cleaned_days))
+                        else:
+                            days_to_exp = 30
+                    else:
+                        days_to_exp = int(float(days_val))
                 except (ValueError, TypeError):
                     days_to_exp = 30
             elif 'expiration' in option_data:
                 try:
-                    if isinstance(expiration, str):
-                        exp_date = datetime.strptime(expiration, '%Y-%m-%d')
-                        days_to_exp = max(1, (exp_date - datetime.now()).days)
+                    exp_val = option_data['expiration']
+                    if isinstance(exp_val, str) and exp_val.strip():
+                        # Try to parse the expiration date string
+                        for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S', '%m-%d-%Y']:
+                            try:
+                                exp_date = datetime.strptime(exp_val.strip(), fmt)
+                                days_to_exp = max(1, (exp_date - datetime.now()).days)
+                                break
+                            except ValueError:
+                                continue
+                        else:
+                            days_to_exp = 30
                     else:
                         days_to_exp = 30
                 except (ValueError, TypeError):
                     days_to_exp = 30
-            else:
-                days_to_exp = 30
 
-            # Ensure days_to_exp is always an integer
-            days_to_exp = int(days_to_exp)
-
+            # Ensure days_to_exp is always a positive integer
+            days_to_exp = max(1, int(days_to_exp))
             days_to_expiry = days_to_exp
         except Exception as e:
             print(f"Error parsing expiration date '{expiration}': {e}")
