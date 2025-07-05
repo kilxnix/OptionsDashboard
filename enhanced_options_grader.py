@@ -445,7 +445,7 @@ class EnhancedOptionsGrader:
 
             # Days to expiration analysis - ensure we always get an integer
             days_to_exp = 30  # Default fallback
-            
+
             if 'days_to_expiry' in option_data:
                 try:
                     # Handle the case where days_to_expiry might be a string
@@ -520,7 +520,7 @@ class EnhancedOptionsGrader:
             }
         }
 
-    def _generate_recommendation(self, total_score: float, components: Dict, option_data: Dict) -> str:
+    def _generate_recommendation(self, score: float, components: Dict, option_data: Dict) -> str:
         """
         Generate actionable recommendation based on score
         """
@@ -734,3 +734,139 @@ class EnhancedOptionsGrader:
                 self.thresholds['oi_change'] = np.percentile(oi_changes, 25)
 
             print(f"🔧 Adapted thresholds: Volume spike={self.thresholds['volume_spike']:.2f}, OI change={self.thresholds['oi_change']:.2f}")
+
+    def _generate_recommendation(self, score: float, confidence: float, risk_level: str) -> str:
+        """Generate trading recommendation based on score and confidence"""
+        if score >= 80 and confidence >= 80:
+            return "🔥 STRONG BUY - High explosion potential"
+        elif score >= 70 and confidence >= 70:
+            return "✅ BUY - Good opportunity"
+        elif score >= 60 and confidence >= 60:
+            return "⚠️ CAUTIOUS BUY - Monitor closely"
+        elif score >= 50:
+            return "🤔 NEUTRAL - Wait for better setup"
+        else:
+            return "❌ AVOID - Poor risk/reward"
+
+    def _calculate_holding_period(self, option_data: Dict, score_components: Dict) -> Dict:
+        """
+        Determine optimal holding period based on Greeks
+        """
+        try:
+            gamma = float(option_data.get('gamma', 0))
+        except (ValueError, TypeError):
+            gamma = 0
+
+        try:
+            theta = float(option_data.get('theta', 0))
+        except (ValueError, TypeError):
+            theta = 0
+
+        try:
+            # Handle different date formats from Alpha Vantage
+            expiration = option_data.get('expiration', '')
+            exp_date = None
+
+            if isinstance(expiration, str) and expiration:
+                expiration = expiration.strip()
+                if expiration:
+                    # Try different date formats
+                    for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S', '%m-%d-%Y', '%d/%m/%Y']:
+                        try:
+                            exp_date = datetime.strptime(expiration, fmt)
+                            break
+                        except ValueError:
+                            continue
+
+            elif hasattr(expiration, 'year'):  # It's already a datetime-like object
+                exp_date = expiration
+            elif expiration and not isinstance(expiration, str):
+                try:
+                    exp_date = pd.to_datetime(expiration).to_pydatetime()
+                except:
+                    exp_date = None
+
+            # Default fallback if parsing failed
+            if exp_date is None:
+                exp_date = datetime.now() + timedelta(days=30)
+
+            # Ensure exp_date is a datetime object before subtraction
+            if not isinstance(exp_date, datetime):
+                exp_date = datetime.now() + timedelta(days=30)
+
+            # Days to expiration analysis - ensure we always get an integer
+            days_to_exp = 30  # Default fallback
+
+            if 'days_to_expiry' in option_data:
+                try:
+                    # Handle the case where days_to_expiry might be a string
+                    days_val = option_data['days_to_expiry']
+                    if isinstance(days_val, str):
+                        # Clean string and convert to int
+                        import re
+                        cleaned_days = re.sub(r'[^\d\-]', '', str(days_val))
+                        if cleaned_days and cleaned_days != '-':
+                            days_to_exp = int(float(cleaned_days))
+                        else:
+                            days_to_exp = 30
+                    else:
+                        days_to_exp = int(float(days_val))
+                except (ValueError, TypeError):
+                    days_to_exp = 30
+            elif 'expiration' in option_data:
+                try:
+                    exp_val = option_data['expiration']
+                    if isinstance(exp_val, str) and exp_val.strip():
+                        # Try to parse the expiration date string
+                        for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S', '%m-%d-%Y']:
+                            try:
+                                exp_date = datetime.strptime(exp_val.strip(), fmt)
+                                days_to_exp = max(1, (exp_date - datetime.now()).days)
+                                break
+                            except ValueError:
+                                continue
+                        else:
+                            days_to_exp = 30
+                    else:
+                        days_to_exp = 30
+                except (ValueError, TypeError):
+                    days_to_exp = 30
+
+            # Ensure days_to_exp is always a positive integer
+            days_to_exp = max(1, int(days_to_exp))
+            days_to_expiry = days_to_exp
+        except Exception as e:
+            print(f"Error parsing expiration date '{expiration}': {e}")
+            days_to_expiry = 30  # Default fallback
+
+        # Base holding period on gamma level
+        if gamma >= 0.02:
+            base_days = self.holding_matrix['high_gamma']['base_days']
+            max_days = self.holding_matrix['high_gamma']['max_days']
+        elif gamma >= 0.01:
+            base_days = self.holding_matrix['moderate_gamma']['base_days']
+            max_days = self.holding_matrix['moderate_gamma']['max_days']
+        else:
+            base_days = self.holding_matrix['low_gamma']['base_days']
+            max_days = self.holding_matrix['low_gamma']['max_days']
+
+        # Adjust for theta decay
+        theta_adjustment = 0
+        if abs(theta) > 0.10:
+            theta_adjustment = -1  # Reduce hold time
+        elif abs(theta) > 0.20:
+            theta_adjustment = -2
+
+        # Don't exceed time to expiry
+        max_days = min(max_days, days_to_expiry - 1)
+
+        return {
+            'recommended_days': max(1, base_days + theta_adjustment),
+            'maximum_days': max_days,
+            'exit_triggers': {
+                'profit_target': 0.40,  # 40% profit
+                'stop_loss': -0.25,     # 25% loss
+                'theta_limit': self.holding_matrix['theta_threshold'],
+                'delta_limit': option_data.get('delta', 0.1) * self.holding_matrix['delta_drift_limit']
+            }
+        }
