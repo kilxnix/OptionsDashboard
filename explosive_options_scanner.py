@@ -266,7 +266,6 @@ class ExplosiveOptionsScanner:
                                         option_dict['expiration'] = exp_val.strftime('%Y-%m-%d')
                                     else:
                                         exp_str = str(exp_val).strip()
-
                                         # Try different formats
                                         for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S', '%m-%d-%Y']:
                                             try:
