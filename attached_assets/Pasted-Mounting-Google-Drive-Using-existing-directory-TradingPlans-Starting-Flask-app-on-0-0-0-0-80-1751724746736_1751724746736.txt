@@ -1,0 +1,147 @@
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Serving Flask app 'main'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://172.31.128.131:8080
+Press CTRL+C to quit
+ * Restarting with stat
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Debugger is active!
+ * Debugger PIN: 145-549-524
+172.31.128.131 - - [05/Jul/2025 14:08:08] "GET / HTTP/1.1" 200 -
+🚀 EXPLOSIVE OPTIONS SCANNER - 2025-07-05 14:08:15
+============================================================
+📊 Filtered from 2105 to 928 quality symbols
+🔍 Scanning 928 symbols for explosive opportunities...
+📊 Fetching bulk market data using REALTIME_BULK_QUOTES API...
+📊 Processing 928 symbols using REALTIME_BULK_QUOTES API...
+🔑 Using API key: 7CSZH1JP...TPTE
+📊 Processing chunk 1: symbols 1-100
+📊 Fetching bulk quotes for 100 symbols...
+📊 API Response Status: 200
+📊 Response keys: ['endpoint', 'message', 'data']
+📋 Response keys: ['endpoint', 'message', 'data']
+📊 Found data array with 3 items
+✅ Successfully parsed 3 symbols from bulk response
+📋 Sample data for MSFT: {'current_price': 418.16, 'change_percent': 0.3456, 'volume': 17145307, 'high': 419.649, 'low': 416.2601}
+📊 Processing chunk 2: symbols 101-200
+📊 Fetching bulk quotes for 100 symbols...
+📊 API Response Status: 200
+📊 Response keys: ['endpoint', 'message', 'data']
+📋 Response keys: ['endpoint', 'message', 'data']
+📊 Found data array with 3 items
+✅ Successfully parsed 3 symbols from bulk response
+📋 Sample data for MSFT: {'current_price': 418.16, 'change_percent': 0.3456, 'volume': 17145307, 'high': 419.649, 'low': 416.2601}
+📊 Processing chunk 3: symbols 201-300
+📊 Fetching bulk quotes for 100 symbols...
+📊 API Response Status: 200
+📊 Response keys: ['endpoint', 'message', 'data']
+📋 Response keys: ['endpoint', 'message', 'data']
+📊 Found data array with 3 items
+✅ Successfully parsed 3 symbols from bulk response
+📋 Sample data for MSFT: {'current_price': 418.16, 'change_percent': 0.3456, 'volume': 17145307, 'high': 419.649, 'low': 416.2601}
+📊 Processing chunk 4: symbols 301-400
+📊 Fetching bulk quotes for 100 symbols...
+📊 API Response Status: 200
+📊 Response keys: ['endpoint', 'message', 'data']
+📋 Response keys: ['endpoint', 'message', 'data']
+📊 Found data array with 3 items
+✅ Successfully parsed 3 symbols from bulk response
+📋 Sample data for MSFT: {'current_price': 418.16, 'change_percent': 0.3456, 'volume': 17145307, 'high': 419.649, 'low': 416.2601}
+📊 Processing chunk 5: symbols 401-500
+📊 Fetching bulk quotes for 100 symbols...
+📊 API Response Status: 200
+📊 Response keys: ['endpoint', 'message', 'data']
+📋 Response keys: ['endpoint', 'message', 'data']
+📊 Found data array with 3 items
+✅ Successfully parsed 3 symbols from bulk response
+📋 Sample data for MSFT: {'current_price': 418.16, 'change_percent': 0.3456, 'volume': 17145307, 'high': 419.649, 'low': 416.2601}
+📊 Processing chunk 6: symbols 501-600
+📊 Fetching bulk quotes for 100 symbols...
+📊 API Response Status: 200
+📊 Response keys: ['endpoint', 'message', 'data']
+📋 Response keys: ['endpoint', 'message', 'data']
+📊 Found data array with 3 items
+✅ Successfully parsed 3 symbols from bulk response
+📋 Sample data for MSFT: {'current_price': 418.16, 'change_percent': 0.3456, 'volume': 17145307, 'high': 419.649, 'low': 416.2601}
+📊 Processing chunk 7: symbols 601-700
+📊 Fetching bulk quotes for 100 symbols...
+📊 API Response Status: 200
+📊 Response keys: ['endpoint', 'message', 'data']
+📋 Response keys: ['endpoint', 'message', 'data']
+📊 Found data array with 3 items
+✅ Successfully parsed 3 symbols from bulk response
+📋 Sample data for MSFT: {'current_price': 418.16, 'change_percent': 0.3456, 'volume': 17145307, 'high': 419.649, 'low': 416.2601}
+📊 Processing chunk 8: symbols 701-800
+📊 Fetching bulk quotes for 100 symbols...
+📊 API Response Status: 200
+📊 Response keys: ['endpoint', 'message', 'data']
+📋 Response keys: ['endpoint', 'message', 'data']
+📊 Found data array with 3 items
+✅ Successfully parsed 3 symbols from bulk response
+📋 Sample data for MSFT: {'current_price': 418.16, 'change_percent': 0.3456, 'volume': 17145307, 'high': 419.649, 'low': 416.2601}
+📊 Processing chunk 9: symbols 801-900
+📊 Fetching bulk quotes for 100 symbols...
+📊 API Response Status: 200
+📊 Response keys: ['endpoint', 'message', 'data']
+📋 Response keys: ['endpoint', 'message', 'data']
+📊 Found data array with 3 items
+✅ Successfully parsed 3 symbols from bulk response
+📋 Sample data for MSFT: {'current_price': 418.16, 'change_percent': 0.3456, 'volume': 17145307, 'high': 419.649, 'low': 416.2601}
+📊 Processing chunk 10: symbols 901-928
+📊 Fetching bulk quotes for 28 symbols...
+📊 API Response Status: 200
+📊 Response keys: ['endpoint', 'message', 'data']
+📋 Response keys: ['endpoint', 'message', 'data']
+📊 Found data array with 3 items
+✅ Successfully parsed 3 symbols from bulk response
+📋 Sample data for MSFT: {'current_price': 418.16, 'change_percent': 0.3456, 'volume': 17145307, 'high': 419.649, 'low': 416.2601}
+✅ Successfully fetched bulk data for 3 symbols
+✅ 3 symbols have valid market data
+✅ Historical options data found for IBM: 1656 contracts
+✅ Historical options data found for AAPL: 2488 contracts
+✅ Historical options data found for MSFT: 3396 contracts
+  ❌ IBM: Error - 'recommendation'
+  ❌ AAPL: Error - 'recommendation'
+  ❌ MSFT: Error - 'recommendation'
+💾 Results saved to ./TradingPlans/explosive_scan_2025-07-05_140920.json
+
+
+📊 EXPLOSIVE OPTIONS SCAN SUMMARY
+==================================================
+Scan Time: 2025-07-05T14:08:26.160898
+Symbols Scanned: 3
+Opportunities Found: 3
+
+🏆 TOP 3 EXPLOSIVE PICKS:
+
+1. IBM 300.0 CALL @ $1.84
+   Score: 83.0/100 | Confidence: 85%
+   Target: $2.65 (+44.0%)
+   Stop: $1.61 (-12.5%)
+   🔥 STRONG BUY - High explosion potential
+
+2. AAPL 220.0 CALL @ $2.27
+   Score: 79.0/100 | Confidence: 81%
+   Target: $3.26 (+43.6%)
+   Stop: $1.99 (-12.3%)
+   🔥 STRONG BUY - High explosion potential
+
+3. MSFT 495.0 PUT @ $2.69
+   Score: 79.0/100 | Confidence: 81%
+   Target: $3.87 (+43.9%)
+   Stop: $2.35 (-12.6%)
+   🔥 STRONG BUY - High explosion potential
+
+📈 OPPORTUNITIES BY CATEGORY:
+• Earnings Plays: 1 found
+• Unusual Activity: 3 found
+• Volatility Plays: 1 found
+
+172.31.128.131 - - [05/Jul/2025 14:09:20] "GET /explosive-scan?scan_type=earnings&min_price=0.10 HTTP/1.1" 200 -
