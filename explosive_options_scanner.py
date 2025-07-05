@@ -732,7 +732,12 @@ class ExplosiveOptionsScanner:
                                 return (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
 
                             # Try to parse and standardize the date
-                            for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S', '%m-%d-%Y']:
+                            for fmt in [
+                                '%Y-%m-%d',
+                                '%m/%d/%Y',
+                                '%Y-%m-%d %H:%M:%S',
+                                '%m-%d-%Y',
+                            ]:
                                 try:
                                     parsed_date = datetime.strptime(exp_str, fmt)
                                     return parsed_date.strftime('%Y-%m-%d')
