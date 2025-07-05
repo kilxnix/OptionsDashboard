@@ -1,0 +1,194 @@
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Serving Flask app 'main'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://172.31.128.131:8080
+Press CTRL+C to quit
+ * Restarting with stat
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Debugger is active!
+ * Debugger PIN: 989-444-947
+172.31.128.131 - - [05/Jul/2025 11:26:29] "GET / HTTP/1.1" 200 -
+🚀 EXPLOSIVE OPTIONS SCANNER - 2025-07-05 11:28:15
+============================================================
+📊 Filtered from 2105 to 928 quality symbols
+🔍 Scanning 928 symbols for explosive opportunities...
+🔄 Trying real-time options for AAPG...
+✅ Historical options data found for AB: 72 contracts
+✅ Real-time options found for AAPG: 4 contracts
+✅ Historical options data found for ABBV: 1230 contracts
+⚠️ Skipping option for ABBV: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for ABBV: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for ABBV: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for ABBV: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for ABBV: unsupported operand type(s) for -: 'str' and 'int'
+✅ Historical options data found for AAL: 936 contracts
+⚠️ Skipping option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAL: unsupported operand type(s) for -: 'str' and 'int'
+✅ Historical options data found for AA: 638 contracts
+⚠️ Skipping option for AA: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AA: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AA: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AA: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AA: unsupported operand type(s) for -: 'str' and 'int'
+✅ Historical options data found for ABCB: 114 contracts
+🔄 Trying real-time options for ABTI...
+✅ Historical options data found for ABR: 642 contracts
+✅ Real-time options found for ABTI: 4 contracts
+✅ Historical options data found for ABT: 1178 contracts
+⚠️ Skipping option for ABT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for ABT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for ABT: unsupported operand type(s) for -: 'str' and 'int'
+✅ Historical options data found for ACI: 520 contracts
+✅ Historical options data found for ACNB: 76 contracts
+🔄 Trying real-time options for ACRG...
+✅ Real-time options found for ACRG: 4 contracts
+🔄 Trying real-time options for ACU...
+✅ Historical options data found for ADC: 124 contracts
+✅ Real-time options found for ACU: 4 contracts
+✅ Historical options data found for AEHR: 138 contracts
+⚠️ Skipping option for AEHR: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AEHR: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AEHR: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AEHR: unsupported operand type(s) for -: 'str' and 'int'
+✅ Historical options data found for AEP: 508 contracts
+🔄 Trying real-time options for AFBI...
+✅ Historical options data found for AGCO: 174 contracts
+✅ Real-time options found for AFBI: 4 contracts
+✅ Historical options data found for AGNC: 530 contracts
+🔄 Trying real-time options for AGR...
+✅ Real-time options found for AGR: 4 contracts
+Alpha Vantage error for AJX: Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_DAILY.
+✅ Historical options data found for AIR: 144 contracts
+✅ Historical options data found for ALEX: 96 contracts
+✅ Historical options data found for AJG: 336 contracts
+✅ Historical options data found for ALGN: 1226 contracts
+✅ Historical options data found for ALK: 372 contracts
+⚠️ Skipping option for ALK: unsupported operand type(s) for -: 'str' and 'int'
+✅ Historical options data found for ALKS: 234 contracts
+✅ Historical options data found for ALLE: 194 contracts
+✅ Historical options data found for ALLY: 818 contracts
+✅ Historical options data found for ALRS: 72 contracts
+✅ Historical options data found for ALSN: 272 contracts
+✅ Historical options data found for ALV: 224 contracts
+✅ Historical options data found for AMAL: 72 contracts
+✅ Historical options data found for AMBP: 44 contracts
+✅ Historical options data found for AMED: 302 contracts
+🔄 Trying real-time options for AMLI...
+✅ Real-time options found for AMLI: 4 contracts
+🔄 Trying real-time options for AMMJ...
+✅ Real-time options found for AMMJ: 4 contracts
+🔄 Trying real-time options for AMNF...
+✅ Real-time options found for AMNF: 4 contracts
+✅ Historical options data found for AMSF: 108 contracts
+⏳ API quota exceeded for ANGO
+🔄 Trying real-time options for AMTB...
+⏳ API quota exceeded for AMTB
+🔄 Trying real-time options for AN...
+🔄 Trying real-time options for AMX...
+⏳ API quota exceeded for AN
+⏳ API quota exceeded for AMX
+⏳ API quota exceeded for AON
+⏳ API quota exceeded for AONC
+⏳ API quota exceeded for AOS
+⏳ API quota exceeded for APAM
+⏳ API quota exceeded for APH
+⏳ API quota exceeded for APPF
+⏳ API quota exceeded for ARE
+⏳ API quota exceeded for ARES
+⏳ API quota exceeded for ARGX
+⏳ API quota exceeded for AROW
+⏳ API quota exceeded for ARR
+⏳ API quota exceeded for ASA
+⏳ API quota exceeded for ASB
+⏳ API quota exceeded for ASGN
+⏳ API quota exceeded for ASII
+⏳ API quota exceeded for ASML
+⏳ API quota exceeded for ASPS
+⏳ API quota exceeded for ASPU
+⏳ API quota exceeded for ASR
+⏳ API quota exceeded for ASRV
+⏳ API quota exceeded for ASX
+⏳ API quota exceeded for ATNI
+⏳ API quota exceeded for ATR
+⏳ API quota exceeded for ATXG
+⏳ API quota exceeded for AUB
+⏳ API quota exceeded for AUBN
+⏳ API quota exceeded for AUSI
+⏳ API quota exceeded for AVB
+⏳ API quota exceeded for AVBH
+⏳ API quota exceeded for AVNT
+⏳ API quota exceeded for AVTR
+⏳ API quota exceeded for AVY
+⏳ API quota exceeded for AXP
+⏳ API quota exceeded for AZZ
+⏳ API quota exceeded for BAC
+⏳ API quota exceeded for BAH
+⏳ API quota exceeded for BANC
+⏳ API quota exceeded for BANF
+⏳ API quota exceeded for BANR
+⏳ API quota exceeded for BAX
+⏳ API quota exceeded for BC
+⏳ API quota exceeded for BCBP
+⏳ API quota exceeded for BCML
+⏳ API quota exceeded for BCPC
+⏳ API quota exceeded for BDN
+⏳ API quota exceeded for BEDU
+⏳ API quota exceeded for BEGI
+⏳ API quota exceeded for BENF
+⏳ API quota exceeded for BFC
+⏳ API quota exceeded for BFH
+⏳ API quota exceeded for BGI
+⏳ API quota exceeded for BHB
+⏳ API quota exceeded for BHLB
+⏳ API quota exceeded for BHRB
+⏳ API quota exceeded for BJRI
+⏳ API quota exceeded for BK
+⏳ API quota exceeded for BKR
+⏳ API quota exceeded for BKSC
+⏳ API quota exceeded for BKU
+⏳ API quota exceeded for BLK
+⏳ API quota exceeded for BLMN
+⏳ API quota exceeded for BLX
+⏳ API quota exceeded for BMI
+⏳ API quota exceeded for BOH
+⏳ API quota exceeded for BOKF
+⏳ API quota exceeded for BOTJ
+⏳ API quota exceeded for BOTY
+⏳ API quota exceeded for BOXL
+⏳ API quota exceeded for BPOP
+⏳ API quota exceeded for BPRN
+⏳ API quota exceeded for BRBS
+⏳ API quota exceeded for BRKL
+⏳ API quota exceeded for BRO
+⏳ API quota exceeded for BSBR
+⏳ API quota exceeded for BSET
+⏳ API quota exceeded for BSRR
+⏳ API quota exceeded for BSVN
+⏳ API quota exceeded for BSX
+⏳ API quota exceeded for BTCS
+⏳ API quota exceeded for BTE
