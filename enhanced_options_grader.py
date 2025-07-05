@@ -275,18 +275,25 @@ class EnhancedOptionsGrader:
         else:
             # Advanced unusual activity detection
             avg_volume = historical_data.get('avg_volume', 1)
-            avg_oi = historical_data.get('avg_oi', 1)
 
-            # Volume spike detection
-            volume_ratio = option_data.get('volume', 0) / max(avg_volume, 1)
-            if volume_ratio >= 5.0:
-                score += 12  # Massive spike
-            elif volume_ratio >= 3.0:
-                score += 8
-            elif volume_ratio >= 2.0:
-                score += 5
+            # Volume analysis - ensure numeric values
+            try:
+                volume = float(option_data.get('volume', 0))
+                avg_volume = float(avg_volume) if avg_volume else 1.0
+                volume_ratio = volume / max(avg_volume, 1)
+                if volume_ratio >= 2.0:
+                    volume_score = 10
+                elif volume_ratio >= 1.5:
+                    volume_score = 7
+                elif volume_ratio >= 1.0:
+                    volume_score = 5
+                else:
+                    volume_score = 2
+            except (TypeError, ValueError):
+                volume_score = 2
 
             # OI change detection
+            avg_oi = historical_data.get('avg_oi', 1)
             oi_change = (option_data.get('open_interest', 0) - avg_oi) / max(avg_oi, 1)
             if oi_change >= 1.0:
                 score += 8  # 100%+ increase
@@ -348,7 +355,22 @@ class EnhancedOptionsGrader:
         """
         score = 0
 
-        iv = option_data.get('implied_volatility', 0) * 100
+        # IV analysis - ensure numeric values
+        try:
+            iv = float(option_data.get('impliedVolatility', 0.25))
+            if iv >= 0.8:
+                iv_score = 8
+            elif iv >= 0.6:
+                iv_score = 6
+            elif iv >= 0.4:
+                iv_score = 4
+            elif iv >= 0.2:
+                iv_score = 2
+            else:
+                iv_score = 1
+        except (TypeError, ValueError):
+            iv_score = 1
+
         historical_vol = market_data.get('volatility_30d', 50)
 
         # IV vs HV comparison
@@ -524,13 +546,13 @@ class EnhancedOptionsGrader:
         """
         Generate actionable recommendation based on score
         """
-        if total_score >= 75:
+        if score >= 75:
             return "🔥 STRONG BUY - High explosion potential"
-        elif total_score >= 60:
+        elif score >= 60:
             return "✅ BUY - Good opportunity"
-        elif total_score >= 45:
+        elif score >= 45:
             return "⚡ WATCH - Needs confirmation"
-        elif total_score >= 30:
+        elif score >= 30:
             return "⚠️ WEAK - Better opportunities exist"
         else:
             return "❌ REJECT - Does not meet criteria"
@@ -577,9 +599,17 @@ class EnhancedOptionsGrader:
             risk_score += 30
 
         # Greeks risk
-        if abs(option_data.get('delta', 0)) < 0.10:
+        try:
+            delta = float(option_data.get('delta', 0))
+        except (ValueError, TypeError):
+            delta = 0
+        if abs(delta) < 0.10:
             risk_score += 20  # Very low delta
-        if abs(option_data.get('theta', 0)) > 0.20:
+        try:
+            theta = float(option_data.get('theta', 0))
+        except (ValueError, TypeError):
+            theta = 0
+        if abs(theta) > 0.20:
             risk_score += 20  # High decay
 
         # Time risk
