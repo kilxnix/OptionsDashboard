@@ -567,11 +567,6 @@ def discover_pre_earnings_stocks(verbose=True):
 
         pre_earnings_stocks = list(selected_symbols)
 
-            except Exception as e:
-                if verbose:
-                    print(f"    ⚠️ Error parsing line: {line[:50]}... - {e}")
-                continue
-
         if verbose:
             print(f"📈 Alpha Vantage earnings calendar: Found {earnings_found} earnings announcements")
             print(f"📊 Total optionable pre-earnings stocks: {len(pre_earnings_stocks)}")
