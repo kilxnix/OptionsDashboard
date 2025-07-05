@@ -271,14 +271,15 @@ class ExplosiveOptionsScanner:
                                         for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S', '%m-%d-%Y']:
                                             try:
                                                 parsed_date = datetime.strptime(exp_str, fmt)
-                                                return parsed_date.strftime('%Y-%m-%d')
+                                                option_dict['expiration'] = parsed_date.strftime('%Y-%m-%d')
+                                                break
                                             except ValueError:
                                                 continue
-
-                                        # If no format works, default to 30 days from now
-                                        return (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+                                        else:
+                                            # If no format works, default to 30 days from now
+                                            option_dict['expiration'] = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
                                 except:
-                                    return (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+                                    option_dict['expiration'] = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
 
                         score, analysis = self.grader.calculate_option_score(option_dict, market_data)
 
