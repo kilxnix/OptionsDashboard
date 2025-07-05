@@ -457,6 +457,9 @@ class ExplosiveOptionsScanner:
                 response = requests.get(url, timeout=30)
                 data = response.json()
 
+                print(f"📊 API Response Status: {response.status_code}")
+                print(f"📊 Response keys: {list(data.keys()) if isinstance(data, dict) else 'Not a dict'}")
+
                 if 'Information' in data and 'rate limit' in data['Information'].lower():
                     print(f"⏳ Rate limit reached - waiting...")
                     time.sleep(60)
@@ -464,6 +467,10 @@ class ExplosiveOptionsScanner:
 
                 if 'Error Message' in data:
                     print(f"❌ Bulk quotes error: {data['Error Message']}")
+                    continue
+
+                if 'Information' in data and 'premium@alphavantage.co' in data.get('Information', ''):
+                    print(f"❌ API quota exceeded: {data['Information']}")
                     continue
 
                 parsed = process_alpha_vantage_bulk_response(data)

@@ -861,6 +861,51 @@ def test_api_key():
             "message": f"API test failed: {str(e)}"
         }), 500
 
+@app.route("/test-bulk-quotes", methods=["GET"])
+def test_bulk_quotes():
+    """Test Alpha Vantage bulk quotes functionality"""
+    try:
+        import requests
+        from immediate_fixes import process_alpha_vantage_bulk_response
+        
+        api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
+        if not api_key:
+            return jsonify({
+                "status": "error",
+                "message": "ALPHA_VANTAGE_API_KEY environment variable not found"
+            }), 500
+        
+        # Test with a small set of symbols
+        test_symbols = "AAPL,MSFT,GOOGL,TSLA,NVDA"
+        url = f'https://www.alphavantage.co/query?function=REALTIME_BULK_QUOTES&symbol={test_symbols}&apikey={api_key}'
+        
+        print(f"🧪 Testing bulk quotes with URL: {url}")
+        response = requests.get(url, timeout=30)
+        data = response.json()
+        
+        print(f"🧪 Response status: {response.status_code}")
+        print(f"🧪 Response keys: {list(data.keys()) if isinstance(data, dict) else 'Not a dict'}")
+        print(f"🧪 Raw response sample: {str(data)[:500]}...")
+        
+        # Try to parse the response
+        parsed = process_alpha_vantage_bulk_response(data)
+        
+        return jsonify({
+            "status": "success" if len(parsed) > 0 else "no_data",
+            "test_url": url,
+            "response_keys": list(data.keys()) if isinstance(data, dict) else [],
+            "parsed_symbols": len(parsed),
+            "parsed_data": parsed,
+            "raw_response_sample": str(data)[:1000],
+            "api_key_masked": f"{api_key[:8]}...{api_key[-4:]}"
+        })
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Bulk quotes test failed: {str(e)}"
+        }), 500
+
 @app.route("/test-earnings-verbose", methods=["GET"])
 def test_earnings_verbose():
     """Test endpoint to debug earnings discovery with full verbose output"""

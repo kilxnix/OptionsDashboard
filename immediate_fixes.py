@@ -112,42 +112,125 @@ def safe_apply_filters(
     return df
 
 
-def process_alpha_vantage_bulk_response(response: Dict) -> Dict[str, Dict]:
-    """Process Alpha Vantage REALTIME_BULK_QUOTES response correctly"""
-    market_data = {}
+def process_alpha_vantage_bulk_response(data):
+    """Process bulk quotes response from Alpha Vantage"""
+    parsed_data = {}
 
-    # Check different possible response formats
-    if 'data' in response:
-        data_list = response['data']
-    elif 'quotes' in response:
-        data_list = response['quotes']
-    elif isinstance(response, list):
-        data_list = response
-    else:
-        print(f"Unknown response format: {list(response.keys())}")
-        return {}
+    try:
+        # Check if data has the expected structure
+        if not isinstance(data, dict):
+            print(f"❌ Invalid response format: {type(data)}")
+            return parsed_data
 
-    for item in data_list:
-        try:
-            symbol = item.get('symbol', item.get('01. symbol', ''))
+        # Debug: Print the actual response structure
+        print(f"📋 Response keys: {list(data.keys())}")
+
+        # Alpha Vantage bulk quotes typically return data in these formats:
+        # 1. "Global Quotes" (array)
+        # 2. "data" (array) 
+        # 3. Direct symbol mapping
+
+        quotes_data = None
+
+        # Try different response formats
+        if 'Global Quotes' in data and isinstance(data['Global Quotes'], list):
+            quotes_data = data['Global Quotes']
+            print(f"📊 Found Global Quotes array with {len(quotes_data)} items")
+        elif 'data' in data and isinstance(data['data'], list):
+            quotes_data = data['data']
+            print(f"📊 Found data array with {len(quotes_data)} items")
+        elif 'quotes' in data:
+            quotes_data = data['quotes']
+            print(f"📊 Found quotes data")
+        else:
+            # Try to find any array in the response
+            for key, value in data.items():
+                if isinstance(value, list) and len(value) > 0:
+                    # Check if first item looks like a quote
+                    first_item = value[0] if value else {}
+                    if isinstance(first_item, dict) and ('symbol' in first_item or '01. symbol' in first_item):
+                        quotes_data = value
+                        print(f"📊 Found quote-like array in key '{key}' with {len(quotes_data)} items")
+                        break
+
+        if not quotes_data:
+            print(f"❌ No quotes data found. Response structure: {str(data)[:300]}...")
+            return parsed_data
+
+        # Process quotes
+        for quote in quotes_data:
+            if not isinstance(quote, dict):
+                continue
+
+            # Extract symbol (try different key formats)
+            symbol = None
+            for sym_key in ['symbol', '01. symbol', 'ticker', 'Symbol']:
+                if sym_key in quote:
+                    symbol = quote[sym_key]
+                    break
+
             if not symbol:
                 continue
 
-            # Try different field names Alpha Vantage might use
-            price = float(item.get('price', item.get('05. price', item.get('02. price', 0))))
+            # Extract price data with multiple fallbacks
+            try:
+                price = 0
+                for price_key in ['price', '05. price', 'last_price', 'close', '02. close']:
+                    if price_key in quote:
+                        price = float(str(quote[price_key]).replace('$', '').replace(',', ''))
+                        break
 
-            if price > 0:  # Valid price
-                market_data[symbol] = {
-                    'symbol': symbol,
-                    'current_price': price,
-                    'volume': int(item.get('volume', item.get('06. volume', 0))),
-                    'timestamp': item.get('timestamp', item.get('07. latest trading day', '')),
-                }
-        except Exception as e:
-            print(f"Error processing {symbol}: {e}")
-            continue
+                change_pct = 0
+                for change_key in ['change_percent', '10. change percent', 'change_pct', 'percent_change']:
+                    if change_key in quote:
+                        change_str = str(quote[change_key]).replace('%', '').replace('+', '')
+                        change_pct = float(change_str) if change_str else 0
+                        break
 
-    return market_data
+                volume = 0
+                for vol_key in ['volume', '06. volume', 'Volume']:
+                    if vol_key in quote:
+                        volume = int(float(str(quote[vol_key]).replace(',', '')))
+                        break
+
+                high = price  # Default to current price
+                for high_key in ['high', '03. high', 'day_high']:
+                    if high_key in quote:
+                        high = float(str(quote[high_key]).replace('$', '').replace(',', ''))
+                        break
+
+                low = price  # Default to current price  
+                for low_key in ['low', '04. low', 'day_low']:
+                    if low_key in quote:
+                        low = float(str(quote[low_key]).replace('$', '').replace(',', ''))
+                        break
+
+                if price > 0:  # Only include if we have a valid price
+                    parsed_data[symbol] = {
+                        'current_price': price,
+                        'change_percent': change_pct,
+                        'volume': volume,
+                        'high': high,
+                        'low': low
+                    }
+
+            except (ValueError, TypeError) as e:
+                print(f"⚠️ Error parsing data for {symbol}: {e}")
+                continue
+
+        print(f"✅ Successfully parsed {len(parsed_data)} symbols from bulk response")
+        if len(parsed_data) > 0:
+            # Show a sample
+            sample_symbol = list(parsed_data.keys())[0]
+            print(f"📋 Sample data for {sample_symbol}: {parsed_data[sample_symbol]}")
+
+        return parsed_data
+
+    except Exception as e:
+        print(f"❌ Error parsing bulk response: {e}")
+        print(f"📋 Response type: {type(data)}")
+        print(f"📋 Response sample: {str(data)[:500]}...")
+        return parsed_data
 
 
 def apply_enhanced_filters(self, options_data, filters=None):
