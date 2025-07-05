@@ -718,7 +718,7 @@ def enhanced_scan():
 
 @app.route("/explosive-scan", methods=["GET", "POST"])
 def run_explosive_scan():
-    """Run the new explosive options scanner"""
+    """Run the explosive options scanner optimized for your API plan"""
     try:
         from explosive_options_scanner import ExplosiveOptionsScanner
 
@@ -728,20 +728,27 @@ def run_explosive_scan():
             scan_type = data.get('scan_type', 'comprehensive')
             symbols = data.get('symbols', None)
             filters = data.get('filters', {})
+            max_symbols = data.get('max_symbols', 400)  # Default limit for efficiency
         else:
             scan_type = request.args.get('scan_type', 'comprehensive')
             symbols = request.args.getlist('symbols') or None
+            max_symbols = int(request.args.get('max_symbols', 400))
             filters = {
                 'min_price': float(request.args.get('min_price', 0.05)),
                 'max_price': float(request.args.get('max_price', 5.00)),
-                'min_delta': float(request.args.get('min_delta', 0.10)),
-                'max_delta': float(request.args.get('max_delta', 0.40)),
+                'min_delta': float(request.args.get('min_delta', 0.15)),
+                'max_delta': float(request.args.get('max_delta', 0.35)),
                 'min_days': int(request.args.get('min_days', 1)),
-                'max_days': int(request.args.get('max_days', 30))
+                'max_days': int(request.args.get('max_days', 21))
             }
 
         # Initialize scanner
         scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
+        
+        # Limit symbols if provided to stay within API constraints
+        if symbols and len(symbols) > max_symbols:
+            symbols = symbols[:max_symbols]
+            print(f"⚡ Limited to {max_symbols} symbols for API efficiency")
 
         # Run scan
         results = scanner.run_explosive_scan(
@@ -753,8 +760,12 @@ def run_explosive_scan():
         return jsonify({
             "status": "success",
             "scan_type": scan_type,
+            "api_optimization": "Historical options + Yahoo Finance fallback",
+            "symbols_scanned": results['scan_metadata']['symbols_scanned'],
             "opportunities_found": len(results['opportunities']),
-            "top_picks": results['top_picks'][:5],
+            "top_picks": results['top_picks'][:10],
+            "earnings_opportunities": len(results['by_category']['earnings_plays']),
+            "api_calls_saved": "Using bulk quotes + historical options",
             "summary": results['summary']
         })
 

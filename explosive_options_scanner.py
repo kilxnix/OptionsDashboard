@@ -33,17 +33,75 @@ class ExplosiveOptionsScanner:
         # Load and adapt based on historical performance
         self._adapt_from_history()
 
-        # Scan configuration
+        # Scan configuration optimized for your API plan
         self.scan_config = {
-            'min_score': 30,  # Minimum score to consider (lowered to find more opportunities)
+            'min_score': 35,  # Slightly higher to focus on best opportunities  
             'max_positions': 10,  # Max concurrent positions
             'scan_frequency': 'continuous',  # or 'daily', 'hourly'
-            'focus_list': []  # Symbols to prioritize
+            'focus_list': [],  # Symbols to prioritize
+            'use_yahoo_fallback': True,  # Enable Yahoo Finance fallback
+            'max_symbols_per_scan': 600,  # Optimize for your API limits
+            'historical_options_preferred': True  # Prefer Alpha Vantage historical
         }
 
         # Results cache
         self.scan_results = {}
         self.last_scan_time = None
+
+
+    def __init__(self, alpha_vantage_key: str, base_dir: str = "./TradingPlans"):
+        self.av_key = alpha_vantage_key
+        self.base_dir = base_dir
+        
+        # API usage tracking for your 150/minute limit
+        self.api_calls_made = 0
+        self.api_window_start = time.time()
+        self.max_calls_per_minute = 150
+        
+        # Initialize all components
+        self.grader = EnhancedOptionsGrader(alpha_vantage_key)
+        self.planner = IntelligentTradePlanner(alpha_vantage_key)
+        self.tracker = PerformanceTracker(base_dir)
+        
+        # Load and adapt based on historical performance
+        self._adapt_from_history()
+        
+        # Scan configuration optimized for your API plan
+        self.scan_config = {
+            'min_score': 35,  # Slightly higher to focus on best opportunities  
+            'max_positions': 10,  # Max concurrent positions
+            'scan_frequency': 'continuous',  # or 'daily', 'hourly'
+            'focus_list': [],  # Symbols to prioritize
+            'use_yahoo_fallback': True,  # Enable Yahoo Finance fallback
+            'max_symbols_per_scan': 600,  # Optimize for your API limits
+            'historical_options_preferred': True  # Prefer Alpha Vantage historical
+        }
+        
+        # Results cache
+        self.scan_results = {}
+        self.last_scan_time = None
+
+    def _track_api_call(self):
+        """Track API calls to stay within 150/minute limit"""
+        current_time = time.time()
+        
+        # Reset counter if more than a minute has passed
+        if current_time - self.api_window_start >= 60:
+            self.api_calls_made = 0
+            self.api_window_start = current_time
+            
+        self.api_calls_made += 1
+        
+        # If approaching limit, wait
+        if self.api_calls_made >= self.max_calls_per_minute - 5:  # Leave buffer
+            wait_time = 60 - (current_time - self.api_window_start) + 1
+            if wait_time > 0:
+                print(f"⏳ API rate limit protection: waiting {wait_time:.1f}s")
+                time.sleep(wait_time)
+                self.api_calls_made = 0
+                self.api_window_start = time.time()
+
+
 
     def run_explosive_scan(self, 
                           symbols: List[str] = None,
@@ -311,58 +369,71 @@ class ExplosiveOptionsScanner:
 
     def _discover_symbols(self, scan_type: str) -> List[str]:
         """
-        Discover symbols based on scan type
+        Discover symbols efficiently using your upgraded Alpha Vantage plan
         """
         symbols = []
 
         if scan_type == 'earnings':
-            # Get pre-earnings stocks
+            # Get pre-earnings stocks (1 API call)
             symbols = self._get_pre_earnings_stocks()
             # Add high-volume liquid stocks as backup
             liquid_stocks = ['SPY', 'QQQ', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'AMD']
             symbols.extend([s for s in liquid_stocks if s not in symbols])
 
         elif scan_type == 'unusual_activity':
-            # Get stocks with unusual options activity
-            symbols = self._get_unusual_activity_stocks()
+            # Focus on known active options symbols to save API calls
+            symbols = ['SPY', 'QQQ', 'AAPL', 'TSLA', 'NVDA', 'AMD', 'META', 'AMZN', 'MSFT', 'GOOGL',
+                      'GME', 'AMC', 'PLTR', 'COIN', 'SOXL', 'TQQQ', 'IWM', 'XLE', 'GLD', 'NFLX']
 
         elif scan_type == 'quick':
-            # Get top movers and high volume stocks
-            symbols = self._get_top_movers()[:50]
+            # Get top movers (1 API call) but limit to 100 to stay efficient
+            movers = self._get_top_movers()
+            symbols = movers[:100]  # Limit for efficiency
 
         else:  # comprehensive
-            # Combine multiple sources
-            earnings = self._get_pre_earnings_stocks()  # Get ALL earnings stocks
-            movers = self._get_top_movers()  # Get ALL movers
-            unusual = self._get_unusual_activity_stocks()  # Get ALL unusual activity
-
+            print(f"📊 Running comprehensive scan with API optimization...")
+            
+            # Get earnings (1 API call)
+            earnings = self._get_pre_earnings_stocks()
             print(f"📈 Earnings symbols found: {len(earnings)}")
+            
+            # Get top movers (1 API call) 
+            movers = self._get_top_movers()
             print(f"📊 Top movers found: {len(movers)}")
-            print(f"🔥 Unusual activity found: {len(unusual)}")
+            
+            # Add high-volume optionable stocks (no API call needed)
+            high_volume = ['SPY', 'QQQ', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'AMD', 
+                          'NFLX', 'COIN', 'PLTR', 'GME', 'AMC', 'SOXL', 'TQQQ', 'IWM', 'XLE', 'GLD',
+                          'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'V', 'MA', 'PYPL', 'SQ', 'CRM', 'ORCL',
+                          'DIS', 'UBER', 'LYFT', 'F', 'GM', 'BA', 'GE', 'XOM', 'CVX', 'KO', 'PEP']
+            
+            print(f"🔥 High-volume optionable stocks: {len(high_volume)}")
 
-            # Combine and dedupe
-            all_symbols = list(set(earnings + movers + unusual))
+            # Combine and prioritize (earnings first, then movers, then high-volume)
+            all_symbols = earnings.copy()
+            all_symbols.extend([s for s in movers if s not in all_symbols])
+            all_symbols.extend([s for s in high_volume if s not in all_symbols])
 
-            # Add high-volume backup symbols if we don't have enough
-            if len(all_symbols) < 50:
-                backup_symbols = ['SPY', 'QQQ', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'AMD', 
-                                 'NFLX', 'COIN', 'PLTR', 'GME', 'AMC', 'SOXL', 'TQQQ', 'IWM', 'XLE', 'GLD']
-                all_symbols.extend([s for s in backup_symbols if s not in all_symbols])
+            # Limit total symbols to optimize API usage (bulk quotes can handle ~600-800 efficiently)
+            symbols = all_symbols[:600]  # Balance between coverage and efficiency
 
-            symbols = all_symbols
-
-        # Always include focus list
+        # Always include focus list first
         if self.scan_config['focus_list']:
             symbols = self.scan_config['focus_list'] + [s for s in symbols if s not in self.scan_config['focus_list']]
 
         # Filter out likely non-optionable symbols
         filtered_symbols = []
         for symbol in symbols:
-            # Skip symbols with more than 4 characters (likely foreign/OTC)
-            if len(symbol) <= 4 and symbol.isalpha() and not any(char in symbol for char in ['.', '-']):
+            # Keep only likely optionable US stocks
+            if (len(symbol) <= 4 and 
+                symbol.isalpha() and 
+                not any(char in symbol for char in ['.', '-']) and
+                not symbol.endswith('F')):  # Avoid foreign stocks
                 filtered_symbols.append(symbol)
 
-        print(f"📊 Filtered from {len(symbols)} to {len(filtered_symbols)} quality symbols")
+        print(f"📊 Filtered from {len(symbols)} to {len(filtered_symbols)} quality optionable symbols")
+        print(f"🎯 Optimized for your API limits: 2 discovery calls + efficient bulk processing")
+        
         return filtered_symbols
 
     def _get_pre_earnings_stocks(self) -> List[str]:
@@ -438,30 +509,32 @@ class ExplosiveOptionsScanner:
         return ['TSLA', 'NVDA', 'AMD', 'SPY', 'QQQ', 'AAPL', 'GME', 'AMC']
 
     def _fetch_bulk_market_data(self, symbols: List[str]) -> Dict[str, Dict]:
-        """Fetch market data for multiple symbols using bulk quotes API"""
+        """Fetch market data efficiently using your upgraded Alpha Vantage plan"""
         bulk_data = {}
 
         print(f"📊 Processing {len(symbols)} symbols using REALTIME_BULK_QUOTES API...")
         print(f"🔑 Using API key: {self.av_key[:8]}...{self.av_key[-4:] if len(self.av_key) > 12 else 'INVALID'}")
+        print(f"⚡ Rate limit: 150 requests/minute (upgraded plan)")
 
-        # Process symbols in chunks of 100 (API limit)
+        # Process symbols in chunks of 100 (API limit) with optimized timing
+        chunk_delay = 0.4  # 150 requests/min = 1 request every 0.4 seconds
+        
         for i in range(0, len(symbols), 100):
             chunk = symbols[i:i+100]
             print(f"📊 Processing chunk {i//100 + 1}: symbols {i+1}-{min(i+100, len(symbols))}")
             symbol_string = ','.join(chunk)
 
             try:
-                print(f"📊 Fetching bulk quotes for {len(chunk)} symbols...")
-
+                start_time = time.time()
+                
                 url = f'https://www.alphavantage.co/query?function=REALTIME_BULK_QUOTES&symbol={symbol_string}&apikey={self.av_key}'
                 response = requests.get(url, timeout=30)
                 data = response.json()
 
                 print(f"📊 API Response Status: {response.status_code}")
-                print(f"📊 Response keys: {list(data.keys()) if isinstance(data, dict) else 'Not a dict'}")
-
+                
                 if 'Information' in data and 'rate limit' in data['Information'].lower():
-                    print(f"⏳ Rate limit reached - waiting...")
+                    print(f"⏳ Rate limit reached - waiting 60 seconds...")
                     time.sleep(60)
                     continue
 
@@ -469,16 +542,21 @@ class ExplosiveOptionsScanner:
                     print(f"❌ Bulk quotes error: {data['Error Message']}")
                     continue
 
-                if 'Information' in data and 'premium@alphavantage.co' in data.get('Information', ''):
-                    print(f"❌ API quota exceeded: {data['Information']}")
+                if 'Information' in data and ('premium' in data.get('Information', '').lower() or 'upgrade' in data.get('Information', '').lower()):
+                    print(f"❌ API access issue: {data['Information']}")
                     continue
 
+                # Process successful response
                 parsed = process_alpha_vantage_bulk_response(data)
                 bulk_data.update(parsed)
+                print(f"✅ Successfully parsed {len(parsed)} symbols from chunk {i//100 + 1}")
 
-                # Small delay between chunks
-                if i + 100 < len(symbols):
-                    time.sleep(1)
+                # Rate limiting - ensure we don't exceed 150 requests/minute
+                elapsed = time.time() - start_time
+                if elapsed < chunk_delay and i + 100 < len(symbols):
+                    sleep_time = chunk_delay - elapsed
+                    print(f"⏱️ Rate limiting: sleeping {sleep_time:.2f}s")
+                    time.sleep(sleep_time)
 
             except Exception as e:
                 print(f"❌ Error fetching bulk data for chunk {i//100 + 1}: {e}")
@@ -618,24 +696,24 @@ class ExplosiveOptionsScanner:
             return {'is_pre_earnings': False, 'days_to_earnings': None}
 
     def _fetch_all_options(self, symbol: str) -> Optional[pd.DataFrame]:
-        """Fetch all options for a symbol using Alpha Vantage"""
+        """Fetch options data using Alpha Vantage historical + Yahoo Finance realtime"""
         try:
-            # Try Alpha Vantage historical options first
+            # FIRST: Try Alpha Vantage historical options (you have access)
+            print(f"📊 Fetching Alpha Vantage historical options for {symbol}...")
             url = f"https://www.alphavantage.co/query?function=HISTORICAL_OPTIONS&symbol={symbol}&apikey={self.av_key}"
             response = requests.get(url, timeout=15)
             data = response.json()
 
             if 'Information' in data and 'rate limit' in data['Information'].lower():
-                print(f"⏳ Rate limit reached for {symbol} - waiting...")
-                time.sleep(60)
-                return self._fetch_all_options(symbol)
+                print(f"⏳ Alpha Vantage rate limit - falling back to Yahoo Finance for {symbol}")
+                return self._fetch_yahoo_options(symbol)
 
             if 'Error Message' in data:
                 print(f"❌ Alpha Vantage historical options error for {symbol}: {data['Error Message']}")
-                # Try real-time options as fallback
-                return self._fetch_realtime_options_av(symbol)
+                return self._fetch_yahoo_options(symbol)
 
             if 'data' in data and data['data'] and len(data['data']) > 0:
+                print(f"✅ Alpha Vantage historical options found for {symbol}: {len(data['data'])} contracts")
                 df = pd.DataFrame(data['data'])
 
                 # Filter for recent data only (last 30 days)
@@ -802,122 +880,133 @@ class ExplosiveOptionsScanner:
 
                     return df
 
-            # Fallback to real-time options
-            print(f"🔄 Trying real-time options for {symbol}...")
-            return self._fetch_realtime_options_av(symbol)
+            # Fallback to Yahoo Finance if no Alpha Vantage data
+            print(f"🔄 No Alpha Vantage data - trying Yahoo Finance for {symbol}...")
+            return self._fetch_yahoo_options(symbol)
 
         except Exception as e:
-            print(f"❌ Error fetching options for {symbol}: {e}")
-            return None
+            print(f"❌ Error fetching Alpha Vantage options for {symbol}: {e}")
+            print(f"🔄 Falling back to Yahoo Finance for {symbol}...")
+            return self._fetch_yahoo_options(symbol)
 
-    def _fetch_realtime_options_av(self, symbol: str) -> Optional[pd.DataFrame]:
-        """Fallback method for real-time options data from Alpha Vantage"""
+    def _fetch_yahoo_options(self, symbol: str) -> Optional[pd.DataFrame]:
+        """Fetch options data from Yahoo Finance as fallback"""
         try:
-            url = f"https://www.alphavantage.co/query?function=REALTIME_OPTIONS&symbol={symbol}&apikey={self.av_key}"
-            response = requests.get(url, timeout=15)
-            data = response.json()
-
-            # Check for rate limiting
-            if 'Information' in data and 'rate limit' in data['Information'].lower():
-                print(f"⏳ Rate limit reached for {symbol} - waiting...")
-                time.sleep(60)
+            import yfinance as yf
+            
+            print(f"🌐 Fetching Yahoo Finance options for {symbol}...")
+            ticker = yf.Ticker(symbol)
+            
+            # Get available expiration dates
+            try:
+                expirations = ticker.options
+                if not expirations:
+                    print(f"❌ No options available for {symbol} on Yahoo Finance")
+                    return None
+            except Exception as e:
+                print(f"❌ Error getting expiration dates for {symbol}: {e}")
                 return None
 
-            if 'Information' in data and 'premium@alphavantage.co' in data['Information']:
-                print(f"⏳ API quota exceeded for {symbol}")
+            # Fetch options data for all available expirations (limit to first 4 for performance)
+            all_options = []
+            for exp_date in expirations[:4]:  # Limit to avoid too many calls
+                try:
+                    option_chain = ticker.option_chain(exp_date)
+                    
+                    # Process calls
+                    calls = option_chain.calls.copy()
+                    calls['type'] = 'call'
+                    calls['expiration'] = exp_date
+                    calls['symbol'] = symbol
+                    
+                    # Process puts  
+                    puts = option_chain.puts.copy()
+                    puts['type'] = 'put'
+                    puts['expiration'] = exp_date
+                    puts['symbol'] = symbol
+                    
+                    all_options.extend([calls, puts])
+                    
+                except Exception as e:
+                    print(f"⚠️ Error fetching {exp_date} options for {symbol}: {e}")
+                    continue
+            
+            if not all_options:
+                print(f"❌ No valid options data found for {symbol}")
                 return None
+                
+            # Combine all options data
+            df = pd.concat(all_options, ignore_index=True)
+            print(f"✅ Yahoo Finance options found for {symbol}: {len(df)} contracts")
 
-            if 'data' in data and data['data']:
-                df = pd.DataFrame(data['data'])
-                print(f"✅ Real-time options found for {symbol}: {len(df)} contracts")
-
-                # Standardize columns with proper data type conversion
-                if 'last_price' in df.columns:
-                    df['mark'] = pd.to_numeric(df['last_price'], errors='coerce').fillna(0.5)
-                elif 'ask' in df.columns and 'bid' in df.columns:
+                # Standardize Yahoo Finance columns to match Alpha Vantage format
+            column_mapping = {
+                'lastPrice': 'mark',
+                'openInterest': 'open_interest', 
+                'impliedVolatility': 'impliedVolatility',
+                'contractSymbol': 'contractSymbol'
+            }
+            
+            for old_col, new_col in column_mapping.items():
+                if old_col in df.columns:
+                    df[new_col] = df[old_col]
+            
+            # Calculate mark price from bid/ask if lastPrice not available
+            if 'mark' not in df.columns:
+                if 'ask' in df.columns and 'bid' in df.columns:
                     df['ask'] = pd.to_numeric(df['ask'], errors='coerce').fillna(0.5)
                     df['bid'] = pd.to_numeric(df['bid'], errors='coerce').fillna(0.5)
                     df['mark'] = (df['ask'] + df['bid']) / 2
                 else:
                     df['mark'] = 0.5
 
-                # Add required columns with defaults if missing
-                defaults = {
-                    'symbol': symbol,
-                    'volume': 100,
-                    'openInterest': 50,
-                    'delta': 0.3,
-                    'gamma': 0.01,
-                    'theta': -0.05,
-                    'impliedVolatility': 0.25
-                }
+            # Add required columns with defaults if missing
+            required_defaults = {
+                'volume': 100,
+                'open_interest': 50,
+                'delta': 0.3,
+                'gamma': 0.01, 
+                'theta': -0.05,
+                'impliedVolatility': 0.25
+            }
 
-                for col, default_val in defaults.items():
-                    if col not in df.columns:
-                        df[col] = default_val
+            for col, default_val in required_defaults.items():
+                if col not in df.columns:
+                    df[col] = default_val
 
-                # Fix expiration date format and add days_to_expiry calculation
-                if 'expiration' in df.columns:
-                    def standardize_expiration_and_days(exp_val):
-                        if pd.isna(exp_val) or exp_val == '' or exp_val is None:
-                            default_date = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
-                            return default_date, 30
+            # Standardize expiration format and calculate days to expiry
+            def calculate_days_to_expiry(exp_str):
+                try:
+                    if pd.isna(exp_str):
+                        return 30
+                    exp_date = pd.to_datetime(exp_str)
+                    days = max(1, (exp_date - pd.Timestamp.now()).days)
+                    return days
+                except:
+                    return 30
 
-                        exp_str = str(exp_val).strip()
-                        if not exp_str:
-                            default_date = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
-                            return default_date, 30
+            df['days_to_expiry'] = df['expiration'].apply(calculate_days_to_expiry)
+            
+            # Ensure expiration is in YYYY-MM-DD format
+            df['expiration'] = pd.to_datetime(df['expiration']).dt.strftime('%Y-%m-%d')
 
-                        # Try to parse and standardize the date
-                        for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S', '%m-%d-%Y']:
-                            try:
-                                parsed_date = datetime.strptime(exp_str, fmt)
-                                formatted_date = parsed_date.strftime('%Y-%m-%d')
-                                days_to_exp = max(1, (parsed_date - datetime.now()).days)
-                                return formatted_date, days_to_exp
-                            except ValueError:
-                                continue
+            # Convert numeric columns with error handling
+            numeric_cols = ['mark', 'strike', 'volume', 'open_interest', 'delta', 'gamma', 'theta', 'impliedVolatility']
+            for col in numeric_cols:
+                if col in df.columns:
+                    df[col] = pd.to_numeric(df[col], errors='coerce')
+                    
+                    # Fill NaN values with appropriate defaults
+                    defaults_map = {
+                        'mark': 0.5, 'strike': 100, 'volume': 50, 'open_interest': 50,
+                        'delta': 0.3, 'gamma': 0.01, 'theta': -0.05, 'impliedVolatility': 0.25
+                    }
+                    df[col] = df[col].fillna(defaults_map.get(col, 0))
 
-                        # If no format works, default to 30 days from now
-                        default_date = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
-                        return default_date, 30
-
-                    # Apply the function and split the results
-                    exp_and_days = df['expiration'].apply(standardize_expiration_and_days)
-                    df['expiration'] = [x[0] for x in exp_and_days]
-                    df['days_to_expiry'] = [x[1] for x in exp_and_days]
-
-                # Convert all numeric columns to proper types with comprehensive error handling
-                numeric_cols = ['mark', 'strike', 'volume', 'open_interest', 'delta', 'gamma', 'theta', 'impliedVolatility']
-                for col in numeric_cols:
-                    if col in df.columns:
-                        # Convert to numeric, handling strings and other types
-                        df[col] = pd.to_numeric(df[col], errors='coerce')
-                        # Fill NaN values with appropriate defaults
-                        if col == 'mark':
-                            df[col] = df[col].fillna(0.5)
-                        elif col == 'strike':
-                            df[col] = df[col].fillna(100)
-                        elif col in ['volume', 'open_interest']:
-                            df[col] = df[col].fillna(50)
-                        elif col == 'delta':
-                            df[col] = df[col].fillna(0.3)
-                        elif col == 'gamma':
-                            df[col] = df[col].fillna(0.01)
-                        elif col == 'theta':
-                            df[col] = df[col].fillna(-0.05)
-                        elif col == 'impliedVolatility':
-                            df[col] = df[col].fillna(0.25)
-                        else:
-                            df[col] = df[col].fillna(0)
-
-                return df
-
-            print(f"❌ No options data available for {symbol}")
-            return None
+            return df
 
         except Exception as e:
-            print(f"❌ Real-time options fetch failed for {symbol}: {e}")
+            print(f"❌ Yahoo Finance options fetch failed for {symbol}: {e}")
             return None
 
     def _apply_filters(self, options_data: pd.DataFrame, filters: Dict) -> pd.DataFrame:
