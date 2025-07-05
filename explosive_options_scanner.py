@@ -268,6 +268,9 @@ class ExplosiveOptionsScanner:
         if scan_type == 'earnings':
             # Get pre-earnings stocks
             symbols = self._get_pre_earnings_stocks()
+            # Add high-volume liquid stocks as backup
+            liquid_stocks = ['SPY', 'QQQ', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'AMD']
+            symbols.extend([s for s in liquid_stocks if s not in symbols])
 
         elif scan_type == 'unusual_activity':
             # Get stocks with unusual options activity
@@ -291,7 +294,15 @@ class ExplosiveOptionsScanner:
         if self.scan_config['focus_list']:
             symbols = self.scan_config['focus_list'] + [s for s in symbols if s not in self.scan_config['focus_list']]
 
-        return symbols[:20]  # Cap at 20 to avoid rate limits
+        # Filter out likely non-optionable symbols
+        filtered_symbols = []
+        for symbol in symbols:
+            # Skip symbols with more than 4 characters (likely foreign/OTC)
+            if len(symbol) <= 4 and symbol.isalpha() and not any(char in symbol for char in ['.', '-']):
+                filtered_symbols.append(symbol)
+        
+        print(f"📊 Filtered from {len(symbols)} to {len(filtered_symbols)} quality symbols")
+        return filtered_symbols
 
     def _get_pre_earnings_stocks(self) -> List[str]:
         """Get stocks with upcoming earnings"""
@@ -343,7 +354,17 @@ class ExplosiveOptionsScanner:
                     symbols = [item['ticker'] for item in data[category]]
                     all_symbols.extend(symbols)
 
-            return list(set(all_symbols))
+            # Filter for quality US symbols only
+            filtered_symbols = []
+            for symbol in all_symbols:
+                # Skip foreign/OTC symbols (> 4 chars, contains dots/dashes, ends with F)
+                if (len(symbol) <= 4 and 
+                    symbol.isalpha() and 
+                    not symbol.endswith('F') and 
+                    not any(char in symbol for char in ['.', '-'])):
+                    filtered_symbols.append(symbol)
+
+            return list(set(filtered_symbols))
 
         except:
             # Fallback to high-volume stocks
