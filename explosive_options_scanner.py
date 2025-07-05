@@ -188,22 +188,36 @@ class ExplosiveOptionsScanner:
                                     option_dict[field] = float(cleaned_val)
                                 else:
                                     raise ValueError("Empty after cleaning")
+                            except (ValueError, TypeError, AttributeError):
+                                # Set safe defaults for failed conversions
+                                if field == 'strike':
+                                    option_dict[field] = 100.0
+                                elif field == 'delta':
+                                    option_dict[field] = 0.3
+                                elif field == 'gamma':
+                                    option_dict[field] = 0.01
+                                elif field == 'theta':
+                                    option_dict[field] = -0.05
+                                elif field == 'volume':
+                                    option_dict[field] = 100.0
+                                elif field == 'mark':
+                                    option_dict[field] = 0.5
                             else:
-                                option_dict[field] = float(val)
-                        except (ValueError, TypeError, AttributeError):
-                            # Set safe defaults for failed conversions
-                            if field == 'strike':
-                                option_dict[field] = 100.0
-                            elif field == 'delta':
-                                option_dict[field] = 0.3
-                            elif field == 'gamma':
-                                option_dict[field] = 0.01
-                            elif field == 'theta':
-                                option_dict[field] = -0.05
-                            elif field == 'volume':
-                                option_dict[field] = 100.0
-                            elif field == 'mark':
-                                option_dict[field] = 0.5
+                                    option_dict[field] = float(val)
+                            except (ValueError, TypeError, AttributeError):
+                                # Set safe defaults for failed conversions
+                                if field == 'strike':
+                                    option_dict[field] = 100.0
+                                elif field == 'delta':
+                                    option_dict[field] = 0.3
+                                elif field == 'gamma':
+                                    option_dict[field] = 0.01
+                                elif field == 'theta':
+                                    option_dict[field] = -0.05
+                                elif field == 'volume':
+                                    option_dict[field] = 100.0
+                                elif field == 'mark':
+                                    option_dict[field] = 0.5
 
                         # Ensure expiration is properly formatted as string
                         if 'expiration' in option_dict:
