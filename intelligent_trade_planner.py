@@ -59,8 +59,8 @@ class IntelligentTradePlanner:
             option_data, score_analysis, market_data
         )
 
-        # Calculate stop loss
-        stop_loss = self._calculate_stop_loss(option_data, market_data, score_analysis)
+        # Calculate stop loss (pass targets for risk/reward calculation)
+        stop_loss = self._calculate_stop_loss(option_data, market_data, score_analysis, targets)
 
         # 5. Generate exit strategy
         exit_strategy = self._generate_exit_strategy(
@@ -308,7 +308,7 @@ class IntelligentTradePlanner:
 
         return targets
 
-    def _calculate_stop_loss(self, option_data: Dict, market_data: Dict, score_analysis: Dict = None) -> Dict:
+    def _calculate_stop_loss(self, option_data: Dict, market_data: Dict, score_analysis: Dict = None, targets: Dict = None) -> Dict:
         """
         Calculate intelligent stop loss based on support, volatility, and risk/reward
         """
@@ -324,10 +324,11 @@ class IntelligentTradePlanner:
         # Choose most appropriate stop
         stop_price = max(volatility_stop, theta_stop, option_price * 0.65)
 
-        # Ensure minimum risk/reward
-        target_1_price = targets['target_1']['price']
-        max_stop_for_rr = option_price - ((target_1_price - option_price) / self.risk_params['min_reward_risk'])
-        stop_price = max(stop_price, max_stop_for_rr)
+        # Ensure minimum risk/reward (only if targets are available)
+        if targets and 'target_1' in targets and 'price' in targets['target_1']:
+            target_1_price = targets['target_1']['price']
+            max_stop_for_rr = option_price - ((target_1_price - option_price) / self.risk_params['min_reward_risk'])
+            stop_price = max(stop_price, max_stop_for_rr)
 
         return {
             'stop_price': round(stop_price, 2),
