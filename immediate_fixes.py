@@ -309,6 +309,11 @@ def process_alpha_vantage_bulk_response(data: dict) -> dict:
     parsed_data = {}
     
     try:
+        # Debug: Print actual response structure
+        print(f"📋 DEBUG: Response keys: {list(data.keys())}")
+        print(f"📋 DEBUG: Response type: {type(data)}")
+        print(f"📋 DEBUG: First 500 chars: {str(data)[:500]}...")
+        
         # Check if response contains actual data
         if 'Information' in data:
             print(f"⚠️ Alpha Vantage info: {data['Information']}")
@@ -318,73 +323,151 @@ def process_alpha_vantage_bulk_response(data: dict) -> dict:
             print(f"❌ Alpha Vantage error: {data['Error Message']}")
             return {}
         
-        # Look for the actual quotes data
-        quotes_key = None
-        for key in data.keys():
-            if 'quotes' in key.lower() or 'realtime' in key.lower():
-                quotes_key = key
+        # Handle different possible response formats from Alpha Vantage bulk quotes
+        quotes_data = None
+        
+        # Try common Alpha Vantage bulk quote response formats
+        possible_keys = [
+            'data',  # Common format
+            'quotes',  # Alternative format
+            'realtime_quotes',  # Realtime format
+            'bulk_quotes',  # Bulk format
+            'Global Quotes',  # Global quotes format
+            'Time Series (Daily)',  # Time series format fallback
+        ]
+        
+        for key in possible_keys:
+            if key in data and data[key]:
+                quotes_data = data[key]
+                print(f"📊 Found quotes data under key: {key}")
                 break
         
-        if not quotes_key:
-            # Try direct symbol access
+        # If no standard key found, look for any array-like data
+        if not quotes_data:
             for key, value in data.items():
-                if isinstance(value, dict) and 'price' in str(value).lower():
-                    quotes_key = key
-                    break
+                if isinstance(value, list) and len(value) > 0:
+                    # Check if first item looks like quote data
+                    first_item = value[0] if value else {}
+                    if isinstance(first_item, dict) and any(field in first_item for field in ['symbol', 'ticker', 'price', 'last']):
+                        quotes_data = value
+                        print(f"📊 Found quote-like data under key: {key}")
+                        break
+                elif isinstance(value, dict) and len(value) > 0:
+                    # Check if this looks like symbol-keyed data
+                    first_key = list(value.keys())[0]
+                    first_val = value[first_key]
+                    if isinstance(first_val, dict) and any(field in first_val for field in ['price', 'last', 'close']):
+                        # Convert symbol-keyed dict to list format
+                        quotes_data = []
+                        for sym, quote_data in value.items():
+                            quote_data['symbol'] = sym
+                            quotes_data.append(quote_data)
+                        print(f"📊 Found symbol-keyed data under key: {key}, converted to list")
+                        break
         
-        if quotes_key and quotes_key in data:
-            quotes_data = data[quotes_key]
-            
-            # Process each quote
+        if not quotes_data:
+            print(f"❌ No recognizable quotes data found in response")
+            return {}
+        
+        print(f"📊 Processing {len(quotes_data) if isinstance(quotes_data, list) else 'unknown'} quotes")
+        
+        # Process quotes data
+        if isinstance(quotes_data, list):
             for quote in quotes_data:
-                if isinstance(quote, dict):
-                    symbol = quote.get('symbol', '').strip()
-                    if symbol:
-                        # Extract price data safely
-                        current_price = 0.0
+                if not isinstance(quote, dict):
+                    continue
+                    
+                # Extract symbol with multiple possible keys
+                symbol = None
+                for sym_key in ['symbol', 'ticker', '01. symbol', 'Symbol']:
+                    if sym_key in quote and quote[sym_key]:
+                        symbol = str(quote[sym_key]).strip().upper()
+                        break
+                
+                if not symbol:
+                    continue
+                
+                # Extract price data with multiple fallbacks
+                current_price = 100.0  # Default
+                for price_key in ['price', 'last', 'close', '05. price', '4. close', 'lastPrice']:
+                    if price_key in quote:
                         try:
-                            price_val = quote.get('price', quote.get('last', quote.get('close', 0)))
+                            price_val = quote[price_key]
                             if isinstance(price_val, dict) and 'raw' in price_val:
                                 current_price = float(price_val['raw'])
                             else:
-                                current_price = float(price_val)
+                                current_price = float(str(price_val).replace('$', '').replace(',', ''))
+                            break
                         except (ValueError, TypeError):
-                            current_price = 100.0  # Default
-                        
-                        # Extract other data
-                        volume = 0
+                            continue
+                
+                # Extract volume
+                volume = 100000  # Default
+                for vol_key in ['volume', '6. volume', 'Volume']:
+                    if vol_key in quote:
                         try:
-                            vol_val = quote.get('volume', 0)
+                            vol_val = quote[vol_key]
                             if isinstance(vol_val, dict) and 'raw' in vol_val:
                                 volume = int(vol_val['raw'])
                             else:
-                                volume = int(vol_val)
+                                volume = int(float(str(vol_val).replace(',', '')))
+                            break
                         except (ValueError, TypeError):
-                            volume = 100000  # Default
-                        
-                        # Calculate change percent
-                        change_percent = 0.0
+                            continue
+                
+                # Extract change percent
+                change_percent = 0.0
+                for change_key in ['change_percent', 'changePercent', '10. change percent', 'change']:
+                    if change_key in quote:
                         try:
-                            change_val = quote.get('change', quote.get('changePercent', 0))
+                            change_val = quote[change_key]
                             if isinstance(change_val, dict) and 'raw' in change_val:
                                 change_percent = float(change_val['raw'])
                             else:
-                                change_percent = float(str(change_val).replace('%', ''))
+                                change_str = str(change_val).replace('%', '').replace('+', '')
+                                change_percent = float(change_str) if change_str else 0.0
+                            break
                         except (ValueError, TypeError):
-                            change_percent = 0.0
-                        
-                        parsed_data[symbol] = {
-                            'current_price': current_price,
-                            'volume': volume,
-                            'change_percent': change_percent,
-                            'high': current_price * 1.05,  # Estimate
-                            'low': current_price * 0.95,   # Estimate
-                        }
+                            continue
+                
+                # Extract high/low
+                high = current_price * 1.05  # Default estimate
+                low = current_price * 0.95   # Default estimate
+                
+                for high_key in ['high', '2. high', 'dayHigh']:
+                    if high_key in quote:
+                        try:
+                            high = float(str(quote[high_key]).replace('$', '').replace(',', ''))
+                            break
+                        except (ValueError, TypeError):
+                            continue
+                
+                for low_key in ['low', '3. low', 'dayLow']:
+                    if low_key in quote:
+                        try:
+                            low = float(str(quote[low_key]).replace('$', '').replace(',', ''))
+                            break
+                        except (ValueError, TypeError):
+                            continue
+                
+                parsed_data[symbol] = {
+                    'current_price': current_price,
+                    'volume': volume,
+                    'change_percent': change_percent,
+                    'high': high,
+                    'low': low
+                }
+        
+        print(f"✅ Successfully parsed {len(parsed_data)} symbols from bulk response")
+        if len(parsed_data) > 0:
+            sample_symbol = list(parsed_data.keys())[0]
+            print(f"📋 Sample data for {sample_symbol}: {parsed_data[sample_symbol]}")
         
         return parsed_data
     
     except Exception as e:
-        print(f"Error processing Alpha Vantage bulk response: {e}")
+        print(f"❌ Error processing Alpha Vantage bulk response: {e}")
+        print(f"📋 Response sample: {str(data)[:500]}...")
         return {}
 
 
