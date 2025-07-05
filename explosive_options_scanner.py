@@ -10,7 +10,7 @@ import requests
 import yfinance as yf
 import time
 
-from immediate_fixes import safe_apply_filters, process_alpha_vantage_bulk_response
+from immediate_fixes import safe_apply_filters, process_alpha_vantage_bulk_response, fix_options_dataframe
 
 from enhanced_options_grader import EnhancedOptionsGrader
 from intelligent_trade_planner import IntelligentTradePlanner
@@ -202,6 +202,9 @@ class ExplosiveOptionsScanner:
             if options_data is None or (hasattr(options_data, 'empty') and options_data.empty):
                 return None
 
+            # Fix data types first
+            options_data = fix_options_dataframe(options_data)
+            
             # Apply initial filters
             if filters:
                 options_data = self._apply_filters(options_data, filters)

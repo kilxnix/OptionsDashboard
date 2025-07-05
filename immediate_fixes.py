@@ -33,6 +33,27 @@ def fix_options_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 
     for col, dtype in numeric_columns.items():
         if col in df.columns:
+            # Handle dict values first
+            def extract_numeric_value(val):
+                if isinstance(val, dict):
+                    # Try to extract numeric value from dict
+                    if 'raw' in val:
+                        return val['raw']
+                    elif 'fmt' in val:
+                        try:
+                            return float(val['fmt'].replace(',', '').replace('$', '').replace('%', ''))
+                        except:
+                            return 0.0
+                    else:
+                        return 0.0
+                elif pd.isna(val) or val == '' or val is None:
+                    return 0.0
+                else:
+                    return val
+            
+            # Apply extraction first
+            df[col] = df[col].apply(extract_numeric_value)
+            
             # Convert to numeric, replacing errors with NaN
             if dtype == float:
                 df[col] = pd.to_numeric(df[col], errors='coerce')
@@ -46,6 +67,8 @@ def fix_options_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     elif 'mark' in df.columns and 'lastPrice' in df.columns:
         # Use lastPrice where mark is 0
         df.loc[df['mark'] == 0, 'mark'] = df.loc[df['mark'] == 0, 'lastPrice']
+    
+    return df
 
     # Standardize column names
     column_mapping = {
@@ -279,6 +302,90 @@ def patch_existing_scanner():
 
     if original_filter:
         scanner_core.filter_options_by_criteria = fixed_filter_options_by_criteria
+
+
+def process_alpha_vantage_bulk_response(data: dict) -> dict:
+    """Process Alpha Vantage bulk quotes response safely"""
+    parsed_data = {}
+    
+    try:
+        # Check if response contains actual data
+        if 'Information' in data:
+            print(f"⚠️ Alpha Vantage info: {data['Information']}")
+            return {}
+        
+        if 'Error Message' in data:
+            print(f"❌ Alpha Vantage error: {data['Error Message']}")
+            return {}
+        
+        # Look for the actual quotes data
+        quotes_key = None
+        for key in data.keys():
+            if 'quotes' in key.lower() or 'realtime' in key.lower():
+                quotes_key = key
+                break
+        
+        if not quotes_key:
+            # Try direct symbol access
+            for key, value in data.items():
+                if isinstance(value, dict) and 'price' in str(value).lower():
+                    quotes_key = key
+                    break
+        
+        if quotes_key and quotes_key in data:
+            quotes_data = data[quotes_key]
+            
+            # Process each quote
+            for quote in quotes_data:
+                if isinstance(quote, dict):
+                    symbol = quote.get('symbol', '').strip()
+                    if symbol:
+                        # Extract price data safely
+                        current_price = 0.0
+                        try:
+                            price_val = quote.get('price', quote.get('last', quote.get('close', 0)))
+                            if isinstance(price_val, dict) and 'raw' in price_val:
+                                current_price = float(price_val['raw'])
+                            else:
+                                current_price = float(price_val)
+                        except (ValueError, TypeError):
+                            current_price = 100.0  # Default
+                        
+                        # Extract other data
+                        volume = 0
+                        try:
+                            vol_val = quote.get('volume', 0)
+                            if isinstance(vol_val, dict) and 'raw' in vol_val:
+                                volume = int(vol_val['raw'])
+                            else:
+                                volume = int(vol_val)
+                        except (ValueError, TypeError):
+                            volume = 100000  # Default
+                        
+                        # Calculate change percent
+                        change_percent = 0.0
+                        try:
+                            change_val = quote.get('change', quote.get('changePercent', 0))
+                            if isinstance(change_val, dict) and 'raw' in change_val:
+                                change_percent = float(change_val['raw'])
+                            else:
+                                change_percent = float(str(change_val).replace('%', ''))
+                        except (ValueError, TypeError):
+                            change_percent = 0.0
+                        
+                        parsed_data[symbol] = {
+                            'current_price': current_price,
+                            'volume': volume,
+                            'change_percent': change_percent,
+                            'high': current_price * 1.05,  # Estimate
+                            'low': current_price * 0.95,   # Estimate
+                        }
+        
+        return parsed_data
+    
+    except Exception as e:
+        print(f"Error processing Alpha Vantage bulk response: {e}")
+        return {}
 
 
 def test_type_fixes():

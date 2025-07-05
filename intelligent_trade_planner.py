@@ -93,7 +93,8 @@ class IntelligentTradePlanner:
             'scoring': {
                 'total_score': score_analysis['total_score'],
                 'confidence': score_analysis['confidence'],
-                'risk_level': score_analysis['risk_level']
+                'risk_level': score_analysis['risk_level'],
+                'recommendation': score_analysis['recommendation']
             },
             'position_sizing': position_size,
             'entry_plan': entry_plan,
@@ -511,6 +512,7 @@ class IntelligentTradePlanner:
 - Total Score: {plan['scoring']['total_score']:.1f}/100
 - Confidence: {confidence}%
 - Risk Level: {plan['scoring']['risk_level']}
+- Recommendation: {plan['scoring']['recommendation']}
 
 💰 POSITION SIZING
 - Contracts: {pos['contracts']}
