@@ -159,7 +159,10 @@ class RealtimeExplosiveScanner:
                             )[1:5]
                         }
                         
-                        logger.info(f"✅ {symbol}: Score {best_option['total_score']:.1f} - {best_option['recommendation']}")
+                        recommendation = best_option.get('recommendation', 'N/A')
+                        logger.info(
+                            f"✅ {symbol}: Score {best_option['total_score']:.1f} - {recommendation}"
+                        )
                 
             except Exception as e:
                 logger.error(f"Error scanning {symbol}: {e}")
