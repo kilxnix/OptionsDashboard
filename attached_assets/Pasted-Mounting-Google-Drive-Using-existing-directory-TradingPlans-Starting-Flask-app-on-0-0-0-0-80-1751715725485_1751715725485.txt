@@ -1,0 +1,124 @@
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Serving Flask app 'main'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://172.31.128.131:8080
+Press CTRL+C to quit
+ * Restarting with stat
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Debugger is active!
+172.31.128.131 - - [05/Jul/2025 11:41:33] "GET / HTTP/1.1" 200 -
+🚀 EXPLOSIVE OPTIONS SCANNER - 2025-07-05 11:41:36
+============================================================
+📊 Filtered from 2105 to 928 quality symbols
+🔍 Scanning 928 symbols for explosive opportunities...
+📊 Fetching bulk market data using REALTIME_BULK_QUOTES API...
+📊 Processing 928 symbols using REALTIME_BULK_QUOTES API...
+🔑 Using API key: 7CSZH1JP...TPTE
+📊 Processing chunk 1: symbols 1-100
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 2: symbols 101-200
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 3: symbols 201-300
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 4: symbols 301-400
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 5: symbols 401-500
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 6: symbols 501-600
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 7: symbols 601-700
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 8: symbols 701-800
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 9: symbols 801-900
+📊 Fetching bulk quotes for 100 symbols...
+📊 Processing chunk 10: symbols 901-928
+📊 Fetching bulk quotes for 28 symbols...
+✅ Successfully fetched bulk data for 3 symbols
+✅ 3 symbols have valid market data
+✅ Historical options data found for IBM: 1656 contracts
+⚠️ Skipping option for IBM: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for IBM: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for IBM: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for IBM: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for IBM: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for IBM: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for IBM: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for IBM: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for IBM: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for IBM: unsupported operand type(s) for -: 'str' and 'int'
+✅ Historical options data found for AAPL: 2488 contracts
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for AAPL: unsupported operand type(s) for -: 'str' and 'int'
+✅ Historical options data found for MSFT: 3396 contracts
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+⚠️ Skipping option for MSFT: unsupported operand type(s) for -: 'str' and 'int'
+💾 Results saved to ./TradingPlans/explosive_scan_2025-07-05_114151.json
