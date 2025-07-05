@@ -48,38 +48,10 @@ class ExplosiveOptionsScanner:
         self.scan_results = {}
         self.last_scan_time = None
 
-
-    def __init__(self, alpha_vantage_key: str, base_dir: str = "./TradingPlans"):
-        self.av_key = alpha_vantage_key
-        self.base_dir = base_dir
-
         # API usage tracking for your 150/minute limit
         self.api_calls_made = 0
         self.api_window_start = time.time()
         self.max_calls_per_minute = 150
-
-        # Initialize all components
-        self.grader = EnhancedOptionsGrader(alpha_vantage_key)
-        self.planner = IntelligentTradePlanner(alpha_vantage_key)
-        self.tracker = PerformanceTracker(base_dir)
-
-        # Load and adapt based on historical performance
-        self._adapt_from_history()
-
-        # Scan configuration optimized for your API plan
-        self.scan_config = {
-            'min_score': 35,  # Slightly higher to focus on best opportunities  
-            'max_positions': 10,  # Max concurrent positions
-            'scan_frequency': 'continuous',  # or 'daily', 'hourly'
-            'focus_list': [],  # Symbols to prioritize
-            'use_yahoo_fallback': True,  # Enable Yahoo Finance fallback
-            'max_symbols_per_scan': 600,  # Optimize for your API limits
-            'historical_options_preferred': True  # Prefer Alpha Vantage historical
-        }
-
-        # Results cache
-        self.scan_results = {}
-        self.last_scan_time = None
 
     def _track_api_call(self):
         """Track API calls to stay within 150/minute limit"""
