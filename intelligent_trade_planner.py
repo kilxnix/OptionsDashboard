@@ -39,32 +39,56 @@ class IntelligentTradePlanner:
         """
         Generate a comprehensive, data-driven trading plan
         """
+        # Clean option data first to handle any dict values
+        def safe_float(val, default=0.0):
+            if isinstance(val, dict):
+                if 'raw' in val:
+                    return float(val['raw'])
+                elif 'fmt' in val:
+                    try:
+                        return float(str(val['fmt']).replace(',', '').replace('$', '').replace('%', ''))
+                    except:
+                        return default
+                else:
+                    return default
+            try:
+                return float(val)
+            except (ValueError, TypeError):
+                return default
+
+        # Clean the option data
+        cleaned_option_data = option_data.copy()
+        numeric_fields = ['mark', 'strike', 'delta', 'gamma', 'theta', 'vega', 'rho', 'implied_volatility', 'impliedVolatility', 'volume', 'open_interest']
+        for field in numeric_fields:
+            if field in cleaned_option_data:
+                cleaned_option_data[field] = safe_float(cleaned_option_data[field])
+
         # Extract key data
-        symbol = option_data['symbol']
+        symbol = cleaned_option_data['symbol']
         current_price = market_data.get('current_price', 100)
-        option_price = option_data['mark']
+        option_price = cleaned_option_data['mark']
 
         # 1. Calculate position sizing based on Kelly Criterion or volatility
         position_size = self._calculate_position_size(
-            option_data, score_analysis, market_data, account_size
+            cleaned_option_data, score_analysis, market_data, account_size
         )
 
         # 2. Determine entry strategy and triggers
         entry_plan = self._generate_entry_plan(
-            option_data, score_analysis, market_data
+            cleaned_option_data, score_analysis, market_data
         )
 
         # 3. Calculate profit targets based on Greeks and technicals
         targets = self._calculate_profit_targets(
-            option_data, score_analysis, market_data
+            cleaned_option_data, score_analysis, market_data
         )
 
         # Calculate stop loss (pass targets for risk/reward calculation)
-        stop_loss = self._calculate_stop_loss(option_data, market_data, score_analysis, targets)
+        stop_loss = self._calculate_stop_loss(cleaned_option_data, market_data, score_analysis, targets)
 
         # 5. Generate exit strategy
         exit_strategy = self._generate_exit_strategy(
-            option_data, score_analysis, targets, stop_loss
+            cleaned_option_data, score_analysis, targets, stop_loss
         )
 
         # 6. Risk/reward analysis
@@ -81,14 +105,14 @@ class IntelligentTradePlanner:
         trade_plan = {
             'symbol': symbol,
             'option_details': {
-                'strike': option_data['strike'],
-                'type': option_data['type'],
-                'expiration': option_data['expiration'],
+                'strike': cleaned_option_data['strike'],
+                'type': cleaned_option_data['type'],
+                'expiration': cleaned_option_data['expiration'],
                 'current_price': option_price,
-                'delta': option_data['delta'],
-                'gamma': option_data['gamma'],
-                'theta': option_data['theta'],
-                'iv': option_data.get('implied_volatility', option_data.get('impliedVolatility', 0.25))
+                'delta': cleaned_option_data['delta'],
+                'gamma': cleaned_option_data['gamma'],
+                'theta': cleaned_option_data['theta'],
+                'iv': cleaned_option_data.get('implied_volatility', cleaned_option_data.get('impliedVolatility', 0.25))
             },
             'scoring': {
                 'total_score': score_analysis['total_score'],

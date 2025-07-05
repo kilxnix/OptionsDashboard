@@ -44,7 +44,16 @@ def fix_options_dataframe(df: pd.DataFrame) -> pd.DataFrame:
                             return float(val['fmt'].replace(',', '').replace('$', '').replace('%', ''))
                         except:
                             return 0.0
+                    elif 'value' in val:
+                        return val['value']
+                    elif len(val) == 1:
+                        # Single key dict, return the value
+                        return list(val.values())[0]
                     else:
+                        # Multi-key dict, try common patterns
+                        for key in ['price', 'amount', 'rate', 'percentage']:
+                            if key in val:
+                                return val[key]
                         return 0.0
                 elif pd.isna(val) or val == '' or val is None:
                     return 0.0
