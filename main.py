@@ -813,6 +813,54 @@ def get_market_regime():
         }), 500
 
 
+@app.route("/test-api-key", methods=["GET"])
+def test_api_key():
+    """Test Alpha Vantage API key functionality"""
+    try:
+        import requests
+        
+        api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
+        if not api_key:
+            return jsonify({
+                "status": "error",
+                "message": "ALPHA_VANTAGE_API_KEY environment variable not found"
+            }), 500
+        
+        # Test with a simple quote request
+        url = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=AAPL&apikey={api_key}'
+        response = requests.get(url, timeout=10)
+        data = response.json()
+        
+        if 'Global Quote' in data:
+            return jsonify({
+                "status": "success",
+                "message": "Alpha Vantage API key is working correctly",
+                "sample_data": {
+                    "symbol": data['Global Quote']['01. symbol'],
+                    "price": data['Global Quote']['05. price'],
+                    "change": data['Global Quote']['09. change']
+                },
+                "api_key_masked": f"{api_key[:8]}...{api_key[-4:]}"
+            })
+        elif 'Information' in data:
+            return jsonify({
+                "status": "warning",
+                "message": f"API limit issue: {data['Information']}",
+                "api_key_masked": f"{api_key[:8]}...{api_key[-4:]}"
+            })
+        else:
+            return jsonify({
+                "status": "error",
+                "message": "Unexpected API response",
+                "response": data
+            }), 500
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"API test failed: {str(e)}"
+        }), 500
+
 @app.route("/test-earnings-verbose", methods=["GET"])
 def test_earnings_verbose():
     """Test endpoint to debug earnings discovery with full verbose output"""

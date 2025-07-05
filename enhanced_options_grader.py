@@ -417,28 +417,30 @@ class EnhancedOptionsGrader:
             exp_date = None
 
             if isinstance(expiration, str) and expiration:
-                # Try different date formats
-                for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S', '%m-%d-%Y', '%d/%m/%Y']:
-                    try:
-                        exp_date = datetime.strptime(expiration, fmt)
-                        break
-                    except ValueError:
-                        continue
+                expiration = expiration.strip()
+                if expiration:
+                    # Try different date formats
+                    for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S', '%m-%d-%Y', '%d/%m/%Y']:
+                        try:
+                            exp_date = datetime.strptime(expiration, fmt)
+                            break
+                        except ValueError:
+                            continue
 
-                if exp_date is None:
-                    # If no format works, default to 30 days
-                    exp_date = datetime.now() + timedelta(days=30)
-
+            elif hasattr(expiration, 'year'):  # It's already a datetime-like object
+                exp_date = expiration
             elif expiration and not isinstance(expiration, str):
                 try:
                     exp_date = pd.to_datetime(expiration).to_pydatetime()
                 except:
-                    exp_date = datetime.now() + timedelta(days=30)
-            else:
+                    exp_date = None
+
+            # Default fallback if parsing failed
+            if exp_date is None:
                 exp_date = datetime.now() + timedelta(days=30)
 
             # Ensure exp_date is a datetime object before subtraction
-            if exp_date is None:
+            if not isinstance(exp_date, datetime):
                 exp_date = datetime.now() + timedelta(days=30)
 
             days_to_expiry = max(1, (exp_date - datetime.now()).days)
