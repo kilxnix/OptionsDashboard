@@ -415,22 +415,33 @@ class EnhancedOptionsGrader:
         try:
             # Handle different date formats from Alpha Vantage
             expiration = option_data.get('expiration', '')
-            if isinstance(expiration, str) and expiration:
+            
+            # Convert to string if not already
+            if expiration is None:
+                expiration = ''
+            elif not isinstance(expiration, str):
+                expiration = str(expiration)
+            
+            expiration = expiration.strip()
+            
+            if expiration:
                 # Try different date formats
-                for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S', '%m-%d-%Y']:
+                exp_date = None
+                for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S', '%m-%d-%Y', '%d/%m/%Y']:
                     try:
                         exp_date = datetime.strptime(expiration, fmt)
                         break
                     except ValueError:
                         continue
-                else:
-                    # If no format works, default to 30 days
-                    exp_date = datetime.now() + timedelta(days=30)
-            elif expiration and not isinstance(expiration, str):
-                try:
-                    exp_date = pd.to_datetime(expiration)
-                except:
-                    exp_date = datetime.now() + timedelta(days=30)
+                
+                if exp_date is None:
+                    # If no format works, try pandas
+                    try:
+                        exp_date = pd.to_datetime(expiration)
+                        if hasattr(exp_date, 'to_pydatetime'):
+                            exp_date = exp_date.to_pydatetime()
+                    except:
+                        exp_date = datetime.now() + timedelta(days=30)
             else:
                 exp_date = datetime.now() + timedelta(days=30)
             

@@ -140,20 +140,61 @@ class ExplosiveOptionsScanner:
                 if hasattr(options_data, 'empty') and options_data.empty:
                     return None
 
-            # Score all options
+            # Score all options with better error handling
             scored_options = []
             if hasattr(options_data, 'iterrows'):
                 for idx, option in options_data.iterrows():
                     try:
-                        score, analysis = self.grader.calculate_option_score(option.to_dict(), market_data)
+                        option_dict = option.to_dict()
+                        
+                        # Ensure all required fields are present and properly typed
+                        required_fields = ['strike', 'expiration', 'type', 'delta', 'gamma', 'theta', 'volume', 'mark']
+                        for field in required_fields:
+                            if field not in option_dict or pd.isna(option_dict[field]):
+                                if field == 'strike':
+                                    option_dict[field] = 100.0
+                                elif field == 'expiration':
+                                    option_dict[field] = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+                                elif field == 'type':
+                                    option_dict[field] = 'call'
+                                elif field == 'delta':
+                                    option_dict[field] = 0.3
+                                elif field == 'gamma':
+                                    option_dict[field] = 0.01
+                                elif field == 'theta':
+                                    option_dict[field] = -0.05
+                                elif field == 'volume':
+                                    option_dict[field] = 100
+                                elif field == 'mark':
+                                    option_dict[field] = 0.5
+                        
+                        # Convert numeric fields to float
+                        numeric_fields = ['strike', 'delta', 'gamma', 'theta', 'volume', 'mark']
+                        for field in numeric_fields:
+                            try:
+                                option_dict[field] = float(option_dict[field])
+                            except (ValueError, TypeError):
+                                if field == 'strike':
+                                    option_dict[field] = 100.0
+                                elif field == 'delta':
+                                    option_dict[field] = 0.3
+                                elif field == 'gamma':
+                                    option_dict[field] = 0.01
+                                elif field == 'theta':
+                                    option_dict[field] = -0.05
+                                elif field == 'volume':
+                                    option_dict[field] = 100.0
+                                elif field == 'mark':
+                                    option_dict[field] = 0.5
+                        
+                        score, analysis = self.grader.calculate_option_score(option_dict, market_data)
 
                         if score >= self.scan_config['min_score']:
-                            option_dict = option.to_dict()
                             option_dict['score_analysis'] = analysis
                             option_dict['total_score'] = score
                             scored_options.append(option_dict)
                     except Exception as e:
-                        print(f"Error scoring option for {symbol}: {e}")
+                        print(f"⚠️ Skipping option for {symbol}: {e}")
                         continue
 
             if not scored_options:
@@ -525,6 +566,29 @@ class ExplosiveOptionsScanner:
                             elif col == 'mark':
                                 df[col] = 0.5  # Default mark
                     
+                    # Fix expiration date format first - this is causing the main errors
+                    if 'expiration' in df.columns:
+                        def standardize_expiration(exp_val):
+                            if pd.isna(exp_val) or exp_val == '' or exp_val is None:
+                                return (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+                            
+                            exp_str = str(exp_val).strip()
+                            if not exp_str:
+                                return (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+                            
+                            # Try to parse and standardize the date
+                            for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S', '%m-%d-%Y']:
+                                try:
+                                    parsed_date = datetime.strptime(exp_str, fmt)
+                                    return parsed_date.strftime('%Y-%m-%d')
+                                except ValueError:
+                                    continue
+                            
+                            # If no format works, default to 30 days from now
+                            return (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+                        
+                        df['expiration'] = df['expiration'].apply(standardize_expiration)
+                    
                     # Convert all numeric columns to proper types with comprehensive error handling
                     numeric_cols = ['mark', 'strike', 'volume', 'openInterest', 'delta', 'gamma', 'theta', 'impliedVolatility']
                     for col in numeric_cols:
@@ -624,6 +688,29 @@ class ExplosiveOptionsScanner:
                 for col, default_val in defaults.items():
                     if col not in df.columns:
                         df[col] = default_val
+
+                # Fix expiration date format first - this is causing the main errors
+                if 'expiration' in df.columns:
+                    def standardize_expiration(exp_val):
+                        if pd.isna(exp_val) or exp_val == '' or exp_val is None:
+                            return (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+                        
+                        exp_str = str(exp_val).strip()
+                        if not exp_str:
+                            return (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+                        
+                        # Try to parse and standardize the date
+                        for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S', '%m-%d-%Y']:
+                            try:
+                                parsed_date = datetime.strptime(exp_str, fmt)
+                                return parsed_date.strftime('%Y-%m-%d')
+                            except ValueError:
+                                continue
+                        
+                        # If no format works, default to 30 days from now
+                        return (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+                    
+                    df['expiration'] = df['expiration'].apply(standardize_expiration)
 
                 # Convert all numeric columns to proper types with comprehensive error handling
                 numeric_cols = ['mark', 'strike', 'volume', 'openInterest', 'delta', 'gamma', 'theta', 'impliedVolatility']
