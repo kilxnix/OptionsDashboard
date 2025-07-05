@@ -52,20 +52,20 @@ class ExplosiveOptionsScanner:
     def __init__(self, alpha_vantage_key: str, base_dir: str = "./TradingPlans"):
         self.av_key = alpha_vantage_key
         self.base_dir = base_dir
-        
+
         # API usage tracking for your 150/minute limit
         self.api_calls_made = 0
         self.api_window_start = time.time()
         self.max_calls_per_minute = 150
-        
+
         # Initialize all components
         self.grader = EnhancedOptionsGrader(alpha_vantage_key)
         self.planner = IntelligentTradePlanner(alpha_vantage_key)
         self.tracker = PerformanceTracker(base_dir)
-        
+
         # Load and adapt based on historical performance
         self._adapt_from_history()
-        
+
         # Scan configuration optimized for your API plan
         self.scan_config = {
             'min_score': 35,  # Slightly higher to focus on best opportunities  
@@ -76,7 +76,7 @@ class ExplosiveOptionsScanner:
             'max_symbols_per_scan': 600,  # Optimize for your API limits
             'historical_options_preferred': True  # Prefer Alpha Vantage historical
         }
-        
+
         # Results cache
         self.scan_results = {}
         self.last_scan_time = None
@@ -84,14 +84,14 @@ class ExplosiveOptionsScanner:
     def _track_api_call(self):
         """Track API calls to stay within 150/minute limit"""
         current_time = time.time()
-        
+
         # Reset counter if more than a minute has passed
         if current_time - self.api_window_start >= 60:
             self.api_calls_made = 0
             self.api_window_start = current_time
-            
+
         self.api_calls_made += 1
-        
+
         # If approaching limit, wait
         if self.api_calls_made >= self.max_calls_per_minute - 5:  # Leave buffer
             wait_time = 60 - (current_time - self.api_window_start) + 1
@@ -204,7 +204,7 @@ class ExplosiveOptionsScanner:
 
             # Fix data types first
             options_data = fix_options_dataframe(options_data)
-            
+
             # Apply initial filters
             if filters:
                 options_data = self._apply_filters(options_data, filters)
@@ -249,7 +249,7 @@ class ExplosiveOptionsScanner:
                                 # Handle string values that might contain non-numeric chars
                                 if val is None or pd.isna(val):
                                     raise ValueError("None or NaN value")
-                                
+
                                 import re
                                 cleaned_val = re.sub(r'[^\d\.\-]', '', str(val))
                                 if cleaned_val and cleaned_val != '-':
@@ -395,21 +395,21 @@ class ExplosiveOptionsScanner:
 
         else:  # comprehensive
             print(f"📊 Running comprehensive scan with API optimization...")
-            
+
             # Get earnings (1 API call)
             earnings = self._get_pre_earnings_stocks()
             print(f"📈 Earnings symbols found: {len(earnings)}")
-            
+
             # Get top movers (1 API call) 
             movers = self._get_top_movers()
             print(f"📊 Top movers found: {len(movers)}")
-            
+
             # Add high-volume optionable stocks (no API call needed)
             high_volume = ['SPY', 'QQQ', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'AMD', 
                           'NFLX', 'COIN', 'PLTR', 'GME', 'AMC', 'SOXL', 'TQQQ', 'IWM', 'XLE', 'GLD',
                           'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'V', 'MA', 'PYPL', 'SQ', 'CRM', 'ORCL',
                           'DIS', 'UBER', 'LYFT', 'F', 'GM', 'BA', 'GE', 'XOM', 'CVX', 'KO', 'PEP']
-            
+
             print(f"🔥 High-volume optionable stocks: {len(high_volume)}")
 
             # Combine and prioritize (earnings first, then movers, then high-volume)
@@ -436,7 +436,7 @@ class ExplosiveOptionsScanner:
 
         print(f"📊 Filtered from {len(symbols)} to {len(filtered_symbols)} quality optionable symbols")
         print(f"🎯 Optimized for your API limits: 2 discovery calls + efficient bulk processing")
-        
+
         return filtered_symbols
 
     def _get_pre_earnings_stocks(self) -> List[str]:
@@ -521,7 +521,7 @@ class ExplosiveOptionsScanner:
 
         # Process symbols in chunks of 100 (API limit) with optimized timing
         chunk_delay = 0.4  # 150 requests/min = 1 request every 0.4 seconds
-        
+
         for i in range(0, len(symbols), 100):
             chunk = symbols[i:i+100]
             print(f"📊 Processing chunk {i//100 + 1}: symbols {i+1}-{min(i+100, len(symbols))}")
@@ -529,13 +529,13 @@ class ExplosiveOptionsScanner:
 
             try:
                 start_time = time.time()
-                
+
                 url = f'https://www.alphavantage.co/query?function=REALTIME_BULK_QUOTES&symbol={symbol_string}&apikey={self.av_key}'
                 response = requests.get(url, timeout=30)
                 data = response.json()
 
                 print(f"📊 API Response Status: {response.status_code}")
-                
+
                 if 'Information' in data and 'rate limit' in data['Information'].lower():
                     print(f"⏳ Rate limit reached - waiting 60 seconds...")
                     time.sleep(60)
@@ -759,8 +759,8 @@ class ExplosiveOptionsScanner:
 
                                 try:
                                     # Convert to string first
-                                    exp_str = str(exp_str).strip()
-                                    
+                                                                   exp_str = str(exp_str).strip()
+
                                     # Try different formats
                                     for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S', '%m-%d-%Y']:
                                         try:
@@ -769,7 +769,7 @@ class ExplosiveOptionsScanner:
                                             return max(1, days_diff)
                                         except ValueError:
                                             continue
-                                    
+
                                     # If no format works, try to extract just the date part
                                     if ' ' in exp_str:
                                         date_part = exp_str.split(' ')[0]
@@ -780,7 +780,7 @@ class ExplosiveOptionsScanner:
                                                 return max(1, days_diff)
                                             except ValueError:
                                                 continue
-                                    
+
                                     return 30  # Default if no format works
                                 except Exception:
                                     return 30
@@ -896,10 +896,10 @@ class ExplosiveOptionsScanner:
         """Fetch options data from Yahoo Finance as fallback"""
         try:
             import yfinance as yf
-            
+
             print(f"🌐 Fetching Yahoo Finance options for {symbol}...")
             ticker = yf.Ticker(symbol)
-            
+
             # Get available expiration dates
             try:
                 expirations = ticker.options
@@ -915,29 +915,29 @@ class ExplosiveOptionsScanner:
             for exp_date in expirations[:4]:  # Limit to avoid too many calls
                 try:
                     option_chain = ticker.option_chain(exp_date)
-                    
+
                     # Process calls
                     calls = option_chain.calls.copy()
                     calls['type'] = 'call'
                     calls['expiration'] = exp_date
                     calls['symbol'] = symbol
-                    
+
                     # Process puts  
                     puts = option_chain.puts.copy()
                     puts['type'] = 'put'
                     puts['expiration'] = exp_date
                     puts['symbol'] = symbol
-                    
+
                     all_options.extend([calls, puts])
-                    
+
                 except Exception as e:
                     print(f"⚠️ Error fetching {exp_date} options for {symbol}: {e}")
                     continue
-            
+
             if not all_options:
                 print(f"❌ No valid options data found for {symbol}")
                 return None
-                
+
             # Combine all options data
             df = pd.concat(all_options, ignore_index=True)
             print(f"✅ Yahoo Finance options found for {symbol}: {len(df)} contracts")
@@ -949,11 +949,11 @@ class ExplosiveOptionsScanner:
                 'impliedVolatility': 'impliedVolatility',
                 'contractSymbol': 'contractSymbol'
             }
-            
+
             for old_col, new_col in column_mapping.items():
                 if old_col in df.columns:
                     df[new_col] = df[old_col]
-            
+
             # Calculate mark price from bid/ask if lastPrice not available
             if 'mark' not in df.columns:
                 if 'ask' in df.columns and 'bid' in df.columns:
@@ -989,7 +989,7 @@ class ExplosiveOptionsScanner:
                     return 30
 
             df['days_to_expiry'] = df['expiration'].apply(calculate_days_to_expiry)
-            
+
             # Ensure expiration is in YYYY-MM-DD format
             df['expiration'] = pd.to_datetime(df['expiration']).dt.strftime('%Y-%m-%d')
 
@@ -998,7 +998,7 @@ class ExplosiveOptionsScanner:
             for col in numeric_cols:
                 if col in df.columns:
                     df[col] = pd.to_numeric(df[col], errors='coerce')
-                    
+
                     # Fill NaN values with appropriate defaults
                     defaults_map = {
                         'mark': 0.5, 'strike': 100, 'volume': 50, 'open_interest': 50,
