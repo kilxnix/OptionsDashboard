@@ -1,0 +1,1388 @@
+{
+  "scan_metadata": {
+    "timestamp": "2025-07-05T14:25:22.991529",
+    "scan_type": "earnings",
+    "symbols_scanned": 3,
+    "filters_applied": {
+      "min_price": 0.1,
+      "max_price": 5.0,
+      "min_delta": 0.1,
+      "max_delta": 0.4,
+      "min_days": 1,
+      "max_days": 30
+    }
+  },
+  "opportunities": {
+    "IBM": {
+      "symbol": "IBM",
+      "market_data": {
+        "symbol": "IBM",
+        "current_price": 232.22,
+        "volatility_30d": 25.0,
+        "market_cap": 0,
+        "sector": "Unknown",
+        "beta": 1.0,
+        "earnings_info": {
+          "is_pre_earnings": true,
+          "days_to_earnings": 18,
+          "earnings_priority": "medium"
+        },
+        "volume_avg": 4715482,
+        "change_percent": -0.2834,
+        "high": 232.6499,
+        "low": 230.17
+      },
+      "best_opportunity": {
+        "contractID": "IBM250711C00295000",
+        "symbol": "IBM",
+        "expiration": "2025-07-11",
+        "strike": 295.0,
+        "type": "call",
+        "last": "2.10",
+        "mark": 2.12,
+        "bid": 1.94,
+        "bid_size": "18",
+        "ask": 2.29,
+        "ask_size": "41",
+        "volume": 404.0,
+        "open_interest": 455.0,
+        "date": "2025-07-03T00:00:00",
+        "implied_volatility": 0.19536,
+        "delta": 0.3784,
+        "gamma": 0.04503,
+        "theta": -0.21354,
+        "vega": 0.16437,
+        "rho": 0.02374,
+        "contractSymbol": "IBM250711C00295000",
+        "impliedVolatility": 0.19536,
+        "days_to_expiry": 5,
+        "openInterest": 50,
+        "score_analysis": {
+          "total_score": 54,
+          "components": {
+            "liquidity_score": 9,
+            "greeks_score": 14,
+            "unusual_activity_score": 8,
+            "technical_score": 8,
+            "iv_opportunity_score": 10,
+            "market_regime_score": 5
+          },
+          "recommendation": "\ud83e\udd14 NEUTRAL - Wait for better setup",
+          "holding_period": {
+            "recommended_days": 1,
+            "maximum_days": 3,
+            "exit_triggers": {
+              "profit_target": 0.4,
+              "stop_loss": -0.25,
+              "theta_limit": -0.15,
+              "delta_limit": 0.1892
+            }
+          },
+          "confidence": 53,
+          "risk_level": "MEDIUM"
+        },
+        "total_score": 54
+      },
+      "trading_plan": {
+        "symbol": "IBM",
+        "option_details": {
+          "strike": 295.0,
+          "type": "call",
+          "expiration": "2025-07-11",
+          "current_price": 2.12,
+          "delta": 0.3784,
+          "gamma": 0.04503,
+          "theta": -0.21354,
+          "iv": 0.19536
+        },
+        "scoring": {
+          "total_score": 54,
+          "confidence": 53,
+          "risk_level": "MEDIUM"
+        },
+        "position_sizing": {
+          "contracts": 20,
+          "method": "kelly_criterion",
+          "kelly_fraction": 17.7,
+          "position_value": 4240.000000000001,
+          "risk_amount": 500.0,
+          "percentage_of_capital": 17.0
+        },
+        "entry_plan": {
+          "entry_triggers": [
+            {
+              "type": "MACD_BULLISH_CROSS",
+              "condition": "MACD histogram turns positive",
+              "priority": "MEDIUM"
+            },
+            {
+              "type": "TIME_WINDOW",
+              "condition": "Enter between 10:00 AM - 3:00 PM ET (avoid first/last hour)",
+              "priority": "LOW"
+            },
+            {
+              "type": "SPREAD_IMPROVEMENT",
+              "condition": "Bid-ask spread narrows below 10% (currently 15.3%)",
+              "priority": "MEDIUM"
+            }
+          ],
+          "entry_range": {
+            "ideal_entry": 2.0776,
+            "max_entry": 2.1624000000000003,
+            "current_mark": 2.12
+          },
+          "confirmation_required": 3,
+          "entry_method": "LIMIT_ORDER",
+          "urgency": "LOW - Wait for confirmations"
+        },
+        "targets": {
+          "target_1": {
+            "price": 2.8,
+            "percentage": 32.2,
+            "stock_price": 300.9,
+            "probability": 49,
+            "typical_time": "2-3 days"
+          },
+          "target_2": {
+            "price": 3.29,
+            "percentage": 55.3,
+            "stock_price": 306.8,
+            "probability": 30,
+            "typical_time": "4-6 days"
+          },
+          "target_3": {
+            "price": 3.9,
+            "percentage": 84.0,
+            "stock_price": 312.7,
+            "probability": 15,
+            "typical_time": "6-9 days"
+          }
+        },
+        "stop_loss": {
+          "stop_price": 1.85,
+          "stop_percentage": -12.5,
+          "stop_type": "TRAILING_STOP",
+          "trail_trigger": 2.33,
+          "trail_percentage": 15,
+          "time_stop": 3,
+          "theta_stop": "Exit if theta exceeds $0.43/day"
+        },
+        "exit_strategy": {
+          "profit_taking": {
+            "target_1": {
+              "action": "Sell 40% at $2.80",
+              "reasoning": "Lock in base profits"
+            },
+            "target_2": {
+              "action": "Sell 40% at $3.29",
+              "reasoning": "Secure substantial gains"
+            },
+            "target_3": {
+              "action": "Sell final 20% at $3.90 or trail",
+              "reasoning": "Let winners run with trailing stop"
+            }
+          },
+          "defensive_exits": {
+            "stop_loss": {
+              "trigger": "Price hits $1.85",
+              "action": "Exit full position immediately"
+            },
+            "time_decay": {
+              "trigger": "After 1 days if no targets hit",
+              "action": "Exit 50%, trail remainder"
+            },
+            "theta_acceleration": {
+              "trigger": "Exit if theta exceeds $0.43/day",
+              "action": "Exit full position"
+            },
+            "delta_deterioration": {
+              "trigger": "Delta drops below 0.189",
+              "action": "Exit full position"
+            }
+          },
+          "management_rules": {
+            "morning_check": "Review position 30 min after open",
+            "alerts": [
+              "Set price alerts at all targets and stop",
+              "Set Greeks alerts for theta/delta limits",
+              "Set unusual activity alerts"
+            ],
+            "adjustment_options": "Consider rolling up/out if up 50%+ with time remaining"
+          }
+        },
+        "risk_reward": {
+          "position_value": 4240.0,
+          "max_risk": 540.0,
+          "risk_percentage": 12.7,
+          "reward_amounts": {
+            "target_1": 1360.0,
+            "target_2": 2340.0,
+            "target_3": 3560.0
+          },
+          "risk_reward_ratios": {
+            "target_1": 2.52,
+            "target_2": 4.33,
+            "target_3": 6.59
+          },
+          "expected_value": 1870.0,
+          "expected_return": 44.1,
+          "breakeven_win_rate": 28.4
+        },
+        "execution_notes": [
+          "\u26a0\ufe0f LOW OPEN INTEREST: May have difficulty exiting, size accordingly",
+          "\u26a0\ufe0f WIDE SPREAD (15.3%): Avoid market orders, work the bid/ask",
+          "\u26a0\ufe0f HIGH THETA DECAY: Time is against you, need quick move",
+          "\u23f0 NEAR EXPIRATION: Only 5 days left, gamma play"
+        ],
+        "plan_generated": "2025-07-05T14:25:45.998750",
+        "plan_validity": "2025-07-05 16:00 ET",
+        "formatted_text": "\n============================================================\nCAUTIOUS BUY: IBM 295.0 CALL exp 2025-07-11\n============================================================\n\n\ud83d\udcca SCORING\n- Total Score: 54.0/100\n- Confidence: 53%\n- Risk Level: MEDIUM\n\n\ud83d\udcb0 POSITION SIZING\n- Contracts: 20\n- Position Value: $4,240.00 (17.0% of capital)\n- Method: Kelly Criterion\n- Kelly Fraction: 17.7%\n\n\ud83c\udfaf ENTRY PLAN\n- Entry Range: $2.08 - $2.16\n- Current Mark: $2.12\n- Confirmations Required: 3 of the following:\n  \u2022 MACD histogram turns positive [MEDIUM]\n  \u2022 Enter between 10:00 AM - 3:00 PM ET (avoid first/last hour) [LOW]\n  \u2022 Bid-ask spread narrows below 10% (currently 15.3%) [MEDIUM]\n\n\ud83d\udcc8 PROFIT TARGETS\n- Target 1: $2.80 (+32.2%) @ $300.90 stock [49% prob]\n- Target 2: $3.29 (+55.3%) @ $306.80 stock [30% prob]\n- Target 3: $3.90 (+84.0%) @ $312.70 stock [15% prob]\n\n\ud83d\uded1 RISK MANAGEMENT\n- Stop Loss: $1.85 (-12.5%)\n- Stop Type: Trailing Stop\n- Trail Trigger: $2.33 (+10%)\n- Max Hold Time: 3 days\n- Theta Stop: Exit if theta exceeds $0.43/day\n\n\ud83d\udcca RISK/REWARD ANALYSIS\n- Max Risk: $540.00\n- Expected Value: $1,870.00 (44.1% return)\n- Risk/Reward Ratios:\n  \u2022 target_1: 2.52:1\n  \u2022 target_2: 4.33:1\n  \u2022 target_3: 6.59:1\n- Breakeven Win Rate: 28.4%\n\n\ud83d\udcdd EXECUTION NOTES\n\u26a0\ufe0f LOW OPEN INTEREST: May have difficulty exiting, size accordingly\n\u26a0\ufe0f WIDE SPREAD (15.3%): Avoid market orders, work the bid/ask\n\u26a0\ufe0f HIGH THETA DECAY: Time is against you, need quick move\n\u23f0 NEAR EXPIRATION: Only 5 days left, gamma play\n\n\u23f0 Plan Valid Until: 2025-07-05 16:00 ET\nGenerated: 2025-07-05T14:25:45.998750\n"
+      },
+      "other_opportunities": [
+        {
+          "contractID": "IBM250711C00297500",
+          "symbol": "IBM",
+          "expiration": "2025-07-11",
+          "strike": 297.5,
+          "type": "call",
+          "last": "1.29",
+          "mark": 1.36,
+          "bid": 1.19,
+          "bid_size": "13",
+          "ask": 1.53,
+          "ask_size": "11",
+          "volume": 252.0,
+          "open_interest": 348.0,
+          "date": "2025-07-03T00:00:00",
+          "implied_volatility": 0.19536,
+          "delta": 0.27377,
+          "gamma": 0.03943,
+          "theta": -0.18503,
+          "vega": 0.14391,
+          "rho": 0.01721,
+          "contractSymbol": "IBM250711C00297500",
+          "impliedVolatility": 0.19536,
+          "days_to_expiry": 5,
+          "openInterest": 50,
+          "score_analysis": {
+            "total_score": 53,
+            "components": {
+              "liquidity_score": 9,
+              "greeks_score": 16,
+              "unusual_activity_score": 5,
+              "technical_score": 8,
+              "iv_opportunity_score": 10,
+              "market_regime_score": 5
+            },
+            "recommendation": "\ud83e\udd14 NEUTRAL - Wait for better setup",
+            "holding_period": {
+              "recommended_days": 1,
+              "maximum_days": 3,
+              "exit_triggers": {
+                "profit_target": 0.4,
+                "stop_loss": -0.25,
+                "theta_limit": -0.15,
+                "delta_limit": 0.136885
+              }
+            },
+            "confidence": 51,
+            "risk_level": "MEDIUM"
+          },
+          "total_score": 53
+        },
+        {
+          "contractID": "IBM250718P00285000",
+          "symbol": "IBM",
+          "expiration": "2025-07-18",
+          "strike": 285.0,
+          "type": "put",
+          "last": "2.14",
+          "mark": 2.29,
+          "bid": 2.2,
+          "bid_size": "10",
+          "ask": 2.39,
+          "ask_size": "14",
+          "volume": 146.0,
+          "open_interest": 671.0,
+          "date": "2025-07-03T00:00:00",
+          "implied_volatility": 0.21487,
+          "delta": -0.26851,
+          "gamma": 0.02593,
+          "theta": -0.13023,
+          "vega": 0.19516,
+          "rho": -0.03309,
+          "contractSymbol": "IBM250718P00285000",
+          "impliedVolatility": 0.21487,
+          "days_to_expiry": 12,
+          "openInterest": 50,
+          "score_analysis": {
+            "total_score": 51,
+            "components": {
+              "liquidity_score": 9,
+              "greeks_score": 18,
+              "unusual_activity_score": 3,
+              "technical_score": 8,
+              "iv_opportunity_score": 8,
+              "market_regime_score": 5
+            },
+            "recommendation": "\ud83e\udd14 NEUTRAL - Wait for better setup",
+            "holding_period": {
+              "recommended_days": 1,
+              "maximum_days": 3,
+              "exit_triggers": {
+                "profit_target": 0.4,
+                "stop_loss": -0.25,
+                "theta_limit": -0.15,
+                "delta_limit": -0.134255
+              }
+            },
+            "confidence": 49,
+            "risk_level": "MEDIUM"
+          },
+          "total_score": 51
+        },
+        {
+          "contractID": "IBM250718P00282500",
+          "symbol": "IBM",
+          "expiration": "2025-07-18",
+          "strike": 282.5,
+          "type": "put",
+          "last": "1.86",
+          "mark": 1.73,
+          "bid": 1.57,
+          "bid_size": "14",
+          "ask": 1.89,
+          "ask_size": "5",
+          "volume": 103.0,
+          "open_interest": 690.0,
+          "date": "2025-07-03T00:00:00",
+          "implied_volatility": 0.23438,
+          "delta": -0.22508,
+          "gamma": 0.02162,
+          "theta": -0.1307,
+          "vega": 0.17755,
+          "rho": -0.02777,
+          "contractSymbol": "IBM250718P00282500",
+          "impliedVolatility": 0.23438,
+          "days_to_expiry": 12,
+          "openInterest": 50,
+          "score_analysis": {
+            "total_score": 47,
+            "components": {
+              "liquidity_score": 5,
+              "greeks_score": 18,
+              "unusual_activity_score": 3,
+              "technical_score": 8,
+              "iv_opportunity_score": 8,
+              "market_regime_score": 5
+            },
+            "recommendation": "\u274c AVOID - Poor risk/reward",
+            "holding_period": {
+              "recommended_days": 1,
+              "maximum_days": 3,
+              "exit_triggers": {
+                "profit_target": 0.4,
+                "stop_loss": -0.25,
+                "theta_limit": -0.15,
+                "delta_limit": -0.11254
+              }
+            },
+            "confidence": 45,
+            "risk_level": "MEDIUM"
+          },
+          "total_score": 47
+        },
+        {
+          "contractID": "IBM250711P00287500",
+          "symbol": "IBM",
+          "expiration": "2025-07-11",
+          "strike": 287.5,
+          "type": "put",
+          "last": "1.69",
+          "mark": 1.64,
+          "bid": 1.47,
+          "bid_size": "17",
+          "ask": 1.8,
+          "ask_size": "21",
+          "volume": 164.0,
+          "open_interest": 111.0,
+          "date": "2025-07-03T00:00:00",
+          "implied_volatility": 0.21487,
+          "delta": -0.2978,
+          "gamma": 0.03731,
+          "theta": -0.19063,
+          "vega": 0.14979,
+          "rho": -0.01945,
+          "contractSymbol": "IBM250711P00287500",
+          "impliedVolatility": 0.21487,
+          "days_to_expiry": 5,
+          "openInterest": 50,
+          "score_analysis": {
+            "total_score": 46,
+            "components": {
+              "liquidity_score": 9,
+              "greeks_score": 16,
+              "unusual_activity_score": 0,
+              "technical_score": 8,
+              "iv_opportunity_score": 8,
+              "market_regime_score": 5
+            },
+            "recommendation": "\u274c AVOID - Poor risk/reward",
+            "holding_period": {
+              "recommended_days": 1,
+              "maximum_days": 3,
+              "exit_triggers": {
+                "profit_target": 0.4,
+                "stop_loss": -0.25,
+                "theta_limit": -0.15,
+                "delta_limit": -0.1489
+              }
+            },
+            "confidence": 43,
+            "risk_level": "MEDIUM"
+          },
+          "total_score": 46
+        }
+      ],
+      "scan_time": "2025-07-05T14:25:45.998813"
+    },
+    "AAPL": {
+      "symbol": "AAPL",
+      "market_data": {
+        "symbol": "AAPL",
+        "current_price": 235.0,
+        "volatility_30d": 25.0,
+        "market_cap": 0,
+        "sector": "Unknown",
+        "beta": 1.0,
+        "earnings_info": {
+          "is_pre_earnings": false,
+          "days_to_earnings": 26,
+          "earnings_priority": "medium"
+        },
+        "volume_avg": 46431470,
+        "change_percent": 1.2277,
+        "high": 236.05,
+        "low": 234.02
+      },
+      "best_opportunity": {
+        "contractID": "AAPL250718P00202500",
+        "symbol": "AAPL",
+        "expiration": "2025-07-18",
+        "strike": 202.5,
+        "type": "put",
+        "last": "0.80",
+        "mark": 0.8,
+        "bid": 0.78,
+        "bid_size": "13",
+        "ask": 0.82,
+        "ask_size": "5",
+        "volume": 581.0,
+        "open_interest": 2276.0,
+        "date": "2025-07-03T00:00:00",
+        "implied_volatility": 0.2539,
+        "delta": -0.13729,
+        "gamma": 0.01998,
+        "theta": -0.0769,
+        "vega": 0.09508,
+        "rho": -0.01237,
+        "contractSymbol": "AAPL250718P00202500",
+        "impliedVolatility": 0.2539,
+        "days_to_expiry": 12,
+        "openInterest": 50,
+        "score_analysis": {
+          "total_score": 59,
+          "components": {
+            "liquidity_score": 14,
+            "greeks_score": 14,
+            "unusual_activity_score": 20,
+            "technical_score": 6,
+            "iv_opportunity_score": 0,
+            "market_regime_score": 5
+          },
+          "recommendation": "\ud83e\udd14 NEUTRAL - Wait for better setup",
+          "holding_period": {
+            "recommended_days": 3,
+            "maximum_days": 7,
+            "exit_triggers": {
+              "profit_target": 0.4,
+              "stop_loss": -0.25,
+              "theta_limit": -0.15,
+              "delta_limit": -0.068645
+            }
+          },
+          "confidence": 60,
+          "risk_level": "LOW"
+        },
+        "total_score": 59
+      },
+      "trading_plan": {
+        "symbol": "AAPL",
+        "option_details": {
+          "strike": 202.5,
+          "type": "put",
+          "expiration": "2025-07-18",
+          "current_price": 0.8,
+          "delta": -0.13729,
+          "gamma": 0.01998,
+          "theta": -0.0769,
+          "iv": 0.2539
+        },
+        "scoring": {
+          "total_score": 59,
+          "confidence": 60,
+          "risk_level": "LOW"
+        },
+        "position_sizing": {
+          "contracts": 20,
+          "method": "kelly_criterion",
+          "kelly_fraction": 25.0,
+          "position_value": 1600.0,
+          "risk_amount": 500.0,
+          "percentage_of_capital": 6.4
+        },
+        "entry_plan": {
+          "entry_triggers": [
+            {
+              "type": "MACD_BULLISH_CROSS",
+              "condition": "MACD histogram turns positive",
+              "priority": "MEDIUM"
+            },
+            {
+              "type": "VOLUME_SURGE",
+              "condition": "Maintain 2x average volume for 30 minutes",
+              "priority": "HIGH"
+            },
+            {
+              "type": "DELTA_INCREASE",
+              "condition": "Delta rises above -0.165",
+              "priority": "MEDIUM"
+            },
+            {
+              "type": "TIME_WINDOW",
+              "condition": "Enter between 10:00 AM - 3:00 PM ET (avoid first/last hour)",
+              "priority": "LOW"
+            }
+          ],
+          "entry_range": {
+            "ideal_entry": 0.784,
+            "max_entry": 0.8160000000000001,
+            "current_mark": 0.8
+          },
+          "confirmation_required": 3,
+          "entry_method": "LIMIT_ORDER",
+          "urgency": "HIGH - Enter within 1 hour"
+        },
+        "targets": {
+          "target_1": {
+            "price": 1.04,
+            "percentage": 29.6,
+            "stock_price": 206.55,
+            "probability": 55,
+            "typical_time": "2-3 days"
+          },
+          "target_2": {
+            "price": 1.25,
+            "percentage": 56.6,
+            "stock_price": 210.6,
+            "probability": 34,
+            "typical_time": "4-6 days"
+          },
+          "target_3": {
+            "price": 1.56,
+            "percentage": 94.4,
+            "stock_price": 214.65,
+            "probability": 17,
+            "typical_time": "6-9 days"
+          }
+        },
+        "stop_loss": {
+          "stop_price": 0.7,
+          "stop_percentage": -12.5,
+          "stop_type": "TRAILING_STOP",
+          "trail_trigger": 0.88,
+          "trail_percentage": 15,
+          "time_stop": 7,
+          "theta_stop": "Exit if theta exceeds $0.15/day"
+        },
+        "exit_strategy": {
+          "profit_taking": {
+            "target_1": {
+              "action": "Sell 40% at $1.04",
+              "reasoning": "Lock in base profits"
+            },
+            "target_2": {
+              "action": "Sell 40% at $1.25",
+              "reasoning": "Secure substantial gains"
+            },
+            "target_3": {
+              "action": "Sell final 20% at $1.56 or trail",
+              "reasoning": "Let winners run with trailing stop"
+            }
+          },
+          "defensive_exits": {
+            "stop_loss": {
+              "trigger": "Price hits $0.70",
+              "action": "Exit full position immediately"
+            },
+            "time_decay": {
+              "trigger": "After 3 days if no targets hit",
+              "action": "Exit 50%, trail remainder"
+            },
+            "theta_acceleration": {
+              "trigger": "Exit if theta exceeds $0.15/day",
+              "action": "Exit full position"
+            },
+            "delta_deterioration": {
+              "trigger": "Delta drops below -0.069",
+              "action": "Exit full position"
+            }
+          },
+          "management_rules": {
+            "morning_check": "Review position 30 min after open",
+            "alerts": [
+              "Set price alerts at all targets and stop",
+              "Set Greeks alerts for theta/delta limits",
+              "Set unusual activity alerts"
+            ],
+            "adjustment_options": "Consider rolling up/out if up 50%+ with time remaining"
+          }
+        },
+        "risk_reward": {
+          "position_value": 1600.0,
+          "max_risk": 200.0,
+          "risk_percentage": 12.5,
+          "reward_amounts": {
+            "target_1": 480.0,
+            "target_2": 900.0,
+            "target_3": 1520.0
+          },
+          "risk_reward_ratios": {
+            "target_1": 2.4,
+            "target_2": 4.5,
+            "target_3": 7.6
+          },
+          "expected_value": 828.4,
+          "expected_return": 51.8,
+          "breakeven_win_rate": 29.4
+        },
+        "execution_notes": [
+          "\ud83d\udcca LOW DELTA: Requires significant move, true lottery ticket",
+          "\ud83d\udd25 UNUSUAL OPTIONS ACTIVITY: Smart money may be positioning"
+        ],
+        "plan_generated": "2025-07-05T14:26:09.077119",
+        "plan_validity": "2025-07-05 16:00 ET",
+        "formatted_text": "\n============================================================\nCAUTIOUS BUY: AAPL 202.5 PUT exp 2025-07-18\n============================================================\n\n\ud83d\udcca SCORING\n- Total Score: 59.0/100\n- Confidence: 60%\n- Risk Level: LOW\n\n\ud83d\udcb0 POSITION SIZING\n- Contracts: 20\n- Position Value: $1,600.00 (6.4% of capital)\n- Method: Kelly Criterion\n- Kelly Fraction: 25.0%\n\n\ud83c\udfaf ENTRY PLAN\n- Entry Range: $0.78 - $0.82\n- Current Mark: $0.80\n- Confirmations Required: 3 of the following:\n  \u2022 MACD histogram turns positive [MEDIUM]\n  \u2022 Maintain 2x average volume for 30 minutes [HIGH]\n  \u2022 Delta rises above -0.165 [MEDIUM]\n  \u2022 Enter between 10:00 AM - 3:00 PM ET (avoid first/last hour) [LOW]\n\n\ud83d\udcc8 PROFIT TARGETS\n- Target 1: $1.04 (+29.6%) @ $206.55 stock [55% prob]\n- Target 2: $1.25 (+56.6%) @ $210.60 stock [34% prob]\n- Target 3: $1.56 (+94.4%) @ $214.65 stock [17% prob]\n\n\ud83d\uded1 RISK MANAGEMENT\n- Stop Loss: $0.70 (-12.5%)\n- Stop Type: Trailing Stop\n- Trail Trigger: $0.88 (+10%)\n- Max Hold Time: 7 days\n- Theta Stop: Exit if theta exceeds $0.15/day\n\n\ud83d\udcca RISK/REWARD ANALYSIS\n- Max Risk: $200.00\n- Expected Value: $828.40 (51.8% return)\n- Risk/Reward Ratios:\n  \u2022 target_1: 2.40:1\n  \u2022 target_2: 4.50:1\n  \u2022 target_3: 7.60:1\n- Breakeven Win Rate: 29.4%\n\n\ud83d\udcdd EXECUTION NOTES\n\ud83d\udcca LOW DELTA: Requires significant move, true lottery ticket\n\ud83d\udd25 UNUSUAL OPTIONS ACTIVITY: Smart money may be positioning\n\n\u23f0 Plan Valid Until: 2025-07-05 16:00 ET\nGenerated: 2025-07-05T14:26:09.077119\n"
+      },
+      "other_opportunities": [
+        {
+          "contractID": "AAPL250801C00230000",
+          "symbol": "AAPL",
+          "expiration": "2025-08-01",
+          "strike": 230.0,
+          "type": "call",
+          "last": "1.52",
+          "mark": 1.48,
+          "bid": 1.44,
+          "bid_size": "4",
+          "ask": 1.53,
+          "ask_size": "20",
+          "volume": 693.0,
+          "open_interest": 4799.0,
+          "date": "2025-07-03T00:00:00",
+          "implied_volatility": 0.2539,
+          "delta": 0.17028,
+          "gamma": 0.01658,
+          "theta": -0.0709,
+          "vega": 0.15248,
+          "rho": 0.02782,
+          "contractSymbol": "AAPL250801C00230000",
+          "impliedVolatility": 0.2539,
+          "days_to_expiry": 26,
+          "openInterest": 50,
+          "score_analysis": {
+            "total_score": 54,
+            "components": {
+              "liquidity_score": 11,
+              "greeks_score": 18,
+              "unusual_activity_score": 20,
+              "technical_score": 0,
+              "iv_opportunity_score": 0,
+              "market_regime_score": 5
+            },
+            "recommendation": "\ud83e\udd14 NEUTRAL - Wait for better setup",
+            "holding_period": {
+              "recommended_days": 3,
+              "maximum_days": 7,
+              "exit_triggers": {
+                "profit_target": 0.4,
+                "stop_loss": -0.25,
+                "theta_limit": -0.15,
+                "delta_limit": 0.08514
+              }
+            },
+            "confidence": 55,
+            "risk_level": "LOW"
+          },
+          "total_score": 54
+        },
+        {
+          "contractID": "AAPL250801P00195000",
+          "symbol": "AAPL",
+          "expiration": "2025-08-01",
+          "strike": 195.0,
+          "type": "put",
+          "last": "1.29",
+          "mark": 1.31,
+          "bid": 1.28,
+          "bid_size": "6",
+          "ask": 1.34,
+          "ask_size": "4",
+          "volume": 300.0,
+          "open_interest": 1346.0,
+          "date": "2025-07-03T00:00:00",
+          "implied_volatility": 0.31243,
+          "delta": -0.13243,
+          "gamma": 0.01139,
+          "theta": -0.06597,
+          "vega": 0.12898,
+          "rho": -0.02351,
+          "contractSymbol": "AAPL250801P00195000",
+          "impliedVolatility": 0.31243,
+          "days_to_expiry": 26,
+          "openInterest": 50,
+          "score_analysis": {
+            "total_score": 50,
+            "components": {
+              "liquidity_score": 12,
+              "greeks_score": 14,
+              "unusual_activity_score": 16,
+              "technical_score": 3,
+              "iv_opportunity_score": 0,
+              "market_regime_score": 5
+            },
+            "recommendation": "\ud83e\udd14 NEUTRAL - Wait for better setup",
+            "holding_period": {
+              "recommended_days": 3,
+              "maximum_days": 7,
+              "exit_triggers": {
+                "profit_target": 0.4,
+                "stop_loss": -0.25,
+                "theta_limit": -0.15,
+                "delta_limit": -0.066215
+              }
+            },
+            "confidence": 50,
+            "risk_level": "LOW"
+          },
+          "total_score": 50
+        },
+        {
+          "contractID": "AAPL250801P00200000",
+          "symbol": "AAPL",
+          "expiration": "2025-08-01",
+          "strike": 200.0,
+          "type": "put",
+          "last": "2.08",
+          "mark": 2.08,
+          "bid": 2.04,
+          "bid_size": "1",
+          "ask": 2.13,
+          "ask_size": "4",
+          "volume": 293.0,
+          "open_interest": 2695.0,
+          "date": "2025-07-03T00:00:00",
+          "implied_volatility": 0.29292,
+          "delta": -0.19027,
+          "gamma": 0.0154,
+          "theta": -0.07752,
+          "vega": 0.16349,
+          "rho": -0.03381,
+          "contractSymbol": "AAPL250801P00200000",
+          "impliedVolatility": 0.29292,
+          "days_to_expiry": 26,
+          "openInterest": 50,
+          "score_analysis": {
+            "total_score": 46,
+            "components": {
+              "liquidity_score": 10,
+              "greeks_score": 18,
+              "unusual_activity_score": 13,
+              "technical_score": 0,
+              "iv_opportunity_score": 0,
+              "market_regime_score": 5
+            },
+            "recommendation": "\u274c AVOID - Poor risk/reward",
+            "holding_period": {
+              "recommended_days": 3,
+              "maximum_days": 7,
+              "exit_triggers": {
+                "profit_target": 0.4,
+                "stop_loss": -0.25,
+                "theta_limit": -0.15,
+                "delta_limit": -0.095135
+              }
+            },
+            "confidence": 46,
+            "risk_level": "LOW"
+          },
+          "total_score": 46
+        },
+        {
+          "contractID": "AAPL250801P00205000",
+          "symbol": "AAPL",
+          "expiration": "2025-08-01",
+          "strike": 205.0,
+          "type": "put",
+          "last": "3.25",
+          "mark": 3.28,
+          "bid": 3.2,
+          "bid_size": "74",
+          "ask": 3.35,
+          "ask_size": "4",
+          "volume": 448.0,
+          "open_interest": 934.0,
+          "date": "2025-07-03T00:00:00",
+          "implied_volatility": 0.29292,
+          "delta": -0.28169,
+          "gamma": 0.01915,
+          "theta": -0.09511,
+          "vega": 0.20322,
+          "rho": -0.05035,
+          "contractSymbol": "AAPL250801P00205000",
+          "impliedVolatility": 0.29292,
+          "days_to_expiry": 26,
+          "openInterest": 50,
+          "score_analysis": {
+            "total_score": 46,
+            "components": {
+              "liquidity_score": 10,
+              "greeks_score": 18,
+              "unusual_activity_score": 13,
+              "technical_score": 0,
+              "iv_opportunity_score": 0,
+              "market_regime_score": 5
+            },
+            "recommendation": "\u274c AVOID - Poor risk/reward",
+            "holding_period": {
+              "recommended_days": 3,
+              "maximum_days": 7,
+              "exit_triggers": {
+                "profit_target": 0.4,
+                "stop_loss": -0.25,
+                "theta_limit": -0.15,
+                "delta_limit": -0.140845
+              }
+            },
+            "confidence": 46,
+            "risk_level": "LOW"
+          },
+          "total_score": 46
+        }
+      ],
+      "scan_time": "2025-07-05T14:26:09.077179"
+    },
+    "MSFT": {
+      "symbol": "MSFT",
+      "market_data": {
+        "symbol": "MSFT",
+        "current_price": 418.16,
+        "volatility_30d": 25.0,
+        "market_cap": 0,
+        "sector": "Unknown",
+        "beta": 1.0,
+        "earnings_info": {
+          "is_pre_earnings": false,
+          "days_to_earnings": 23,
+          "earnings_priority": "medium"
+        },
+        "volume_avg": 17145307,
+        "change_percent": 0.3456,
+        "high": 419.649,
+        "low": 416.2601
+      },
+      "best_opportunity": {
+        "contractID": "MSFT250718C00515000",
+        "symbol": "MSFT",
+        "expiration": "2025-07-18",
+        "strike": 515.0,
+        "type": "call",
+        "last": "1.30",
+        "mark": 1.26,
+        "bid": 1.24,
+        "bid_size": "1",
+        "ask": 1.28,
+        "ask_size": "2",
+        "volume": 604.0,
+        "open_interest": 3074.0,
+        "date": "2025-07-03T00:00:00",
+        "implied_volatility": 0.15634,
+        "delta": 0.17516,
+        "gamma": 0.01631,
+        "theta": -0.14612,
+        "vega": 0.26083,
+        "rho": 0.0353,
+        "contractSymbol": "MSFT250718C00515000",
+        "impliedVolatility": 0.15634,
+        "days_to_expiry": 12,
+        "openInterest": 50,
+        "score_analysis": {
+          "total_score": 56,
+          "components": {
+            "liquidity_score": 12,
+            "greeks_score": 14,
+            "unusual_activity_score": 20,
+            "technical_score": 0,
+            "iv_opportunity_score": 5,
+            "market_regime_score": 5
+          },
+          "recommendation": "\ud83e\udd14 NEUTRAL - Wait for better setup",
+          "holding_period": {
+            "recommended_days": 2,
+            "maximum_days": 7,
+            "exit_triggers": {
+              "profit_target": 0.4,
+              "stop_loss": -0.25,
+              "theta_limit": -0.15,
+              "delta_limit": 0.08758
+            }
+          },
+          "confidence": 57,
+          "risk_level": "LOW"
+        },
+        "total_score": 56
+      },
+      "trading_plan": {
+        "symbol": "MSFT",
+        "option_details": {
+          "strike": 515.0,
+          "type": "call",
+          "expiration": "2025-07-18",
+          "current_price": 1.26,
+          "delta": 0.17516,
+          "gamma": 0.01631,
+          "theta": -0.14612,
+          "iv": 0.15634
+        },
+        "scoring": {
+          "total_score": 56,
+          "confidence": 57,
+          "risk_level": "LOW"
+        },
+        "position_sizing": {
+          "contracts": 20,
+          "method": "kelly_criterion",
+          "kelly_fraction": 25.0,
+          "position_value": 2520.0,
+          "risk_amount": 500.0,
+          "percentage_of_capital": 10.1
+        },
+        "entry_plan": {
+          "entry_triggers": [
+            {
+              "type": "MACD_BULLISH_CROSS",
+              "condition": "MACD histogram turns positive",
+              "priority": "MEDIUM"
+            },
+            {
+              "type": "VOLUME_SURGE",
+              "condition": "Maintain 2x average volume for 30 minutes",
+              "priority": "HIGH"
+            },
+            {
+              "type": "DELTA_INCREASE",
+              "condition": "Delta rises above 0.210",
+              "priority": "MEDIUM"
+            },
+            {
+              "type": "TIME_WINDOW",
+              "condition": "Enter between 10:00 AM - 3:00 PM ET (avoid first/last hour)",
+              "priority": "LOW"
+            }
+          ],
+          "entry_range": {
+            "ideal_entry": 1.2348,
+            "max_entry": 1.2852000000000001,
+            "current_mark": 1.26
+          },
+          "confirmation_required": 3,
+          "entry_method": "LIMIT_ORDER",
+          "urgency": "HIGH - Enter within 1 hour"
+        },
+        "targets": {
+          "target_1": {
+            "price": 1.56,
+            "percentage": 24.2,
+            "stock_price": 525.3,
+            "probability": 52,
+            "typical_time": "2-3 days"
+          },
+          "target_2": {
+            "price": 1.84,
+            "percentage": 45.8,
+            "stock_price": 535.6,
+            "probability": 32,
+            "typical_time": "4-6 days"
+          },
+          "target_3": {
+            "price": 2.18,
+            "percentage": 72.8,
+            "stock_price": 545.9,
+            "probability": 16,
+            "typical_time": "6-9 days"
+          }
+        },
+        "stop_loss": {
+          "stop_price": 1.11,
+          "stop_percentage": -11.9,
+          "stop_type": "TRAILING_STOP",
+          "trail_trigger": 1.39,
+          "trail_percentage": 15,
+          "time_stop": 7,
+          "theta_stop": "Exit if theta exceeds $0.29/day"
+        },
+        "exit_strategy": {
+          "profit_taking": {
+            "target_1": {
+              "action": "Sell 40% at $1.56",
+              "reasoning": "Lock in base profits"
+            },
+            "target_2": {
+              "action": "Sell 40% at $1.84",
+              "reasoning": "Secure substantial gains"
+            },
+            "target_3": {
+              "action": "Sell final 20% at $2.18 or trail",
+              "reasoning": "Let winners run with trailing stop"
+            }
+          },
+          "defensive_exits": {
+            "stop_loss": {
+              "trigger": "Price hits $1.11",
+              "action": "Exit full position immediately"
+            },
+            "time_decay": {
+              "trigger": "After 2 days if no targets hit",
+              "action": "Exit 50%, trail remainder"
+            },
+            "theta_acceleration": {
+              "trigger": "Exit if theta exceeds $0.29/day",
+              "action": "Exit full position"
+            },
+            "delta_deterioration": {
+              "trigger": "Delta drops below 0.088",
+              "action": "Exit full position"
+            }
+          },
+          "management_rules": {
+            "morning_check": "Review position 30 min after open",
+            "alerts": [
+              "Set price alerts at all targets and stop",
+              "Set Greeks alerts for theta/delta limits",
+              "Set unusual activity alerts"
+            ],
+            "adjustment_options": "Consider rolling up/out if up 50%+ with time remaining"
+          }
+        },
+        "risk_reward": {
+          "position_value": 2520.0,
+          "max_risk": 300.0,
+          "risk_percentage": 11.9,
+          "reward_amounts": {
+            "target_1": 600.0,
+            "target_2": 1160.0,
+            "target_3": 1840.0
+          },
+          "risk_reward_ratios": {
+            "target_1": 2.0,
+            "target_2": 3.87,
+            "target_3": 6.13
+          },
+          "expected_value": 977.6,
+          "expected_return": 38.8,
+          "breakeven_win_rate": 33.3
+        },
+        "execution_notes": [
+          "\ud83d\udd25 UNUSUAL OPTIONS ACTIVITY: Smart money may be positioning"
+        ],
+        "plan_generated": "2025-07-05T14:26:20.857247",
+        "plan_validity": "2025-07-05 16:00 ET",
+        "formatted_text": "\n============================================================\nCAUTIOUS BUY: MSFT 515.0 CALL exp 2025-07-18\n============================================================\n\n\ud83d\udcca SCORING\n- Total Score: 56.0/100\n- Confidence: 57%\n- Risk Level: LOW\n\n\ud83d\udcb0 POSITION SIZING\n- Contracts: 20\n- Position Value: $2,520.00 (10.1% of capital)\n- Method: Kelly Criterion\n- Kelly Fraction: 25.0%\n\n\ud83c\udfaf ENTRY PLAN\n- Entry Range: $1.23 - $1.29\n- Current Mark: $1.26\n- Confirmations Required: 3 of the following:\n  \u2022 MACD histogram turns positive [MEDIUM]\n  \u2022 Maintain 2x average volume for 30 minutes [HIGH]\n  \u2022 Delta rises above 0.210 [MEDIUM]\n  \u2022 Enter between 10:00 AM - 3:00 PM ET (avoid first/last hour) [LOW]\n\n\ud83d\udcc8 PROFIT TARGETS\n- Target 1: $1.56 (+24.2%) @ $525.30 stock [52% prob]\n- Target 2: $1.84 (+45.8%) @ $535.60 stock [32% prob]\n- Target 3: $2.18 (+72.8%) @ $545.90 stock [16% prob]\n\n\ud83d\uded1 RISK MANAGEMENT\n- Stop Loss: $1.11 (-11.9%)\n- Stop Type: Trailing Stop\n- Trail Trigger: $1.39 (+10%)\n- Max Hold Time: 7 days\n- Theta Stop: Exit if theta exceeds $0.29/day\n\n\ud83d\udcca RISK/REWARD ANALYSIS\n- Max Risk: $300.00\n- Expected Value: $977.60 (38.8% return)\n- Risk/Reward Ratios:\n  \u2022 target_1: 2.00:1\n  \u2022 target_2: 3.87:1\n  \u2022 target_3: 6.13:1\n- Breakeven Win Rate: 33.3%\n\n\ud83d\udcdd EXECUTION NOTES\n\ud83d\udd25 UNUSUAL OPTIONS ACTIVITY: Smart money may be positioning\n\n\u23f0 Plan Valid Until: 2025-07-05 16:00 ET\nGenerated: 2025-07-05T14:26:20.857247\n"
+      },
+      "other_opportunities": [
+        {
+          "contractID": "MSFT250718C00520000",
+          "symbol": "MSFT",
+          "expiration": "2025-07-18",
+          "strike": 520.0,
+          "type": "call",
+          "last": "0.70",
+          "mark": 0.69,
+          "bid": 0.67,
+          "bid_size": "1",
+          "ask": 0.71,
+          "ask_size": "2",
+          "volume": 551.0,
+          "open_interest": 7550.0,
+          "date": "2025-07-03T00:00:00",
+          "implied_volatility": 0.15634,
+          "delta": 0.10771,
+          "gamma": 0.01171,
+          "theta": -0.10388,
+          "vega": 0.18729,
+          "rho": 0.02175,
+          "contractSymbol": "MSFT250718C00520000",
+          "impliedVolatility": 0.15634,
+          "days_to_expiry": 12,
+          "openInterest": 50,
+          "score_analysis": {
+            "total_score": 55,
+            "components": {
+              "liquidity_score": 13,
+              "greeks_score": 12,
+              "unusual_activity_score": 20,
+              "technical_score": 0,
+              "iv_opportunity_score": 5,
+              "market_regime_score": 5
+            },
+            "recommendation": "\ud83e\udd14 NEUTRAL - Wait for better setup",
+            "holding_period": {
+              "recommended_days": 2,
+              "maximum_days": 7,
+              "exit_triggers": {
+                "profit_target": 0.4,
+                "stop_loss": -0.25,
+                "theta_limit": -0.15,
+                "delta_limit": 0.053855
+              }
+            },
+            "confidence": 56,
+            "risk_level": "LOW"
+          },
+          "total_score": 55
+        },
+        {
+          "contractID": "MSFT250725P00470000",
+          "symbol": "MSFT",
+          "expiration": "2025-07-25",
+          "strike": 470.0,
+          "type": "put",
+          "last": "1.20",
+          "mark": 1.29,
+          "bid": 1.17,
+          "bid_size": "6",
+          "ask": 1.42,
+          "ask_size": "1",
+          "volume": 626.0,
+          "open_interest": 1389.0,
+          "date": "2025-07-03T00:00:00",
+          "implied_volatility": 0.21487,
+          "delta": -0.11415,
+          "gamma": 0.00734,
+          "theta": -0.10854,
+          "vega": 0.23646,
+          "rho": -0.03522,
+          "contractSymbol": "MSFT250725P00470000",
+          "impliedVolatility": 0.21487,
+          "days_to_expiry": 19,
+          "openInterest": 50,
+          "score_analysis": {
+            "total_score": 51,
+            "components": {
+              "liquidity_score": 11,
+              "greeks_score": 12,
+              "unusual_activity_score": 20,
+              "technical_score": 0,
+              "iv_opportunity_score": 3,
+              "market_regime_score": 5
+            },
+            "recommendation": "\ud83e\udd14 NEUTRAL - Wait for better setup",
+            "holding_period": {
+              "recommended_days": 4,
+              "maximum_days": 14,
+              "exit_triggers": {
+                "profit_target": 0.4,
+                "stop_loss": -0.25,
+                "theta_limit": -0.15,
+                "delta_limit": -0.057075
+              }
+            },
+            "confidence": 52,
+            "risk_level": "LOW"
+          },
+          "total_score": 51
+        },
+        {
+          "contractID": "MSFT250725P00480000",
+          "symbol": "MSFT",
+          "expiration": "2025-07-25",
+          "strike": 480.0,
+          "type": "put",
+          "last": "2.26",
+          "mark": 2.33,
+          "bid": 2.2,
+          "bid_size": "10",
+          "ask": 2.46,
+          "ask_size": "6",
+          "volume": 611.0,
+          "open_interest": 473.0,
+          "date": "2025-07-03T00:00:00",
+          "implied_volatility": 0.19536,
+          "delta": -0.18913,
+          "gamma": 0.01131,
+          "theta": -0.13565,
+          "vega": 0.33141,
+          "rho": -0.0584,
+          "contractSymbol": "MSFT250725P00480000",
+          "impliedVolatility": 0.19536,
+          "days_to_expiry": 19,
+          "openInterest": 50,
+          "score_analysis": {
+            "total_score": 50,
+            "components": {
+              "liquidity_score": 12,
+              "greeks_score": 16,
+              "unusual_activity_score": 12,
+              "technical_score": 0,
+              "iv_opportunity_score": 5,
+              "market_regime_score": 5
+            },
+            "recommendation": "\ud83e\udd14 NEUTRAL - Wait for better setup",
+            "holding_period": {
+              "recommended_days": 2,
+              "maximum_days": 7,
+              "exit_triggers": {
+                "profit_target": 0.4,
+                "stop_loss": -0.25,
+                "theta_limit": -0.15,
+                "delta_limit": -0.094565
+              }
+            },
+            "confidence": 49,
+            "risk_level": "LOW"
+          },
+          "total_score": 50
+        },
+        {
+          "contractID": "MSFT250718P00487500",
+          "symbol": "MSFT",
+          "expiration": "2025-07-18",
+          "strike": 487.5,
+          "type": "put",
+          "last": "2.36",
+          "mark": 2.46,
+          "bid": 2.43,
+          "bid_size": "1",
+          "ask": 2.49,
+          "ask_size": "1",
+          "volume": 282.0,
+          "open_interest": 592.0,
+          "date": "2025-07-03T00:00:00",
+          "implied_volatility": 0.17585,
+          "delta": -0.23799,
+          "gamma": 0.0174,
+          "theta": -0.16904,
+          "vega": 0.31293,
+          "rho": -0.04983,
+          "contractSymbol": "MSFT250718P00487500",
+          "impliedVolatility": 0.17585,
+          "days_to_expiry": 12,
+          "openInterest": 50,
+          "score_analysis": {
+            "total_score": 49,
+            "components": {
+              "liquidity_score": 10,
+              "greeks_score": 16,
+              "unusual_activity_score": 5,
+              "technical_score": 8,
+              "iv_opportunity_score": 5,
+              "market_regime_score": 5
+            },
+            "recommendation": "\u274c AVOID - Poor risk/reward",
+            "holding_period": {
+              "recommended_days": 2,
+              "maximum_days": 7,
+              "exit_triggers": {
+                "profit_target": 0.4,
+                "stop_loss": -0.25,
+                "theta_limit": -0.15,
+                "delta_limit": -0.118995
+              }
+            },
+            "confidence": 47,
+            "risk_level": "LOW"
+          },
+          "total_score": 49
+        }
+      ],
+      "scan_time": "2025-07-05T14:26:20.857298"
+    }
+  },
+  "top_picks": [
+    {
+      "symbol": "AAPL",
+      "option": "AAPL 202.5 PUT exp 2025-07-18",
+      "expiration": "2025-07-18",
+      "score": 59,
+      "confidence": 60,
+      "entry_price": 0.8,
+      "target_1": 1.04,
+      "stop_loss": 0.7,
+      "recommendation": "\ud83e\udd14 NEUTRAL - Wait for better setup",
+      "formatted_plan": "\n============================================================\nCAUTIOUS BUY: AAPL 202.5 PUT exp 2025-07-18\n============================================================\n\n\ud83d\udcca SCORING\n- Total Score: 59.0/100\n- Confidence: 60%\n- Risk Level: LOW\n\n\ud83d\udcb0 POSITION SIZING\n- Contracts: 20\n- Position Value: $1,600.00 (6.4% of capital)\n- Method: Kelly Criterion\n- Kelly Fraction: 25.0%\n\n\ud83c\udfaf ENTRY PLAN\n- Entry Range: $0.78 - $0.82\n- Current Mark: $0.80\n- Confirmations Required: 3 of the following:\n  \u2022 MACD histogram turns positive [MEDIUM]\n  \u2022 Maintain 2x average volume for 30 minutes [HIGH]\n  \u2022 Delta rises above -0.165 [MEDIUM]\n  \u2022 Enter between 10:00 AM - 3:00 PM ET (avoid first/last hour) [LOW]\n\n\ud83d\udcc8 PROFIT TARGETS\n- Target 1: $1.04 (+29.6%) @ $206.55 stock [55% prob]\n- Target 2: $1.25 (+56.6%) @ $210.60 stock [34% prob]\n- Target 3: $1.56 (+94.4%) @ $214.65 stock [17% prob]\n\n\ud83d\uded1 RISK MANAGEMENT\n- Stop Loss: $0.70 (-12.5%)\n- Stop Type: Trailing Stop\n- Trail Trigger: $0.88 (+10%)\n- Max Hold Time: 7 days\n- Theta Stop: Exit if theta exceeds $0.15/day\n\n\ud83d\udcca RISK/REWARD ANALYSIS\n- Max Risk: $200.00\n- Expected Value: $828.40 (51.8% return)\n- Risk/Reward Ratios:\n  \u2022 target_1: 2.40:1\n  \u2022 target_2: 4.50:1\n  \u2022 target_3: 7.60:1\n- Breakeven Win Rate: 29.4%\n\n\ud83d\udcdd EXECUTION NOTES\n\ud83d\udcca LOW DELTA: Requires significant move, true lottery ticket\n\ud83d\udd25 UNUSUAL OPTIONS ACTIVITY: Smart money may be positioning\n\n\u23f0 Plan Valid Until: 2025-07-05 16:00 ET\nGenerated: 2025-07-05T14:26:09.077119\n"
+    },
+    {
+      "symbol": "MSFT",
+      "option": "MSFT 515.0 CALL exp 2025-07-18",
+      "expiration": "2025-07-18",
+      "score": 56,
+      "confidence": 57,
+      "entry_price": 1.26,
+      "target_1": 1.56,
+      "stop_loss": 1.11,
+      "recommendation": "\ud83e\udd14 NEUTRAL - Wait for better setup",
+      "formatted_plan": "\n============================================================\nCAUTIOUS BUY: MSFT 515.0 CALL exp 2025-07-18\n============================================================\n\n\ud83d\udcca SCORING\n- Total Score: 56.0/100\n- Confidence: 57%\n- Risk Level: LOW\n\n\ud83d\udcb0 POSITION SIZING\n- Contracts: 20\n- Position Value: $2,520.00 (10.1% of capital)\n- Method: Kelly Criterion\n- Kelly Fraction: 25.0%\n\n\ud83c\udfaf ENTRY PLAN\n- Entry Range: $1.23 - $1.29\n- Current Mark: $1.26\n- Confirmations Required: 3 of the following:\n  \u2022 MACD histogram turns positive [MEDIUM]\n  \u2022 Maintain 2x average volume for 30 minutes [HIGH]\n  \u2022 Delta rises above 0.210 [MEDIUM]\n  \u2022 Enter between 10:00 AM - 3:00 PM ET (avoid first/last hour) [LOW]\n\n\ud83d\udcc8 PROFIT TARGETS\n- Target 1: $1.56 (+24.2%) @ $525.30 stock [52% prob]\n- Target 2: $1.84 (+45.8%) @ $535.60 stock [32% prob]\n- Target 3: $2.18 (+72.8%) @ $545.90 stock [16% prob]\n\n\ud83d\uded1 RISK MANAGEMENT\n- Stop Loss: $1.11 (-11.9%)\n- Stop Type: Trailing Stop\n- Trail Trigger: $1.39 (+10%)\n- Max Hold Time: 7 days\n- Theta Stop: Exit if theta exceeds $0.29/day\n\n\ud83d\udcca RISK/REWARD ANALYSIS\n- Max Risk: $300.00\n- Expected Value: $977.60 (38.8% return)\n- Risk/Reward Ratios:\n  \u2022 target_1: 2.00:1\n  \u2022 target_2: 3.87:1\n  \u2022 target_3: 6.13:1\n- Breakeven Win Rate: 33.3%\n\n\ud83d\udcdd EXECUTION NOTES\n\ud83d\udd25 UNUSUAL OPTIONS ACTIVITY: Smart money may be positioning\n\n\u23f0 Plan Valid Until: 2025-07-05 16:00 ET\nGenerated: 2025-07-05T14:26:20.857247\n"
+    },
+    {
+      "symbol": "IBM",
+      "option": "IBM 295.0 CALL exp 2025-07-11",
+      "expiration": "2025-07-11",
+      "score": 54,
+      "confidence": 53,
+      "entry_price": 2.12,
+      "target_1": 2.8,
+      "stop_loss": 1.85,
+      "recommendation": "\ud83e\udd14 NEUTRAL - Wait for better setup",
+      "formatted_plan": "\n============================================================\nCAUTIOUS BUY: IBM 295.0 CALL exp 2025-07-11\n============================================================\n\n\ud83d\udcca SCORING\n- Total Score: 54.0/100\n- Confidence: 53%\n- Risk Level: MEDIUM\n\n\ud83d\udcb0 POSITION SIZING\n- Contracts: 20\n- Position Value: $4,240.00 (17.0% of capital)\n- Method: Kelly Criterion\n- Kelly Fraction: 17.7%\n\n\ud83c\udfaf ENTRY PLAN\n- Entry Range: $2.08 - $2.16\n- Current Mark: $2.12\n- Confirmations Required: 3 of the following:\n  \u2022 MACD histogram turns positive [MEDIUM]\n  \u2022 Enter between 10:00 AM - 3:00 PM ET (avoid first/last hour) [LOW]\n  \u2022 Bid-ask spread narrows below 10% (currently 15.3%) [MEDIUM]\n\n\ud83d\udcc8 PROFIT TARGETS\n- Target 1: $2.80 (+32.2%) @ $300.90 stock [49% prob]\n- Target 2: $3.29 (+55.3%) @ $306.80 stock [30% prob]\n- Target 3: $3.90 (+84.0%) @ $312.70 stock [15% prob]\n\n\ud83d\uded1 RISK MANAGEMENT\n- Stop Loss: $1.85 (-12.5%)\n- Stop Type: Trailing Stop\n- Trail Trigger: $2.33 (+10%)\n- Max Hold Time: 3 days\n- Theta Stop: Exit if theta exceeds $0.43/day\n\n\ud83d\udcca RISK/REWARD ANALYSIS\n- Max Risk: $540.00\n- Expected Value: $1,870.00 (44.1% return)\n- Risk/Reward Ratios:\n  \u2022 target_1: 2.52:1\n  \u2022 target_2: 4.33:1\n  \u2022 target_3: 6.59:1\n- Breakeven Win Rate: 28.4%\n\n\ud83d\udcdd EXECUTION NOTES\n\u26a0\ufe0f LOW OPEN INTEREST: May have difficulty exiting, size accordingly\n\u26a0\ufe0f WIDE SPREAD (15.3%): Avoid market orders, work the bid/ask\n\u26a0\ufe0f HIGH THETA DECAY: Time is against you, need quick move\n\u23f0 NEAR EXPIRATION: Only 5 days left, gamma play\n\n\u23f0 Plan Valid Until: 2025-07-05 16:00 ET\nGenerated: 2025-07-05T14:25:45.998750\n"
+    }
+  ],
+  "by_category": {
+    "earnings_plays": [
+      {
+        "symbol": "IBM",
+        "days_to_earnings": 18,
+        "score": 54
+      }
+    ],
+    "unusual_activity": [
+      {
+        "symbol": "AAPL",
+        "activity_score": 20,
+        "total_score": 59
+      },
+      {
+        "symbol": "MSFT",
+        "activity_score": 20,
+        "total_score": 56
+      }
+    ],
+    "technical_setups": [],
+    "volatility_plays": [
+      {
+        "symbol": "IBM",
+        "iv_score": 10,
+        "total_score": 54
+      }
+    ]
+  }
+}
