@@ -67,7 +67,7 @@ class ExplosiveOptionsScanner:
         # STEP 1: Fetch bulk market data for all symbols at once
         print("📊 Fetching bulk market data using REALTIME_BULK_QUOTES API...")
         self._bulk_market_cache = self._fetch_bulk_market_data(symbols)
-        
+
         # Filter symbols that have valid market data
         valid_symbols = [s for s in symbols if s in self._bulk_market_cache]
         print(f"✅ {len(valid_symbols)} symbols have valid market data")
@@ -325,12 +325,23 @@ class ExplosiveOptionsScanner:
 
         else:  # comprehensive
             # Combine multiple sources
-            earnings = self._get_pre_earnings_stocks()[:30]
-            movers = self._get_top_movers()[:30]
-            unusual = self._get_unusual_activity_stocks()[:20]
+            earnings = self._get_pre_earnings_stocks()  # Get ALL earnings stocks
+            movers = self._get_top_movers()  # Get ALL movers
+            unusual = self._get_unusual_activity_stocks()  # Get ALL unusual activity
+
+            print(f"📈 Earnings symbols found: {len(earnings)}")
+            print(f"📊 Top movers found: {len(movers)}")
+            print(f"🔥 Unusual activity found: {len(unusual)}")
 
             # Combine and dedupe
             all_symbols = list(set(earnings + movers + unusual))
+
+            # Add high-volume backup symbols if we don't have enough
+            if len(all_symbols) < 50:
+                backup_symbols = ['SPY', 'QQQ', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'AMD', 
+                                 'NFLX', 'COIN', 'PLTR', 'GME', 'AMC', 'SOXL', 'TQQQ', 'IWM', 'XLE', 'GLD']
+                all_symbols.extend([s for s in backup_symbols if s not in all_symbols])
+
             symbols = all_symbols
 
         # Always include focus list
@@ -422,29 +433,33 @@ class ExplosiveOptionsScanner:
     def _fetch_bulk_market_data(self, symbols: List[str]) -> Dict[str, Dict]:
         """Fetch market data for multiple symbols using bulk quotes API"""
         bulk_data = {}
-        
+
+        print(f"📊 Processing {len(symbols)} symbols using REALTIME_BULK_QUOTES API...")
+        print(f"🔑 Using API key: {self.av_key[:8]}...{self.av_key[-4:] if len(self.av_key) > 12 else 'INVALID'}")
+
         # Process symbols in chunks of 100 (API limit)
         for i in range(0, len(symbols), 100):
             chunk = symbols[i:i+100]
+            print(f"📊 Processing chunk {i//100 + 1}: symbols {i+1}-{min(i+100, len(symbols))}")
             symbol_string = ','.join(chunk)
-            
+
             try:
                 print(f"📊 Fetching bulk quotes for {len(chunk)} symbols...")
-                
+
                 # Use REALTIME_BULK_QUOTES API
                 url = f'https://www.alphavantage.co/query?function=REALTIME_BULK_QUOTES&symbol={symbol_string}&apikey={self.av_key}'
                 response = requests.get(url, timeout=30)
                 data = response.json()
-                
+
                 if 'Information' in data and 'rate limit' in data['Information'].lower():
                     print(f"⏳ Rate limit reached - waiting...")
                     time.sleep(60)
                     continue
-                
+
                 if 'Error Message' in data:
                     print(f"❌ Bulk quotes error: {data['Error Message']}")
                     continue
-                
+
                 # Parse bulk quote data
                 if 'data' in data:
                     for quote in data['data']:
@@ -460,15 +475,15 @@ class ExplosiveOptionsScanner:
                                 'high': float(quote.get('high', 0)),
                                 'low': float(quote.get('low', 0))
                             }
-                
+
                 # Small delay between chunks
                 if i + 100 < len(symbols):
                     time.sleep(1)
-                
+
             except Exception as e:
                 print(f"❌ Error fetching bulk data for chunk {i//100 + 1}: {e}")
                 continue
-        
+
         print(f"✅ Successfully fetched bulk data for {len(bulk_data)} symbols")
         return bulk_data
 
@@ -478,14 +493,14 @@ class ExplosiveOptionsScanner:
             # Check if we have cached bulk data for this symbol
             if hasattr(self, '_bulk_market_cache') and symbol in self._bulk_market_cache:
                 base_data = self._bulk_market_cache[symbol]
-                
+
                 # Calculate volatility from price changes
                 change_percent = abs(base_data.get('change_percent', 0))
                 volatility = max(change_percent * 10, 25.0)  # Estimate volatility
-                
+
                 # Get earnings info
                 earnings_info = self._get_earnings_info(symbol)
-                
+
                 return {
                     'symbol': symbol,
                     'current_price': base_data['current_price'],
@@ -499,10 +514,10 @@ class ExplosiveOptionsScanner:
                     'high': base_data.get('high', 0),
                     'low': base_data.get('low', 0)
                 }
-            
+
             # Fallback to individual API call if not in cache
             print(f"⚠️ Using individual API call for {symbol} (not in bulk cache)")
-            
+
             # Fetch daily data from Alpha Vantage
             url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=compact&apikey={self.av_key}'
             response = requests.get(url, timeout=15)
