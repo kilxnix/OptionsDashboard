@@ -150,7 +150,11 @@ class ExplosiveOptionsScanner:
 
                         # Print progress
                         best = symbol_results['best_opportunity']
-                        print(f"  ✅ {symbol}: Score {best['total_score']:.1f} - {best['recommendation']}")
+                        rec = best.get('recommendation',
+                                      best.get('score_analysis', {}).get('recommendation', 'N/A'))
+                        print(
+                            f"  ✅ {symbol}: Score {best['total_score']:.1f} - {rec}"
+                        )
 
                 except Exception as e:
                     print(f"  ❌ {symbol}: Error - {str(e)}")
@@ -1013,7 +1017,7 @@ class ExplosiveOptionsScanner:
     def _categorize_opportunity(self, symbol_results: Dict, categories: Dict):
         """Categorize opportunity by type"""
         best = symbol_results['best_opportunity']
-        score_components = best['score_analysis']['components']
+        score_components = best.get('score_analysis', {}).get('components', {})
 
         # Earnings play
         if symbol_results['market_data'].get('earnings_info', {}).get('is_pre_earnings'):
@@ -1060,11 +1064,11 @@ class ExplosiveOptionsScanner:
                 'option': f"{symbol} {best['strike']} {best['type'].upper()} exp {best['expiration']}",
                 'expiration': best['expiration'],
                 'score': best['total_score'],
-                'confidence': best['score_analysis']['confidence'],
+                'confidence': best.get('score_analysis', {}).get('confidence', 0),
                 'entry_price': best['mark'],
                 'target_1': plan['targets']['target_1']['price'],
                 'stop_loss': plan['stop_loss']['stop_price'],
-                'recommendation': best['score_analysis']['recommendation'],
+                'recommendation': best.get('score_analysis', {}).get('recommendation', 'N/A'),
                 'formatted_plan': plan['formatted_text']
             })
 
@@ -1287,7 +1291,20 @@ Opportunities Found: {len(results['opportunities'])}
         }
     
     def _generate_recommendation_from_score(self, score: float) -> str:
-        """Generate recommendation based on score"""
+        """Generate recommendation based on score.
+
+        Handles invalid inputs gracefully by returning a default message.
+        """
+        try:
+            if not isinstance(score, (int, float)):
+                # Attempt to extract numeric value from dictionaries or strings
+                if isinstance(score, dict) and 'total_score' in score:
+                    score = float(score['total_score'])
+                else:
+                    score = float(score)
+        except Exception:
+            return "No recommendation available"
+
         if score >= 70:
             return "🔥 STRONG BUY - Excellent setup"
         elif score >= 60:
