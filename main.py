@@ -16,22 +16,17 @@ app = Flask(__name__)
 
 def make_json_safe(obj):
     """Recursively convert pandas and numpy objects to JSON-serializable forms."""
+    if obj is pd.NA:
+        return None
     if isinstance(obj, pd.DataFrame):
         return obj.to_dict(orient="records")
     if isinstance(obj, pd.Series):
         return obj.to_dict()
     if isinstance(obj, (pd.Timestamp, datetime)):
         return obj.isoformat()
-    if isinstance(obj, (np.integer, np.floating)):
-        return float(obj)
-    if isinstance(obj, np.ndarray):
-        return obj.tolist()
-    if isinstance(obj, dict):
-        return {k: make_json_safe(v) for k, v in obj.items()}
-    if isinstance(obj, (list, tuple)):
+
         return [make_json_safe(v) for v in obj]
     return obj
-
 
 @app.route("/")
 def index():
