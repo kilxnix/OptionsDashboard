@@ -465,7 +465,7 @@ class CompleteOptionsScanner:
             if key_prefix not in data:
                 print(
                     f"No data available for {symbol} at {timeframe} timeframe")
-                return None
+                return self._fetch_yfinance_fallback(symbol, timeframe)
 
             # Convert to DataFrame
             df = pd.DataFrame.from_dict(data[key_prefix], orient='index')
@@ -495,7 +495,7 @@ class CompleteOptionsScanner:
 
         except Exception as e:
             print(f"Error fetching {timeframe} data for {symbol}: {e}")
-            return None
+            return self._fetch_yfinance_fallback(symbol, timeframe)
 
     def fetch_multi_timeframe_data(self, symbol):
         """Fetch price data for all timeframes using Alpha Vantage"""
@@ -669,6 +669,21 @@ class CompleteOptionsScanner:
         except Exception as e:
             print(f"Error fetching price data for {symbol}: {e}")
             return None
+
+    def _fetch_yfinance_fallback(self, symbol, timeframe):
+        """Fallback to yfinance when Alpha Vantage data is unavailable"""
+        tf_map = {
+            '1m': ('7d', '1m'),
+            '5m': ('30d', '5m'),
+            '15m': ('60d', '15m'),
+            '30m': ('60d', '30m'),
+            '1h': ('60d', '60m'),
+            'D': ('1y', '1d'),
+            'W': ('5y', '1wk'),
+        }
+        period, interval = tf_map.get(timeframe, ('1y', '1d'))
+        print(f"↩️ Falling back to yfinance for {symbol} {timeframe}")
+        return self.fetch_price_data(symbol, period=period, interval=interval)
 
     def _check_rate_limit(self):
         """Implement rate limiting"""
