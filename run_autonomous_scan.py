@@ -30,7 +30,8 @@ def save_individual_scan_result(symbol, result_data, directory="output"):
         os.makedirs(directory)
 
     date_str = datetime.now().strftime("%Y-%m-%d")
-    progressive_file = os.path.join(directory, f"progressive_scan_{date_str}.json")
+    progressive_file = os.path.join(directory,
+                                    f"progressive_scan_{date_str}.json")
 
     # Load existing data or create new
     if os.path.exists(progressive_file):
@@ -54,11 +55,11 @@ def run_autonomous_scan(dry_run=False,
                         auto_refresh_symbols=True,
                         symbol_limit=50,
                         symbols_override=None,
-                        min_delta=0.25,
+                        min_delta=0.11,
                         max_delta=0.68,
-                        min_price=0.01,
-                        max_price=0.10,
-                        time_to_expiry_range=(2, 16),
+                        min_price=0.45,
+                        max_price=1.6,
+                        time_to_expiry_range=(2, 35),
                         iv_percentile_threshold=None):
     """
     Autonomous scan pipeline that:
@@ -83,35 +84,53 @@ def run_autonomous_scan(dry_run=False,
             # Fetch fresh symbols from Alpha Vantage
             api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
             if not api_key:
-                print("❌ ALPHA_VANTAGE_API_KEY not set, skipping symbol refresh")
+                print(
+                    "❌ ALPHA_VANTAGE_API_KEY not set, skipping symbol refresh")
             else:
                 url = f'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey={api_key}'
 
                 try:
-                    print("   Fetching top gainers, losers, and most active...")
+                    print(
+                        "   Fetching top gainers, losers, and most active...")
                     response = requests.get(url, timeout=30)
                     if response.status_code == 200:
                         data = response.json()
 
                         if 'Error Message' not in data and 'Information' not in data:
                             all_fresh_symbols = []
-                            categories = ['top_gainers', 'top_losers', 'most_actively_traded']
+                            categories = [
+                                'top_gainers', 'top_losers',
+                                'most_actively_traded'
+                            ]
 
                             for category in categories:
                                 if category in data:
-                                    symbols = [item['ticker'] for item in data[category]]
+                                    symbols = [
+                                        item['ticker']
+                                        for item in data[category]
+                                    ]
                                     all_fresh_symbols.extend(symbols)
-                                    print(f"   ✅ {len(symbols)} symbols from {category}")
+                                    print(
+                                        f"   ✅ {len(symbols)} symbols from {category}"
+                                    )
 
                             # Update database with fresh symbols
                             if all_fresh_symbols:
-                                unique_symbols = list(dict.fromkeys(all_fresh_symbols))
-                                update_result = update_tickers_in_db(unique_symbols, mode="replace")
-                                print(f"🔄 Database updated with {len(unique_symbols)} fresh symbols")
+                                unique_symbols = list(
+                                    dict.fromkeys(all_fresh_symbols))
+                                update_result = update_tickers_in_db(
+                                    unique_symbols, mode="replace")
+                                print(
+                                    f"🔄 Database updated with {len(unique_symbols)} fresh symbols"
+                                )
                             else:
-                                print("⚠️ No fresh symbols fetched, using existing database")
+                                print(
+                                    "⚠️ No fresh symbols fetched, using existing database"
+                                )
                         else:
-                            print(f"❌ Alpha Vantage API error: {data.get('Error Message', data.get('Information', 'Unknown error'))}")
+                            print(
+                                f"❌ Alpha Vantage API error: {data.get('Error Message', data.get('Information', 'Unknown error'))}"
+                            )
 
                 except Exception as e:
                     print(f"   ❌ Failed to fetch from Alpha Vantage: {e}")
@@ -126,7 +145,8 @@ def run_autonomous_scan(dry_run=False,
         print(f"🎯 Using provided symbol list: {len(symbols_override)} symbols")
         symbols = symbols_override
     else:
-        print("🔍 Discovering optionable stocks with intelligent aggregation...")
+        print(
+            "🔍 Discovering optionable stocks with intelligent aggregation...")
 
         if auto_refresh_symbols:
             print("🔄 Auto-refreshing symbols from Alpha Vantage...")
@@ -147,23 +167,25 @@ def run_autonomous_scan(dry_run=False,
         # Process all symbols (no limit)
         if symbol_limit and symbol_limit > 0:
             symbols = symbols[:symbol_limit]
-            print(f"🎯 Processing {len(symbols)} curated optionable stocks (limited): {symbols[:5]}...")
+            print(
+                f"🎯 Processing {len(symbols)} curated optionable stocks (limited): {symbols[:5]}..."
+            )
         else:
-            print(f"🎯 Processing all {len(symbols)} curated optionable stocks: {symbols[:5]}...")
+            print(
+                f"🎯 Processing all {len(symbols)} curated optionable stocks: {symbols[:5]}..."
+            )
 
     # ── Run your existing scanner_core logic with progressive saving ──
     print("🔄 Running optimized scanner...")
     start_time = datetime.now()
 
-    results = run_scanner(
-        symbols=symbols,
-        min_delta=min_delta,
-        max_delta=max_delta,
-        min_price=min_price,
-        max_price=max_price,
-        time_to_expiry_range=time_to_expiry_range,
-        iv_percentile_threshold=iv_percentile_threshold
-    )
+    results = run_scanner(symbols=symbols,
+                          min_delta=min_delta,
+                          max_delta=max_delta,
+                          min_price=min_price,
+                          max_price=max_price,
+                          time_to_expiry_range=time_to_expiry_range,
+                          iv_percentile_threshold=iv_percentile_threshold)
 
     scan_duration = datetime.now() - start_time
     print(f"⏱️  Scan completed in {scan_duration.total_seconds():.1f} seconds")
@@ -190,11 +212,9 @@ def run_autonomous_scan(dry_run=False,
     # ── Build summary & digest ──
     summary = summarize_results(results)
 
-    top = max(
-        results.items(),
-        key=lambda x: x[1].get("confluence", {}).get("score", 0),
-        default=(None, {})
-    )
+    top = max(results.items(),
+              key=lambda x: x[1].get("confluence", {}).get("score", 0),
+              default=(None, {}))
     top_symbol = top[0] if top[0] else "N/A"
     top_score = top[1].get("confluence", {}).get("score", "N/A")
     top_bias = top[1].get("confluence", {}).get("bias", "N/A")
