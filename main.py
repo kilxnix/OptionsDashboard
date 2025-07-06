@@ -16,8 +16,25 @@ app = Flask(__name__)
 
 def make_json_safe(obj):
     """Recursively convert pandas and numpy objects to JSON-serializable forms."""
-    if obj is pd.NA or obj is None or pd.isna(obj):
+    # Handle numpy arrays first to avoid truth value ambiguity
+    if isinstance(obj, np.ndarray):
+        return obj.tolist()
+    
+    # Handle pandas NA and None values
+    if obj is pd.NA or obj is None:
         return None
+    
+    # Check for pandas NA values safely (only for scalar values)
+    try:
+        if hasattr(obj, '__len__') and len(obj) > 1:
+            # This is an array-like object, don't use pd.isna
+            pass
+        elif pd.isna(obj):
+            return None
+    except (ValueError, TypeError):
+        # pd.isna failed, continue with other checks
+        pass
+    
     if isinstance(obj, pd.DataFrame):
         return obj.to_dict(orient="records")
     if isinstance(obj, pd.Series):
@@ -30,8 +47,6 @@ def make_json_safe(obj):
         return float(obj)
     if isinstance(obj, np.bool_):
         return bool(obj)
-    if isinstance(obj, np.ndarray):
-        return obj.tolist()
     if isinstance(obj, dict):
         return {k: make_json_safe(v) for k, v in obj.items()}
     if isinstance(obj, (list, tuple)):
