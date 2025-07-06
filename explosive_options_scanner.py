@@ -190,11 +190,16 @@ class ExplosiveOptionsScanner:
             # Fix data types first
             options_data = fix_options_dataframe(options_data)
 
-            # Apply initial filters
+            # Apply initial filters after ensuring data is properly formatted
             if filters:
-                options_data = self._apply_filters(options_data, filters)
-                if hasattr(options_data, 'empty') and options_data.empty:
-                    return None
+                try:
+                    options_data = self._apply_filters(options_data, filters)
+                    if hasattr(options_data, 'empty') and options_data.empty:
+                        return None
+                except Exception as e:
+                    print(f"⚠️ Filter error for {symbol}: {e}")
+                    # Continue without filtering if there's an error
+                    pass
 
             # Score all options with better error handling
             scored_options = []
@@ -261,12 +266,15 @@ class ExplosiveOptionsScanner:
                             'strike': 100.0, 'delta': 0.3, 'gamma': 0.01, 'theta': -0.05,
                             'volume': 100.0, 'mark': 0.5, 'open_interest': 50.0,
                             'bid': 0.45, 'ask': 0.55, 'impliedVolatility': 0.25,
-                            'lastPrice': 0.5, 'change': 0.0, 'percentChange': 0.0
+                            'lastPrice': 0.5, 'change': 0.0, 'percentChange': 0.0,
+                            'openInterest': 50.0, 'days_to_expiry': 30
                         }
                         
                         for field, default in numeric_defaults.items():
                             if field in option_dict:
                                 option_dict[field] = safe_extract_numeric(option_dict[field], default)
+                            else:
+                                option_dict[field] = default
 
                         # Ensure expiration is properly formatted as string
                         if 'expiration' in option_dict:
