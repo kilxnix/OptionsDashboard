@@ -50,16 +50,16 @@ def save_individual_scan_result(symbol, result_data, directory="output"):
     return True
 
 
-def run_autonomous_scan(min_delta=0.25,
+def run_autonomous_scan(dry_run=False,
+                        auto_refresh_symbols=True,
+                        symbol_limit=50,
+                        symbols_override=None,
+                        min_delta=0.25,
                         max_delta=0.68,
                         min_price=0.01,
                         max_price=0.10,
                         time_to_expiry_range=(2, 16),
-                        iv_percentile_threshold=None,
-                        discovery_limit=50,  # still accepted but unused now
-                        dry_run=False,
-                        auto_refresh_symbols=True,
-                        symbol_limit=0):  # 0 = unlimited
+                        iv_percentile_threshold=None):
     """
     Autonomous scan pipeline that:
       1. Optionally refreshes symbols from Yahoo Finance screeners
@@ -121,28 +121,35 @@ def run_autonomous_scan(min_delta=0.25,
             print(f"❌ Symbol refresh failed: {e}")
             print("📦 Falling back to existing database")
 
-    # ── USE ENHANCED OPTIONABLE STOCK AGGREGATION ──
-    from scanner_core import get_optionable_stocks_with_volume
-
-    # Get curated optionable stocks from multiple sources
-    symbols = get_optionable_stocks_with_volume()
-
-    if not symbols:
-        print("❌ No optionable stocks found from aggregation.")
-        return {
-            "digest": "No optionable stocks found from aggregation.",
-            "results": None,
-            "summary": {},
-            "output_path": None,
-            "symbols_processed": 0
-        }
-
-    # Process all symbols (no limit)
-    if symbol_limit and symbol_limit > 0:
-        symbols = symbols[:symbol_limit]
-        print(f"🎯 Processing {len(symbols)} curated optionable stocks (limited): {symbols[:5]}...")
+    # ── SYMBOL DISCOVERY WITH INTELLIGENT AGGREGATION ──
+    if symbols_override:
+        print(f"🎯 Using provided symbol list: {len(symbols_override)} symbols")
+        symbols = symbols_override
     else:
-        print(f"🎯 Processing all {len(symbols)} curated optionable stocks: {symbols[:5]}...")
+        print("🔍 Discovering optionable stocks with intelligent aggregation...")
+
+        if auto_refresh_symbols:
+            print("🔄 Auto-refreshing symbols from Alpha Vantage...")
+
+        from scanner_core import get_optionable_stocks_with_volume
+        symbols = get_optionable_stocks_with_volume()
+
+        if not symbols:
+            print("❌ No optionable stocks found from aggregation.")
+            return {
+                "digest": "No optionable stocks found from aggregation.",
+                "results": None,
+                "summary": {},
+                "output_path": None,
+                "symbols_processed": 0
+            }
+
+        # Process all symbols (no limit)
+        if symbol_limit and symbol_limit > 0:
+            symbols = symbols[:symbol_limit]
+            print(f"🎯 Processing {len(symbols)} curated optionable stocks (limited): {symbols[:5]}...")
+        else:
+            print(f"🎯 Processing all {len(symbols)} curated optionable stocks: {symbols[:5]}...")
 
     # ── Run your existing scanner_core logic with progressive saving ──
     print("🔄 Running optimized scanner...")
