@@ -24,18 +24,9 @@ def make_json_safe(obj):
         return obj.to_dict()
     if isinstance(obj, (pd.Timestamp, datetime)):
         return obj.isoformat()
-    if isinstance(obj, (np.bool_,)):
-        return bool(obj)
-    if isinstance(obj, (np.integer, np.floating)):
-        return float(obj)
-    if isinstance(obj, np.ndarray):
-        return obj.tolist()
-    if isinstance(obj, dict):
-        return {k: make_json_safe(v) for k, v in obj.items()}
-    if isinstance(obj, (list, tuple, set)):
+
         return [make_json_safe(v) for v in obj]
     return obj
-
 
 @app.route("/")
 def index():
