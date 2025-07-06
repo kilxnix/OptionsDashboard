@@ -89,7 +89,7 @@ def save_human_readable_plans(results, directory="./TradingPlans"):
             f.write("\n" + "-"*60 + "\n\n")
 
     print(f"📝 Human-readable plans saved to {plans_file}")
-    return plans_fileue
+    return plans_file
 
 
 def run_autonomous_scan(dry_run=False,
