@@ -227,10 +227,28 @@ class ExplosiveOptionsScanner:
                                     option_dict[field] = 50
 
                         # Convert numeric fields to float with comprehensive error handling
-                        numeric_fields = ['strike', 'delta', 'gamma', 'theta', 'volume', 'mark', 'open_interest']
+                        numeric_fields = ['strike', 'delta', 'gamma', 'theta', 'volume', 'mark', 'open_interest', 'bid', 'ask']
                         for field in numeric_fields:
                             try:
                                 val = option_dict[field]
+                                
+                                # Handle dictionary values (common with Yahoo Finance)
+                                if isinstance(val, dict):
+                                    if 'raw' in val:
+                                        val = val['raw']
+                                    elif 'fmt' in val:
+                                        val = val['fmt']
+                                    else:
+                                        # Try to get the first numeric value from the dict
+                                        for k, v in val.items():
+                                            try:
+                                                val = float(v)
+                                                break
+                                            except:
+                                                continue
+                                        else:
+                                            raise ValueError("No numeric value in dict")
+                                
                                 # Handle string values that might contain non-numeric chars
                                 if val is None or pd.isna(val):
                                     raise ValueError("None or NaN value")
@@ -257,6 +275,10 @@ class ExplosiveOptionsScanner:
                                     option_dict[field] = 0.5
                                 elif field == 'open_interest':
                                     option_dict[field] = 50.0
+                                elif field == 'bid':
+                                    option_dict[field] = 0.45
+                                elif field == 'ask':
+                                    option_dict[field] = 0.55
 
                         # Ensure expiration is properly formatted as string
                         if 'expiration' in option_dict:
@@ -286,6 +308,15 @@ class ExplosiveOptionsScanner:
 
                         score, analysis = self.grader.calculate_option_score(option_dict, market_data)
 
+                        # Ensure score is a number, not a dict
+                        if isinstance(score, dict):
+                            score = score.get('total_score', 0) if 'total_score' in score else 0
+                        
+                        try:
+                            score = float(score)
+                        except (ValueError, TypeError):
+                            score = 0
+                        
                         if score >= self.scan_config['min_score']:
                             option_dict['score_analysis'] = analysis
                             option_dict['total_score'] = score
