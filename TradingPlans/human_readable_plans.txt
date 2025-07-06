@@ -9160,3 +9160,165 @@ Delta: 0.38406 | Gamma: 0.08074 | Theta: -0.00480 | Score: 7.40
 
 ================================================================================
 
+📈 Trade Plan for ABT (Bullish Bias)
+
+🔹 Option: $$137.0 Call expiring 2025-07-11
+🔹 Entry Price: $0.53
+🔹 Stop Loss: $0.40
+🔹 Initial Target: $0.93
+🔹 Final Target: $1.85
+🔹 Position Size: 3 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.22291 | Gamma: 0.09587 | Theta: -0.06153 | Score: 1.20
+
+================================================================================
+
+📈 Trade Plan for AA (Bearish Bias)
+
+🔹 Option: $$30.5 Put expiring 2025-07-11
+🔹 Entry Price: $0.50
+🔹 Stop Loss: $0.38
+🔹 Initial Target: $0.88
+🔹 Final Target: $1.75
+🔹 Position Size: 4 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.34701 | Gamma: 0.19529 | Theta: -0.04230 | Score: 2.49
+
+================================================================================
+
+📈 Trade Plan for ABBV (Bullish Bias)
+
+🔹 Option: $$192.5 Call expiring 2025-07-18
+🔹 Entry Price: $1.41
+🔹 Stop Loss: $1.06
+🔹 Initial Target: $2.47
+🔹 Final Target: $4.93
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.32266 | Gamma: 0.05982 | Theta: -0.07885 | Score: 0.94
+
+================================================================================
+
+📈 Trade Plan for AAL (Bullish Bias)
+
+🔹 Option: $$22.0 Call expiring 2026-12-18
+🔹 Entry Price: $0.54
+🔹 Stop Loss: $0.41
+🔹 Initial Target: $0.95
+🔹 Final Target: $1.89
+🔹 Position Size: 3 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.18382 | Gamma: 0.04590 | Theta: -0.00164 | Score: 11.75
+
+================================================================================
+
+📈 Trade Plan for GEV (Bearish Bias)
+
+🔹 Option: $$500.0 Put expiring 2025-07-11
+🔹 Entry Price: $5.20
+🔹 Stop Loss: $3.90
+🔹 Initial Target: $9.10
+🔹 Final Target: $18.20
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.26598 | Gamma: 0.01098 | Theta: -0.59612 | Score: 0.61
+
+================================================================================
+
+📈 Trade Plan for GE (Bullish Bias)
+
+🔹 Option: $$250.0 Call expiring 2025-07-11
+🔹 Entry Price: $2.50
+🔹 Stop Loss: $1.88
+🔹 Initial Target: $4.38
+🔹 Final Target: $8.75
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.38588 | Gamma: 0.04122 | Theta: -0.23286 | Score: 0.74
+
+================================================================================
+
+📈 Trade Plan for GM (Bearish Bias)
+
+🔹 Option: $$52.0 Put expiring 2025-07-18
+🔹 Entry Price: $0.86
+🔹 Stop Loss: $0.65
+🔹 Initial Target: $1.50
+🔹 Final Target: $3.01
+🔹 Position Size: 2 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.36488 | Gamma: 0.11967 | Theta: -0.03696 | Score: 1.95
+
+================================================================================
+
+📈 Trade Plan for GOOG (Bullish Bias)
+
+🔹 Option: $$182.5 Call expiring 2025-07-11
+🔹 Entry Price: $1.66
+🔹 Stop Loss: $1.24
+🔹 Initial Target: $2.90
+🔹 Final Target: $5.81
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.39555 | Gamma: 0.06148 | Theta: -0.15910 | Score: 0.83
+
+================================================================================
+
+📈 Trade Plan for QS (Bullish Bias)
+
+🔹 Option: $$11.0 Call expiring 2026-01-16
+🔹 Entry Price: $0.92
+🔹 Stop Loss: $0.69
+🔹 Initial Target: $1.61
+🔹 Final Target: $3.22
+🔹 Position Size: 2 contracts
+🔹 Max Hold Time: 10 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.38406 | Gamma: 0.08074 | Theta: -0.00480 | Score: 7.40
+
+================================================================================
+

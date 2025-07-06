@@ -334,5 +334,53 @@
     "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
+  },
+  "GEV_535.0_call_2025-07-11 00:00:00_2025-07-06": {
+    "symbol": "GEV",
+    "prediction_date": "2025-07-06",
+    "option_details": {
+      "strike": 535.0,
+      "type": "call",
+      "expiration": "2025-07-11 00:00:00",
+      "entry_price": 5.2,
+      "predicted_target": 9.1,
+      "predicted_bias": "Bearish",
+      "confluence_score": 6.45,
+      "delta": 0.28197,
+      "gamma": 0.01189,
+      "theta": -0.61617,
+      "implied_vol": "0.37097"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "GOOG_182.5_call_2025-07-11 00:00:00_2025-07-06": {
+    "symbol": "GOOG",
+    "prediction_date": "2025-07-06",
+    "option_details": {
+      "strike": 182.5,
+      "type": "call",
+      "expiration": "2025-07-11 00:00:00",
+      "entry_price": 1.66,
+      "predicted_target": 2.9,
+      "predicted_bias": "Bullish",
+      "confluence_score": 7.87,
+      "delta": 0.39555,
+      "gamma": 0.06148,
+      "theta": -0.1591,
+      "implied_vol": "0.23438"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
   }
 }
