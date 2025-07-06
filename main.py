@@ -4,6 +4,7 @@ import os
 import json
 import glob
 import pandas as pd
+import numpy as np
 import requests
 import time
 from run_autonomous_scan import run_autonomous_scan
@@ -11,6 +12,25 @@ from run_autonomous_scan import run_autonomous_scan
 app = Flask(__name__)
 
 # Alpha Vantage API integration - no rate limiting needed with subscription
+
+
+def make_json_safe(obj):
+    """Recursively convert pandas and numpy objects to JSON-serializable forms."""
+    if isinstance(obj, pd.DataFrame):
+        return obj.to_dict(orient="records")
+    if isinstance(obj, pd.Series):
+        return obj.to_dict()
+    if isinstance(obj, (pd.Timestamp, datetime)):
+        return obj.isoformat()
+    if isinstance(obj, (np.integer, np.floating)):
+        return float(obj)
+    if isinstance(obj, np.ndarray):
+        return obj.tolist()
+    if isinstance(obj, dict):
+        return {k: make_json_safe(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [make_json_safe(v) for v in obj]
+    return obj
 
 
 @app.route("/")
@@ -1208,7 +1228,8 @@ def explosive_earnings_combo():
 💡 METHODOLOGY: Two-phase analysis combining explosive discovery with comprehensive technical analysis
         """.strip()
 
-        return jsonify(combined_results)
+        safe_results = make_json_safe(combined_results)
+        return jsonify(safe_results)
 
     except Exception as e:
         print(f"❌ Error in explosive-earnings-combo: {e}")
