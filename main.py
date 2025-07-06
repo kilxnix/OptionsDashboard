@@ -1046,7 +1046,7 @@ def get_earnings_calendar():
 
 @app.route("/explosive-earnings-combo", methods=["GET", "POST"])
 def explosive_earnings_combo():
-    """Combined explosive scan that does everything in one comprehensive scan"""
+    """Combined explosive scan that finds earnings candidates AND runs full scanner_core analysis"""
     try:
         # Get parameters
         if request.method == 'POST' and request.is_json:
@@ -1066,78 +1066,151 @@ def explosive_earnings_combo():
                 'max_days': int(request.args.get('max_days', 30))
             }
 
-        print("🚀 EXPLOSIVE EARNINGS COMBO SCAN")
-        print("="*50)
+        print("🚀 EXPLOSIVE EARNINGS COMBO SCAN - PHASE 1 + 2")
+        print("="*60)
         print(f"🎯 Scan Type: {scan_type}")
-        print(f"🔥 Min Score: {min_explosive_score}")
-        print(f"📊 Using Alpha Vantage for all market data and options")
+        print(f"🔥 Min Explosive Score: {min_explosive_score}")
+        print(f"📊 PHASE 1: Find explosive earnings candidates")
+        print(f"🔬 PHASE 2: Run full scanner_core analysis on best candidates")
 
         from explosive_options_scanner import ExplosiveOptionsScanner
 
-        # Initialize explosive scanner
+        # PHASE 1: Run explosive discovery to find earnings candidates
+        print("\n📊 PHASE 1: Running explosive earnings discovery...")
         explosive_scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
 
-        # Run comprehensive explosive scan
         explosive_results = explosive_scanner.run_explosive_scan(
             symbols=None,  # Auto-discover with earnings focus
             scan_type=scan_type,
             filters=filters
         )
 
-        # Filter for high-quality opportunities
-        high_quality_opportunities = {}
-        earnings_plays = []
-
+        # Extract high-scoring earnings candidates for Phase 2
+        earnings_candidates = []
         for symbol, data in explosive_results['opportunities'].items():
             best_score = data['best_opportunity']['total_score']
+            
+            if (best_score >= min_explosive_score and 
+                data['market_data'].get('earnings_info', {}).get('is_pre_earnings')):
+                earnings_candidates.append(symbol)
 
-            if best_score >= min_explosive_score:
-                high_quality_opportunities[symbol] = data
+        print(f"✅ PHASE 1 COMPLETE: Found {len(earnings_candidates)} high-scoring earnings candidates")
+        print(f"🎯 Earnings candidates: {earnings_candidates[:10]}...")
 
-                # Check if it's an earnings play
-                if data['market_data'].get('earnings_info', {}).get('is_pre_earnings'):
-                    earnings_plays.append({
-                        'symbol': symbol,
-                        'score': best_score,
-                        'days_to_earnings': data['market_data']['earnings_info']['days_to_earnings'],
-                        'option': f"{symbol} {data['best_opportunity']['strike']} {data['best_opportunity']['type'].upper()} exp {data['best_opportunity']['expiration']}"
-                    })
+        # PHASE 2: Run full scanner_core analysis on earnings candidates
+        print(f"\n🔬 PHASE 2: Running full scanner_core analysis on {len(earnings_candidates)} candidates...")
+        
+        scanner_core_results = {}
+        if earnings_candidates:
+            # Run the full scanner_core workflow
+            scanner_core_results = run_autonomous_scan(
+                dry_run=False,
+                auto_refresh_symbols=False,  # Don't refresh, use our candidates
+                symbol_limit=0,  # No limit, process all candidates
+                symbols_override=earnings_candidates,  # Use our earnings candidates
+                min_delta=filters.get('min_delta', 0.10),
+                max_delta=filters.get('max_delta', 0.40),
+                min_price=filters.get('min_price', 0.05),
+                max_price=filters.get('max_price', 5.00),
+                time_to_expiry_range=(filters.get('min_days', 1), filters.get('max_days', 30))
+            )
 
-        # Sort earnings plays by score
-        earnings_plays.sort(key=lambda x: x['score'], reverse=True)
+            if scanner_core_results and scanner_core_results.get('results'):
+                print(f"✅ PHASE 2 COMPLETE: Full analysis completed on {len(scanner_core_results['results'])} symbols")
+            else:
+                print("⚠️ PHASE 2: No results from scanner_core analysis")
 
-        # Generate focused results
-        focused_results = {
+        # Combine results from both phases
+        combined_results = {
             "status": "success",
             "scan_metadata": {
                 "timestamp": datetime.now().isoformat(),
-                "scan_type": f"explosive-earnings-combo ({scan_type})",
-                "total_symbols_scanned": explosive_results['scan_metadata']['symbols_scanned'],
-                "opportunities_found": len(explosive_results['opportunities']),
-                "high_quality_opportunities": len(high_quality_opportunities),
-                "earnings_plays": len(earnings_plays),
+                "scan_type": f"explosive-earnings-combo-2phase ({scan_type})",
+                "phase_1_symbols_scanned": explosive_results['scan_metadata']['symbols_scanned'],
+                "phase_1_opportunities": len(explosive_results['opportunities']),
+                "earnings_candidates_found": len(earnings_candidates),
+                "phase_2_analyzed": len(scanner_core_results.get('results', {})) if scanner_core_results else 0,
                 "min_explosive_score": min_explosive_score,
                 "filters": filters,
-                "data_source": "Alpha Vantage (historical options + realtime bulk quotes)"
+                "methodology": "Phase 1: Explosive discovery → Phase 2: Full scanner_core analysis"
             },
-            "high_quality_opportunities": high_quality_opportunities,
-            "earnings_plays": earnings_plays,
-            "top_picks": explosive_results['top_picks'][:10],
-            "by_category": explosive_results['by_category'],
-            "full_scan_results": explosive_results
+            "phase_1_explosive_results": {
+                "opportunities": explosive_results['opportunities'],
+                "top_picks": explosive_results['top_picks'][:10],
+                "by_category": explosive_results['by_category']
+            },
+            "phase_2_scanner_core_results": scanner_core_results.get('results', {}) if scanner_core_results else {},
+            "earnings_candidates": earnings_candidates,
+            "final_opportunities": []
         }
 
-        # Generate summary
-        focused_results['summary'] = f"""
-🎯 EXPLOSIVE EARNINGS COMBO SCAN COMPLETE
-📊 Total Symbols Scanned: {explosive_results['scan_metadata']['symbols_scanned']}
-🔥 High-Quality Opportunities: {len(high_quality_opportunities)} (score >= {min_explosive_score})
-📈 Earnings Plays Found: {len(earnings_plays)}
-🏆 Top Score: {explosive_results['top_picks'][0]['score']:.1f} ({explosive_results['top_picks'][0]['symbol']}) if explosive_results['top_picks'] else 'N/A'
-💡 Data Source: Alpha Vantage historical options + bulk market data
+        # Create final combined opportunities list
+        final_opportunities = []
+        if scanner_core_results and scanner_core_results.get('results'):
+            for symbol, scanner_data in scanner_core_results['results'].items():
+                # Get corresponding explosive data
+                explosive_data = explosive_results['opportunities'].get(symbol, {})
+                
+                # Combine both analyses
+                combined_opportunity = {
+                    'symbol': symbol,
+                    'explosive_score': explosive_data.get('best_opportunity', {}).get('total_score', 0),
+                    'confluence_score': scanner_data.get('confluence', {}).get('score', 0),
+                    'confluence_bias': scanner_data.get('confluence', {}).get('bias', 'N/A'),
+                    'days_to_earnings': explosive_data.get('market_data', {}).get('earnings_info', {}).get('days_to_earnings', 'N/A'),
+                    'earnings_priority': explosive_data.get('market_data', {}).get('earnings_info', {}).get('earnings_priority', 'N/A'),
+                    'has_gaps': any([
+                        tf_data.get('gap_percent', 0) != 0 
+                        for tf_data in scanner_data.get('timeframe_analysis', {}).values()
+                    ]),
+                    'volume_confluence': len(scanner_data.get('volume_profile', {}).get('confluences', [])) > 0,
+                    'trade_plan': scanner_data.get('trade_plan', {}),
+                    'patterns_found': [
+                        f"{tf}:{','.join([k for k,v in tf_data.get('patterns', {}).items() if v])}"
+                        for tf, tf_data in scanner_data.get('timeframe_analysis', {}).items()
+                        if any(tf_data.get('patterns', {}).values())
+                    ],
+                    'explosive_analysis': explosive_data.get('best_opportunity', {}),
+                    'scanner_core_analysis': scanner_data
+                }
+                final_opportunities.append(combined_opportunity)
+
+        # Sort by combined score (explosive + confluence)
+        final_opportunities.sort(
+            key=lambda x: (x['explosive_score'] + x['confluence_score']), 
+            reverse=True
+        )
+
+        combined_results['final_opportunities'] = final_opportunities
+
+        # Generate comprehensive summary
+        top_opportunity = final_opportunities[0] if final_opportunities else None
+        combined_results['summary'] = f"""
+🎯 EXPLOSIVE EARNINGS COMBO SCAN - 2 PHASE ANALYSIS COMPLETE
+{'='*70}
+📊 PHASE 1 - Explosive Discovery:
+   • Symbols Scanned: {explosive_results['scan_metadata']['symbols_scanned']}
+   • Explosive Opportunities: {len(explosive_results['opportunities'])}
+   • Earnings Candidates: {len(earnings_candidates)}
+
+🔬 PHASE 2 - Full Scanner Core Analysis:
+   • Candidates Analyzed: {len(scanner_core_results.get('results', {})) if scanner_core_results else 0}
+   • Multi-timeframe Analysis: ✅
+   • Volume Profile Analysis: ✅
+   • Pattern Detection: ✅
+   • Confluence Scoring: ✅
+
+🏆 TOP COMBINED OPPORTUNITY:
+   • Symbol: {top_opportunity['symbol'] if top_opportunity else 'None'}
+   • Explosive Score: {top_opportunity['explosive_score']:.1f}/100 if top_opportunity else 'N/A'}
+   • Confluence Score: {top_opportunity['confluence_score']:.1f}/10 if top_opportunity else 'N/A'}
+   • Bias: {top_opportunity['confluence_bias'] if top_opportunity else 'N/A'}
+   • Days to Earnings: {top_opportunity['days_to_earnings'] if top_opportunity else 'N/A'}
+
+💡 METHODOLOGY: Two-phase analysis combining explosive discovery with comprehensive technical analysis
         """.strip()
 
-        return jsonify(focused_results)
+        return jsonify(combined_results)
 
     except Exception as e:
         print(f"❌ Error in explosive-earnings-combo: {e}")
