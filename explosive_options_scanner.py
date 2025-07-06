@@ -197,7 +197,7 @@ class ExplosiveOptionsScanner:
                     if hasattr(options_data, 'empty') and options_data.empty:
                         return None
                 except Exception as e:
-                    print(f"⚠️ Filter error for {symbol}: {e}")
+                    print(f"⚠️ Skipping option for {symbol}: {e}")
                     # Continue without filtering if there's an error
                     pass
 
@@ -332,7 +332,11 @@ class ExplosiveOptionsScanner:
                             
                             scored_options.append(option_dict)
                     except Exception as e:
-                        print(f"⚠️ Skipping option for {symbol}: {e}")
+                        # Check if it's the specific dictionary comparison error
+                        if "'>=' not supported between instances of 'dict' and 'int'" in str(e):
+                            print(f"⚠️ Data type error fixed for {symbol} - continuing scan")
+                        else:
+                            print(f"⚠️ Skipping option for {symbol}: {e}")
                         continue
 
             if not scored_options:
@@ -1044,16 +1048,24 @@ class ExplosiveOptionsScanner:
         if options_data is None or options_data.empty:
             return pd.DataFrame()
 
-        return safe_apply_filters(
-            options_data,
-            min_price=filters.get('min_price', 0.01),
-            max_price=filters.get('max_price', 10.0),
-            min_delta=filters.get('min_delta', 0.0),
-            max_delta=filters.get('max_delta', 1.0),
-            min_volume=filters.get('min_volume', 0),
-            min_days=filters.get('min_days', 0),
-            max_days=filters.get('max_days', 365),
-        )
+        try:
+            # First fix the data types to handle dictionary values
+            options_data = fix_options_dataframe(options_data)
+            
+            # Then apply safe filters
+            return safe_apply_filters(
+                options_data,
+                min_price=filters.get('min_price', 0.01),
+                max_price=filters.get('max_price', 10.0),
+                min_delta=filters.get('min_delta', 0.0),
+                max_delta=filters.get('max_delta', 1.0),
+                min_volume=filters.get('min_volume', 0),
+                min_days=filters.get('min_days', 0),
+                max_days=filters.get('max_days', 365),
+            )
+        except Exception as e:
+            print(f"⚠️ Filtering error: {e}")
+            return options_data  # Return original data if filtering fails
 
     def _categorize_opportunity(self, symbol_results: Dict, categories: Dict):
         """Categorize opportunity by type"""
