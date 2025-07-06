@@ -382,5 +382,53 @@
     "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
+  },
+  "HAL_23.0_put_2027-01-15 00:00:00_2025-07-06": {
+    "symbol": "HAL",
+    "prediction_date": "2025-07-06",
+    "option_details": {
+      "strike": 23.0,
+      "type": "put",
+      "expiration": "2027-01-15 00:00:00",
+      "entry_price": 4.45,
+      "predicted_target": 7.79,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.12,
+      "delta": -0.39966,
+      "gamma": 0.03531,
+      "theta": -0.00223,
+      "implied_vol": "0.40999"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "SCCO_125.0_call_2025-12-19 00:00:00_2025-07-06": {
+    "symbol": "SCCO",
+    "prediction_date": "2025-07-06",
+    "option_details": {
+      "strike": 125.0,
+      "type": "call",
+      "expiration": "2025-12-19 00:00:00",
+      "entry_price": 5.9,
+      "predicted_target": 10.33,
+      "predicted_bias": "Bearish",
+      "confluence_score": 7.56,
+      "delta": 0.22376,
+      "gamma": 0.01635,
+      "theta": -0.01873,
+      "implied_vol": "0.25390"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
   }
 }
