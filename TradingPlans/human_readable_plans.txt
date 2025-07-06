@@ -8890,3 +8890,129 @@ Delta: 0.29855 | Gamma: 0.45868 | Theta: -0.01793 | Score: 10.85
 
 ================================================================================
 
+📈 Trade Plan for ABT (Bearish Bias)
+
+🔹 Option: $$133.0 Put expiring 2025-07-11
+🔹 Entry Price: $1.03
+🔹 Stop Loss: $0.77
+🔹 Initial Target: $1.80
+🔹 Final Target: $3.60
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.33739 | Gamma: 0.09395 | Theta: -0.08330 | Score: 1.09
+
+================================================================================
+
+📈 Trade Plan for ABBV (Bullish Bias)
+
+🔹 Option: $$192.5 Call expiring 2025-07-18
+🔹 Entry Price: $1.41
+🔹 Stop Loss: $1.06
+🔹 Initial Target: $2.47
+🔹 Final Target: $4.93
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.32266 | Gamma: 0.05982 | Theta: -0.07885 | Score: 0.94
+
+================================================================================
+
+📈 Trade Plan for AAL (Bullish Bias)
+
+🔹 Option: $$22.0 Call expiring 2026-12-18
+🔹 Entry Price: $0.54
+🔹 Stop Loss: $0.41
+🔹 Initial Target: $0.95
+🔹 Final Target: $1.89
+🔹 Position Size: 3 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.18382 | Gamma: 0.04590 | Theta: -0.00164 | Score: 11.75
+
+================================================================================
+
+📈 Trade Plan for FI (Bullish Bias)
+
+🔹 Option: $$177.5 Call expiring 2025-07-11
+🔹 Entry Price: $1.75
+🔹 Stop Loss: $1.31
+🔹 Initial Target: $3.06
+🔹 Final Target: $6.12
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.38151 | Gamma: 0.06826 | Theta: -0.14083 | Score: 0.86
+
+================================================================================
+
+📈 Trade Plan for GE (Bullish Bias)
+
+🔹 Option: $$250.0 Call expiring 2025-07-11
+🔹 Entry Price: $2.50
+🔹 Stop Loss: $1.88
+🔹 Initial Target: $4.38
+🔹 Final Target: $8.75
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.38588 | Gamma: 0.04122 | Theta: -0.23286 | Score: 0.74
+
+================================================================================
+
+📈 Trade Plan for PCG (Bullish Bias)
+
+🔹 Option: $$14.5 Call expiring 2025-07-11
+🔹 Entry Price: $0.09
+🔹 Stop Loss: $0.07
+🔹 Initial Target: $0.16
+🔹 Final Target: $0.32
+🔹 Position Size: 25 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.21145 | Gamma: 0.42331 | Theta: -0.01270 | Score: 13.90
+
+================================================================================
+
+📈 Trade Plan for PM (Bullish Bias)
+
+🔹 Option: $$182.5 Call expiring 2025-07-18
+🔹 Entry Price: $2.00
+🔹 Stop Loss: $1.50
+🔹 Initial Target: $3.50
+🔹 Final Target: $7.00
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.34557 | Gamma: 0.04731 | Theta: -0.10288 | Score: 0.83
+
+================================================================================
+

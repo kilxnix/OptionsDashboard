@@ -190,5 +190,101 @@
     "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
+  },
+  "FI_177.5_call_2025-07-11 00:00:00_2025-07-06": {
+    "symbol": "FI",
+    "prediction_date": "2025-07-06",
+    "option_details": {
+      "strike": 177.5,
+      "type": "call",
+      "expiration": "2025-07-11 00:00:00",
+      "entry_price": 1.75,
+      "predicted_target": 3.06,
+      "predicted_bias": "Bullish",
+      "confluence_score": 7.55,
+      "delta": 0.38151,
+      "gamma": 0.06826,
+      "theta": -0.14083,
+      "implied_vol": "0.21487"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "GE_245.0_put_2025-07-03 00:00:00_2025-07-06": {
+    "symbol": "GE",
+    "prediction_date": "2025-07-06",
+    "option_details": {
+      "strike": 245.0,
+      "type": "put",
+      "expiration": "2025-07-03 00:00:00",
+      "entry_price": 2.5,
+      "predicted_target": 4.38,
+      "predicted_bias": "Bullish",
+      "confluence_score": 7.94,
+      "delta": -0.10253,
+      "gamma": 0.11789,
+      "theta": -0.13246,
+      "implied_vol": "0.11731"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "PCG_13.0_put_2027-01-15 00:00:00_2025-07-06": {
+    "symbol": "PCG",
+    "prediction_date": "2025-07-06",
+    "option_details": {
+      "strike": 13.0,
+      "type": "put",
+      "expiration": "2027-01-15 00:00:00",
+      "entry_price": 0.09,
+      "predicted_target": 0.16,
+      "predicted_bias": "Bullish",
+      "confluence_score": 6.2,
+      "delta": -0.30178,
+      "gamma": 0.05177,
+      "theta": -0.00139,
+      "implied_vol": "0.39048"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "PM_177.5_put_2025-07-11 00:00:00_2025-07-06": {
+    "symbol": "PM",
+    "prediction_date": "2025-07-06",
+    "option_details": {
+      "strike": 177.5,
+      "type": "put",
+      "expiration": "2025-07-11 00:00:00",
+      "entry_price": 2.0,
+      "predicted_target": 3.5,
+      "predicted_bias": "Bullish",
+      "confluence_score": 7.54,
+      "delta": -0.39439,
+      "gamma": 0.06201,
+      "theta": -0.14073,
+      "implied_vol": "0.23438"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
   }
 }
