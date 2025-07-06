@@ -798,15 +798,14 @@ def monitor_positions():
 
     except Exception as e:
         return jsonify({
-```python
             "status": "error",
-            "message": f"Monitoring failed: {str(e)}"
+            "message": f"Monitoring encountered an error: {str(e)}"
         }), 500
 
 
 @app.route("/market-regime", methods=["GET"])
 def get_market_regime():
-    """Get current market regime and trading adjustments"""
+    """Retrieve the current market regime and associated trading adjustments"""
     try:
         from adaptive_market_monitor import AdaptiveMarketMonitor
 
