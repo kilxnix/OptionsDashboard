@@ -2113,8 +2113,10 @@ def run_scanner(symbols=None,
                             "bias": confluence["bias"]
                         }
 
+                        top_option = select_top_option_candidate(
+                            candidates, confluence, symbol)
                         trade_plan = generate_trade_plan(
-                            candidates.iloc[0], symbol_context)
+                            top_option, symbol_context)
                         output_file = "./TradingPlans/human_readable_plans.txt"
                         formatted = format_trade_plan_for_output(
                             symbol, trade_plan, save_path=output_file)
