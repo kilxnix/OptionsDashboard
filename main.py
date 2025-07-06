@@ -1102,12 +1102,10 @@ def explosive_earnings_combo():
 
         scanner_core_results = {}
         if earnings_candidates:
-            # Run the full scanner_core workflow
-            scanner_core_results = run_autonomous_scan(
-                dry_run=False,
-                auto_refresh_symbols=False,  # Don't refresh, use our candidates
-                symbol_limit=0,  # No limit, process all candidates
-                symbols_override=earnings_candidates,  # Use our earnings candidates
+            from scanner_core import run_scanner
+            print(f"🔄 Running scanner_core on {len(earnings_candidates)} symbols...")
+            scanner_core_results = run_scanner(
+                symbols=earnings_candidates,
                 min_delta=filters.get('min_delta', 0.10),
                 max_delta=filters.get('max_delta', 0.40),
                 min_price=filters.get('min_price', 0.05),
@@ -1115,8 +1113,8 @@ def explosive_earnings_combo():
                 time_to_expiry_range=(filters.get('min_days', 1), filters.get('max_days', 30))
             )
 
-            if scanner_core_results and scanner_core_results.get('results'):
-                print(f"✅ PHASE 2 COMPLETE: Full analysis completed on {len(scanner_core_results['results'])} symbols")
+            if scanner_core_results:
+                print(f"✅ PHASE 2 COMPLETE: Full analysis completed on {len(scanner_core_results)} symbols")
             else:
                 print("⚠️ PHASE 2: No results from scanner_core analysis")
 
@@ -1129,7 +1127,7 @@ def explosive_earnings_combo():
                 "phase_1_symbols_scanned": explosive_results['scan_metadata']['symbols_scanned'],
                 "phase_1_opportunities": len(explosive_results['opportunities']),
                 "earnings_candidates_found": len(earnings_candidates),
-                "phase_2_analyzed": len(scanner_core_results.get('results', {})) if scanner_core_results else 0,
+                "phase_2_analyzed": len(scanner_core_results) if scanner_core_results else 0,
                 "min_explosive_score": min_explosive_score,
                 "filters": filters,
                 "methodology": "Phase 1: Explosive discovery → Phase 2: Full scanner_core analysis"
@@ -1139,15 +1137,15 @@ def explosive_earnings_combo():
                 "top_picks": explosive_results['top_picks'][:10],
                 "by_category": explosive_results['by_category']
             },
-            "phase_2_scanner_core_results": scanner_core_results.get('results', {}) if scanner_core_results else {},
+            "phase_2_scanner_core_results": scanner_core_results or {},
             "earnings_candidates": earnings_candidates,
             "final_opportunities": []
         }
 
         # Create final combined opportunities list
         final_opportunities = []
-        if scanner_core_results and scanner_core_results.get('results'):
-            for symbol, scanner_data in scanner_core_results['results'].items():
+        if scanner_core_results:
+            for symbol, scanner_data in scanner_core_results.items():
                 # Get corresponding explosive data
                 explosive_data = explosive_results['opportunities'].get(symbol, {})
 
@@ -1194,7 +1192,7 @@ def explosive_earnings_combo():
    • Earnings Candidates: {len(earnings_candidates)}
 
 🔬 PHASE 2 - Full Scanner Core Analysis:
-   • Candidates Analyzed: {len(scanner_core_results.get('results', {})) if scanner_core_results else 0}
+   • Candidates Analyzed: {len(scanner_core_results) if scanner_core_results else 0}
    • Multi-timeframe Analysis: ✅
    • Volume Profile Analysis: ✅
    • Pattern Detection: ✅
