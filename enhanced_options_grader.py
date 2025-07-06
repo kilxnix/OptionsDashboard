@@ -19,6 +19,26 @@ class EnhancedOptionsGrader:
         self.market_breadth = None
         self.sector_momentum = {}
 
+        # Adaptive thresholds that learn from performance
+        self.thresholds = {
+            'volume_spike': 2.0,  # Will adapt based on success rate
+            'oi_change': 0.5,
+            'volume_oi_ratio': 0.1,
+            'iv_percentile': 30,
+            'spread_tolerance': 0.15,  # 15% max bid-ask spread
+            'min_volume': 50,
+            'min_oi': 100
+        }
+
+        # Greeks-based holding period matrix
+        self.holding_matrix = {
+            'high_gamma': {'base_days': 1, 'max_days': 3},
+            'moderate_gamma': {'base_days': 3, 'max_days': 7},
+            'low_gamma': {'base_days': 5, 'max_days': 14},
+            'theta_threshold': -0.15,  # Exit if theta exceeds this
+            'delta_drift_limit': 0.50  # Exit if delta drops below entry * 0.5
+        }
+
     def _safe_float_extract(self, value, default=0):
         """
         Safely extract float from potentially nested Alpha Vantage data structures
@@ -41,25 +61,7 @@ class EnhancedOptionsGrader:
         except (ValueError, TypeError):
             return default
 
-        # Adaptive thresholds that learn from performance
-        self.thresholds = {
-            'volume_spike': 2.0,  # Will adapt based on success rate
-            'oi_change': 0.5,
-            'volume_oi_ratio': 0.1,
-            'iv_percentile': 30,
-            'spread_tolerance': 0.15,  # 15% max bid-ask spread
-            'min_volume': 50,
-            'min_oi': 100
-        }
 
-        # Greeks-based holding period matrix
-        self.holding_matrix = {
-            'high_gamma': {'base_days': 1, 'max_days': 3},
-            'moderate_gamma': {'base_days': 3, 'max_days': 7},
-            'low_gamma': {'base_days': 5, 'max_days': 14},
-            'theta_threshold': -0.15,  # Exit if theta exceeds this
-            'delta_drift_limit': 0.50  # Exit if delta drops below entry * 0.5
-        }
 
     def calculate_option_score(self, option_data: Dict, market_data: Dict) -> Tuple[float, Dict]:
         """
@@ -187,7 +189,7 @@ class EnhancedOptionsGrader:
                 bid = float(bid_val.get('raw', bid_val.get('fmt', 0)))
             else:
                 bid = float(bid_val)
-                
+
             ask_val = option_data.get('ask', 0)
             if isinstance(ask_val, dict):
                 ask = float(ask_val.get('raw', ask_val.get('fmt', 0)))
@@ -429,7 +431,7 @@ class EnhancedOptionsGrader:
                 iv = float(iv_val.get('raw', iv_val.get('fmt', 0.25)))
             else:
                 iv = float(iv_val)
-                
+
             if iv >= 0.8:
                 iv_score = 8
             elif iv >= 0.6:
