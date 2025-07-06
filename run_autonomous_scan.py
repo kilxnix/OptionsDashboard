@@ -51,6 +51,47 @@ def save_individual_scan_result(symbol, result_data, directory="output"):
     return True
 
 
+def save_human_readable_plans(results, directory="./TradingPlans"):
+    """Save human-readable trading plans to text file"""
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    date_str = datetime.now().strftime("%Y-%m-%d")
+    plans_file = os.path.join(directory, f"progressive_plans_{date_str}.txt")
+
+    with open(plans_file, 'w') as f:
+        f.write("="*80 + "\n")
+        f.write(f"TRADING PLANS - {date_str}\n")
+        f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        f.write("="*80 + "\n\n")
+
+        # Sort by confluence score
+        sorted_results = sorted(results.items(), 
+                              key=lambda x: x[1].get('confluence', {}).get('score', 0), 
+                              reverse=True)
+
+        for i, (symbol, data) in enumerate(sorted_results, 1):
+            confluence = data.get('confluence', {})
+            trade_plan = data.get('trade_plan', {})
+            
+            f.write(f"{i}. {symbol} - Confluence Score: {confluence.get('score', 0):.1f}/10\n")
+            f.write(f"   Bias: {confluence.get('bias', 'N/A')}\n")
+            
+            if trade_plan:
+                f.write(f"   Entry: ${trade_plan.get('entry_price', 0):.2f}\n")
+                f.write(f"   Target: ${trade_plan.get('initial_target', 0):.2f}\n")
+                f.write(f"   Stop: ${trade_plan.get('stop_loss', 0):.2f}\n")
+                f.write(f"   Strike: {trade_plan.get('strike', 'N/A')} {trade_plan.get('type', 'N/A').capitalize()}\n")
+                f.write(f"   Expiration: {trade_plan.get('expiration', 'N/A')}\n")
+                f.write(f"   Position Size: {trade_plan.get('position_size', 0)} contracts\n")
+                f.write(f"   Max Hold: {trade_plan.get('max_hold_time', 'N/A')}\n")
+            
+            f.write("\n" + "-"*60 + "\n\n")
+
+    print(f"📝 Human-readable plans saved to {plans_file}")
+    return plans_fileue
+
+
 def run_autonomous_scan(dry_run=False,
                         auto_refresh_symbols=True,
                         symbol_limit=50,
@@ -194,6 +235,9 @@ def run_autonomous_scan(dry_run=False,
     if results:
         for symbol, result_data in results.items():
             save_individual_scan_result(symbol, result_data)
+        
+        # Also save human-readable plans
+        save_human_readable_plans(results)
 
     if not results:
         print("⚠️ No valid results found in scanner.")
