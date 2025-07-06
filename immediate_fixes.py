@@ -123,46 +123,66 @@ def safe_apply_filters(
                     for key in ['raw', 'fmt', 'value']:
                         if key in val:
                             try:
-                                return float(val[key])
+                                if key == 'fmt':
+                                    # Clean formatted strings
+                                    cleaned = str(val[key]).replace(',', '').replace('$', '').replace('%', '')
+                                    return float(cleaned)
+                                else:
+                                    return float(val[key])
                             except (ValueError, TypeError):
                                 continue
                     # If no known keys, try first numeric value
                     for v in val.values():
                         try:
-                            return float(v)
+                            if isinstance(v, str):
+                                cleaned = str(v).replace(',', '').replace('$', '').replace('%', '')
+                                return float(cleaned)
+                            else:
+                                return float(v)
                         except (ValueError, TypeError):
                             continue
                     return default
-                elif pd.isna(val) or val is None:
+                elif pd.isna(val) or val is None or val == '':
                     return default
                 else:
                     try:
-                        return float(val)
+                        if isinstance(val, str):
+                            # Clean string values
+                            cleaned = str(val).replace(',', '').replace('$', '').replace('%', '')
+                            return float(cleaned)
+                        else:
+                            return float(val)
                     except (ValueError, TypeError):
                         return default
 
-            return series.apply(extract_value)
+            result = series.apply(extract_value)
+            # Ensure we return a numeric series
+            return pd.to_numeric(result, errors='coerce').fillna(default)
 
-        # Apply filters with safe comparisons
+        # Apply filters with safe comparisons - create new columns with extracted values
         if 'mark' in df.columns:
-            mark_values = safe_extract_for_comparison(df['mark'], 0.5)
-            df = df[(mark_values >= min_price) & (mark_values <= max_price)]
+            df['_mark_numeric'] = safe_extract_for_comparison(df['mark'], 0.5)
+            df = df[(df['_mark_numeric'] >= min_price) & (df['_mark_numeric'] <= max_price)]
         elif 'lastPrice' in df.columns:
-            price_values = safe_extract_for_comparison(df['lastPrice'], 0.5)
-            df = df[(price_values >= min_price) & (price_values <= max_price)]
+            df['_price_numeric'] = safe_extract_for_comparison(df['lastPrice'], 0.5)
+            df = df[(df['_price_numeric'] >= min_price) & (df['_price_numeric'] <= max_price)]
 
         if 'delta' in df.columns:
-            delta_values = safe_extract_for_comparison(df['delta'], 0.3)
-            abs_delta = delta_values.abs()
-            df = df[(abs_delta >= min_delta) & (abs_delta <= max_delta)]
+            df['_delta_numeric'] = safe_extract_for_comparison(df['delta'], 0.3)
+            df['_abs_delta'] = df['_delta_numeric'].abs()
+            df = df[(df['_abs_delta'] >= min_delta) & (df['_abs_delta'] <= max_delta)]
 
         if 'volume' in df.columns:
-            volume_values = safe_extract_for_comparison(df['volume'], 100)
-            df = df[volume_values >= min_volume]
+            df['_volume_numeric'] = safe_extract_for_comparison(df['volume'], 100)
+            df = df[df['_volume_numeric'] >= min_volume]
 
         if 'days_to_expiry' in df.columns:
-            days_values = safe_extract_for_comparison(df['days_to_expiry'], 30)
-            df = df[(days_values >= min_days) & (days_values <= max_days)]
+            df['_days_numeric'] = safe_extract_for_comparison(df['days_to_expiry'], 30)
+            df = df[(df['_days_numeric'] >= min_days) & (df['_days_numeric'] <= max_days)]
+
+        # Clean up temporary columns
+        temp_cols = [col for col in df.columns if col.startswith('_')]
+        df = df.drop(columns=temp_cols, errors='ignore')
 
         return df
 
