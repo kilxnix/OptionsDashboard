@@ -2019,7 +2019,7 @@ def run_scanner(symbols=None,
 
             # Skip volume analysis for low-scoring symbols to save time
             volume_analysis = None
-            if confluence['score'] >= 6.0:
+            if confluence['score'] >= 7.0:
                 volume_analysis = scanner.analyze_with_volume_profile(symbol, analysis_results)
 
             # Integrate volume profile with confluence score
@@ -2075,7 +2075,7 @@ def run_scanner(symbols=None,
                 # Just show a brief summary for lower scoring symbols
                 print(f"⚪ {symbol}: {confluence['score']:.1f}/10 {confluence['bias']} (below threshold)")
 
-            if confluence['score'] >= 6.0:  # Lower threshold to catch more opportunities
+            if confluence['score'] >= 7.5:  # Raised threshold for higher quality setups
                 options_data = scanner.fetch_options_data(symbol)
                 oi_skew = scanner.analyze_oi_skew(options_data)
                 options_count = len(options_data) if (
