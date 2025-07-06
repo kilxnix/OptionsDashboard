@@ -746,7 +746,7 @@ def run_explosive_scan():
 
         # Initialize scanner
         scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
-        
+
         # Limit symbols if provided to stay within API constraints
         if symbols and len(symbols) > max_symbols:
             symbols = symbols[:max_symbols]
@@ -832,19 +832,19 @@ def test_api_key():
     """Test Alpha Vantage API key functionality"""
     try:
         import requests
-        
+
         api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
         if not api_key:
             return jsonify({
                 "status": "error",
                 "message": "ALPHA_VANTAGE_API_KEY environment variable not found"
             }), 500
-        
+
         # Test with a simple quote request
         url = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=AAPL&apikey={api_key}'
         response = requests.get(url, timeout=10)
         data = response.json()
-        
+
         if 'Global Quote' in data:
             return jsonify({
                 "status": "success",
@@ -881,29 +881,29 @@ def test_bulk_quotes():
     try:
         import requests
         from immediate_fixes import process_alpha_vantage_bulk_response
-        
+
         api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
         if not api_key:
             return jsonify({
                 "status": "error",
                 "message": "ALPHA_VANTAGE_API_KEY environment variable not found"
             }), 500
-        
+
         # Test with a small set of symbols
         test_symbols = "AAPL,MSFT,GOOGL,TSLA,NVDA"
         url = f'https://www.alphavantage.co/query?function=REALTIME_BULK_QUOTES&symbol={test_symbols}&apikey={api_key}'
-        
+
         print(f"🧪 Testing bulk quotes with URL: {url}")
         response = requests.get(url, timeout=30)
         data = response.json()
-        
+
         print(f"🧪 Response status: {response.status_code}")
         print(f"🧪 Response keys: {list(data.keys()) if isinstance(data, dict) else 'Not a dict'}")
         print(f"🧪 Raw response sample: {str(data)[:500]}...")
-        
+
         # Try to parse the response
         parsed = process_alpha_vantage_bulk_response(data)
-        
+
         return jsonify({
             "status": "success" if len(parsed) > 0 else "no_data",
             "test_url": url,
@@ -1045,180 +1045,108 @@ def get_earnings_calendar():
 
 
 @app.route("/explosive-earnings-combo", methods=["GET", "POST"])
-def run_explosive_earnings_combo():
-    """Run combined explosive scan + earnings analysis on the best findings"""
+def explosive_earnings_combo():
+    """Combined explosive scan that does everything in one comprehensive scan"""
     try:
-        from explosive_options_scanner import ExplosiveOptionsScanner
-        from run_autonomous_scan import run_autonomous_scan
-        
         # Get parameters
         if request.method == 'POST' and request.is_json:
             data = request.get_json()
             scan_type = data.get('scan_type', 'earnings')
-            max_symbols = data.get('max_symbols', 200)
-            min_explosive_score = data.get('min_explosive_score', 50)
+            min_explosive_score = data.get('min_explosive_score', 35)
             filters = data.get('filters', {})
         else:
             scan_type = request.args.get('scan_type', 'earnings')
-            max_symbols = int(request.args.get('max_symbols', 200))
-            min_explosive_score = float(request.args.get('min_explosive_score', 50))
+            min_explosive_score = float(request.args.get('min_explosive_score', 35))
             filters = {
                 'min_price': float(request.args.get('min_price', 0.05)),
-                'max_price': float(request.args.get('max_price', 2.00)),
-                'min_delta': float(request.args.get('min_delta', 0.15)),
-                'max_delta': float(request.args.get('max_delta', 0.35)),
+                'max_price': float(request.args.get('max_price', 5.00)),
+                'min_delta': float(request.args.get('min_delta', 0.10)),
+                'max_delta': float(request.args.get('max_delta', 0.40)),
                 'min_days': int(request.args.get('min_days', 1)),
-                'max_days': int(request.args.get('max_days', 21))
+                'max_days': int(request.args.get('max_days', 30))
             }
 
-        print(f"🚀 Starting EXPLOSIVE-EARNINGS COMBO SCAN")
-        print(f"📊 Phase 1: Running explosive scan to find top opportunities...")
+        print("🚀 EXPLOSIVE EARNINGS COMBO SCAN")
+        print("="*50)
+        print(f"🎯 Scan Type: {scan_type}")
+        print(f"🔥 Min Score: {min_explosive_score}")
+        print(f"📊 Using Alpha Vantage for all market data and options")
 
-        # Phase 1: Run explosive scan
-        scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
-        explosive_results = scanner.run_explosive_scan(
-            symbols=None,  # Auto-discover
+        from explosive_options_scanner import ExplosiveOptionsScanner
+
+        # Initialize explosive scanner
+        explosive_scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
+
+        # Run comprehensive explosive scan
+        explosive_results = explosive_scanner.run_explosive_scan(
+            symbols=None,  # Auto-discover with earnings focus
             scan_type=scan_type,
             filters=filters
         )
 
-        # Extract promising symbols from explosive scan
-        promising_symbols = []
-        earnings_candidates = []
-        
-        # Get symbols from opportunities that meet our criteria
-        for symbol, opportunity in explosive_results['opportunities'].items():
-            best_option = opportunity['best_opportunity']
-            score = best_option.get('total_score', 0)
-            
-            if score >= min_explosive_score:
-                promising_symbols.append(symbol)
-                
+        # Filter for high-quality opportunities
+        high_quality_opportunities = {}
+        earnings_plays = []
+
+        for symbol, data in explosive_results['opportunities'].items():
+            best_score = data['best_opportunity']['total_score']
+
+            if best_score >= min_explosive_score:
+                high_quality_opportunities[symbol] = data
+
                 # Check if it's an earnings play
-                market_data = opportunity.get('market_data', {})
-                earnings_info = market_data.get('earnings_info', {})
-                if earnings_info.get('is_pre_earnings', False):
-                    earnings_candidates.append({
+                if data['market_data'].get('earnings_info', {}).get('is_pre_earnings'):
+                    earnings_plays.append({
                         'symbol': symbol,
-                        'explosive_score': score,
-                        'days_to_earnings': earnings_info.get('days_to_earnings', 999),
-                        'earnings_priority': earnings_info.get('earnings_priority', 'unknown')
+                        'score': best_score,
+                        'days_to_earnings': data['market_data']['earnings_info']['days_to_earnings'],
+                        'option': f"{symbol} {data['best_opportunity']['strike']} {data['best_opportunity']['type'].upper()} exp {data['best_opportunity']['expiration']}"
                     })
 
-        # Also add top picks regardless of earnings status
-        for pick in explosive_results['top_picks'][:10]:
-            if pick['symbol'] not in promising_symbols:
-                promising_symbols.append(pick['symbol'])
+        # Sort earnings plays by score
+        earnings_plays.sort(key=lambda x: x['score'], reverse=True)
 
-        print(f"✅ Phase 1 complete: Found {len(promising_symbols)} promising symbols")
-        print(f"📈 Earnings candidates: {len(earnings_candidates)}")
-
-        if not promising_symbols:
-            return jsonify({
-                "status": "no-results",
-                "message": "No promising symbols found in explosive scan",
-                "explosive_scan_summary": explosive_results['summary']
-            })
-
-        # Limit symbols for focused analysis
-        if len(promising_symbols) > max_symbols:
-            promising_symbols = promising_symbols[:max_symbols]
-            print(f"🎯 Limited to top {max_symbols} symbols for detailed analysis")
-
-        print(f"📊 Phase 2: Running detailed earnings-focused scan on {len(promising_symbols)} symbols...")
-
-        # Phase 2: Run the traditional scanner on promising symbols with earnings focus
-        detailed_results = run_autonomous_scan(
-            dry_run=False,
-            auto_refresh_symbols=False,  # Don't refresh, use our curated list
-            symbol_limit=0,  # No limit since we pre-filtered
-            symbols_override=promising_symbols,  # Use our explosive scan results
-            min_delta=filters.get('min_delta', 0.25),
-            max_delta=filters.get('max_delta', 0.68),
-            min_price=filters.get('min_price', 0.01),
-            max_price=filters.get('max_price', 0.10),
-            time_to_expiry_range=(filters.get('min_days', 2), filters.get('max_days', 16)),
-            iv_percentile_threshold=None
-        )
-
-        print(f"✅ Phase 2 complete!")
-
-        # Combine and rank results
-        combo_opportunities = []
-        
-        # Process detailed results
-        if detailed_results and detailed_results.get("results"):
-            for symbol, data in detailed_results["results"].items():
-                confluence_score = data.get("confluence", {}).get("score", 0)
-                
-                # Get explosive score if available
-                explosive_score = 0
-                if symbol in explosive_results['opportunities']:
-                    explosive_score = explosive_results['opportunities'][symbol]['best_opportunity'].get('total_score', 0)
-                
-                # Combined score (weighted)
-                combined_score = (confluence_score * 0.6) + (explosive_score * 0.4)
-                
-                # Check if it's an earnings play
-                is_earnings = any(ec['symbol'] == symbol for ec in earnings_candidates)
-                earnings_info = next((ec for ec in earnings_candidates if ec['symbol'] == symbol), {})
-                
-                combo_opportunities.append({
-                    'symbol': symbol,
-                    'combined_score': combined_score,
-                    'confluence_score': confluence_score,
-                    'explosive_score': explosive_score,
-                    'is_earnings_play': is_earnings,
-                    'days_to_earnings': earnings_info.get('days_to_earnings', None),
-                    'earnings_priority': earnings_info.get('earnings_priority', 'none'),
-                    'bias': data.get("confluence", {}).get("bias", 'N/A'),
-                    'trade_plan': data.get("trade_plan", {})
-                })
-
-        # Sort by combined score
-        combo_opportunities.sort(key=lambda x: x['combined_score'], reverse=True)
-
-        # Separate earnings plays from regular opportunities
-        earnings_plays = [opp for opp in combo_opportunities if opp['is_earnings_play']]
-        regular_plays = [opp for opp in combo_opportunities if not opp['is_earnings_play']]
-
-        return jsonify({
-            "status": "completed",
-            "scan_type": "explosive_earnings_combo",
-            "message": f"Combined scan completed successfully",
-            "phase_1_summary": {
-                "explosive_opportunities": len(explosive_results['opportunities']),
-                "promising_symbols_found": len(promising_symbols),
-                "earnings_candidates": len(earnings_candidates)
+        # Generate focused results
+        focused_results = {
+            "status": "success",
+            "scan_metadata": {
+                "timestamp": datetime.now().isoformat(),
+                "scan_type": f"explosive-earnings-combo ({scan_type})",
+                "total_symbols_scanned": explosive_results['scan_metadata']['symbols_scanned'],
+                "opportunities_found": len(explosive_results['opportunities']),
+                "high_quality_opportunities": len(high_quality_opportunities),
+                "earnings_plays": len(earnings_plays),
+                "min_explosive_score": min_explosive_score,
+                "filters": filters,
+                "data_source": "Alpha Vantage (historical options + realtime bulk quotes)"
             },
-            "phase_2_summary": {
-                "detailed_analysis_completed": len(detailed_results.get("results", {})) if detailed_results else 0,
-                "final_opportunities": len(combo_opportunities)
-            },
-            "earnings_plays": {
-                "total_found": len(earnings_plays),
-                "critical_priority": len([ep for ep in earnings_plays if ep.get('earnings_priority') == 'critical']),
-                "high_priority": len([ep for ep in earnings_plays if ep.get('earnings_priority') == 'high']),
-                "top_earnings_opportunities": earnings_plays[:10]
-            },
-            "regular_opportunities": {
-                "total_found": len(regular_plays),
-                "top_opportunities": regular_plays[:10]
-            },
-            "top_combined_picks": combo_opportunities[:15],
-            "explosive_scan_summary": explosive_results.get('summary', ''),
-            "combo_summary": {
-                "total_symbols_analyzed": len(promising_symbols),
-                "explosive_threshold": min_explosive_score,
-                "best_combined_score": combo_opportunities[0]['combined_score'] if combo_opportunities else 0,
-                "earnings_focus": f"{len(earnings_plays)} earnings plays identified"
-            }
-        })
+            "high_quality_opportunities": high_quality_opportunities,
+            "earnings_plays": earnings_plays,
+            "top_picks": explosive_results['top_picks'][:10],
+            "by_category": explosive_results['by_category'],
+            "full_scan_results": explosive_results
+        }
+
+        # Generate summary
+        focused_results['summary'] = f"""
+🎯 EXPLOSIVE EARNINGS COMBO SCAN COMPLETE
+📊 Total Symbols Scanned: {explosive_results['scan_metadata']['symbols_scanned']}
+🔥 High-Quality Opportunities: {len(high_quality_opportunities)} (score >= {min_explosive_score})
+📈 Earnings Plays Found: {len(earnings_plays)}
+🏆 Top Score: {explosive_results['top_picks'][0]['score']:.1f} ({explosive_results['top_picks'][0]['symbol']}) if explosive_results['top_picks'] else 'N/A'
+💡 Data Source: Alpha Vantage historical options + bulk market data
+        """.strip()
+
+        return jsonify(focused_results)
 
     except Exception as e:
+        print(f"❌ Error in explosive-earnings-combo: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({
-            "status": "error",
-            "message": f"Combined explosive-earnings scan failed: {str(e)}"
+            "status": "error", 
+            "message": str(e),
+            "traceback": traceback.format_exc()
         }), 500
 
 
