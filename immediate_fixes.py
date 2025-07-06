@@ -59,10 +59,10 @@ def fix_options_dataframe(df: pd.DataFrame) -> pd.DataFrame:
                     return 0.0
                 else:
                     return val
-            
+
             # Apply extraction first
             df[col] = df[col].apply(extract_numeric_value)
-            
+
             # Convert to numeric, replacing errors with NaN
             if dtype == float:
                 df[col] = pd.to_numeric(df[col], errors='coerce')
@@ -76,7 +76,7 @@ def fix_options_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     elif 'mark' in df.columns and 'lastPrice' in df.columns:
         # Use lastPrice where mark is 0
         df.loc[df['mark'] == 0, 'mark'] = df.loc[df['mark'] == 0, 'lastPrice']
-    
+
     return df
 
     # Standardize column names
@@ -103,45 +103,72 @@ def safe_apply_filters(
     min_days: int = 0,
     max_days: int = 365,
 ) -> pd.DataFrame:
-    """Safely apply filters with type checking"""
-    # Fix data types first
-    df = fix_options_dataframe(options_df.copy())
+    """Apply filters safely, handling various data type issues including nested dicts"""
+    if options_df is None or options_df.empty:
+        return pd.DataFrame()
 
-    if df.empty:
+    try:
+        # Make a copy to avoid modifying original
+        df = options_df.copy()
+
+        # Fix data types first
+        df = fix_options_dataframe(df)
+
+        # Ensure all comparison columns are properly extracted from dicts
+        def safe_extract_for_comparison(series, default=0):
+            """Extract numeric values from potentially nested data"""
+            def extract_value(val):
+                if isinstance(val, dict):
+                    # Try different Yahoo Finance keys
+                    for key in ['raw', 'fmt', 'value']:
+                        if key in val:
+                            try:
+                                return float(val[key])
+                            except (ValueError, TypeError):
+                                continue
+                    # If no known keys, try first numeric value
+                    for v in val.values():
+                        try:
+                            return float(v)
+                        except (ValueError, TypeError):
+                            continue
+                    return default
+                elif pd.isna(val) or val is None:
+                    return default
+                else:
+                    try:
+                        return float(val)
+                    except (ValueError, TypeError):
+                        return default
+
+            return series.apply(extract_value)
+
+        # Apply filters with safe comparisons
+        if 'mark' in df.columns:
+            mark_values = safe_extract_for_comparison(df['mark'], 0.5)
+            df = df[(mark_values >= min_price) & (mark_values <= max_price)]
+        elif 'lastPrice' in df.columns:
+            price_values = safe_extract_for_comparison(df['lastPrice'], 0.5)
+            df = df[(price_values >= min_price) & (price_values <= max_price)]
+
+        if 'delta' in df.columns:
+            delta_values = safe_extract_for_comparison(df['delta'], 0.3)
+            abs_delta = delta_values.abs()
+            df = df[(abs_delta >= min_delta) & (abs_delta <= max_delta)]
+
+        if 'volume' in df.columns:
+            volume_values = safe_extract_for_comparison(df['volume'], 100)
+            df = df[volume_values >= min_volume]
+
+        if 'days_to_expiry' in df.columns:
+            days_values = safe_extract_for_comparison(df['days_to_expiry'], 30)
+            df = df[(days_values >= min_days) & (days_values <= max_days)]
+
         return df
 
-    # Apply filters with explicit type conversion
-    try:
-        # Price filter
-        if 'mark' in df.columns:
-            df = df[(df['mark'] >= float(min_price)) & (df['mark'] <= float(max_price))]
-
-        # Volume filter
-        if 'volume' in df.columns:
-            df = df[df['volume'] >= int(min_volume)]
-
-        # Delta filter (use absolute value)
-        if 'delta' in df.columns:
-            df = df[(df['delta'].abs() >= float(min_delta)) & (df['delta'].abs() <= float(max_delta))]
-
-        # Days to expiry filter
-        if 'days_to_expiry' in df.columns:
-            df = df[(df['days_to_expiry'] >= int(min_days)) & (df['days_to_expiry'] <= int(max_days))]
-
-        # Remove options with 0 open interest
-        if 'open_interest' in df.columns:
-            df = df[df['open_interest'] > 0]
-
-        # Remove options with invalid prices
-        if 'mark' in df.columns:
-            df = df[df['mark'] > 0]
-
     except Exception as e:
-        print(f"Error in filtering: {e}")
-        # Return original if filtering fails
-        return options_df
-
-    return df
+        print(f"Filter error: {e}")
+        return options_df  # Return original if filtering fails
 
 
 def process_alpha_vantage_bulk_response(data):
@@ -316,25 +343,25 @@ def patch_existing_scanner():
 def process_alpha_vantage_bulk_response(data: dict) -> dict:
     """Process Alpha Vantage bulk quotes response safely"""
     parsed_data = {}
-    
+
     try:
         # Debug: Print actual response structure
         print(f"📋 DEBUG: Response keys: {list(data.keys())}")
         print(f"📋 DEBUG: Response type: {type(data)}")
         print(f"📋 DEBUG: First 500 chars: {str(data)[:500]}...")
-        
+
         # Check if response contains actual data
         if 'Information' in data:
             print(f"⚠️ Alpha Vantage info: {data['Information']}")
             return {}
-        
+
         if 'Error Message' in data:
             print(f"❌ Alpha Vantage error: {data['Error Message']}")
             return {}
-        
+
         # Handle different possible response formats from Alpha Vantage bulk quotes
         quotes_data = None
-        
+
         # Try common Alpha Vantage bulk quote response formats
         possible_keys = [
             'data',  # Common format
@@ -344,13 +371,13 @@ def process_alpha_vantage_bulk_response(data: dict) -> dict:
             'Global Quotes',  # Global quotes format
             'Time Series (Daily)',  # Time series format fallback
         ]
-        
+
         for key in possible_keys:
             if key in data and data[key]:
                 quotes_data = data[key]
                 print(f"📊 Found quotes data under key: {key}")
                 break
-        
+
         # If no standard key found, look for any array-like data
         if not quotes_data:
             for key, value in data.items():
@@ -373,29 +400,29 @@ def process_alpha_vantage_bulk_response(data: dict) -> dict:
                             quotes_data.append(quote_data)
                         print(f"📊 Found symbol-keyed data under key: {key}, converted to list")
                         break
-        
+
         if not quotes_data:
             print(f"❌ No recognizable quotes data found in response")
             return {}
-        
+
         print(f"📊 Processing {len(quotes_data) if isinstance(quotes_data, list) else 'unknown'} quotes")
-        
+
         # Process quotes data
         if isinstance(quotes_data, list):
             for quote in quotes_data:
                 if not isinstance(quote, dict):
                     continue
-                    
+
                 # Extract symbol with multiple possible keys
                 symbol = None
                 for sym_key in ['symbol', 'ticker', '01. symbol', 'Symbol']:
                     if sym_key in quote and quote[sym_key]:
                         symbol = str(quote[sym_key]).strip().upper()
                         break
-                
+
                 if not symbol:
                     continue
-                
+
                 # Extract price data with multiple fallbacks
                 current_price = 100.0  # Default
                 for price_key in ['price', 'last', 'close', '05. price', '4. close', 'lastPrice']:
@@ -409,7 +436,7 @@ def process_alpha_vantage_bulk_response(data: dict) -> dict:
                             break
                         except (ValueError, TypeError):
                             continue
-                
+
                 # Extract volume
                 volume = 100000  # Default
                 for vol_key in ['volume', '6. volume', 'Volume']:
@@ -423,7 +450,7 @@ def process_alpha_vantage_bulk_response(data: dict) -> dict:
                             break
                         except (ValueError, TypeError):
                             continue
-                
+
                 # Extract change percent
                 change_percent = 0.0
                 for change_key in ['change_percent', 'changePercent', '10. change percent', 'change']:
@@ -438,11 +465,11 @@ def process_alpha_vantage_bulk_response(data: dict) -> dict:
                             break
                         except (ValueError, TypeError):
                             continue
-                
+
                 # Extract high/low
                 high = current_price * 1.05  # Default estimate
                 low = current_price * 0.95   # Default estimate
-                
+
                 for high_key in ['high', '2. high', 'dayHigh']:
                     if high_key in quote:
                         try:
@@ -450,7 +477,7 @@ def process_alpha_vantage_bulk_response(data: dict) -> dict:
                             break
                         except (ValueError, TypeError):
                             continue
-                
+
                 for low_key in ['low', '3. low', 'dayLow']:
                     if low_key in quote:
                         try:
@@ -458,7 +485,7 @@ def process_alpha_vantage_bulk_response(data: dict) -> dict:
                             break
                         except (ValueError, TypeError):
                             continue
-                
+
                 parsed_data[symbol] = {
                     'current_price': current_price,
                     'volume': volume,
@@ -466,14 +493,14 @@ def process_alpha_vantage_bulk_response(data: dict) -> dict:
                     'high': high,
                     'low': low
                 }
-        
+
         print(f"✅ Successfully parsed {len(parsed_data)} symbols from bulk response")
         if len(parsed_data) > 0:
             sample_symbol = list(parsed_data.keys())[0]
             print(f"📋 Sample data for {sample_symbol}: {parsed_data[sample_symbol]}")
-        
+
         return parsed_data
-    
+
     except Exception as e:
         print(f"❌ Error processing Alpha Vantage bulk response: {e}")
         print(f"📋 Response sample: {str(data)[:500]}...")
