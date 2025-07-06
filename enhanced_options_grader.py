@@ -19,6 +19,28 @@ class EnhancedOptionsGrader:
         self.market_breadth = None
         self.sector_momentum = {}
 
+    def _safe_float_extract(self, value, default=0):
+        """
+        Safely extract float from potentially nested Alpha Vantage data structures
+        """
+        try:
+            if isinstance(value, dict):
+                # Try different keys that Alpha Vantage might use
+                for key in ['raw', 'fmt', 'value']:
+                    if key in value:
+                        return float(value[key])
+                # If no known keys, try to get first numeric value
+                for v in value.values():
+                    try:
+                        return float(v)
+                    except (ValueError, TypeError):
+                        continue
+                return default
+            else:
+                return float(value) if value is not None else default
+        except (ValueError, TypeError):
+            return default
+
         # Adaptive thresholds that learn from performance
         self.thresholds = {
             'volume_spike': 2.0,  # Will adapt based on success rate
@@ -109,14 +131,22 @@ class EnhancedOptionsGrader:
         """
         score = 0
 
-        # Convert strings to numbers safely
+        # Convert strings to numbers safely, handling nested dicts from Alpha Vantage
         try:
-            volume = float(option_data.get('volume', 0))
+            volume_val = option_data.get('volume', 0)
+            if isinstance(volume_val, dict):
+                volume = float(volume_val.get('raw', volume_val.get('fmt', 0)))
+            else:
+                volume = float(volume_val)
         except (ValueError, TypeError):
             volume = 0
 
         try:
-            oi = float(option_data.get('open_interest', 0))
+            oi_val = option_data.get('open_interest', 0)
+            if isinstance(oi_val, dict):
+                oi = float(oi_val.get('raw', oi_val.get('fmt', 0)))
+            else:
+                oi = float(oi_val)
         except (ValueError, TypeError):
             oi = 0
 
@@ -152,8 +182,17 @@ class EnhancedOptionsGrader:
 
         # Bid-ask spread
         try:
-            bid = float(option_data.get('bid', 0))
-            ask = float(option_data.get('ask', 0))
+            bid_val = option_data.get('bid', 0)
+            if isinstance(bid_val, dict):
+                bid = float(bid_val.get('raw', bid_val.get('fmt', 0)))
+            else:
+                bid = float(bid_val)
+                
+            ask_val = option_data.get('ask', 0)
+            if isinstance(ask_val, dict):
+                ask = float(ask_val.get('raw', ask_val.get('fmt', 0)))
+            else:
+                ask = float(ask_val)
         except (ValueError, TypeError):
             bid = 0
             ask = 0
@@ -178,29 +217,49 @@ class EnhancedOptionsGrader:
         """
         score = 0
 
-        # Convert strings to numbers safely
+        # Convert strings to numbers safely, handling nested dicts from Alpha Vantage
         try:
-            delta = abs(float(option_data.get('delta', 0)))
+            delta_val = option_data.get('delta', 0)
+            if isinstance(delta_val, dict):
+                delta = abs(float(delta_val.get('raw', delta_val.get('fmt', 0))))
+            else:
+                delta = abs(float(delta_val))
         except (ValueError, TypeError):
             delta = 0
 
         try:
-            gamma = float(option_data.get('gamma', 0))
+            gamma_val = option_data.get('gamma', 0)
+            if isinstance(gamma_val, dict):
+                gamma = float(gamma_val.get('raw', gamma_val.get('fmt', 0)))
+            else:
+                gamma = float(gamma_val)
         except (ValueError, TypeError):
             gamma = 0
 
         try:
-            theta = float(option_data.get('theta', 0))
+            theta_val = option_data.get('theta', 0)
+            if isinstance(theta_val, dict):
+                theta = float(theta_val.get('raw', theta_val.get('fmt', 0)))
+            else:
+                theta = float(theta_val)
         except (ValueError, TypeError):
             theta = 0
 
         try:
-            vega = float(option_data.get('vega', 0))
+            vega_val = option_data.get('vega', 0)
+            if isinstance(vega_val, dict):
+                vega = float(vega_val.get('raw', vega_val.get('fmt', 0)))
+            else:
+                vega = float(vega_val)
         except (ValueError, TypeError):
             vega = 0
 
         try:
-            mark = float(option_data.get('mark', 1))
+            mark_val = option_data.get('mark', 1)
+            if isinstance(mark_val, dict):
+                mark = float(mark_val.get('raw', mark_val.get('fmt', 1)))
+            else:
+                mark = float(mark_val)
         except (ValueError, TypeError):
             mark = 1
 
@@ -247,14 +306,22 @@ class EnhancedOptionsGrader:
         """
         score = 0
 
-        # Convert strings to numbers safely
+        # Convert strings to numbers safely, handling nested dicts from Alpha Vantage
         try:
-            volume = float(option_data.get('volume', 0))
+            volume_val = option_data.get('volume', 0)
+            if isinstance(volume_val, dict):
+                volume = float(volume_val.get('raw', volume_val.get('fmt', 0)))
+            else:
+                volume = float(volume_val)
         except (ValueError, TypeError):
             volume = 0
 
         try:
-            oi = float(option_data.get('open_interest', 0))
+            oi_val = option_data.get('open_interest', 0)
+            if isinstance(oi_val, dict):
+                oi = float(oi_val.get('raw', oi_val.get('fmt', 0)))
+            else:
+                oi = float(oi_val)
         except (ValueError, TypeError):
             oi = 0
 
@@ -355,9 +422,14 @@ class EnhancedOptionsGrader:
         """
         score = 0
 
-        # IV analysis - ensure numeric values
+        # IV analysis - ensure numeric values, handle nested dicts
         try:
-            iv = float(option_data.get('impliedVolatility', 0.25))
+            iv_val = option_data.get('impliedVolatility', 0.25)
+            if isinstance(iv_val, dict):
+                iv = float(iv_val.get('raw', iv_val.get('fmt', 0.25)))
+            else:
+                iv = float(iv_val)
+                
             if iv >= 0.8:
                 iv_score = 8
             elif iv >= 0.6:
