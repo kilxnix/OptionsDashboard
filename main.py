@@ -798,6 +798,7 @@ def monitor_positions():
 
     except Exception as e:
         return jsonify({
+```python
             "status": "error",
             "message": f"Monitoring failed: {str(e)}"
         }), 500
@@ -1089,7 +1090,7 @@ def explosive_earnings_combo():
         earnings_candidates = []
         for symbol, data in explosive_results['opportunities'].items():
             best_score = data['best_opportunity']['total_score']
-            
+
             if (best_score >= min_explosive_score and 
                 data['market_data'].get('earnings_info', {}).get('is_pre_earnings')):
                 earnings_candidates.append(symbol)
@@ -1099,7 +1100,7 @@ def explosive_earnings_combo():
 
         # PHASE 2: Run full scanner_core analysis on earnings candidates
         print(f"\n🔬 PHASE 2: Running full scanner_core analysis on {len(earnings_candidates)} candidates...")
-        
+
         scanner_core_results = {}
         if earnings_candidates:
             # Run the full scanner_core workflow
@@ -1150,7 +1151,7 @@ def explosive_earnings_combo():
             for symbol, scanner_data in scanner_core_results['results'].items():
                 # Get corresponding explosive data
                 explosive_data = explosive_results['opportunities'].get(symbol, {})
-                
+
                 # Combine both analyses
                 combined_opportunity = {
                     'symbol': symbol,
@@ -1202,8 +1203,8 @@ def explosive_earnings_combo():
 
 🏆 TOP COMBINED OPPORTUNITY:
    • Symbol: {top_opportunity['symbol'] if top_opportunity else 'None'}
-   • Explosive Score: {top_opportunity['explosive_score']:.1f}/100 if top_opportunity else 'N/A'}
-   • Confluence Score: {top_opportunity['confluence_score']:.1f}/10 if top_opportunity else 'N/A'}
+   • Explosive Score: {top_opportunity['explosive_score']:.1f}/100" if top_opportunity else 'N/A'}
+   • Confluence Score: {top_opportunity['confluence_score']:.1f}/10" if top_opportunity else 'N/A'}
    • Bias: {top_opportunity['confluence_bias'] if top_opportunity else 'N/A'}
    • Days to Earnings: {top_opportunity['days_to_earnings'] if top_opportunity else 'N/A'}
 
