@@ -133,24 +133,9 @@ class EnhancedOptionsGrader:
         """
         score = 0
 
-        # Convert strings to numbers safely, handling nested dicts from Alpha Vantage
-        try:
-            volume_val = option_data.get('volume', 0)
-            if isinstance(volume_val, dict):
-                volume = float(volume_val.get('raw', volume_val.get('fmt', 0)))
-            else:
-                volume = float(volume_val)
-        except (ValueError, TypeError):
-            volume = 0
-
-        try:
-            oi_val = option_data.get('open_interest', 0)
-            if isinstance(oi_val, dict):
-                oi = float(oi_val.get('raw', oi_val.get('fmt', 0)))
-            else:
-                oi = float(oi_val)
-        except (ValueError, TypeError):
-            oi = 0
+        # Use safe extraction for all numeric values
+        volume = self._safe_float_extract(option_data.get('volume', 0), 0)
+        oi = self._safe_float_extract(option_data.get('open_interest', option_data.get('openInterest', 0)), 0)
 
         # Volume check
         if volume >= 1000:
@@ -308,24 +293,9 @@ class EnhancedOptionsGrader:
         """
         score = 0
 
-        # Convert strings to numbers safely, handling nested dicts from Alpha Vantage
-        try:
-            volume_val = option_data.get('volume', 0)
-            if isinstance(volume_val, dict):
-                volume = float(volume_val.get('raw', volume_val.get('fmt', 0)))
-            else:
-                volume = float(volume_val)
-        except (ValueError, TypeError):
-            volume = 0
-
-        try:
-            oi_val = option_data.get('open_interest', 0)
-            if isinstance(oi_val, dict):
-                oi = float(oi_val.get('raw', oi_val.get('fmt', 0)))
-            else:
-                oi = float(oi_val)
-        except (ValueError, TypeError):
-            oi = 0
+        # Use safe extraction for all numeric values
+        volume = self._safe_float_extract(option_data.get('volume', 0), 0)
+        oi = self._safe_float_extract(option_data.get('open_interest', option_data.get('openInterest', 0)), 0)
 
         # Get historical averages from Alpha Vantage
         symbol = option_data['symbol']

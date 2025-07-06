@@ -227,58 +227,46 @@ class ExplosiveOptionsScanner:
                                     option_dict[field] = 50
 
                         # Convert numeric fields to float with comprehensive error handling
-                        numeric_fields = ['strike', 'delta', 'gamma', 'theta', 'volume', 'mark', 'open_interest', 'bid', 'ask']
-                        for field in numeric_fields:
+                        def safe_extract_numeric(value, default=0):
+                            """Safely extract numeric value from various formats"""
                             try:
-                                val = option_dict[field]
-                                
-                                # Handle dictionary values (common with Yahoo Finance)
-                                if isinstance(val, dict):
-                                    if 'raw' in val:
-                                        val = val['raw']
-                                    elif 'fmt' in val:
-                                        val = val['fmt']
+                                if isinstance(value, dict):
+                                    # Yahoo Finance format
+                                    if 'raw' in value:
+                                        return float(value['raw'])
+                                    elif 'fmt' in value:
+                                        # Remove formatting and convert
+                                        fmt_val = str(value['fmt']).replace(',', '').replace('$', '').replace('%', '')
+                                        return float(fmt_val)
                                     else:
-                                        # Try to get the first numeric value from the dict
-                                        for k, v in val.items():
+                                        # Try first numeric value
+                                        for v in value.values():
                                             try:
-                                                val = float(v)
-                                                break
+                                                return float(v)
                                             except:
                                                 continue
-                                        else:
-                                            raise ValueError("No numeric value in dict")
-                                
-                                # Handle string values that might contain non-numeric chars
-                                if val is None or pd.isna(val):
-                                    raise ValueError("None or NaN value")
-
-                                import re
-                                cleaned_val = re.sub(r'[^\d\.\-]', '', str(val))
-                                if cleaned_val and cleaned_val != '-':
-                                    option_dict[field] = float(cleaned_val)
+                                        return default
+                                elif pd.isna(value) or value is None:
+                                    return default
                                 else:
-                                    raise ValueError("Empty after cleaning")
-                            except (ValueError, TypeError, AttributeError):
-                                # Set safe defaults for failed conversions
-                                if field == 'strike':
-                                    option_dict[field] = 100.0
-                                elif field == 'delta':
-                                    option_dict[field] = 0.3
-                                elif field == 'gamma':
-                                    option_dict[field] = 0.01
-                                elif field == 'theta':
-                                    option_dict[field] = -0.05
-                                elif field == 'volume':
-                                    option_dict[field] = 100.0
-                                elif field == 'mark':
-                                    option_dict[field] = 0.5
-                                elif field == 'open_interest':
-                                    option_dict[field] = 50.0
-                                elif field == 'bid':
-                                    option_dict[field] = 0.45
-                                elif field == 'ask':
-                                    option_dict[field] = 0.55
+                                    # Clean and convert string/numeric
+                                    import re
+                                    cleaned = re.sub(r'[^\d\.\-]', '', str(value))
+                                    return float(cleaned) if cleaned and cleaned != '-' else default
+                            except:
+                                return default
+
+                        # Apply safe extraction to all numeric fields
+                        numeric_defaults = {
+                            'strike': 100.0, 'delta': 0.3, 'gamma': 0.01, 'theta': -0.05,
+                            'volume': 100.0, 'mark': 0.5, 'open_interest': 50.0,
+                            'bid': 0.45, 'ask': 0.55, 'impliedVolatility': 0.25,
+                            'lastPrice': 0.5, 'change': 0.0, 'percentChange': 0.0
+                        }
+                        
+                        for field, default in numeric_defaults.items():
+                            if field in option_dict:
+                                option_dict[field] = safe_extract_numeric(option_dict[field], default)
 
                         # Ensure expiration is properly formatted as string
                         if 'expiration' in option_dict:
