@@ -1202,8 +1202,8 @@ def explosive_earnings_combo():
 
 🏆 TOP COMBINED OPPORTUNITY:
    • Symbol: {top_opportunity['symbol'] if top_opportunity else 'None'}
-   • Explosive Score: {top_opportunity['explosive_score']:.1f}/100" if top_opportunity else 'N/A'}
-   • Confluence Score: {top_opportunity['confluence_score']:.1f}/10" if top_opportunity else 'N/A'}
+   • Explosive Score: {top_opportunity['explosive_score']:.1f}/100 {'' if top_opportunity else 'N/A'}
+   • Confluence Score: {top_opportunity['confluence_score']:.1f}/10 {'' if top_opportunity else 'N/A'}
    • Bias: {top_opportunity['confluence_bias'] if top_opportunity else 'N/A'}
    • Days to Earnings: {top_opportunity['days_to_earnings'] if top_opportunity else 'N/A'}
 
