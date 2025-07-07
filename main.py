@@ -897,6 +897,19 @@ def get_market_regime():
         monitor = AdaptiveMarketMonitor(os.getenv('ALPHA_VANTAGE_API_KEY'))
         regime_update = monitor.update_market_regime()
 
+        return jsonify({
+            "status": "success",
+            "current_regime": regime_update['current_regime'],
+            "changes": regime_update['changes'],
+            "trading_adjustments": regime_update['trading_adjustments'],
+            "timestamp": regime_update['timestamp']
+        })
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Market regime analysis failed: {str(e)}"
+        }), 500
 
 
 @app.route("/performance/live", methods=["GET"])
