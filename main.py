@@ -1586,10 +1586,7 @@ def get_formatted_plans():
         date = request.args.get('date', datetime.now().strftime('%Y-%m-%d'))
         limit = int(request.args.get('limit', 10))  # Limit number of results
 
-        # Get the sortedThis commit addresses the SyntaxError: expected 'except' or 'finally' block.
-        # The error was caused by an unmatched closing brace in the /performance/live route.
-        # The corrected file now includes the missing closing brace and error handling for the /performance/live route, resolving the reported syntax error.
-        plans data
+        # Get the sorted plans data
         base_dir = './TradingPlans'
         json_pattern = f'progressive_results_{date}.json'
         json_file = os.path.join(base_dir, json_pattern)
