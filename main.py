@@ -741,12 +741,33 @@ def enhanced_scan():
             min_score=min_score
         )
 
+        # Track performance for enhanced scan results
+        tracked_count = 0
+        if results and results.get('opportunities'):
+            from performance_tracker import PerformanceTracker
+            tracker = PerformanceTracker()
+            
+            for opportunity in results.get('opportunities', []):
+                try:
+                    if 'symbol' in opportunity and 'best_option' in opportunity:
+                        track_id = tracker.track_option_performance(
+                            opportunity['symbol'],
+                            opportunity['best_option'],
+                            opportunity.get('trading_plan', {}),
+                            scan_date
+                        )
+                        tracked_count += 1
+                        print(f"📊 Started tracking {opportunity['symbol']}: {track_id}")
+                except Exception as e:
+                    print(f"⚠️ Failed to track {opportunity.get('symbol', 'unknown')}: {e}")
+
         return jsonify({
             "status": "success",
             "scan_date": scan_date,
             "opportunities_found": len(results.get('opportunities', [])),
             "top_picks": results.get('top_picks', [])[:10],
-            "market_regime": results.get('market_regime', {})
+            "market_regime": results.get('market_regime', {}),
+            "performance_tracking": f"Now tracking {tracked_count} options"
         })
 
     except Exception as e:
@@ -800,6 +821,29 @@ def run_explosive_scan():
             market_data=market_data if request.method == 'POST' and request.is_json else None
         )
 
+        # Track performance for all opportunities found
+        tracked_count = 0
+        if results and results.get('opportunities'):
+            from performance_tracker import PerformanceTracker
+            tracker = PerformanceTracker()
+            
+            for symbol, opportunity_data in results['opportunities'].items():
+                try:
+                    best_option = opportunity_data.get('best_opportunity', {})
+                    trading_plan = opportunity_data.get('trading_plan', {})
+                    
+                    if best_option and trading_plan:
+                        track_id = tracker.track_option_performance(
+                            symbol, 
+                            best_option, 
+                            trading_plan, 
+                            datetime.now().strftime('%Y-%m-%d')
+                        )
+                        tracked_count += 1
+                        print(f"📊 Started tracking {symbol}: {track_id}")
+                except Exception as e:
+                    print(f"⚠️ Failed to track {symbol}: {e}")
+
         return jsonify({
             "status": "success",
             "scan_type": scan_type,
@@ -809,6 +853,7 @@ def run_explosive_scan():
             "top_picks": results['top_picks'][:10],
             "earnings_opportunities": len(results['by_category']['earnings_plays']),
             "api_calls_saved": "Using bulk quotes + historical options",
+            "performance_tracking": f"Now tracking {tracked_count} options",
             "summary": results['summary']
         })
 
@@ -851,6 +896,162 @@ def get_market_regime():
 
         monitor = AdaptiveMarketMonitor(os.getenv('ALPHA_VANTAGE_API_KEY'))
         regime_update = monitor.update_market_regime()
+
+
+
+@app.route("/performance/live", methods=["GET"])
+def get_live_performance():
+    """Get real-time performance of all tracked options"""
+    try:
+        from performance_tracker import PerformanceTracker
+        
+        tracker = PerformanceTracker()
+        performance_data = tracker.load_performance_data()
+        
+        # Get current performance for active positions
+        active_positions = []
+        expired_positions = []
+        profitable_positions = []
+        losing_positions = []
+        
+        for track_id, data in performance_data.items():
+            position_info = {
+                'track_id': track_id,
+                'symbol': data['symbol'],
+                'prediction_date': data['prediction_date'],
+                'option_type': data['option_details'].get('type', 'N/A'),
+                'strike': data['option_details'].get('strike', 'N/A'),
+                'expiration': data['option_details'].get('expiration', 'N/A'),
+                'entry_price': data['option_details'].get('entry_price', 0),
+                'confluence_score': data['option_details'].get('confluence_score', 0),
+                'max_profit': data.get('max_profit', 0),
+                'max_loss': data.get('max_loss', 0),
+                'final_outcome': data.get('final_outcome'),
+                'days_tracked': data.get('days_tracked', 0)
+            }
+            
+            if data.get('final_outcome') is None:
+                active_positions.append(position_info)
+            elif data.get('final_outcome') == 'EXPIRED':
+                expired_positions.append(position_info)
+            elif data.get('max_profit', 0) > 0:
+                profitable_positions.append(position_info)
+            else:
+                losing_positions.append(position_info)
+        
+        # Sort by max profit/loss
+        profitable_positions.sort(key=lambda x: x['max_profit'], reverse=True)
+        losing_positions.sort(key=lambda x: x['max_loss'])
+        
+        return jsonify({
+            "status": "success",
+            "summary": {
+                "total_tracked": len(performance_data),
+                "active_positions": len(active_positions),
+                "expired_positions": len(expired_positions),
+                "profitable_count": len(profitable_positions),
+                "losing_count": len(losing_positions)
+            },
+            "active_positions": active_positions[:20],  # Top 20
+            "top_performers": profitable_positions[:10],
+            "worst_performers": losing_positions[:10],
+            "recently_expired": expired_positions[-10:]  # Last 10 expired
+        })
+
+
+@app.route("/performance/update-now", methods=["POST", "GET"])
+def update_performance_now():
+    """Manually trigger performance update for all tracked options"""
+    try:
+        from performance_tracker import PerformanceTracker
+        
+        tracker = PerformanceTracker()
+        updated_count = tracker.update_daily_performance()
+        
+        # Get quick stats after update
+        metrics = tracker.calculate_performance_metrics()
+        
+        return jsonify({
+            "status": "success",
+            "message": f"Performance updated for {updated_count} options",
+            "updated_count": updated_count,
+            "quick_stats": {
+                "total_predictions": metrics.get('total_predictions', 0),
+                "win_rate": f"{metrics.get('win_rate', 0):.1f}%",
+                "targets_hit": metrics.get('targets_hit', 0),
+                "stops_hit": metrics.get('stops_hit', 0),
+                "still_active": metrics.get('still_active', 0)
+            },
+            "timestamp": datetime.now().isoformat()
+        })
+        
+    except Exception as e:
+        return jsonify({
+
+
+@app.route("/performance/position/<track_id>", methods=["GET"])
+def get_position_details(track_id):
+    """Get detailed tracking information for a specific position"""
+    try:
+        from performance_tracker import PerformanceTracker
+        
+        tracker = PerformanceTracker()
+        performance_data = tracker.load_performance_data()
+        
+        if track_id not in performance_data:
+            return jsonify({
+                "status": "error",
+                "message": f"Position {track_id} not found"
+            }), 404
+            
+        position_data = performance_data[track_id]
+        
+        # Calculate additional metrics
+        daily_tracking = position_data.get('daily_tracking', {})
+        if daily_tracking:
+            dates = sorted(daily_tracking.keys())
+            price_history = [daily_tracking[date]['price'] for date in dates]
+            pnl_history = [daily_tracking[date]['pnl_percent'] for date in dates]
+        else:
+            dates = []
+            price_history = []
+            pnl_history = []
+        
+        return jsonify({
+            "status": "success",
+            "position_details": position_data,
+            "price_history": {
+                "dates": dates,
+                "prices": price_history,
+                "pnl_percentages": pnl_history
+            },
+            "current_status": {
+                "is_active": position_data.get('final_outcome') is None,
+                "days_held": len(daily_tracking),
+                "best_day": max(pnl_history) if pnl_history else 0,
+                "worst_day": min(pnl_history) if pnl_history else 0
+            }
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Error getting position details: {str(e)}"
+        }), 500
+
+
+            "status": "error",
+            "message": f"Error updating performance: {str(e)}"
+        }), 500
+
+
+        
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Error getting live performance: {str(e)}"
+        }), 500
+
 
         return jsonify({
             "status": "success",
