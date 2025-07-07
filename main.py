@@ -1060,11 +1060,6 @@ def get_position_details(track_id):
             "status": "error",
             "message": f"Error getting position details: {str(e)}"
         }), 500
-This commit fixes a syntax error caused by an unmatched closing brace in the /performance/update route.
-```python
-            "status": "error",
-            "message": f"Error getting position details: {str(e)}"
-        }), 500
 
 
             "status": "error",
