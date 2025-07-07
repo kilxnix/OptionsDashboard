@@ -2505,3 +2505,40 @@ class IntelligentTradePlanner:
             # 1. Define entry and exit points
             entry_price = float(option_data.get('mark', 0))
             stop_loss = round(entry_price * 0.75, 2)  # 25%
+            initial_target = round(entry_price * 1.5, 2)  # 50% profit
+            final_target = round(entry_price * 2.0, 2)  # 100% profit
+
+            # 2. Calculate position size (basic)
+            position_size = 1  # Default to 1 contract
+
+            # 3. Determine max hold time based on days to expiry
+            days_to_expiry = (pd.to_datetime(expiration) - pd.Timestamp.today()).days
+            if days_to_expiry <= 3:
+                max_hold_time = "4 hours"
+            elif days_to_expiry <= 7:
+                max_hold_time = "1 day"
+            else:
+                max_hold_time = "3 days"
+
+            plan = {
+                "entry_price": entry_price,
+                "stop_loss": stop_loss,
+                "initial_target": initial_target,
+                "final_target": final_target,
+                "position_size": position_size,
+                "max_hold_time": max_hold_time,
+                "strike": f"${strike_price}",
+                "type": option_type.capitalize(),
+                "expiration": expiration,
+                "delta": delta,
+                "gamma": gamma,
+                "theta": theta,
+                "score": score,
+                "validation_score": analysis.get('delta_score', 0)
+            }
+
+            return plan
+
+        except Exception as e:
+            print(f"Error generating intelligent trade plan: {e}")
+            return None
