@@ -1000,6 +1000,9 @@ def update_performance_now():
 
     except Exception as e:
         return jsonify({
+            "status": "error",
+            "message": f"Error updating performance: {str(e)}"
+        }), 500
 
 
 @app.route("/performance/position/<track_id>", methods=["GET"])
