@@ -1060,8 +1060,6 @@ def get_position_details(track_id):
             "status": "error",
             "message": f"Error getting position details: {str(e)}"
         }), 500
-            "message": f"Error updating performance: {str(e)}"
-        }), 500
 
 
 
