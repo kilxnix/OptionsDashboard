@@ -9520,3 +9520,57 @@ Delta: -0.39864 | Gamma: 0.08180 | Theta: -0.00945 | Score: 4.14
 
 ================================================================================
 
+📈 Trade Plan for AAL (Bullish Bias)
+
+🔹 Option: $$22.0 Call expiring 2026-12-18
+🔹 Entry Price: $0.54
+🔹 Stop Loss: $0.41
+🔹 Initial Target: $0.95
+🔹 Final Target: $1.89
+🔹 Position Size: 3 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.18382 | Gamma: 0.04590 | Theta: -0.00164 | Score: 11.75
+
+================================================================================
+
+📈 Trade Plan for GE (Bullish Bias)
+
+🔹 Option: $$250.0 Call expiring 2025-07-11
+🔹 Entry Price: $2.50
+🔹 Stop Loss: $1.88
+🔹 Initial Target: $4.38
+🔹 Final Target: $8.75
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.38588 | Gamma: 0.04122 | Theta: -0.23286 | Score: 0.74
+
+================================================================================
+
+📈 Trade Plan for QS (Bullish Bias)
+
+🔹 Option: $$11.0 Call expiring 2026-01-16
+🔹 Entry Price: $0.92
+🔹 Stop Loss: $0.69
+🔹 Initial Target: $1.61
+🔹 Final Target: $3.22
+🔹 Position Size: 2 contracts
+🔹 Max Hold Time: 10 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.38406 | Gamma: 0.08074 | Theta: -0.00480 | Score: 7.40
+
+================================================================================
+
