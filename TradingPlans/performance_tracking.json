@@ -430,5 +430,77 @@
     "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
+  },
+  "AAL_13.0_put_2027-12-17 00:00:00_2025-07-07": {
+    "symbol": "AAL",
+    "prediction_date": "2025-07-07",
+    "option_details": {
+      "strike": 13.0,
+      "type": "put",
+      "expiration": "2027-12-17 00:00:00",
+      "entry_price": 0.54,
+      "predicted_target": 0.95,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.21,
+      "delta": -0.35094,
+      "gamma": 0.04145,
+      "theta": -0.00095,
+      "implied_vol": "0.48804"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "GE_245.0_put_2025-07-03 00:00:00_2025-07-07": {
+    "symbol": "GE",
+    "prediction_date": "2025-07-07",
+    "option_details": {
+      "strike": 245.0,
+      "type": "put",
+      "expiration": "2025-07-03 00:00:00",
+      "entry_price": 2.5,
+      "predicted_target": 4.38,
+      "predicted_bias": "Bullish",
+      "confluence_score": 7.94,
+      "delta": -0.10253,
+      "gamma": 0.11789,
+      "theta": -0.13246,
+      "implied_vol": "0.11731"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "QS_7.0_put_2027-01-15 00:00:00_2025-07-07": {
+    "symbol": "QS",
+    "prediction_date": "2025-07-07",
+    "option_details": {
+      "strike": 7.0,
+      "type": "put",
+      "expiration": "2027-01-15 00:00:00",
+      "entry_price": 0.92,
+      "predicted_target": 1.61,
+      "predicted_bias": "Bullish",
+      "confluence_score": 7.63,
+      "delta": -0.27154,
+      "gamma": 0.04338,
+      "theta": -0.00173,
+      "implied_vol": "0.87827"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
   }
 }
