@@ -749,8 +749,7 @@ class CompleteOptionsScanner:
 
             if 'data' in data and data['data']:
                 df = pd.DataFrame(data['data'])
-                print(f"✅ Real-time options found for {symbol}: {len(df)} contracts (no Greeks)")
-                return df
+                print(f"✅ Real-time options found for {symbol}: {len(df)} contracts (no Greeks)")                return df
 
             print(f"❌ No options data available for {symbol}")
             return None
@@ -1482,7 +1481,7 @@ def summarize_results(results):
                 and isinstance(data['volume_profile'], dict)
                 and 'confluences' in data['volume_profile']
                 and len(data['volume_profile']['confluences']) > 0):
-            vol_conf = f"Yes ({len(data['volume_profile']['confluences'])})"
+            vol_conf = f"Yes ({len(data['volume_profile']['confluences']})}"
 
         # Trade Plan
         trade_plan = data.get('trade_plan', {})
@@ -2274,9 +2273,10 @@ def save_summary_report(results, filepath):
             gap = "N/A"
             for tf in ['15m', '30m', '1h']:
                 if tf in data['timeframe_analysis'] and 'gap_percent' in data[
-                        'timeframe_analysis'][tf]:                gap_val = data['timeframe_analysis'][tf]['gap_percent']
-                if not pd.isna(gap_val):
-                    gap = f"{gap_val:.1f}%"
+                        'timeframe_analysis'][tf]:
+                    gap_val = data['timeframe_analysis'][tf]['gap_percent']
+                    if not pd.isna(gap_val):
+                        gap = f"{gap_val:.1f}%"
                         break
 
             # Volume confirmation
