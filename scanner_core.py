@@ -75,32 +75,32 @@ def get_optionable_stocks_with_volume():
     print("🔍 Discovering high-volume optionable stocks with intelligent filtering...")
 
     validated_symbols = []
-    
+
     # Phase 1: Get explosive/high-momentum candidates
     explosive_candidates = discover_explosive_optionable_stocks()
     print(f"📈 Found {len(explosive_candidates)} explosive candidates")
-    
+
     # Phase 2: Get high-volume liquid stocks
     liquid_candidates = discover_liquid_optionable_stocks()
     print(f"💧 Found {len(liquid_candidates)} liquid candidates")
-    
+
     # Phase 3: Get proven performers from performance tracking
     proven_candidates = get_proven_optionable_performers()
     print(f"🏆 Found {len(proven_candidates)} proven performers")
-    
+
     # Combine all candidates
     all_candidates = explosive_candidates + liquid_candidates + proven_candidates
-    
+
     # Phase 4: Validate options availability and liquidity
     print("🔍 Validating options availability and liquidity...")
     validated_symbols = validate_options_availability(all_candidates)
-    
+
     # Phase 5: Add core reliable symbols as backup
     core_symbols = get_core_optionable_symbols()
     for symbol in core_symbols:
         if symbol not in validated_symbols:
             validated_symbols.append(symbol)
-    
+
     print(f"✅ Final validated list: {len(validated_symbols)} high-quality optionable stocks")
     return validated_symbols
 
@@ -109,13 +109,13 @@ def filter_and_prioritize_symbols_dynamic(symbols):
     """Dynamic filtering and prioritization with emphasis on fresh momentum"""
     # Remove duplicates while preserving order
     unique_symbols = list(dict.fromkeys(symbols))
-    
+
     # Filter out obviously non-optionable symbols
     filtered_symbols = []
     for symbol in unique_symbols:
         if is_likely_optionable(symbol):
             filtered_symbols.append(symbol)
-    
+
     # Priority groups (higher priority = scanned first)
     priority_groups = {
         'mega_cap': ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'TSLA', 'META'],
@@ -1519,7 +1519,7 @@ def summarize_results(results):
     return summary
 
 
-def save_to_drive(results):
+def save_todrive(results):
     """Enhanced save function with detailed options data"""
     try:
         base_dir = './TradingPlans'
@@ -1582,23 +1582,23 @@ def save_individual_result(symbol, result_data, base_dir='./TradingPlans'):
         if ('options' in result_data and not isinstance(result_data['options'], bool) 
             and not result_data['options'].empty and 'trade_plan' in result_data 
             and result_data['trade_plan']):
-            
+
             try:
                 from performance_tracker import PerformanceTracker
                 tracker = PerformanceTracker(base_dir)
-                
+
                 # Track the top option
                 top_option = result_data['options'].iloc[0].to_dict()
                 trade_plan = result_data['trade_plan']
-                
+
                 # Add confluence score to option data
                 top_option['score'] = result_data.get('confluence', {}).get('score', 0)
-                
+
                 track_id = tracker.track_option_performance(
                     symbol, top_option, trade_plan, date_str
                 )
                 print(f"📊 Started tracking performance: {track_id}")
-                
+
             except Exception as e:
                 print(f"⚠️ Performance tracking failed for {symbol}: {e}")
 
@@ -1737,17 +1737,17 @@ def analyze_option_enhanced(option_data, symbol, market_data=None):
     try:
         from enhanced_options_grader import EnhancedOptionsGrader
         from intelligent_trade_planner import IntelligentTradePlanner
-        
+
         # Initialize grader
         grader = EnhancedOptionsGrader(os.getenv('ALPHA_VANTAGE_API_KEY'))
-        
+
         # Calculate comprehensive score
         score, analysis = grader.calculate_option_score(option_data, market_data)
-        
+
         # Only proceed if score meets threshold
         if score < 60:  # Minimum score
             return None
-        
+
         # Generate intelligent trade plan
         if score >= 60:
             planner = IntelligentTradePlanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
@@ -1756,16 +1756,16 @@ def analyze_option_enhanced(option_data, symbol, market_data=None):
                 analysis,
                 market_data
             )
-            
+
             return {
                 'option_data': option_data,
                 'score': score,
                 'analysis': analysis,
                 'trade_plan': trade_plan
             }
-        
+
         return None
-        
+
     except ImportError:
         print("Enhanced grader not available, using fallback analysis")
         return None
@@ -1814,7 +1814,7 @@ def discover_explosive_optionable_stocks():
     Discover explosive momentum stocks with confirmed options availability.
     """
     explosive_stocks = []
-    
+
     # 1. Alpha Vantage top movers with validation
     try:
         av_data = fetch_alphavantage_filtered()
@@ -1823,7 +1823,7 @@ def discover_explosive_optionable_stocks():
                 explosive_stocks.append(symbol)
     except Exception as e:
         print(f"⚠️ Alpha Vantage explosive discovery failed: {e}")
-    
+
     # 2. Recent earnings movers (high IV potential)
     earnings_movers = [
         'TSLA', 'NVDA', 'AMD', 'META', 'GOOGL', 'AMZN', 'NFLX', 'COIN', 'HOOD',
@@ -1832,13 +1832,13 @@ def discover_explosive_optionable_stocks():
     for symbol in earnings_movers:
         if symbol not in explosive_stocks and validate_single_stock_optionability(symbol):
             explosive_stocks.append(symbol)
-    
+
     # 3. Sector rotation plays with options
     sector_etfs = ['XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLP', 'XLU', 'XLB', 'XLRE', 'XLY']
     for symbol in sector_etfs:
         if symbol not in explosive_stocks:
             explosive_stocks.append(symbol)
-    
+
     return explosive_stocks
 
 def discover_liquid_optionable_stocks():
@@ -1846,7 +1846,7 @@ def discover_liquid_optionable_stocks():
     Discover stocks with highest options liquidity and volume.
     """
     liquid_stocks = []
-    
+
     # 1. S&P 500 mega caps (guaranteed high liquidity)
     mega_liquid = [
         'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'TSLA', 'META', 'BRK-B',
@@ -1855,21 +1855,21 @@ def discover_liquid_optionable_stocks():
         'CRM', 'VZ', 'NKE', 'NFLX', 'DHR', 'XOM', 'AMD', 'INTC', 'QCOM'
     ]
     liquid_stocks.extend(mega_liquid)
-    
+
     # 2. High-volume ETFs (always liquid)
     liquid_etfs = [
         'SPY', 'QQQ', 'IWM', 'DIA', 'VTI', 'EFA', 'EEM', 'GLD', 'SLV',
         'SOXL', 'SOXS', 'TQQQ', 'SQQQ', 'UVXY', 'VXX', 'TLT', 'HYG'
     ]
     liquid_stocks.extend(liquid_etfs)
-    
+
     # 3. Popular meme/retail stocks (high options volume)
     meme_stocks = [
         'GME', 'AMC', 'BB', 'PLTR', 'COIN', 'HOOD', 'RIVN', 'LCID',
         'SOFI', 'NKLA', 'SPCE', 'F', 'GE', 'T', 'BAC', 'WFC'
     ]
     liquid_stocks.extend(meme_stocks)
-    
+
     return liquid_stocks
 
 def get_proven_optionable_performers():
@@ -1877,25 +1877,25 @@ def get_proven_optionable_performers():
     Get stocks that have historically performed well in our scanner.
     """
     proven_stocks = []
-    
+
     try:
         from performance_tracker import PerformanceTracker
         tracker = PerformanceTracker()
-        
+
         # Get best performing symbols from tracking
         performance_data = tracker.get_best_performing_symbols()
         if performance_data:
             proven_stocks.extend(performance_data[:15])  # Top 15 performers
     except Exception as e:
         print(f"⚠️ Could not load performance data: {e}")
-    
+
     # Fallback to historically good performers
     if not proven_stocks:
         proven_stocks = [
             'AAPL', 'TSLA', 'NVDA', 'AMD', 'SPY', 'QQQ', 'GOOGL', 'MSFT',
             'COIN', 'HOOD', 'PLTR', 'GME', 'SOXL', 'TQQQ', 'XLE'
         ]
-    
+
     return proven_stocks
 
 def validate_options_availability(candidates):
@@ -1903,15 +1903,15 @@ def validate_options_availability(candidates):
     Validate that stocks actually have active options with decent volume.
     """
     validated = []
-    
+
     for symbol in candidates:
         if validate_single_stock_optionability(symbol):
             validated.append(symbol)
-        
+
         # Limit validation to avoid rate limits
         if len(validated) >= 100:
             break
-    
+
     return validated
 
 def validate_single_stock_optionability(symbol):
@@ -1921,31 +1921,31 @@ def validate_single_stock_optionability(symbol):
     try:
         import yfinance as yf
         ticker = yf.Ticker(symbol)
-        
+
         # Check if options exist
         expirations = ticker.options
         if not expirations or len(expirations) == 0:
             return False
-        
+
         # Quick check for reasonable option volume
         try:
             option_chain = ticker.option_chain(expirations[0])
             if option_chain.calls.empty and option_chain.puts.empty:
                 return False
-            
+
             # Check for some volume
             total_volume = 0
             if not option_chain.calls.empty:
                 total_volume += option_chain.calls['volume'].sum()
             if not option_chain.puts.empty:
                 total_volume += option_chain.puts['volume'].sum()
-            
+
             return total_volume > 10  # Minimum volume threshold
-            
+
         except:
             # If we can't check volume, assume it's optionable if expirations exist
             return True
-        
+
     except Exception:
         # If validation fails, include it (conservative approach)
         return True
@@ -2207,7 +2207,7 @@ def filter_options_by_bias(candidates_df, symbol_bias):
         puts = candidates_df[candidates_df["type"] == "put"]
         if not puts.empty:
             return puts
-    
+
     # For neutral or if no matching type found, return all but prefer calls
     return candidates_df
 
@@ -2218,7 +2218,7 @@ def select_top_option_candidate(candidates_df, analysis_results, symbol):
     Prioritizes bias alignment over raw score.
     """
     bias = analysis_results.get("bias", "neutral").lower()
-    
+
     # First try to get options that match the bias
     if "bullish" in bias:
         matching_options = candidates_df[candidates_df["type"] == "call"]
@@ -2274,10 +2274,9 @@ def save_summary_report(results, filepath):
             gap = "N/A"
             for tf in ['15m', '30m', '1h']:
                 if tf in data['timeframe_analysis'] and 'gap_percent' in data[
-                        'timeframe_analysis'][tf]:
-                    gap_val = data['timeframe_analysis'][tf]['gap_percent']
-                    if not pd.isna(gap_val):
-                        gap = f"{gap_val:.1f}%"
+                        'timeframe_analysis'][tf]:                gap_val = data['timeframe_analysis'][tf]['gap_percent']
+                if not pd.isna(gap_val):
+                    gap = f"{gap_val:.1f}%"
                         break
 
             # Volume confirmation
@@ -2365,3 +2364,143 @@ def save_summary_report(results, filepath):
         f.write("\n=== End of Summary ===\n")
 
 # The CompleteOptionsScanner class is updated to handle real-time and historical options data.
+
+class EnhancedOptionsGrader:
+
+    def __init__(self, av_key):
+        self.av_key = av_key
+        if not self.av_key:
+            raise ValueError("Alpha Vantage API key is required")
+
+    def calculate_option_score(self, option_data, market_data=None):
+        """Calculates a comprehensive score for an option based on multiple factors."""
+        try:
+            # Extract option metrics
+            delta = abs(float(option_data.get('delta', 0)))
+            gamma = float(option_data.get('gamma', 0))
+            theta = float(option_data.get('theta', 0))
+            implied_volatility = float(option_data.get('implied_volatility', 0))
+
+            # 1. Greek Weighting (60%)
+            delta_score = self.grade_delta(delta)
+            gamma_theta_score = self.grade_gamma_theta_ratio(gamma, theta)
+
+            # 2. Volatility Assessment (20%)
+            iv_score = self.grade_implied_volatility(implied_volatility)
+
+            # 3. Market Context (20%) - Use provided market data
+            trend_score = 0
+            support_resistance_score = 0
+
+            # Combine scores
+            total_score = (0.6 * (delta_score + gamma_theta_score) +
+                           0.2 * iv_score + 0.2 *
+                           (trend_score + support_resistance_score))
+
+            # Create analysis dictionary
+            analysis = {
+                'delta_score': delta_score,
+                'gamma_theta_score': gamma_theta_score,
+                'iv_score': iv_score,
+                'trend_score': trend_score,
+                'support_resistance_score': support_resistance_score
+            }
+
+            return round(total_score, 2), analysis
+
+        except Exception as e:
+            print(f"Error calculating option score: {e}")
+            return 0, {}
+
+    def grade_delta(self, delta):
+        """Delta closer to 0.5 is ideal"""
+        return max(0, 100 - abs(delta - 0.5) * 200)
+
+    def grade_gamma_theta_ratio(self, gamma, theta):
+        """Higher Gamma/Theta ratio is better"""
+        if theta == 0:
+            return 0  # Avoid division by zero
+
+        ratio = abs(gamma / theta)
+        if ratio > 1:
+            return 100
+        else:
+            return ratio * 100
+
+    def grade_implied_volatility(self, implied_volatility):
+        """Moderate IV is preferred"""
+        if 0.2 < implied_volatility < 0.8:
+            return 100
+        elif implied_volatility <= 0.2:
+            return implied_volatility / 0.2 * 100
+        else:
+            return max(0, (1 - (implied_volatility - 0.8) / 0.5) * 100)
+
+    def enhance_market_data(self, symbol):
+        """Enhance basic market data with trend and key levels."""
+        try:
+            # Fetch daily data from Alpha Vantage
+            url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=compact&entitlement=realtime&apikey={self.av_key}'
+            response = requests.get(url, timeout=5)
+            response.raise_for_status()
+            data = response.json()
+
+            if 'Time Series (Daily)' not in data:
+                print(f"No daily data for {symbol}")
+                return {}
+
+            df = pd.DataFrame.from_dict(data['Time Series (Daily)'], orient='index')
+            df = df.T  # Transpose
+            df.columns = ['open', 'high', 'low', 'close', 'volume']
+            df = df.iloc[::-1]  # Reverse to chronological order
+            df = df.apply(pd.to_numeric, errors='coerce')
+
+            # Calculate moving averages
+            df['MA_50'] = df['close'].rolling(window=50).mean()
+            df['MA_200'] = df['close'].rolling(window=200).mean()
+
+            # Determine trend
+            if df['MA_50'].iloc[-1] > df['MA_200'].iloc[-1]:
+                trend = 'Bullish'
+            else:
+                trend = 'Bearish'
+
+            # Identify support/resistance (simplified)
+            support = df['low'].min()
+            resistance = df['high'].max()
+
+            return {
+                'trend': trend,
+                'support': support,
+                'resistance': resistance
+            }
+
+        except Exception as e:
+            print(f"Market data enhancement failed: {e}")
+            return {}
+
+
+class IntelligentTradePlanner:
+
+    def __init__(self, av_key):
+        self.av_key = av_key
+        if not self.av_key:
+            raise ValueError("Alpha Vantage API key is required")
+
+    def generate_intelligent_plan(self, option_data, analysis, market_data):
+        """Generate a trade plan based on option characteristics, market data, and analysis."""
+        try:
+            # Extract relevant info
+            strike_price = float(option_data.get('strike'))
+            option_type = option_data.get('type', 'call').lower()
+            expiration = pd.to_datetime(
+                option_data.get('expiration')).strftime("%Y-%m-%d")
+            delta = float(option_data.get('delta', 0))
+            gamma = float(option_data.get('gamma', 0))
+            theta = float(option_data.get('theta', 0))
+            score = float(option_data.get('score', 0))
+            implied_vol = float(option_data.get('implied_volatility', 0))
+
+            # 1. Define entry and exit points
+            entry_price = float(option_data.get('mark', 0))
+            stop_loss = round(entry_price * 0.75, 2)  # 25%
