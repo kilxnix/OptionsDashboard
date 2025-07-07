@@ -19,11 +19,11 @@ def make_json_safe(obj):
     # Handle numpy arrays first to avoid truth value ambiguity
     if isinstance(obj, np.ndarray):
         return obj.tolist()
-    
+
     # Handle pandas NA and None values
     if obj is pd.NA or obj is None:
         return None
-    
+
     # Check for pandas NA values safely (only for scalar values)
     try:
         if hasattr(obj, '__len__') and len(obj) > 1:
@@ -34,7 +34,7 @@ def make_json_safe(obj):
     except (ValueError, TypeError):
         # pd.isna failed, continue with other checks
         pass
-    
+
     if isinstance(obj, pd.DataFrame):
         return obj.to_dict(orient="records")
     if isinstance(obj, pd.Series):
@@ -746,7 +746,7 @@ def enhanced_scan():
         if results and results.get('opportunities'):
             from performance_tracker import PerformanceTracker
             tracker = PerformanceTracker()
-            
+
             for opportunity in results.get('opportunities', []):
                 try:
                     if 'symbol' in opportunity and 'best_option' in opportunity:
@@ -826,12 +826,12 @@ def run_explosive_scan():
         if results and results.get('opportunities'):
             from performance_tracker import PerformanceTracker
             tracker = PerformanceTracker()
-            
+
             for symbol, opportunity_data in results['opportunities'].items():
                 try:
                     best_option = opportunity_data.get('best_opportunity', {})
                     trading_plan = opportunity_data.get('trading_plan', {})
-                    
+
                     if best_option and trading_plan:
                         track_id = tracker.track_option_performance(
                             symbol, 
@@ -904,16 +904,16 @@ def get_live_performance():
     """Get real-time performance of all tracked options"""
     try:
         from performance_tracker import PerformanceTracker
-        
+
         tracker = PerformanceTracker()
         performance_data = tracker.load_performance_data()
-        
+
         # Get current performance for active positions
         active_positions = []
         expired_positions = []
         profitable_positions = []
         losing_positions = []
-        
+
         for track_id, data in performance_data.items():
             position_info = {
                 'track_id': track_id,
@@ -929,7 +929,7 @@ def get_live_performance():
                 'final_outcome': data.get('final_outcome'),
                 'days_tracked': data.get('days_tracked', 0)
             }
-            
+
             if data.get('final_outcome') is None:
                 active_positions.append(position_info)
             elif data.get('final_outcome') == 'EXPIRED':
@@ -938,11 +938,11 @@ def get_live_performance():
                 profitable_positions.append(position_info)
             else:
                 losing_positions.append(position_info)
-        
+
         # Sort by max profit/loss
         profitable_positions.sort(key=lambda x: x['max_profit'], reverse=True)
         losing_positions.sort(key=lambda x: x['max_loss'])
-        
+
         return jsonify({
             "status": "success",
             "summary": {
@@ -964,13 +964,13 @@ def update_performance_now():
     """Manually trigger performance update for all tracked options"""
     try:
         from performance_tracker import PerformanceTracker
-        
+
         tracker = PerformanceTracker()
         updated_count = tracker.update_daily_performance()
-        
+
         # Get quick stats after update
         metrics = tracker.calculate_performance_metrics()
-        
+
         return jsonify({
             "status": "success",
             "message": f"Performance updated for {updated_count} options",
@@ -984,7 +984,7 @@ def update_performance_now():
             },
             "timestamp": datetime.now().isoformat()
         })
-        
+
     except Exception as e:
         return jsonify({
 
@@ -994,18 +994,18 @@ def get_position_details(track_id):
     """Get detailed tracking information for a specific position"""
     try:
         from performance_tracker import PerformanceTracker
-        
+
         tracker = PerformanceTracker()
         performance_data = tracker.load_performance_data()
-        
+
         if track_id not in performance_data:
             return jsonify({
                 "status": "error",
                 "message": f"Position {track_id} not found"
             }), 404
-            
+
         position_data = performance_data[track_id]
-        
+
         # Calculate additional metrics
         daily_tracking = position_data.get('daily_tracking', {})
         if daily_tracking:
@@ -1016,7 +1016,7 @@ def get_position_details(track_id):
             dates = []
             price_history = []
             pnl_history = []
-        
+
         return jsonify({
             "status": "success",
             "position_details": position_data,
@@ -1032,7 +1032,7 @@ def get_position_details(track_id):
                 "worst_day": min(pnl_history) if pnl_history else 0
             }
         })
-        
+
     except Exception as e:
         return jsonify({
             "status": "error",
@@ -1045,7 +1045,7 @@ def get_position_details(track_id):
         }), 500
 
 
-        
+
     except Exception as e:
         return jsonify({
             "status": "error",
@@ -1569,7 +1569,9 @@ def get_formatted_plans():
         date = request.args.get('date', datetime.now().strftime('%Y-%m-%d'))
         limit = int(request.args.get('limit', 10))  # Limit number of results
 
-        # Get the sorted plans data
+        # Get the sortedThis commit addresses the SyntaxError: expected 'except' or 'finally' block.
+```python
+ plans data
         base_dir = './TradingPlans'
         json_pattern = f'progressive_results_{date}.json'
         json_file = os.path.join(base_dir, json_pattern)
