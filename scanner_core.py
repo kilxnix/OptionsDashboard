@@ -749,7 +749,8 @@ class CompleteOptionsScanner:
 
             if 'data' in data and data['data']:
                 df = pd.DataFrame(data['data'])
-                print(f"✅ Real-time options found for {symbol}: {len(df)} contracts (no Greeks)")                return df
+                print(f"✅ Real-time options found for {symbol}: {len(df)} contracts (no Greeks)")
+                return df
 
             print(f"❌ No options data available for {symbol}")
             return None
