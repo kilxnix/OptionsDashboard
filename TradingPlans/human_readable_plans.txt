@@ -9466,3 +9466,57 @@ Delta: -0.27841 | Gamma: 0.01492 | Theta: -0.01834 | Score: 0.73
 
 ================================================================================
 
+📈 Trade Plan for KO (Bullish Bias)
+
+🔹 Option: $$72.0 Call expiring 2025-07-11
+🔹 Entry Price: $0.33
+🔹 Stop Loss: $0.25
+🔹 Initial Target: $0.58
+🔹 Final Target: $1.16
+🔹 Position Size: 6 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.34800 | Gamma: 0.25574 | Theta: -0.03629 | Score: 3.47
+
+================================================================================
+
+📈 Trade Plan for JPM (Bearish Bias)
+
+🔹 Option: $$292.5 Put expiring 2025-07-11
+🔹 Entry Price: $1.67
+🔹 Stop Loss: $1.25
+🔹 Initial Target: $2.92
+🔹 Final Target: $5.84
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.30630 | Gamma: 0.04554 | Theta: -0.15809 | Score: 0.74
+
+================================================================================
+
+📈 Trade Plan for VZ (Bearish Bias)
+
+🔹 Option: $$43.0 Put expiring 2025-09-19
+🔹 Entry Price: $1.53
+🔹 Stop Loss: $1.15
+🔹 Initial Target: $2.68
+🔹 Final Target: $5.36
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.39864 | Gamma: 0.08180 | Theta: -0.00945 | Score: 4.14
+
+================================================================================
+
