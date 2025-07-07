@@ -1482,7 +1482,7 @@ def summarize_results(results):
                 and isinstance(data['volume_profile'], dict)
                 and 'confluences' in data['volume_profile']
                 and len(data['volume_profile']['confluences']) > 0):
-            vol_conf = f"Yes ({len(data['volume_profile']['confluences']})}"
+            vol_conf = f"Yes ({len(data['volume_profile']['confluences'])})"
 
         # Trade Plan
         trade_plan = data.get('trade_plan', {})
