@@ -502,5 +502,53 @@
     "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
+  },
+  "KO_72.0_call_2025-07-11 00:00:00_2025-07-07": {
+    "symbol": "KO",
+    "prediction_date": "2025-07-07",
+    "option_details": {
+      "strike": 72.0,
+      "type": "call",
+      "expiration": "2025-07-11 00:00:00",
+      "entry_price": 0.33,
+      "predicted_target": 0.58,
+      "predicted_bias": "Bullish",
+      "confluence_score": 7.59,
+      "delta": 0.348,
+      "gamma": 0.25574,
+      "theta": -0.03629,
+      "implied_vol": "0.13683"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "JPM_300.0_call_2025-07-11 00:00:00_2025-07-07": {
+    "symbol": "JPM",
+    "prediction_date": "2025-07-07",
+    "option_details": {
+      "strike": 300.0,
+      "type": "call",
+      "expiration": "2025-07-11 00:00:00",
+      "entry_price": 1.67,
+      "predicted_target": 2.92,
+      "predicted_bias": "Bearish",
+      "confluence_score": 7.57,
+      "delta": 0.29897,
+      "gamma": 0.05067,
+      "theta": -0.15899,
+      "implied_vol": "0.15634"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
   }
 }
