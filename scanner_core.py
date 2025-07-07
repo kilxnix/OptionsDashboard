@@ -2193,36 +2193,50 @@ def filter_options_by_bias(candidates_df, symbol_bias):
     Filters the options DataFrame to match the directional bias.
     - Bullish bias -> Call options only
     - Bearish bias -> Put options only
-    - Neutral -> No filtering
+    - Neutral -> No filtering (prefer calls slightly)
     """
     if candidates_df is None or candidates_df.empty:
         return candidates_df
 
     bias = symbol_bias.lower()
     if "bullish" in bias:
-        return candidates_df[candidates_df["type"] == "call"]
+        calls = candidates_df[candidates_df["type"] == "call"]
+        if not calls.empty:
+            return calls
     elif "bearish" in bias:
-        return candidates_df[candidates_df["type"] == "put"]
-    return candidates_df  # For neutral or unknown, return all
+        puts = candidates_df[candidates_df["type"] == "put"]
+        if not puts.empty:
+            return puts
+    
+    # For neutral or if no matching type found, return all but prefer calls
+    return candidates_df
 
 
 def select_top_option_candidate(candidates_df, analysis_results, symbol):
     """
     Select the best option candidate matching the symbol bias.
-    Falls back to highest scoring if none match.
+    Prioritizes bias alignment over raw score.
     """
     bias = analysis_results.get("bias", "neutral").lower()
-    filtered_candidates = filter_options_by_bias(candidates_df, bias)
-
-    if not filtered_candidates.empty:
-        top_option = filtered_candidates.sort_values(by="score",
-                                                     ascending=False).iloc[0]
+    
+    # First try to get options that match the bias
+    if "bullish" in bias:
+        matching_options = candidates_df[candidates_df["type"] == "call"]
+        option_type_wanted = "calls"
+    elif "bearish" in bias:
+        matching_options = candidates_df[candidates_df["type"] == "put"]
+        option_type_wanted = "puts"
     else:
-        top_option = candidates_df.sort_values(by="score",
-                                               ascending=False).iloc[0]
-        print(
-            f"⚠️ No {bias} option found for {symbol}. Using fallback ({top_option['type']}) with score {top_option['score']:.2f}"
-        )
+        matching_options = candidates_df  # Neutral - consider all
+        option_type_wanted = "any"
+
+    if not matching_options.empty:
+        top_option = matching_options.sort_values(by="score", ascending=False).iloc[0]
+        print(f"✅ Selected {top_option['type'].upper()} for {symbol} ({bias} bias) - Score: {top_option['score']:.2f}")
+    else:
+        # Fallback to highest scoring option regardless of type
+        top_option = candidates_df.sort_values(by="score", ascending=False).iloc[0]
+        print(f"⚠️ No {option_type_wanted} found for {symbol} ({bias} bias). Using fallback {top_option['type'].upper()} with score {top_option['score']:.2f}")
 
     return top_option
 
