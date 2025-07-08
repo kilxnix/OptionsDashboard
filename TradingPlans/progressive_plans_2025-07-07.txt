@@ -280,3 +280,191 @@ Trade Plan:
   Expiration: 2025-07-11
   Max Hold: 6 hours
 ============================================================
+
+============================================================
+Symbol: AAL - 22:56:58
+Confluence Score: 9.1/10
+Bias: Bearish
+
+Top Options Found: 127
+
+Option 1:
+  Strike: $13.0 Put
+  Expiration: 2027-12-17 00:00:00
+  Delta: -0.3509
+  Gamma: 0.0415
+  Theta: -0.0009
+  Volume: 0
+  Score: 17.90
+  IV: 48.80%
+
+Option 2:
+  Strike: $12.0 Put
+  Expiration: 2027-01-15 00:00:00
+  Delta: -0.3594
+  Gamma: 0.0551
+  Theta: -0.0015
+  Volume: 0
+  Score: 15.34
+  IV: 46.85%
+
+Option 3:
+  Strike: $12.0 Put
+  Expiration: 2026-12-18 00:00:00
+  Delta: -0.3637
+  Gamma: 0.0567
+  Theta: -0.0015
+  Volume: 0
+  Score: 15.10
+  IV: 46.85%
+
+Trade Plan:
+  Entry: $3.55
+  Stop: $2.66
+  Target: $6.21
+  Position Size: 1 contracts
+  Strike: $13.0 Put
+  Expiration: 2027-12-17
+  Max Hold: 12 hours
+============================================================
+
+============================================================
+Symbol: HAL - 22:57:11
+Confluence Score: 8.73/10
+Bias: Bearish
+
+Top Options Found: 122
+
+Option 1:
+  Strike: $23.0 Put
+  Expiration: 2027-01-15 00:00:00
+  Delta: -0.3997
+  Gamma: 0.0353
+  Theta: -0.0022
+  Volume: 0
+  Score: 6.81
+  IV: 41.00%
+
+Option 2:
+  Strike: $24.0 Call
+  Expiration: 2025-08-01 00:00:00
+  Delta: 0.1240
+  Gamma: 0.1080
+  Theta: -0.0070
+  Volume: 0
+  Score: 6.49
+  IV: 31.24%
+
+Option 3:
+  Strike: $22.0 Call
+  Expiration: 2025-07-11 00:00:00
+  Delta: 0.3427
+  Gamma: 0.3475
+  Theta: -0.0251
+  Volume: 161
+  Score: 6.18
+  IV: 33.19%
+
+Trade Plan:
+  Entry: $4.45
+  Stop: $3.34
+  Target: $7.79
+  Position Size: 1 contracts
+  Strike: $23.0 Put
+  Expiration: 2027-01-15
+  Max Hold: 12 hours
+============================================================
+
+============================================================
+Symbol: IBM - 22:57:22
+Confluence Score: 8.12/10
+Bias: Bullish
+
+Top Options Found: 97
+
+Option 1:
+  Strike: $290.0 Put
+  Expiration: 2025-07-11 00:00:00
+  Delta: -0.3980
+  Gamma: 0.0415
+  Theta: -0.2099
+  Volume: 101
+  Score: 0.76
+  IV: 21.49%
+
+Option 2:
+  Strike: $295.0 Call
+  Expiration: 2025-07-11 00:00:00
+  Delta: 0.3784
+  Gamma: 0.0450
+  Theta: -0.2135
+  Volume: 404
+  Score: 0.75
+  IV: 19.54%
+
+Option 3:
+  Strike: $297.5 Call
+  Expiration: 2025-07-18 00:00:00
+  Delta: 0.3413
+  Gamma: 0.0317
+  Theta: -0.1529
+  Volume: 51
+  Score: 0.73
+  IV: 19.54%
+
+Trade Plan:
+  Entry: $2.29
+  Stop: $1.72
+  Target: $4.01
+  Position Size: 1 contracts
+  Strike: $295.0 Call
+  Expiration: 2025-07-11
+  Max Hold: 6 hours
+============================================================
+
+============================================================
+Symbol: SLB - 22:57:33
+Confluence Score: 8.68/10
+Bias: Bearish
+
+Top Options Found: 113
+
+Option 1:
+  Strike: $35.0 Put
+  Expiration: 2026-06-18 00:00:00
+  Delta: -0.3643
+  Gamma: 0.0324
+  Theta: -0.0043
+  Volume: 43
+  Score: 3.70
+  IV: 33.19%
+
+Option 2:
+  Strike: $36.5 Call
+  Expiration: 2025-07-11 00:00:00
+  Delta: 0.2951
+  Gamma: 0.2392
+  Theta: -0.0323
+  Volume: 156
+  Score: 3.58
+  IV: 27.34%
+
+Option 3:
+  Strike: $37.0 Call
+  Expiration: 2025-07-11 00:00:00
+  Delta: 0.1909
+  Gamma: 0.1886
+  Theta: -0.0253
+  Volume: 665
+  Score: 3.53
+  IV: 27.34%
+
+Trade Plan:
+  Entry: $3.95
+  Stop: $2.96
+  Target: $6.91
+  Position Size: 1 contracts
+  Strike: $35.0 Put
+  Expiration: 2026-06-18
+  Max Hold: 12 hours
+============================================================

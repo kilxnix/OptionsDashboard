@@ -9628,3 +9628,75 @@ Delta: -0.30630 | Gamma: 0.04554 | Theta: -0.15809 | Score: 0.74
 
 ================================================================================
 
+📈 Trade Plan for AAL (Bearish Bias)
+
+🔹 Option: $$13.0 Put expiring 2027-12-17
+🔹 Entry Price: $3.55
+🔹 Stop Loss: $2.66
+🔹 Initial Target: $6.21
+🔹 Final Target: $12.42
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.35094 | Gamma: 0.04145 | Theta: -0.00095 | Score: 17.90
+
+================================================================================
+
+📈 Trade Plan for HAL (Bearish Bias)
+
+🔹 Option: $$23.0 Put expiring 2027-01-15
+🔹 Entry Price: $4.45
+🔹 Stop Loss: $3.34
+🔹 Initial Target: $7.79
+🔹 Final Target: $15.58
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.39966 | Gamma: 0.03531 | Theta: -0.00223 | Score: 6.81
+
+================================================================================
+
+📈 Trade Plan for IBM (Bullish Bias)
+
+🔹 Option: $$295.0 Call expiring 2025-07-11
+🔹 Entry Price: $2.29
+🔹 Stop Loss: $1.72
+🔹 Initial Target: $4.01
+🔹 Final Target: $8.02
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.37840 | Gamma: 0.04503 | Theta: -0.21354 | Score: 0.75
+
+================================================================================
+
+📈 Trade Plan for SLB (Bearish Bias)
+
+🔹 Option: $$35.0 Put expiring 2026-06-18
+🔹 Entry Price: $3.95
+🔹 Stop Loss: $2.96
+🔹 Initial Target: $6.91
+🔹 Final Target: $13.83
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.36434 | Gamma: 0.03242 | Theta: -0.00426 | Score: 3.70
+
+================================================================================
+
