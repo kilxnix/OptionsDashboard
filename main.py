@@ -1643,6 +1643,82 @@ def get_formatted_plans():
         return f"Error retrieving formatted plans: {str(e)}", 500
 
 
+@app.route("/enhanced-scan", methods=["GET", "POST"])
+def run_enhanced_scan():
+    """Run enhanced options scan with comprehensive analysis"""
+    try:
+        from enhanced_scanner import run_enhanced_scanner
+
+        # Get parameters
+        if request.method == 'POST' and request.is_json:
+            data = request.get_json()
+            symbols = data.get('symbols', None)
+            min_delta = float(data.get('min_delta', 0.25))
+            max_delta = float(data.get('max_delta', 0.68))
+        else:
+            symbols = request.args.getlist('symbols') or None
+            min_delta = float(request.args.get('min_delta', 0.25))
+            max_delta = float(request.args.get('max_delta', 0.68))
+
+        # Run enhanced scanner
+        results = run_enhanced_scanner(
+            symbols=symbols,
+            min_delta=min_delta,
+            max_delta=max_delta
+        )
+
+        if not results:
+            return jsonify({
+                "status": "no-results",
+                "message": "Enhanced scan completed but found no high-quality opportunities"
+            })
+
+        # Track performance for all results
+        tracked_count = 0
+        from performance_tracker import PerformanceTracker
+        tracker = PerformanceTracker()
+
+        for symbol, data in results.items():
+            try:
+                if ('options' in data and not isinstance(data['options'], bool) 
+                    and not data['options'].empty and 'trade_plan' in data 
+                    and data['trade_plan']):
+
+                    top_option = data['options'].iloc[0].to_dict()
+                    trade_plan = data['trade_plan']
+                    
+                    track_id = tracker.track_option_performance(
+                        symbol, top_option, trade_plan, 
+                        datetime.now().strftime('%Y-%m-%d')
+                    )
+                    tracked_count += 1
+            except Exception as e:
+                print(f"⚠️ Failed to track {symbol}: {e}")
+
+        return jsonify({
+            "status": "success",
+            "scan_type": "enhanced_comprehensive",
+            "opportunities_found": len(results),
+            "top_opportunities": [
+                {
+                    "symbol": symbol,
+                    "confluence_score": data.get('confluence', {}).get('score', 0),
+                    "bias": data.get('confluence', {}).get('bias', 'N/A'),
+                    "validation_score": data.get('trade_plan', {}).get('validation_score', 0)
+                }
+                for symbol, data in list(results.items())[:10]
+            ],
+            "performance_tracking": f"Now tracking {tracked_count} options",
+            "timestamp": datetime.now().isoformat()
+        })
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Enhanced scan failed: {str(e)}"
+        }), 500
+
+
 @app.route("/enhanced-scan/progress", methods=["GET"])
 def get_enhanced_scan_progress():
     """Check progress of enhanced scan"""
