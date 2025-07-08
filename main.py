@@ -727,11 +727,30 @@ def enhanced_scan():
             sector_filter = data.get('sector', None)
             min_score = data.get('min_score', 65)
             scan_date = data.get('date', datetime.now().strftime('%Y-%m-%d'))
+            max_symbols = data.get('max_symbols', 400)
         else:
             symbols = request.args.getlist('symbols')
             sector_filter = request.args.get('sector', None)
             min_score = float(request.args.get('min_score', 65))
             scan_date = request.args.get('date', datetime.now().strftime('%Y-%m-%d'))
+            max_symbols = int(request.args.get('max_symbols', 400))
+
+        # Use proper auto-discovery like explosive scan
+        if not symbols:
+            # Get symbols from Alpha Vantage screeners (same as explosive scan)
+            try:
+                data = fetch_alphavantage_top_symbols()
+                symbols = data['all_symbols']
+                print(f"🔍 Auto-discovered {len(symbols)} symbols from Alpha Vantage screeners")
+            except Exception as e:
+                print(f"⚠️ Auto-discovery failed, using fallback: {e}")
+                # Fallback to scanner_core method
+                from scanner_core import get_optionable_stocks_with_volume
+                symbols = get_optionable_stocks_with_volume()
+
+            if max_symbols and len(symbols) > max_symbols:
+                symbols = symbols[:max_symbols]
+                print(f"🎯 Limited to {max_symbols} symbols for enhanced scan")
 
         # Run enhanced scan
         scanner = EnhancedOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
@@ -774,7 +793,7 @@ def enhanced_scan():
         return jsonify({
             "status": "error", 
             "message": f"Enhanced scan failed: {str(e)}"
-        }), 500
+                }), 500
 
 
 @app.route("/explosive-scan", methods=["GET", "POST"])
@@ -1686,7 +1705,7 @@ def run_enhanced_scan():
 
                     top_option = data['options'].iloc[0].to_dict()
                     trade_plan = data['trade_plan']
-                    
+
                     track_id = tracker.track_option_performance(
                         symbol, top_option, trade_plan, 
                         datetime.now().strftime('%Y-%m-%d')
