@@ -1570,7 +1570,7 @@ def run_pre_earnings_scan():
             "status": "completed",
             "scan_type": "pre_earnings",
             "message": f"Pre-earnings scan completed successfully",
-            "candidates_scanned": len(pre_earnings_stocks),
+            "candidates_scanned": len(pre_earningsstocks),
             "opportunities_found": len(results),
             "priority_filter": priority_only,
             "earnings_breakdown": {
@@ -1807,6 +1807,282 @@ def resume_enhanced_scan():
         return jsonify({
             "status": "error",
             "message": f"Failed to resume scan: {str(e)}"
+        }), 500
+
+@app.route("/mega-discovery-scan", methods=["GET", "POST"])
+def mega_discovery_scan():
+    """Ultimate auto-discovery scan combining ALL methods with full analysis"""
+    try:
+        # Get parameters
+        if request.method == 'POST' and request.is_json:
+            data = request.get_json()
+            max_symbols = int(data.get('max_symbols', 200))
+            run_analysis = data.get('run_analysis', True)
+            filters = data.get('filters', {})
+        else:
+            max_symbols = int(request.args.get('max_symbols', 200))
+            run_analysis = request.args.get('run_analysis', 'true').lower() == 'true'
+            filters = {
+                'min_price': float(request.args.get('min_price', 0.05)),
+                'max_price': float(request.args.get('max_price', 5.00)),
+                'min_delta': float(request.args.get('min_delta', 0.15)),
+                'max_delta': float(request.args.get('max_delta', 0.35)),
+                'min_days': int(request.args.get('min_days', 1)),
+                'max_days': int(request.args.get('max_days', 21))
+            }
+
+        print("🚀 MEGA DISCOVERY SCAN - COMBINING ALL AUTO-DISCOVERY METHODS")
+        print("="*70)
+
+        all_discovered_symbols = []
+        discovery_sources = {}
+
+        # Method 1: Alpha Vantage Screeners
+        try:
+            print("📊 Method 1: Alpha Vantage Screeners...")
+            av_data = fetch_alphavantage_top_symbols()
+            av_symbols = av_data['all_symbols']
+            all_discovered_symbols.extend(av_symbols)
+            discovery_sources['alpha_vantage'] = {
+                'count': len(av_symbols),
+                'symbols': av_symbols[:20],  # Sample
+                'categories': {
+                    'top_gainers': len(av_data['top_gainers']),
+                    'top_losers': len(av_data['top_losers']),
+                    'most_active': len(av_data['most_active'])
+                }
+            }
+            print(f"✅ Alpha Vantage: {len(av_symbols)} symbols")
+        except Exception as e:
+            print(f"⚠️ Alpha Vantage failed: {e}")
+            discovery_sources['alpha_vantage'] = {'error': str(e)}
+
+        # Method 2: Database symbols  
+        try:
+            print("💾 Method 2: Database symbols...")
+            from db_client import fetch_tickers_from_db
+            db_symbols = fetch_tickers_from_db()
+            all_discovered_symbols.extend(db_symbols)
+            discovery_sources['database'] = {
+                'count': len(db_symbols),
+                'symbols': db_symbols[:20]
+            }
+            print(f"✅ Database: {len(db_symbols)} symbols")
+        except Exception as e:
+            print(f"⚠️ Database failed: {e}")
+            discovery_sources['database'] = {'error': str(e)}
+
+        # Method 3: High-volume optionable stocks
+        try:
+            print("📈 Method 3: High-volume optionable stocks...")
+            from scanner_core import get_optionable_stocks_with_volume
+            volume_symbols = get_optionable_stocks_with_volume()
+            all_discovered_symbols.extend(volume_symbols)
+            discovery_sources['high_volume'] = {
+                'count': len(volume_symbols),
+                'symbols': volume_symbols[:20]
+            }
+            print(f"✅ High Volume: {len(volume_symbols)} symbols")
+        except Exception as e:
+            print(f"⚠️ High volume method failed: {e}")
+            discovery_sources['high_volume'] = {'error': str(e)}
+
+        # Method 4: Earnings candidates
+        try:
+            print("📅 Method 4: Earnings candidates...")
+            from enhanced_scanner import discover_pre_earnings_stocks
+            earnings_symbols = discover_pre_earnings_stocks(verbose=False)
+            all_discovered_symbols.extend(earnings_symbols)
+            discovery_sources['earnings'] = {
+                'count': len(earnings_symbols),
+                'symbols': earnings_symbols[:20]
+            }
+            print(f"✅ Earnings: {len(earnings_symbols)} symbols")
+        except Exception as e:
+            print(f"⚠️ Earnings discovery failed: {e}")
+            discovery_sources['earnings'] = {'error': str(e)}
+
+        # Remove duplicates while preserving order
+        unique_symbols = list(dict.fromkeys(all_discovered_symbols))
+        print(f"🎯 DISCOVERY COMPLETE: {len(unique_symbols)} unique symbols from {len(all_discovered_symbols)} total")
+
+        # Limit symbols for performance
+        if len(unique_symbols) > max_symbols:
+            unique_symbols = unique_symbols[:max_symbols]
+            print(f"⚡ Limited to {max_symbols} symbols for performance")
+
+        mega_results = {
+            "status": "success",
+            "scan_type": "mega_discovery_combined",
+            "discovery_summary": {
+                "total_discovered": len(all_discovered_symbols),
+                "unique_symbols": len(unique_symbols),
+                "symbols_analyzed": len(unique_symbols) if run_analysis else 0,
+                "discovery_sources": discovery_sources,
+                "limited_to": max_symbols
+            },
+            "symbols": unique_symbols
+        }
+
+        # Run full scanner_core analysis if requested
+        if run_analysis and unique_symbols:
+            print(f"🔬 Running full scanner_core analysis on {len(unique_symbols)} symbols...")
+            try:
+                from scanner_core import run_scanner
+                analysis_results = run_scanner(
+                    symbols=unique_symbols,
+                    min_delta=filters.get('min_delta', 0.15),
+                    max_delta=filters.get('max_delta', 0.35),
+                    min_price=filters.get('min_price', 0.05),
+                    max_price=filters.get('max_price', 5.00),
+                    time_to_expiry_range=(filters.get('min_days', 1), filters.get('max_days', 21))
+                )
+
+                if analysis_results:
+                    # Track performance for all results
+                    tracked_count = 0
+                    from performance_tracker import PerformanceTracker
+                    tracker = PerformanceTracker()
+
+                    for symbol, data in analysis_results.items():
+                        try:
+                            if ('options' in data and not isinstance(data['options'], bool) 
+                                and not data['options'].empty and 'trade_plan' in data 
+                                and data['trade_plan']):
+
+                                top_option = data['options'].iloc[0].to_dict()
+                                trade_plan = data['trade_plan']
+                                track_id = tracker.track_option_performance(
+                                    symbol, top_option, trade_plan, 
+                                    datetime.now().strftime('%Y-%m-%d')
+                                )
+                                tracked_count += 1
+                        except Exception as e:
+                            print(f"⚠️ Failed to track {symbol}: {e}")
+
+                    mega_results["analysis_results"] = analysis_results
+                    mega_results["opportunities_found"] = len(analysis_results)
+                    mega_results["performance_tracking"] = f"Now tracking {tracked_count} options"
+
+                    # Add top opportunities summary
+                    top_opportunities = sorted(
+                        [(symbol, data.get('confluence', {}).get('score', 0)) 
+                         for symbol, data in analysis_results.items()],
+                        key=lambda x: x[1], reverse=True
+                    )[:10]
+
+                    mega_results["top_opportunities"] = [
+                        {
+                            "symbol": symbol,
+                            "confluence_score": score,
+                            "bias": analysis_results[symbol].get('confluence', {}).get('bias', 'N/A')
+                        }
+                        for symbol, score in top_opportunities
+                    ]
+                    print(f"✅ Analysis complete: {len(analysis_results)} opportunities found")
+                else:
+                    mega_results["analysis_results"] = {}
+                    mega_results["opportunities_found"] = 0
+                    print("⚠️ Analysis completed but no opportunities found")
+
+            except Exception as e:
+                mega_results["analysis_error"] = str(e)
+                print(f"❌ Analysis failed: {e}")
+
+        print("🏁 MEGA DISCOVERY SCAN COMPLETE!")
+        return jsonify(make_json_safe(mega_results))
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Mega discovery scan failed: {str(e)}"
+        }), 500
+
+
+@app.route("/discovery/info", methods=["GET"])
+def discovery_info():
+    """Show what each auto-discovery method finds without running analysis"""
+    try:
+        discovery_breakdown = {}
+
+        # Test each discovery method
+        print("🔍 Testing all auto-discovery methods...")
+
+        # Alpha Vantage
+        try:
+            av_data = fetch_alphavantage_top_symbols()
+            discovery_breakdown['alpha_vantage'] = {
+                'status': 'success',
+                'total_symbols': len(av_data['all_symbols']),
+                'breakdown': {
+                    'top_gainers': len(av_data['top_gainers']),
+                    'top_losers': len(av_data['top_losers']),
+                    'most_active': len(av_data['most_active'])
+                },
+                'sample_symbols': av_data['all_symbols'][:10]
+            }
+        except Exception as e:
+            discovery_breakdown['alpha_vantage'] = {'status': 'error', 'message': str(e)}
+
+        # Database
+        try:
+            from db_client import fetch_tickers_from_db
+            db_symbols = fetch_tickers_from_db()
+            discovery_breakdown['database'] = {
+                'status': 'success',
+                'total_symbols': len(db_symbols),
+                'sample_symbols': db_symbols[:10]
+            }
+        except Exception as e:
+            discovery_breakdown['database'] = {'status': 'error', 'message': str(e)}
+
+        # High volume
+        try:
+            from scanner_core import get_optionable_stocks_with_volume
+            volume_symbols = get_optionable_stocks_with_volume()
+            discovery_breakdown['high_volume'] = {
+                'status': 'success',
+                'total_symbols': len(volume_symbols),
+                'sample_symbols': volume_symbols[:10]
+            }
+        except Exception as e:
+            discovery_breakdown['high_volume'] = {'status': 'error', 'message': str(e)}
+
+        # Earnings
+        try:
+            from enhanced_scanner import discover_pre_earnings_stocks
+            earnings_symbols = discover_pre_earnings_stocks(verbose=False)
+            discovery_breakdown['earnings'] = {
+                'status': 'success',
+                'total_symbols': len(earnings_symbols),
+                'sample_symbols': earnings_symbols[:10]
+            }
+        except Exception as e:
+            discovery_breakdown['earnings'] = {'status': 'error', 'message': str(e)}
+
+        # Calculate totals
+        total_discovered = 0
+        working_methods = 0
+        for method, data in discovery_breakdown.items():
+            if data.get('status') == 'success':
+                total_discovered += data.get('total_symbols', 0)
+                working_methods += 1
+
+        return jsonify({
+            "status": "success",
+            "discovery_methods": discovery_breakdown,
+            "summary": {
+                "working_methods": working_methods,
+                "total_methods": len(discovery_breakdown),
+                "total_symbols_discovered": total_discovered,
+                "health_check": "All methods tested"
+            }
+        })
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Discovery info failed: {str(e)}"
         }), 500
 
 
