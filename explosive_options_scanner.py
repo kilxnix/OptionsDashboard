@@ -35,7 +35,7 @@ class ExplosiveOptionsScanner:
 
         # Scan configuration optimized for your API plan
         self.scan_config = {
-            'min_score': 35,  # Slightly higher to focus on best opportunities  
+            'min_score': 25,  # Lower threshold to catch more opportunities  
             'max_positions': 10,  # Max concurrent positions
             'scan_frequency': 'continuous',  # or 'daily', 'hourly'
             'focus_list': [],  # Symbols to prioritize
@@ -306,7 +306,18 @@ class ExplosiveOptionsScanner:
 
                         # Ensure score is a number, not a dict
                         if isinstance(score, dict):
-                            score = score.get('total_score', 0) if 'total_score' in score else 0
+                            if 'total_score' in score:
+                                score = float(score['total_score'])
+                            else:
+                                # Look for any numeric value in the dict
+                                for key, value in score.items():
+                                    try:
+                                        score = float(value)
+                                        break
+                                    except (ValueError, TypeError):
+                                        continue
+                                else:
+                                    score = 0
 
                         try:
                             score = float(score)
@@ -334,9 +345,23 @@ class ExplosiveOptionsScanner:
                     except Exception as e:
                         # Check if it's the specific dictionary comparison error
                         if "'>=' not supported between instances of 'dict' and 'int'" in str(e):
-                            print(f"⚠️ Data type error fixed for {symbol} - continuing scan")
-                        else:
-                            print(f"⚠️ Skipping option for {symbol}: {e}")
+                            print(f"⚠️ Data type error in scoring for {symbol} - attempting fix...")
+                            # Try to extract score from the grader response
+                            try:
+                                if hasattr(self.grader, 'calculate_option_score'):
+                                    score_result, analysis_result = self.grader.calculate_option_score(option_dict, market_data)
+                                    if isinstance(score_result, (int, float)):
+                                        score = float(score_result)
+                                        analysis = analysis_result
+                                        
+                                        if score >= self.scan_config['min_score']:
+                                            option_dict['score_analysis'] = analysis
+                                            option_dict['total_score'] = score
+                                            scored_options.append(option_dict)
+                                            continue
+                            except:
+                                pass
+                        print(f"⚠️ Skipping option for {symbol}: {e}")
                         continue
 
             if not scored_options:
