@@ -11,10 +11,13 @@ import traceback
 
 app = Flask(__name__)
 
+# Get API key
+ALPHA_VANTAGE_API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY")
+
 # Initialize scanners
 progressive_scanner = ProgressiveOptionsScanner()
-enhanced_scanner = EnhancedOptionsScanner()
-explosive_scanner = ExplosiveOptionsScanner()
+enhanced_scanner = EnhancedOptionsScanner(ALPHA_VANTAGE_API_KEY)
+explosive_scanner = ExplosiveOptionsScanner(ALPHA_VANTAGE_API_KEY)
 performance_tracker = PerformanceTracker()
 
 @app.route('/')
