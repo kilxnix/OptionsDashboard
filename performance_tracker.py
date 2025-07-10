@@ -73,9 +73,12 @@ class PerformanceTracker:
         print(f"📊 Updating daily performance for {len(performance_data)} tracked options...")
 
         updated_count = 0
+        skipped_reasons = {'finalized': 0, 'expired': 0, 'no_price': 0, 'invalid_entry': 0, 'conversion_error': 0}
+        
         for track_id, track_data in performance_data.items():
             try:
                 if track_data.get('final_outcome') is not None:
+                    skipped_reasons['finalized'] += 1
                     continue  # Already finalized
 
                 symbol = track_data['symbol']
@@ -87,6 +90,7 @@ class PerformanceTracker:
                     if track_data.get('final_outcome') is None:
                         track_data['final_outcome'] = 'EXPIRED'
                         track_data['final_price'] = 0.0
+                    skipped_reasons['expired'] += 1
                     continue
 
                 # Get current option price
@@ -99,16 +103,22 @@ class PerformanceTracker:
                     
                     # Skip if entry price is None or invalid
                     if entry_price_raw is None or entry_price_raw == '' or entry_price_raw <= 0:
+                        skipped_reasons['invalid_entry'] += 1
+                        print(f"⚠️ Skipping {symbol} - invalid entry price: {entry_price_raw}")
                         continue
                         
                     try:
                         entry_price = float(entry_price_raw)
                         target_price = float(target_price_raw) if target_price_raw is not None else 0
                     except (ValueError, TypeError):
+                        skipped_reasons['conversion_error'] += 1
+                        print(f"⚠️ Skipping {symbol} - price conversion error")
                         continue
                     
                     # Skip if entry price is invalid
                     if entry_price <= 0:
+                        skipped_reasons['invalid_entry'] += 1
+                        print(f"⚠️ Skipping {symbol} - entry price <= 0: {entry_price}")
                         continue
                         
                     stop_price = entry_price * 0.75  # Assuming 25% stop loss
@@ -148,6 +158,8 @@ class PerformanceTracker:
                 else:
                     # Unable to get current price, increment days tracked but skip price updates
                     track_data['days_tracked'] += 1
+                    skipped_reasons['no_price'] += 1
+                    print(f"⚠️ No price data for {symbol} {option_details.get('strike')} {option_details.get('type')}")
 
             except Exception as e:
                 print(f"Error updating {track_id}: {e}")
@@ -155,6 +167,12 @@ class PerformanceTracker:
 
         self.save_performance_data(performance_data)
         print(f"✅ Updated {updated_count} options")
+        print(f"📊 Skipped breakdown:")
+        print(f"  • Already finalized: {skipped_reasons['finalized']}")
+        print(f"  • Expired: {skipped_reasons['expired']}")
+        print(f"  • No current price: {skipped_reasons['no_price']}")
+        print(f"  • Invalid entry price: {skipped_reasons['invalid_entry']}")
+        print(f"  • Conversion errors: {skipped_reasons['conversion_error']}")
 
         return updated_count
 
