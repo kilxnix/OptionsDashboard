@@ -212,7 +212,8 @@ class ExplosiveOptionsScanner:
                         # Ensure all required fields are present and properly typed
                         required_fields = ['strike', 'expiration', 'type', 'delta', 'gamma', 'theta', 'volume', 'mark', 'open_interest']
                         for field in required_fields:
-                            if field not in option_dict or pd.isna(option_dict[field]):
+                            field_value = option_dict.get(field)
+                            if field not in option_dict or field_value is None or (hasattr(pd, 'isna') and pd.isna(field_value)):
                                 if field == 'strike':
                                     option_dict[field] = 100.0
                                 elif field == 'expiration':
@@ -252,7 +253,7 @@ class ExplosiveOptionsScanner:
                                             except:
                                                 continue
                                         return default
-                                elif pd.isna(value) or value is None:
+                                elif value is None or (hasattr(pd, 'isna') and pd.isna(value)):
                                     return default
                                 else:
                                     # Clean and convert string/numeric
@@ -280,7 +281,7 @@ class ExplosiveOptionsScanner:
                         # Ensure expiration is properly formatted as string
                         if 'expiration' in option_dict:
                             exp_val = option_dict['expiration']
-                            if pd.isna(exp_val) or exp_val == '' or exp_val is None:
+                            if exp_val is None or exp_val == '' or (hasattr(pd, 'isna') and pd.isna(exp_val)):
                                 option_dict['expiration'] = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
                             else:
                                 # Standardize expiration format
