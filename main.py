@@ -113,7 +113,12 @@ def explosive_earnings_combo():
 @app.route('/performance')
 def get_performance():
     try:
-        return jsonify(performance_tracker.get_performance_summary())
+        metrics = performance_tracker.calculate_performance_metrics()
+        suggestions = performance_tracker.get_improvement_suggestions()
+        return jsonify({
+            "metrics": metrics,
+            "suggestions": suggestions
+        })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
