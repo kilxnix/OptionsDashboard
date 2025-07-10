@@ -1,14 +1,98 @@
 {
   "total_predictions": 104,
-  "targets_hit": 0,
-  "stops_hit": 0,
-  "expired_worthless": 0,
-  "still_active": 104,
-  "win_rate": 0,
+  "targets_hit": 8,
+  "stops_hit": 38,
+  "expired_worthless": 4,
+  "still_active": 54,
+  "win_rate": 16.0,
   "avg_win": 0,
   "avg_loss": 0,
-  "confluence_score_accuracy": {},
-  "bias_accuracy": {},
-  "best_performers": [],
+  "confluence_score_accuracy": {
+    "8-10": {
+      "total": 30,
+      "wins": 4,
+      "win_rate": 13.333333333333334
+    },
+    "6-8": {
+      "total": 17,
+      "wins": 4,
+      "win_rate": 23.52941176470588
+    },
+    "10-12": {
+      "total": 3,
+      "wins": 0,
+      "win_rate": 0.0
+    }
+  },
+  "bias_accuracy": {
+    "Bullish": {
+      "total": 21,
+      "wins": 5,
+      "win_rate": 23.809523809523807
+    },
+    "Bearish": {
+      "total": 29,
+      "wins": 3,
+      "win_rate": 10.344827586206897
+    }
+  },
+  "best_performers": [
+    {
+      "symbol": "SOXS",
+      "max_profit": 3441.6666666666665,
+      "confluence_score": 9.03,
+      "outcome": "TARGET_HIT",
+      "predicted_bias": "Bullish"
+    },
+    {
+      "symbol": "PCG",
+      "max_profit": 1955.5555555555557,
+      "confluence_score": 6.2,
+      "outcome": "TARGET_HIT",
+      "predicted_bias": "Bullish"
+    },
+    {
+      "symbol": "AAL",
+      "max_profit": 520.3703703703703,
+      "confluence_score": 9.21,
+      "outcome": "TARGET_HIT",
+      "predicted_bias": "Bullish"
+    },
+    {
+      "symbol": "ANET",
+      "max_profit": 250.0,
+      "confluence_score": 8.77,
+      "outcome": "TARGET_HIT",
+      "predicted_bias": "Bearish"
+    },
+    {
+      "symbol": "QS",
+      "max_profit": 149.99999999999997,
+      "confluence_score": 7.63,
+      "outcome": "TARGET_HIT",
+      "predicted_bias": "Bullish"
+    },
+    {
+      "symbol": "QS",
+      "max_profit": 149.99999999999997,
+      "confluence_score": 7.63,
+      "outcome": "TARGET_HIT",
+      "predicted_bias": "Bullish"
+    },
+    {
+      "symbol": "JNJ",
+      "max_profit": 106.3953488372093,
+      "confluence_score": 7.78,
+      "outcome": "TARGET_HIT",
+      "predicted_bias": "Bearish"
+    },
+    {
+      "symbol": "DXCM",
+      "max_profit": 76.19047619047619,
+      "confluence_score": 9.52,
+      "outcome": "TARGET_HIT",
+      "predicted_bias": "Bearish"
+    }
+  ],
   "worst_performers": []
 }
