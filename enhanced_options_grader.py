@@ -766,7 +766,7 @@ class EnhancedOptionsGrader:
             'liquidity_score': 25,        # Updated
             'greeks_score': 25,           # Updated
             'unusual_activity_score': 30, # Updated
-            'technical_score: 15,        # Same
+            'technical_score': 15,        # Same
             'iv_opportunity_score': 10,   # Same
             'market_regime_score': 10     # Same
         }
