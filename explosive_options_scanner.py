@@ -234,6 +234,7 @@ class ExplosiveOptionsScanner:
                         # Convert numeric fields to float with comprehensive error handling
                         def safe_extract_numeric(value, default=0):
                             """Safely extract numeric value from various formats"""
+                            import pandas as pd  # Import pandas locally
                             try:
                                 if isinstance(value, dict):
                                     # Yahoo Finance format
