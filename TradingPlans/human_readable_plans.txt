@@ -10726,3 +10726,21 @@ Delta: -0.24300 | Gamma: 0.17373 | Theta: -0.00141 | Score: 49.87
 
 ================================================================================
 
+📈 Trade Plan for HAL (Bullish Bias)
+
+🔹 Option: $$29.0 Call expiring 2026-01-16
+🔹 Entry Price: $0.55
+🔹 Stop Loss: $0.41
+🔹 Initial Target: $0.96
+🔹 Final Target: $1.93
+🔹 Position Size: 3 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.15841 | Gamma: 0.04853 | Theta: -0.00352 | Score: 5.85
+
+================================================================================
+
