@@ -220,7 +220,7 @@ class EnhancedOptionsGrader:
 
         if bid > 0 and ask > 0 and mark > 0:
             spread_percentage = (ask - bid) / mark
-            
+
             if spread_percentage <= 0.03:  # Spread < 3%
                 score += 5  # Excellent spread
             elif spread_percentage <= 0.05:  # Spread < 5%
@@ -386,13 +386,13 @@ class EnhancedOptionsGrader:
         # 1. VOLUME SPIKE ANALYSIS (0-12 points)
         # Estimate typical volume based on open interest and option characteristics
         delta = abs(self._safe_float_extract(option_data.get('delta', 0.2), 0.2))
-        
+
         # Typical daily volume is usually 5-15% of OI for liquid options
         estimated_avg_volume = max(oi * 0.08, 20)  # Conservative baseline
-        
+
         if volume > 0 and estimated_avg_volume > 0:
             volume_spike_ratio = volume / estimated_avg_volume
-            
+
             if volume_spike_ratio >= 10.0:
                 score += 12  # Massive volume spike (1000%+)
             elif volume_spike_ratio >= 5.0:
@@ -409,7 +409,7 @@ class EnhancedOptionsGrader:
         # 2. VOLUME/OI RATIO ANALYSIS (0-8 points)
         if oi > 0:
             vol_oi_ratio = volume / oi
-            
+
             if vol_oi_ratio >= 2.0:
                 score += 8   # Extremely active (200%+ of OI traded)
             elif vol_oi_ratio >= 1.0:
@@ -446,7 +446,12 @@ class EnhancedOptionsGrader:
                 score += 1   # Some probability weighted volume
 
         # 5. PREMIUM LEVEL ANALYSIS - Higher premiums suggest informed buying
-        mark = self._safe_float_extract(option_data.get('mark', 0), 0)
+        mark = self._safe_float_extract(option_data.get('mark', option_data.get('lastPrice', 0)), 0)
+
+        # Ensure mark is valid
+        if not isinstance(mark, (int, float)) or pd.isna(mark):
+            mark = 0
+
         if mark >= 5.0:
             score += 2  # Expensive options suggest conviction
         elif mark >= 2.0:
@@ -459,10 +464,10 @@ class EnhancedOptionsGrader:
             if expiration:
                 from datetime import datetime
                 import pandas as pd
-                
+
                 exp_date = pd.to_datetime(expiration)
                 days_to_exp = (exp_date - datetime.now()).days
-                
+
                 if days_to_exp >= 30 and volume >= 500:
                     score += 2  # Unusual activity on longer-dated options
                 elif days_to_exp >= 7 and volume >= 200:
@@ -727,7 +732,7 @@ class EnhancedOptionsGrader:
         liquidity_min = components['liquidity_score'] >= 12
         greeks_min = components['greeks_score'] >= 10
         activity_min = components['unusual_activity_score'] >= 8
-        
+
         # Adjusted thresholds for 115-point scale
         if score >= 85 and liquidity_min and greeks_min and activity_min:
             return "🔥 STRONG BUY - High explosion potential"
@@ -761,7 +766,7 @@ class EnhancedOptionsGrader:
             'liquidity_score': 25,        # Updated
             'greeks_score': 25,           # Updated
             'unusual_activity_score': 30, # Updated
-            'technical_score': 15,        # Same
+            'technical_score: 15,        # Same
             'iv_opportunity_score': 10,   # Same
             'market_regime_score': 10     # Same
         }
