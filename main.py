@@ -159,6 +159,29 @@ def get_tracked_options():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/update-performance')
+def update_performance():
+    try:
+        print("🔄 Starting performance update for all tracked options...")
+        updated_count = performance_tracker.update_daily_performance()
+        
+        # Get updated metrics
+        metrics = performance_tracker.calculate_performance_metrics()
+        
+        return jsonify({
+            "message": f"Successfully updated {updated_count} options",
+            "updated_metrics": {
+                "total_tracked": metrics.get('total_predictions', 0),
+                "still_active": metrics.get('still_active', 0),
+                "targets_hit": metrics.get('targets_hit', 0),
+                "stops_hit": metrics.get('stops_hit', 0),
+                "expired": metrics.get('expired_worthless', 0),
+                "win_rate": metrics.get('win_rate', 0)
+            }
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 if __name__ == '__main__':
     # Ensure TradingPlans directory exists
     os.makedirs('TradingPlans', exist_ok=True)
