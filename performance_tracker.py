@@ -93,8 +93,19 @@ class PerformanceTracker:
                 current_price = self.get_current_option_price(symbol, option_details)
 
                 if current_price is not None and current_price > 0:
-                    entry_price = float(option_details.get('entry_price', 0))
-                    target_price = float(option_details.get('predicted_target', 0))
+                    # Safely get and convert prices with validation
+                    entry_price_raw = option_details.get('entry_price')
+                    target_price_raw = option_details.get('predicted_target')
+                    
+                    # Skip if entry price is None or invalid
+                    if entry_price_raw is None or entry_price_raw == '' or entry_price_raw <= 0:
+                        continue
+                        
+                    try:
+                        entry_price = float(entry_price_raw)
+                        target_price = float(target_price_raw) if target_price_raw is not None else 0
+                    except (ValueError, TypeError):
+                        continue
                     
                     # Skip if entry price is invalid
                     if entry_price <= 0:
