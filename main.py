@@ -70,7 +70,8 @@ def explosive_scan():
         scan_type = request.args.get('scan_type', 'earnings')
         min_price = float(request.args.get('min_price', 0.10))
 
-        results = explosive_scanner.run_scan(scan_type=scan_type, min_price=min_price)
+        filters = {'min_price': min_price}
+        results = explosive_scanner.run_explosive_scan(scan_type=scan_type, filters=filters)
 
         # Save results
         timestamp = datetime.now().strftime("%Y-%m-%d_%H%M%S")
@@ -89,7 +90,7 @@ def explosive_earnings_combo():
         print("🎯 Starting explosive earnings combo tracking...")
 
         # Run explosive scan with earnings focus
-        results = explosive_scanner.run_scan(scan_type='earnings', min_price=0.10)
+        results = explosive_scanner.run_explosive_scan(scan_type='earnings', filters={'min_price': 0.10})
 
         # Track performance
         performance_tracker.track_options(results)
