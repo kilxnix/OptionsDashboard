@@ -92,9 +92,14 @@ class PerformanceTracker:
                 # Get current option price
                 current_price = self.get_current_option_price(symbol, option_details)
 
-                if current_price is not None:
-                    entry_price = option_details['entry_price']
-                    target_price = option_details['predicted_target']
+                if current_price is not None and current_price > 0:
+                    entry_price = float(option_details.get('entry_price', 0))
+                    target_price = float(option_details.get('predicted_target', 0))
+                    
+                    # Skip if entry price is invalid
+                    if entry_price <= 0:
+                        continue
+                        
                     stop_price = entry_price * 0.75  # Assuming 25% stop loss
 
                     # Calculate P&L
@@ -115,7 +120,7 @@ class PerformanceTracker:
                         track_data['max_loss'] = pnl_percent
 
                     # Check if target or stop hit
-                    if current_price >= target_price and not track_data['hit_target']:
+                    if target_price > 0 and current_price >= target_price and not track_data['hit_target']:
                         track_data['hit_target'] = True
                         track_data['target_hit_date'] = today
                         track_data['final_outcome'] = 'TARGET_HIT'
@@ -129,6 +134,9 @@ class PerformanceTracker:
 
                     track_data['days_tracked'] += 1
                     updated_count += 1
+                else:
+                    # Unable to get current price, increment days tracked but skip price updates
+                    track_data['days_tracked'] += 1
 
             except Exception as e:
                 print(f"Error updating {track_id}: {e}")
