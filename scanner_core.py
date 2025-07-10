@@ -418,6 +418,40 @@ def filter_and_prioritize_symbols(symbols):
     return prioritized[:75]  # Limit to 75 high-quality symbols
 
 
+class ProgressiveOptionsScanner:
+    """Progressive scanner that saves results as they're found"""
+    
+    def __init__(self):
+        self.scanner = CompleteOptionsScanner(ALPHA_VANTAGE_API_KEY)
+        self.base_dir = './TradingPlans'
+        
+    def run_scan(self, symbols=None, filters=None):
+        """Run progressive scan with immediate saving"""
+        if symbols is None:
+            symbols = get_optionable_stocks_with_volume()
+        
+        if filters is None:
+            filters = {
+                'min_price': 0.05,
+                'max_price': 5.00,
+                'min_delta': 0.15,
+                'max_delta': 0.40,
+                'min_days': 1,
+                'max_days': 30
+            }
+        
+        results = run_scanner(
+            symbols=symbols,
+            min_delta=filters.get('min_delta', 0.15),
+            max_delta=filters.get('max_delta', 0.40),
+            min_price=filters.get('min_price', 0.05),
+            max_price=filters.get('max_price', 5.00),
+            time_to_expiry_range=(filters.get('min_days', 1), filters.get('max_days', 30))
+        )
+        
+        return results
+
+
 class CompleteOptionsScanner:
 
     def __init__(self, api_key, min_delta=0.2, max_delta=0.7):
