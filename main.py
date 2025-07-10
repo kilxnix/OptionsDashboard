@@ -171,8 +171,35 @@ def trigger_scan():
             "symbols_processed": result.get("symbols_processed", 0) if result else 0
         }), 200
 
-    # Get summary stats
+    # Track performance for all scan results
+    tracked_count = 0
     results = result.get("results", {})
+    if results:
+        from performance_tracker import PerformanceTracker
+        tracker = PerformanceTracker()
+
+        for symbol, data in results.items():
+            try:
+                if ('options' in data and not isinstance(data['options'], bool) 
+                    and not data['options'].empty and 'trade_plan' in data 
+                    and data['trade_plan']):
+
+                    top_option = data['options'].iloc[0].to_dict()
+                    trade_plan = data['trade_plan']
+                    
+                    # Add confluence score to option data
+                    top_option['score'] = data.get('confluence', {}).get('score', 0)
+
+                    track_id = tracker.track_option_performance(
+                        symbol, top_option, trade_plan, 
+                        datetime.now().strftime('%Y-%m-%d')
+                    )
+                    tracked_count += 1
+                    print(f"📊 Started tracking {symbol}: {track_id}")
+            except Exception as e:
+                print(f"⚠️ Failed to track {symbol}: {e}")
+
+    # Get summary stats
     top_scores = sorted([(k, v.get("confluence", {}).get("score", 0)) 
                         for k, v in results.items()], 
                        key=lambda x: x[1], reverse=True)
@@ -183,6 +210,7 @@ def trigger_scan():
         "symbols_processed": result.get("symbols_processed", 0),
         "opportunities_found": len(results),
         "top_3_symbols": [f"{sym} ({score:.1f})" for sym, score in top_scores[:3]],
+        "performance_tracking": f"Now tracking {tracked_count} options",
         "scan_parameters": {
             "min_delta": min_delta,
             "max_delta": max_delta,
@@ -1566,13 +1594,41 @@ def run_pre_earnings_scan():
                 'confluence_score': data.get('confluence', {}).get('score', 0)
             })
 
+        # Track performance for pre-earnings results
+        tracked_count = 0
+        if results:
+            from performance_tracker import PerformanceTracker
+            tracker = PerformanceTracker()
+
+            for symbol, data in results.items():
+                try:
+                    if ('options' in data and not isinstance(data['options'], bool) 
+                        and not data['options'].empty and 'trade_plan' in data 
+                        and data['trade_plan']):
+
+                        top_option = data['options'].iloc[0].to_dict()
+                        trade_plan = data['trade_plan']
+                        
+                        # Add confluence score to option data
+                        top_option['score'] = data.get('confluence', {}).get('score', 0)
+
+                        track_id = tracker.track_option_performance(
+                            symbol, top_option, trade_plan, 
+                            datetime.now().strftime('%Y-%m-%d')
+                        )
+                        tracked_count += 1
+                        print(f"📊 Started tracking {symbol}: {track_id}")
+                except Exception as e:
+                    print(f"⚠️ Failed to track {symbol}: {e}")
+
         return jsonify({
             "status": "completed",
             "scan_type": "pre_earnings",
             "message": f"Pre-earnings scan completed successfully",
-            "candidates_scanned": len(pre_earningsstocks),
+            "candidates_scanned": len(pre_earnings_stocks),
             "opportunities_found": len(results),
             "priority_filter": priority_only,
+            "performance_tracking": f"Now tracking {tracked_count} options",
             "earnings_breakdown": {
                 priority: len(stocks) for priority, stocks in earnings_stats.items()
             },
@@ -1957,6 +2013,32 @@ def mega_discovery_scan():
                                     datetime.now().strftime('%Y-%m-%d')
                                 )
                                 tracked_count += 1
+                        except Exception as e:
+                            print(f"⚠️ Failed to track {symbol}: {e}")
+
+                    # Track performance for mega scan results
+                    tracked_count = 0
+                    from performance_tracker import PerformanceTracker
+                    tracker = PerformanceTracker()
+
+                    for symbol, data in analysis_results.items():
+                        try:
+                            if ('options' in data and not isinstance(data['options'], bool) 
+                                and not data['options'].empty and 'trade_plan' in data 
+                                and data['trade_plan']):
+
+                                top_option = data['options'].iloc[0].to_dict()
+                                trade_plan = data['trade_plan']
+                                
+                                # Add confluence score to option data
+                                top_option['score'] = data.get('confluence', {}).get('score', 0)
+
+                                track_id = tracker.track_option_performance(
+                                    symbol, top_option, trade_plan, 
+                                    datetime.now().strftime('%Y-%m-%d')
+                                )
+                                tracked_count += 1
+                                print(f"📊 Started tracking {symbol}: {track_id}")
                         except Exception as e:
                             print(f"⚠️ Failed to track {symbol}: {e}")
 
