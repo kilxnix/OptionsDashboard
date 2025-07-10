@@ -177,6 +177,7 @@ class ExplosiveOptionsScanner:
         Scan a single symbol for explosive opportunities
         """
         try:
+            import pandas as pd  # Import pandas at method level
             # Get market data
             market_data = self._fetch_enhanced_market_data(symbol)
             if not market_data:
@@ -234,7 +235,6 @@ class ExplosiveOptionsScanner:
                         # Convert numeric fields to float with comprehensive error handling
                         def safe_extract_numeric(value, default=0):
                             """Safely extract numeric value from various formats"""
-                            import pandas as pd  # Import pandas locally
                             try:
                                 if isinstance(value, dict):
                                     # Yahoo Finance format
