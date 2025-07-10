@@ -91,11 +91,18 @@ class ExplosiveOptionsScanner:
         print(f"🚀 EXPLOSIVE OPTIONS SCANNER - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         print("="*60)
 
-        # Get symbols based on scan type
+        # PHASE 1: Symbol Discovery
+        print("\n📊 PHASE 1: Symbol Discovery and Filtering")
+        print("-" * 50)
+        
         if symbols is None:
             symbols = self._discover_symbols(scan_type)
 
-        print(f"🔍 Scanning {len(symbols)} symbols for explosive opportunities...")
+        print(f"🔍 Phase 1 Complete: {len(symbols)} symbols ready for analysis")
+        
+        # PHASE 2: Full Options Analysis
+        print("\n🎯 PHASE 2: Full Options Analysis and Trade Plan Generation")
+        print("-" * 50)
 
         # STEP 1: Use provided market data or fetch via API
         self._bulk_market_cache = {}
@@ -148,13 +155,15 @@ class ExplosiveOptionsScanner:
                         results['opportunities'][symbol] = symbol_results
                         self._categorize_opportunity(symbol_results, results['by_category'])
 
-                        # Print progress
+                        # Print progress with trade plan summary
                         best = symbol_results['best_opportunity']
+                        plan = symbol_results['trading_plan']
                         rec = best.get('recommendation',
                                       best.get('score_analysis', {}).get('recommendation', 'N/A'))
-                        print(
-                            f"  ✅ {symbol}: Score {best['total_score']:.1f} - {rec}"
-                        )
+                        
+                        print(f"  ✅ {symbol}: Score {best['total_score']:.1f} - {rec}")
+                        print(f"     💰 Entry: ${best['mark']:.2f} → Target: ${plan['targets']['target_1']['price']:.2f} (+{plan['targets']['target_1']['percentage']:.1f}%)")
+                        print(f"     🛡️ Stop: ${plan['stop_loss']['stop_price']:.2f} | Risk: ${plan['risk_reward']['max_risk']:.2f}")
 
                 except Exception as e:
                     print(f"  ❌ {symbol}: Error - {str(e)}")
@@ -162,6 +171,8 @@ class ExplosiveOptionsScanner:
         # Generate top picks
         results['top_picks'] = self._generate_top_picks(results['opportunities'])
 
+        print(f"\n✅ PHASE 2 COMPLETE: Generated {len(results['opportunities'])} complete trade plans")
+        
         # Save results
         self._save_scan_results(results)
 
@@ -354,6 +365,14 @@ class ExplosiveOptionsScanner:
                 best_option['score_analysis'],
                 market_data
             )
+
+            # Print the trade plan details for immediate visibility
+            print(f"📋 TRADE PLAN for {symbol}:")
+            print(f"   Entry: ${best_option['mark']:.2f}")
+            print(f"   Target: ${plan['targets']['target_1']['price']:.2f} (+{plan['targets']['target_1']['percentage']:.1f}%)")
+            print(f"   Stop: ${plan['stop_loss']['stop_price']:.2f} ({plan['stop_loss']['stop_percentage']:.1f}%)")
+            print(f"   Contracts: {plan['position_sizing']['contracts']}")
+            print(f"   Risk: ${plan['risk_reward']['max_risk']:.2f}")
 
             # Package results
             return {
