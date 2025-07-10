@@ -177,7 +177,6 @@ class ExplosiveOptionsScanner:
         Scan a single symbol for explosive opportunities
         """
         try:
-            import pandas as pd  # Import pandas at method level
             # Get market data
             market_data = self._fetch_enhanced_market_data(symbol)
             if not market_data:
