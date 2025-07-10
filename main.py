@@ -122,6 +122,43 @@ def get_performance():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/tracked-options')
+def get_tracked_options():
+    try:
+        performance_data = performance_tracker.load_performance_data()
+        
+        # Format the data for easier reading
+        formatted_options = []
+        for track_id, data in performance_data.items():
+            option_info = {
+                "symbol": data["symbol"],
+                "strike": data["option_details"]["strike"],
+                "type": data["option_details"]["type"],
+                "expiration": data["option_details"]["expiration"],
+                "entry_price": data["option_details"]["entry_price"],
+                "predicted_target": data["option_details"]["predicted_target"],
+                "predicted_bias": data["option_details"]["predicted_bias"],
+                "confluence_score": data["option_details"]["confluence_score"],
+                "prediction_date": data["prediction_date"],
+                "final_outcome": data["final_outcome"],
+                "max_profit": data["max_profit"],
+                "max_loss": data["max_loss"],
+                "days_tracked": data["days_tracked"],
+                "hit_target": data["hit_target"],
+                "hit_stop": data["hit_stop"]
+            }
+            formatted_options.append(option_info)
+        
+        # Sort by prediction date (newest first)
+        formatted_options.sort(key=lambda x: x["prediction_date"], reverse=True)
+        
+        return jsonify({
+            "total_tracked": len(formatted_options),
+            "options": formatted_options
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 if __name__ == '__main__':
     # Ensure TradingPlans directory exists
     os.makedirs('TradingPlans', exist_ok=True)
