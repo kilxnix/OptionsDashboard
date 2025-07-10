@@ -2,7 +2,14 @@
 import os
 import json
 import numpy as np
-import pandas as pd
+# pandas is an optional dependency in some environments.  To avoid
+# "cannot access local variable 'pd'" errors when pandas is missing or
+# imported lazily, we import it within a try/except block and fall back
+# to a lightweight stub when not available.
+try:
+    import pandas as pd
+except Exception:  # pragma: no cover - handled for restricted envs
+    pd = None
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple
 import concurrent.futures
@@ -757,6 +764,11 @@ class ExplosiveOptionsScanner:
 
     def _fetch_all_options(self, symbol: str) -> Optional[pd.DataFrame]:
         """Fetch options data using Alpha Vantage historical + Yahoo Finance realtime"""
+        # Ensure pandas is available even if the module-level import failed
+        global pd
+        if pd is None:
+            import pandas as pd
+        
         try:
             # FIRST: Try Alpha Vantage historical options (you have access)
             print(f"📊 Fetching Alpha Vantage historical options for {symbol}...")
@@ -951,6 +963,10 @@ class ExplosiveOptionsScanner:
 
     def _fetch_yahoo_options(self, symbol: str) -> Optional[pd.DataFrame]:
         """Fetch options data from Yahoo Finance as fallback"""
+        global pd
+        if pd is None:
+            import pandas as pd
+
         try:
             import yfinance as yf
 
@@ -1071,6 +1087,9 @@ class ExplosiveOptionsScanner:
 
     def _apply_filters(self, options_data: pd.DataFrame, filters: Dict) -> pd.DataFrame:
         """Apply filters to options data using safe helpers"""
+        global pd
+        if pd is None:
+            import pandas as pd
         if options_data is None or options_data.empty:
             return pd.DataFrame()
 
