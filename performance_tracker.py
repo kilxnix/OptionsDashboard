@@ -359,6 +359,41 @@ class PerformanceTracker:
         self.save_performance_data(performance_data)
         return track_id
     
+    def track_options(self, scan_results):
+        """Track multiple options from scan results"""
+        tracked_count = 0
+        prediction_date = datetime.now().strftime('%Y-%m-%d')
+        
+        # Handle different result formats
+        if isinstance(scan_results, dict):
+            if 'opportunities' in scan_results:
+                # Explosive scanner format
+                for symbol, data in scan_results['opportunities'].items():
+                    try:
+                        option_data = data['best_opportunity']
+                        trading_plan = data['trading_plan']
+                        
+                        # Extract relevant data for tracking
+                        trade_plan = {
+                            'entry_price': option_data.get('mark', 0),
+                            'initial_target': trading_plan.get('targets', {}).get('target_1', {}).get('price', 0),
+                            'bias': 'Unknown'
+                        }
+                        
+                        track_id = self.track_option_performance(symbol, option_data, trade_plan, prediction_date)
+                        print(f"📊 Tracked: {track_id}")
+                        tracked_count += 1
+                        
+                    except Exception as e:
+                        print(f"⚠️ Failed to track {symbol}: {e}")
+                        continue
+            else:
+                # Other format - try to extract options directly
+                print("⚠️ Unrecognized scan results format")
+        
+        print(f"✅ Successfully tracked {tracked_count} options for performance monitoring")
+        return tracked_count
+    
     def get_improvement_suggestions(self):
         """Generate specific improvement suggestions based on performance data"""
         metrics = self.calculate_performance_metrics()
