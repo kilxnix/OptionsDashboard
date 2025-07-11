@@ -213,7 +213,7 @@ class ExplosiveOptionsScanner:
                         required_fields = ['strike', 'expiration', 'type', 'delta', 'gamma', 'theta', 'volume', 'mark', 'open_interest']
                         for field in required_fields:
                             field_value = option_dict.get(field)
-                            if field not in option_dict or field_value is None or field_value == '' or (pd.isna(field_value) if pd.notna else False):
+                            if field not in option_dict or field_value is None or field_value == '' or str(field_value).lower() == 'nan':
                                 if field == 'strike':
                                     option_dict[field] = 100.0
                                 elif field == 'expiration':
@@ -253,7 +253,7 @@ class ExplosiveOptionsScanner:
                                             except:
                                                 continue
                                         return default
-                                elif value is None or (pd.isna(value) if hasattr(pd, 'isna') else str(value).lower() == 'nan'):
+                                elif value is None or str(value).lower() == 'nan':
                                     return default
                                 else:
                                     # Clean and convert string/numeric
@@ -281,7 +281,7 @@ class ExplosiveOptionsScanner:
                         # Ensure expiration is properly formatted as string
                         if 'expiration' in option_dict:
                             exp_val = option_dict['expiration']
-                            if exp_val is None or exp_val == '' or (pd.isna(exp_val) if hasattr(pd, 'isna') else str(exp_val).lower() == 'nan'):
+                            if exp_val is None or exp_val == '' or str(exp_val).lower() == 'nan':
                                 option_dict['expiration'] = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
                             else:
                                 # Standardize expiration format
