@@ -861,7 +861,7 @@ def enhanced_scan():
                         print(
                             f"📊 Started tracking {opportunity['symbol']}: {track_id}"
                         )
-                except Exception as e:```python
+                except Exception as e:
                     print(
                         f"⚠️ Failed to track {opportunity.get('symbol', 'unknown')}: {e}"
                     )
