@@ -863,6 +863,7 @@ def enhanced_scan():
                         )
                 except Exception as e:
                     print(
+```python
                         f"⚠️ Failed to track {opportunity.get('symbol', 'unknown')}: {e}"
                     )
 
@@ -1494,20 +1495,31 @@ def jpm_explosion_hunter():
         if request.method == 'POST' and request.is_json:
             data = request.get_json()
             source_symbols = data.get('symbols', [])
-            strict_match = data.get('strict_match', True)
+            similarity_threshold = float(data.get('similarity_threshold', 0.7))
         else:
             source_symbols = request.args.getlist('symbols')
-            strict_match = request.args.get('strict_match', 'true').lower() == 'true'
+            similarity_threshold = float(request.args.get('similarity_threshold', 0.7))
 
         print("🎯 JPM EXPLOSION HUNTER - PHASE 2 PATTERN MATCHING")
         print("=" * 60)
         print(f"📋 Target Pattern: JPM 315C exp 7/25 @ $1.52")
-        print(f"🔍 Delta: ~0.157, Gamma: ~0.014, Theta: ~-0.098")
-        print(f"📊 Volume/OI: 121/129, IV: ~0.234")
+        print(f"🔍 Delta: 0.157, Gamma: 0.014, Theta: -0.098")
+        print(f"📊 Volume/OI: 121/129, IV: 0.234")
+        print(f"🎯 Similarity Threshold: {similarity_threshold:.1%}")
 
-        # If no symbols provided, get from most recent explosive-earnings-combo results
+        # JPM reference pattern
+        jpm_reference = {
+            'delta': 0.15696,
+            'gamma': 0.01411,
+            'theta': -0.09836,
+            'price': 1.52,
+            'iv': 0.23438,
+            'days_to_expiry': 17
+        }
+
+        # If no symbols provided, get from most recent explosive scan results
         if not source_symbols:
-            print("📂 No symbols provided - loading from recent explosive scan results...")
+            print("📂 Loading from recent explosive scan results...")
             import glob
             pattern = os.path.join('./TradingPlans', 'explosive_scan_*.json')
             files = glob.glob(pattern)
@@ -1522,54 +1534,151 @@ def jpm_explosion_hunter():
                 source_symbols = ['SPY', 'QQQ', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'JPM', 'BAC', 'WFC']
                 print(f"⚠️ No scan results found - using fallback symbols")
 
-        # JPM pattern criteria (from your example)
-        jpm_criteria = {
-            'days_to_expiry': (10, 25),      # 17 days ± range  
-            'delta_range': (0.10, 0.25),     # 0.157 ± range
-            'gamma_range': (0.008, 0.020),   # 0.014 ± range
-            'theta_max': -0.05,              # Theta < -0.05 (more negative is worse)
-            'price_range': (0.50, 5.00),     # $1.52 ± range
-            'iv_range': (0.15, 0.35),        # 0.234 ± range
-            'volume_min': 50,                # 121 minimum activity
-            'oi_min': 50,                    # 129 minimum OI
-            'volume_oi_ratio_min': 0.5       # Active but not crazy
-        }
+        print(f"🔍 Analyzing options from {len(source_symbols)} symbols...")
 
-        if strict_match:
-            # Tighter criteria for exact JPM-like patterns
-            jpm_criteria['days_to_expiry'] = (14, 21)
-            jpm_criteria['delta_range'] = (0.12, 0.20)
-            jpm_criteria['gamma_range'] = (0.010, 0.018)
-            jpm_criteria['volume_min'] = 75
+        jpm_matches = []
+        symbols_analyzed = 0
 
-        print(f"🎯 Scanning {len(source_symbols)} symbols for JPM pattern matches...")
-
-        from explosive_options_scanner import ExplosiveOptionsScanner
-        scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
-
-        # Run JPM pattern matching
-        jmp_matches = []
-
-        for symbol in source_symbols[:20]:  # Limit to 20 for performance
+        for symbol in source_symbols[:30]:  # Limit for performance
             try:
-                pass
+                print(f"📊 Analyzing {symbol}...")
+
+                # Get options data for this symbol
+                from explosive_options_scanner import ExplosiveOptionsScanner
+                scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
+                options_data = scanner._fetch_all_options(symbol)
+
+                if options_data is None or options_data.empty:
+                    print(f"⚠️ No options data for {symbol}")
+                    continue
+
+                symbols_analyzed += 1
+
+                # Analyze each option for JPM similarity
+                for idx, option in options_data.iterrows():
+                    try:
+                        # Extract option data
+                        option_dict = {
+                            'delta': abs(float(option.get('delta', 0))),
+                            'gamma': float(option.get('gamma', 0)),
+                            'theta': float(option.get('theta', 0)),
+                            'price': float(option.get('mark', option.get('lastPrice', 0))),
+                            'iv': float(option.get('impliedVolatility', 0)),
+                            'volume': float(option.get('volume', 0)),
+                            'open_interest': float(option.get('open_interest', option.get('openInterest', 0))),
+                            'strike': float(option.get('strike', 0)),
+                            'type': str(option.get('type', 'call')),
+                            'expiration': str(option.get('expiration', ''))
+                        }
+
+                        # Calculate days to expiry
+                        try:
+                            exp_date = pd.to_datetime(option_dict['expiration'])
+                            option_dict['days_to_expiry'] = max(1, (exp_date - pd.Timestamp.now()).days)
+                        except:
+                            option_dict['days_to_expiry'] = 30  # Default
+
+                        # Calculate similarity score
+                        similarity_score = calculate_jpm_similarity(option_dict, jpm_reference)
+
+                        # Check if it meets threshold
+                        if similarity_score >= similarity_threshold:
+                            match = {
+                                'symbol': symbol,
+                                'option': option_dict,
+                                'similarity_score': round(similarity_score, 3),
+                                'contract_symbol': f"{symbol} {option_dict['strike']} {option_dict['type'].upper()} exp {option_dict['expiration'][:10]}",
+                                'comparison': {
+                                    'delta_diff': abs(option_dict['delta'] - jpm_reference['delta']),
+                                    'gamma_diff': abs(option_dict['gamma'] - jpm_reference['gamma']),
+                                    'theta_diff': abs(option_dict['theta'] - jpm_reference['theta']),
+                                    'price_diff': abs(option_dict['price'] - jpm_reference['price']),
+                                    'iv_diff': abs(option_dict['iv'] - jpm_reference['iv']),
+                                    'days_diff': abs(option_dict['days_to_expiry'] - jpm_reference['days_to_expiry'])
+                                }
+                            }
+                            jpm_matches.append(match)
+                            print(f"✅ JPM-like match found: {match['contract_symbol']} (similarity: {similarity_score:.1%})")
+
+                    except Exception as e:
+                        continue  # Skip problematic options
 
             except Exception as e:
-                print(f"⚠️ JPM Hunter Failed for {symbol}: {e}")
+                print(f"⚠️ Error analyzing {symbol}: {e}")
+                continue
+
+        # Sort matches by similarity score
+        jpm_matches.sort(key=lambda x: x['similarity_score'], reverse=True)
+
+        print(f"\n🎯 JPM EXPLOSION HUNTER COMPLETE")
+        print(f"📊 Symbols Analyzed: {symbols_analyzed}")
+        print(f"🔥 JPM-like Matches Found: {len(jpm_matches)}")
+
+        if jpm_matches:
+            print(f"🏆 Best Match: {jpm_matches[0]['contract_symbol']} ({jpm_matches[0]['similarity_score']:.1%} similar)")
 
         return jsonify({
             "status": "success",
             "total_symbols": len(source_symbols),
-            "jpm_matches": jmp_matches,
-            "criteria": jpm_criteria,
-            "strict_match": strict_match
+            "symbols_analyzed": symbols_analyzed,
+            "jpm_matches": jpm_matches[:10],  # Top 10 matches
+            "jpm_reference_pattern": jpm_reference,
+            "similarity_threshold": similarity_threshold,
+            "summary": f"Found {len(jpm_matches)} JPM-like options from {symbols_analyzed} symbols analyzed"
         })
 
     except Exception as e:
+        import traceback
         return jsonify({
             "status": "error",
-            "message": f"JPM explosion hunter failed: {str(e)}"
+            "message": f"JPM explosion hunter failed: {str(e)}",
+            "traceback": traceback.format_exc()
         }), 500
+
+
+def calculate_jpm_similarity(option_dict, jpm_reference):
+    """Calculate similarity score between option and JPM reference pattern"""
+    try:
+        # Similarity weights (total = 1.0)
+        weights = {
+            'delta': 0.25,
+            'gamma': 0.20,
+            'theta': 0.15,
+            'price': 0.20,
+            'iv': 0.10,
+            'days_to_expiry': 0.10
+        }
+
+        total_similarity = 0.0
+
+        # Calculate similarity for each metric (1.0 = perfect match, 0.0 = very different)
+        for metric, weight in weights.items():
+            if metric in option_dict and metric in jpm_reference:
+                option_val = option_dict[metric]
+                ref_val = jpm_reference[metric]
+
+                # Calculate percentage difference
+                if ref_val != 0:
+                    diff = abs(option_val - ref_val) / abs(ref_val)
+                else:
+                    diff = abs(option_val) if option_val != 0 else 0
+
+                # Convert to similarity (closer to 0 diff = higher similarity)
+                similarity = max(0, 1 - diff)
+
+                # Apply tolerance - some metrics can be more different
+                if metric == 'price':
+                    similarity = max(0, 1 - (diff / 2))  # Allow more price variation
+                elif metric == 'days_to_expiry':
+                    similarity = max(0, 1 - (diff / 3))  # Allow more time variation
+
+                total_similarity += similarity * weight
+
+        return min(1.0, total_similarity)  # Cap at 1.0
+
+    except Exception as e:
+        print(f"Error calculating similarity: {e}")
+        return 0.0
 
 @app.route("/explosive-earnings-combo", methods=["GET", "POST"])
 def explosive_earnings_combo():
@@ -2388,7 +2497,8 @@ def mega_discovery_scan():
             "status": "success",
             "scan_type": "mega_discovery_combined",
             "discovery_summary": {
-                "total_discovered": len(all_discovered_symbols),
+                "total_discovered": len```python
+(all_discovered_symbols),
                 "unique_symbols": len(unique_symbols),
                 "symbols_analyzed": len(unique_symbols) if run_analysis else 0,
                 "discovery_sources": discovery_sources,
