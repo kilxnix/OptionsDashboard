@@ -29,10 +29,10 @@ def make_json_safe(obj):
         if hasattr(obj, '__len__') and len(obj) > 1:
             # This is an array-like object, don't use pd.isna
             pass
-        elif obj is not None and hasattr(obj, '__class__') and 'pandas' in str(type(obj)) and str(obj).lower() in ['nan', 'nat', 'none']:
+        elif pd.isna(obj):
             return None
     except (ValueError, TypeError):
-        # Check failed, continue with other checks
+        # pd.isna failed, continue with other checks
         pass
 
     if isinstance(obj, pd.DataFrame):

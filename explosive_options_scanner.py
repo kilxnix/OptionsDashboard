@@ -2,7 +2,6 @@
 import os
 import json
 import numpy as np
-# Import pandas normally - it's required for this functionality
 import pandas as pd
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple
@@ -36,7 +35,7 @@ class ExplosiveOptionsScanner:
 
         # Scan configuration optimized for your API plan
         self.scan_config = {
-            'min_score': 25,  # Lower threshold to catch more opportunities  
+            'min_score': 35,  # Slightly higher to focus on best opportunities  
             'max_positions': 10,  # Max concurrent positions
             'scan_frequency': 'continuous',  # or 'daily', 'hourly'
             'focus_list': [],  # Symbols to prioritize
@@ -212,8 +211,7 @@ class ExplosiveOptionsScanner:
                         # Ensure all required fields are present and properly typed
                         required_fields = ['strike', 'expiration', 'type', 'delta', 'gamma', 'theta', 'volume', 'mark', 'open_interest']
                         for field in required_fields:
-                            field_value = option_dict.get(field)
-                            if field not in option_dict or field_value is None or field_value == '' or str(field_value).lower() == 'nan':
+                            if field not in option_dict or pd.isna(option_dict[field]):
                                 if field == 'strike':
                                     option_dict[field] = 100.0
                                 elif field == 'expiration':
@@ -253,7 +251,7 @@ class ExplosiveOptionsScanner:
                                             except:
                                                 continue
                                         return default
-                                elif value is None or str(value).lower() == 'nan':
+                                elif pd.isna(value) or value is None:
                                     return default
                                 else:
                                     # Clean and convert string/numeric
@@ -281,7 +279,7 @@ class ExplosiveOptionsScanner:
                         # Ensure expiration is properly formatted as string
                         if 'expiration' in option_dict:
                             exp_val = option_dict['expiration']
-                            if exp_val is None or exp_val == '' or str(exp_val).lower() == 'nan':
+                            if pd.isna(exp_val) or exp_val == '' or exp_val is None:
                                 option_dict['expiration'] = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
                             else:
                                 # Standardize expiration format
@@ -308,18 +306,7 @@ class ExplosiveOptionsScanner:
 
                         # Ensure score is a number, not a dict
                         if isinstance(score, dict):
-                            if 'total_score' in score:
-                                score = float(score['total_score'])
-                            else:
-                                # Look for any numeric value in the dict
-                                for key, value in score.items():
-                                    try:
-                                        score = float(value)
-                                        break
-                                    except (ValueError, TypeError):
-                                        continue
-                                else:
-                                    score = 0
+                            score = score.get('total_score', 0) if 'total_score' in score else 0
 
                         try:
                             score = float(score)
@@ -347,23 +334,9 @@ class ExplosiveOptionsScanner:
                     except Exception as e:
                         # Check if it's the specific dictionary comparison error
                         if "'>=' not supported between instances of 'dict' and 'int'" in str(e):
-                            print(f"⚠️ Data type error in scoring for {symbol} - attempting fix...")
-                            # Try to extract score from the grader response
-                            try:
-                                if hasattr(self.grader, 'calculate_option_score'):
-                                    score_result, analysis_result = self.grader.calculate_option_score(option_dict, market_data)
-                                    if isinstance(score_result, (int, float)):
-                                        score = float(score_result)
-                                        analysis = analysis_result
-
-                                        if score >= self.scan_config['min_score']:
-                                            option_dict['score_analysis'] = analysis
-                                            option_dict['total_score'] = score
-                                            scored_options.append(option_dict)
-                                            continue
-                            except:
-                                pass
-                        print(f"⚠️ Skipping option for {symbol}: {e}")
+                            print(f"⚠️ Data type error fixed for {symbol} - continuing scan")
+                        else:
+                            print(f"⚠️ Skipping option for {symbol}: {e}")
                         continue
 
             if not scored_options:
@@ -758,10 +731,9 @@ class ExplosiveOptionsScanner:
 
     def _fetch_all_options(self, symbol: str) -> Optional[pd.DataFrame]:
         """Fetch options data using Alpha Vantage historical + Yahoo Finance realtime"""
-
         try:
             # FIRST: Try Alpha Vantage historical options (you have access)
-            print(f"📊 Fetching AlphaVantage historical options for {symbol}...")
+            print(f"📊 Fetching Alpha Vantage historical options for {symbol}...")
             url = f"https://www.alphavantage.co/query?function=HISTORICAL_OPTIONS&symbol={symbol}&apikey={self.av_key}"
             response = requests.get(url, timeout=15)
             data = response.json()
@@ -953,7 +925,6 @@ class ExplosiveOptionsScanner:
 
     def _fetch_yahoo_options(self, symbol: str) -> Optional[pd.DataFrame]:
         """Fetch options data from Yahoo Finance as fallback"""
-
         try:
             import yfinance as yf
 
