@@ -355,7 +355,7 @@ class ExplosiveOptionsScanner:
                                     if isinstance(score_result, (int, float)):
                                         score = float(score_result)
                                         analysis = analysis_result
-                                        
+
                                         if score >= self.scan_config['min_score']:
                                             option_dict['score_analysis'] = analysis
                                             option_dict['total_score'] = score
@@ -758,10 +758,10 @@ class ExplosiveOptionsScanner:
 
     def _fetch_all_options(self, symbol: str) -> Optional[pd.DataFrame]:
         """Fetch options data using Alpha Vantage historical + Yahoo Finance realtime"""
-        
+
         try:
             # FIRST: Try Alpha Vantage historical options (you have access)
-            print(f"📊 Fetching Alpha Vantage historical options for {symbol}...")
+            print(f"📊 Fetching AlphaVantage historical options for {symbol}...")
             url = f"https://www.alphavantage.co/query?function=HISTORICAL_OPTIONS&symbol={symbol}&apikey={self.av_key}"
             response = requests.get(url, timeout=15)
             data = response.json()
