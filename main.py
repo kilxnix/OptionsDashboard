@@ -862,11 +862,11 @@ def enhanced_scan():
                             f"📊 Started tracking {opportunity['symbol']}: {track_id}"
                         )
                 except Exception as e:
-                    print```python
-(
+                    print(
                         f"⚠️ Failed to track {opportunity.get('symbol', 'unknown')}: {e}"
                     )
 
+        ```python
         return jsonify({
             "status":
             "success",
@@ -1742,13 +1742,13 @@ def get_jpm_pattern_signals(option_dict, market_data):
 
     delta = abs(option_dict.get('delta', 0))
     if 0.25 <= delta <= 0.35:
-        signals```python
-.append(f"Optimal delta: {delta:.3f}")
+        signals.append(f"Optimal delta: {delta:.3f}")
 
     return signals
 
 
-def generate_jpm_recommendation(score):
+def generate_jpm_recommendation```python
+(score):
     """Generate JPM-specific recommendation"""
     if score >= 85:
         return "🔥 EXPLOSIVE JPM PATTERN - Strong reversal setup"
