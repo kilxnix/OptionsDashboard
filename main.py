@@ -866,7 +866,6 @@ def enhanced_scan():
                         f"⚠️ Failed to track {opportunity.get('symbol', 'unknown')}: {e}"
                     )
 
-        ```python
         return jsonify({
             "status":
             "success",
@@ -1747,8 +1746,7 @@ def get_jpm_pattern_signals(option_dict, market_data):
     return signals
 
 
-def generate_jpm_recommendation```python
-(score):
+def generate_jpm_recommendation(score):
     """Generate JPM-specific recommendation"""
     if score >= 85:
         return "🔥 EXPLOSIVE JPM PATTERN - Strong reversal setup"
