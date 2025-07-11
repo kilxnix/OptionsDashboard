@@ -41,7 +41,8 @@ def make_json_safe(obj):
         return obj.to_dict()
     if isinstance(obj, (pd.Timestamp, datetime)):
         return obj.isoformat()
-    if isinstance(obj, (np.int_, np.intc, np.intp, np.int8, np.int16, np.int32, np.int64, np.uint8, np.uint16, np.uint32, np.uint64)):
+    if isinstance(obj, (np.int_, np.intc, np.intp, np.int8, np.int16, np.int32,
+                        np.int64, np.uint8, np.uint16, np.uint32, np.uint64)):
         return int(obj)
     if isinstance(obj, (np.float16, np.float32, np.float64)):
         return float(obj)
@@ -53,6 +54,7 @@ def make_json_safe(obj):
         return [make_json_safe(v) for v in obj]
     return obj
 
+
 @app.route("/")
 def index():
     return jsonify({
@@ -60,6 +62,7 @@ def index():
         "message": "Autonomous scanner is running.",
         "timestamp": datetime.now().isoformat()
     })
+
 
 @app.route("/health")
 def health():
@@ -70,15 +73,19 @@ def health():
 def get_scan_parameters():
     """Get available scan parameters and their default values"""
     return jsonify({
-        "status": "success",
+        "status":
+        "success",
         "parameters": {
             "auto_refresh": {
-                "type": "boolean",
-                "default": True,
-                "description": "Auto-refresh symbols from Alpha Vantage before scanning"
+                "type":
+                "boolean",
+                "default":
+                True,
+                "description":
+                "Auto-refresh symbols from Alpha Vantage before scanning"
             },
             "limit": {
-                "type": "integer", 
+                "type": "integer",
                 "default": 25,
                 "description": "Maximum number of symbols to process"
             },
@@ -88,7 +95,7 @@ def get_scan_parameters():
                 "description": "Minimum option delta (0.0 to 1.0)"
             },
             "max_delta": {
-                "type": "float", 
+                "type": "float",
                 "default": 0.68,
                 "description": "Maximum option delta (0.0 to 1.0)"
             },
@@ -99,7 +106,7 @@ def get_scan_parameters():
             },
             "max_price": {
                 "type": "float",
-                "default": 0.10, 
+                "default": 0.10,
                 "description": "Maximum option price in dollars"
             },
             "min_days": {
@@ -113,12 +120,16 @@ def get_scan_parameters():
                 "description": "Maximum days to expiration"
             },
             "iv_percentile": {
-                "type": "integer",
-                "default": None,
-                "description": "Minimum IV percentile threshold (0-100) - DISABLED by default"
+                "type":
+                "integer",
+                "default":
+                None,
+                "description":
+                "Minimum IV percentile threshold (0-100) - DISABLED by default"
             }
         },
-        "example_usage": "/scan?min_delta=0.3&max_delta=0.7&min_price=0.05&max_price=0.20&min_days=1&max_days=30"
+        "example_usage":
+        "/scan?min_delta=0.3&max_delta=0.7&min_price=0.05&max_price=0.20&min_days=1&max_days=30"
     })
 
 
@@ -133,14 +144,15 @@ def trigger_scan():
         max_delta = float(data.get('max_delta', 0.68))
         min_price = float(data.get('min_price', 0.01))
         max_price = float(data.get('max_price', 0.10))
-        min_days = int(data.get('min_days', 2))
-        max_days = int(data.get('max_days', 16))
+        min_days = int(data.get('min_days', 0))
+        max_days = int(data.get('max_days', 30))
         iv_percentile = data.get('iv_percentile', None)
         if iv_percentile is not None:
             iv_percentile = int(iv_percentile)
     else:
         # GET request - use query parameters
-        auto_refresh = request.args.get('auto_refresh', 'true').lower() == 'true'
+        auto_refresh = request.args.get('auto_refresh',
+                                        'true').lower() == 'true'
         limit = int(request.args.get('limit', 0))  # 0 = unlimited
         min_delta = float(request.args.get('min_delta', 0.25))
         max_delta = float(request.args.get('max_delta', 0.68))
@@ -151,38 +163,46 @@ def trigger_scan():
         iv_percentile = request.args.get('iv_percentile')
         iv_percentile = int(iv_percentile) if iv_percentile else None
 
-    result = run_autonomous_scan(
-        dry_run=False, 
-        auto_refresh_symbols=auto_refresh,
-        symbol_limit=limit,
-        min_delta=min_delta,
-        max_delta=max_delta,
-        min_price=min_price,
-        max_price=max_price,
-        time_to_expiry_range=(min_days, max_days),
-        iv_percentile_threshold=iv_percentile
-    )
+    result = run_autonomous_scan(dry_run=False,
+                                 auto_refresh_symbols=auto_refresh,
+                                 symbol_limit=limit,
+                                 min_delta=min_delta,
+                                 max_delta=max_delta,
+                                 min_price=min_price,
+                                 max_price=max_price,
+                                 time_to_expiry_range=(min_days, max_days),
+                                 iv_percentile_threshold=iv_percentile)
 
     if not result or not result.get("results"):
         return jsonify({
-            "status": "no-results",
-            "message": "Scanner ran but found no valid trade plans.",
-            "digest": result["digest"] if result else "No output",
-            "symbols_processed": result.get("symbols_processed", 0) if result else 0
+            "status":
+            "no-results",
+            "message":
+            "Scanner ran but found no valid trade plans.",
+            "digest":
+            result["digest"] if result else "No output",
+            "symbols_processed":
+            result.get("symbols_processed", 0) if result else 0
         }), 200
 
     # Get summary stats
     results = result.get("results", {})
-    top_scores = sorted([(k, v.get("confluence", {}).get("score", 0)) 
-                        for k, v in results.items()], 
-                       key=lambda x: x[1], reverse=True)
+    top_scores = sorted([(k, v.get("confluence", {}).get("score", 0))
+                         for k, v in results.items()],
+                        key=lambda x: x[1],
+                        reverse=True)
 
     return jsonify({
-        "status": "completed",
-        "digest": result["digest"],
-        "symbols_processed": result.get("symbols_processed", 0),
-        "opportunities_found": len(results),
-        "top_3_symbols": [f"{sym} ({score:.1f})" for sym, score in top_scores[:3]],
+        "status":
+        "completed",
+        "digest":
+        result["digest"],
+        "symbols_processed":
+        result.get("symbols_processed", 0),
+        "opportunities_found":
+        len(results),
+        "top_3_symbols":
+        [f"{sym} ({score:.1f})" for sym, score in top_scores[:3]],
         "scan_parameters": {
             "min_delta": min_delta,
             "max_delta": max_delta,
@@ -201,9 +221,12 @@ def get_sorted_plans():
     """Return sorted trading plans from the most recent scan"""
     try:
         # Get query parameters for sorting
-        sort_by = request.args.get('sort_by', 'confluence_score')  # Default sort by confluence score
+        sort_by = request.args.get(
+            'sort_by', 'confluence_score')  # Default sort by confluence score
         order = request.args.get('order', 'desc')  # Default descending order
-        date = request.args.get('date', datetime.now().strftime('%Y-%m-%d'))  # Default to today
+        date = request.args.get(
+            'date',
+            datetime.now().strftime('%Y-%m-%d'))  # Default to today
 
         # Find the most recent progressive results file
         base_dir = './TradingPlans'
@@ -245,13 +268,20 @@ def get_sorted_plans():
             if 'trade_plan' in data and data['trade_plan']:
                 tp = data['trade_plan']
                 plan_data.update({
-                    'entry_price': tp.get('entry_price', 0),
-                    'target_price': tp.get('initial_target', 0),
-                    'option_type': tp.get('type', 'N/A'),
-                    'strike': tp.get('strike', 'N/A'),
-                    'expiration': tp.get('expiration', 'N/A'),
-                    'position_size': tp.get('position_size', 0),
-                    'max_hold_time': tp.get('max_hold_time', 'N/A')
+                    'entry_price':
+                    tp.get('entry_price', 0),
+                    'target_price':
+                    tp.get('initial_target', 0),
+                    'option_type':
+                    tp.get('type', 'N/A'),
+                    'strike':
+                    tp.get('strike', 'N/A'),
+                    'expiration':
+                    tp.get('expiration', 'N/A'),
+                    'position_size':
+                    tp.get('position_size', 0),
+                    'max_hold_time':
+                    tp.get('max_hold_time', 'N/A')
                 })
 
             plans.append(plan_data)
@@ -260,7 +290,8 @@ def get_sorted_plans():
         reverse_order = order.lower() == 'desc'
 
         if sort_by == 'confluence_score':
-            plans.sort(key=lambda x: x['confluence_score'], reverse=reverse_order)
+            plans.sort(key=lambda x: x['confluence_score'],
+                       reverse=reverse_order)
         elif sort_by == 'entry_price':
             plans.sort(key=lambda x: x['entry_price'], reverse=reverse_order)
         elif sort_by == 'target_price':
@@ -268,7 +299,8 @@ def get_sorted_plans():
         elif sort_by == 'symbol':
             plans.sort(key=lambda x: x['symbol'], reverse=reverse_order)
         else:
-            plans.sort(key=lambda x: x['confluence_score'], reverse=True)  # Default fallback
+            plans.sort(key=lambda x: x['confluence_score'],
+                       reverse=True)  # Default fallback
 
         return jsonify({
             "status": "success",
@@ -316,24 +348,37 @@ def get_all_plans():
 
                 # Extract date from filename for tracking
                 filename = os.path.basename(file_path)
-                date_part = filename.replace('progressive_results_', '').replace('.json', '')
+                date_part = filename.replace('progressive_results_',
+                                             '').replace('.json', '')
                 files_processed.append(date_part)
 
                 # Convert each symbol's data to plan format
                 for symbol, data in results.items():
                     plan_data = {
-                        'symbol': symbol,
-                        'scan_date': date_part,
-                        'confluence_score': data.get('confluence', {}).get('score', 0),
-                        'bias': data.get('confluence', {}).get('bias', 'N/A'),
-                        'entry_price': 0,
-                        'target_price': 0,
-                        'option_type': 'N/A',
-                        'strike': 'N/A',
-                        'expiration': 'N/A',
-                        'expiration_date': None,  # For proper date sorting
-                        'position_size': 0,
-                        'max_hold_time': 'N/A'
+                        'symbol':
+                        symbol,
+                        'scan_date':
+                        date_part,
+                        'confluence_score':
+                        data.get('confluence', {}).get('score', 0),
+                        'bias':
+                        data.get('confluence', {}).get('bias', 'N/A'),
+                        'entry_price':
+                        0,
+                        'target_price':
+                        0,
+                        'option_type':
+                        'N/A',
+                        'strike':
+                        'N/A',
+                        'expiration':
+                        'N/A',
+                        'expiration_date':
+                        None,  # For proper date sorting
+                        'position_size':
+                        0,
+                        'max_hold_time':
+                        'N/A'
                     }
 
                     # Extract trade plan details if available
@@ -341,19 +386,27 @@ def get_all_plans():
                         tp = data['trade_plan']
                         expiration_str = tp.get('expiration', 'N/A')
                         plan_data.update({
-                            'entry_price': tp.get('entry_price', 0),
-                            'target_price': tp.get('initial_target', 0),
-                            'option_type': tp.get('type', 'N/A'),
-                            'strike': tp.get('strike', 'N/A'),
-                            'expiration': expiration_str,
-                            'position_size': tp.get('position_size', 0),
-                            'max_hold_time': tp.get('max_hold_time', 'N/A')
+                            'entry_price':
+                            tp.get('entry_price', 0),
+                            'target_price':
+                            tp.get('initial_target', 0),
+                            'option_type':
+                            tp.get('type', 'N/A'),
+                            'strike':
+                            tp.get('strike', 'N/A'),
+                            'expiration':
+                            expiration_str,
+                            'position_size':
+                            tp.get('position_size', 0),
+                            'max_hold_time':
+                            tp.get('max_hold_time', 'N/A')
                         })
 
                         # Convert expiration to datetime for sorting
                         try:
                             if expiration_str != 'N/A':
-                                plan_data['expiration_date'] = pd.to_datetime(expiration_str)
+                                plan_data['expiration_date'] = pd.to_datetime(
+                                    expiration_str)
                         except:
                             plan_data['expiration_date'] = None
 
@@ -373,18 +426,24 @@ def get_all_plans():
         reverse_order = order.lower() == 'desc'
 
         if sort_by == 'confluence_score':
-            all_plans.sort(key=lambda x: x['confluence_score'], reverse=reverse_order)
+            all_plans.sort(key=lambda x: x['confluence_score'],
+                           reverse=reverse_order)
         elif sort_by == 'entry_price':
-            all_plans.sort(key=lambda x: x['entry_price'], reverse=reverse_order)
+            all_plans.sort(key=lambda x: x['entry_price'],
+                           reverse=reverse_order)
         elif sort_by == 'target_price':
-            all_plans.sort(key=lambda x: x['target_price'], reverse=reverse_order)
+            all_plans.sort(key=lambda x: x['target_price'],
+                           reverse=reverse_order)
         elif sort_by == 'symbol':
             all_plans.sort(key=lambda x: x['symbol'], reverse=reverse_order)
         elif sort_by == 'scan_date':
             all_plans.sort(key=lambda x: x['scan_date'], reverse=reverse_order)
         elif sort_by == 'expiration' or sort_by == 'expiration_date':
             # Sort by expiration date, putting None values at the end
-            all_plans.sort(key=lambda x: x['expiration_date'] if x['expiration_date'] is not None else pd.Timestamp.max, reverse=reverse_order)
+            all_plans.sort(
+                key=lambda x: x['expiration_date']
+                if x['expiration_date'] is not None else pd.Timestamp.max,
+                reverse=reverse_order)
         else:
             all_plans.sort(key=lambda x: x['confluence_score'], reverse=True)
 
@@ -417,7 +476,9 @@ def fetch_alphavantage_top_symbols():
     url = f'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey={api_key}'
 
     try:
-        print("Fetching top gainers, losers, and most active from Alpha Vantage...")
+        print(
+            "Fetching top gainers, losers, and most active from Alpha Vantage..."
+        )
         response = requests.get(url, timeout=30)
         response.raise_for_status()
         data = response.json()
@@ -435,11 +496,12 @@ def fetch_alphavantage_top_symbols():
             if category in data:
                 category_symbols = [item['ticker'] for item in data[category]]
                 all_symbols.extend(category_symbols)
-                print(f"Fetched {len(category_symbols)} symbols from {category}")
+                print(
+                    f"Fetched {len(category_symbols)} symbols from {category}")
 
         # Add common optionable stocks as backup
         backup_symbols = [
-            'SPY', 'QQQ', 'IWM', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 
+            'SPY', 'QQQ', 'IWM', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA',
             'NVDA', 'META', 'AMD', 'INTC', 'NFLX', 'CRM', 'UBER', 'LYFT',
             'BABA', 'DIS', 'BA', 'GE', 'F', 'GM', 'T', 'VZ', 'JPM', 'BAC',
             'WFC', 'C', 'GS', 'MS', 'XOM', 'CVX', 'KO', 'PEP', 'WMT', 'TGT'
@@ -455,23 +517,33 @@ def fetch_alphavantage_top_symbols():
 
         # Remove duplicates while preserving order
         unique_symbols = list(dict.fromkeys(all_symbols))
-        print(f"Total unique symbols (including backup): {len(unique_symbols)}")
+        print(
+            f"Total unique symbols (including backup): {len(unique_symbols)}")
 
         return {
-            'all_symbols': unique_symbols,
-            'top_gainers': [item['ticker'] for item in data.get('top_gainers', [])],
-            'top_losers': [item['ticker'] for item in data.get('top_losers', [])],
-            'most_active': [item['ticker'] for item in data.get('most_actively_traded', [])]
+            'all_symbols':
+            unique_symbols,
+            'top_gainers':
+            [item['ticker'] for item in data.get('top_gainers', [])],
+            'top_losers':
+            [item['ticker'] for item in data.get('top_losers', [])],
+            'most_active':
+            [item['ticker'] for item in data.get('most_actively_traded', [])]
         }
 
     except Exception as e:
         print(f"Error fetching Alpha Vantage data: {e}")
         # Return backup symbols as fallback
         backup_symbols = [
-            'SPY', 'QQQ', 'IWM', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 
+            'SPY', 'QQQ', 'IWM', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA',
             'NVDA', 'META', 'AMD', 'INTC', 'NFLX', 'UBER', 'DIS', 'F'
         ]
-        return {'all_symbols': backup_symbols, 'top_gainers': [], 'top_losers': [], 'most_active': []}
+        return {
+            'all_symbols': backup_symbols,
+            'top_gainers': [],
+            'top_losers': [],
+            'most_active': []
+        }
 
 
 @app.route("/screener/symbols", methods=["GET"])
@@ -484,8 +556,10 @@ def get_screener_symbols():
 
         if category not in valid_categories:
             return jsonify({
-                "status": "error",
-                "message": f"Invalid category. Valid options: {valid_categories}"
+                "status":
+                "error",
+                "message":
+                f"Invalid category. Valid options: {valid_categories}"
             }), 400
 
         data = fetch_alphavantage_top_symbols()
@@ -577,12 +651,14 @@ def update_database_symbols():
             # For GET requests, use query parameters
             mode = request.args.get('mode', 'replace')
             custom_symbols_str = request.args.get('symbols', '')
-            custom_symbols = custom_symbols_str.split(',') if custom_symbols_str else []
+            custom_symbols = custom_symbols_str.split(
+                ',') if custom_symbols_str else []
         else:
             # For POST requests, use JSON body
             data = request.get_json() if request.is_json else {}
             mode = data.get('mode', 'replace')  # Default to replace
-            custom_symbols = data.get('symbols', [])  # Allow custom symbol list
+            custom_symbols = data.get('symbols',
+                                      [])  # Allow custom symbol list
 
         if custom_symbols:
             # Use provided symbols
@@ -605,17 +681,23 @@ def update_database_symbols():
         result = update_tickers_in_db(symbols_to_add, mode=mode)
 
         return jsonify({
-            "status": "success",
-            "source": source,
-            "mode": mode,
-            "symbols_added": len(symbols_to_add),
-            "total_in_database": result["total_in_db"],
-            "message": f"Database updated successfully with {len(symbols_to_add)} symbols"
+            "status":
+            "success",
+            "source":
+            source,
+            "mode":
+            mode,
+            "symbols_added":
+            len(symbols_to_add),
+            "total_in_database":
+            result["total_in_db"],
+            "message":
+            f"Database updated successfully with {len(symbols_to_add)} symbols"
         })
 
     except Exception as e:
         return jsonify({
-            "status": "error", 
+            "status": "error",
             "message": f"Error updating database: {str(e)}"
         }), 500
 
@@ -689,7 +771,8 @@ OVERALL STATISTICS:
 CONFLUENCE SCORE ACCURACY:
 """
 
-        for score_range, data in metrics.get('confluence_score_accuracy', {}).items():
+        for score_range, data in metrics.get('confluence_score_accuracy',
+                                             {}).items():
             report += f"• {score_range}: {data['win_rate']:.1f}% ({data['wins']}/{data['total']})\n"
 
         report += "\nBIAS ACCURACY:\n"
@@ -732,7 +815,8 @@ def enhanced_scan():
             symbols = request.args.getlist('symbols')
             sector_filter = request.args.get('sector', None)
             min_score = float(request.args.get('min_score', 65))
-            scan_date = request.args.get('date', datetime.now().strftime('%Y-%m-%d'))
+            scan_date = request.args.get('date',
+                                         datetime.now().strftime('%Y-%m-%d'))
             max_symbols = int(request.args.get('max_symbols', 400))
 
         # Use proper auto-discovery like explosive scan
@@ -741,7 +825,9 @@ def enhanced_scan():
             try:
                 data = fetch_alphavantage_top_symbols()
                 symbols = data['all_symbols']
-                print(f"🔍 Auto-discovered {len(symbols)} symbols from Alpha Vantage screeners")
+                print(
+                    f"🔍 Auto-discovered {len(symbols)} symbols from Alpha Vantage screeners"
+                )
             except Exception as e:
                 print(f"⚠️ Auto-discovery failed, using fallback: {e}")
                 # Fallback to scanner_core method
@@ -757,8 +843,7 @@ def enhanced_scan():
         results = scanner.run_comprehensive_scan(
             symbols=symbols if symbols else None,
             sector_filter=sector_filter,
-            min_score=min_score
-        )
+            min_score=min_score)
 
         # Track performance for enhanced scan results
         tracked_count = 0
@@ -770,30 +855,37 @@ def enhanced_scan():
                 try:
                     if 'symbol' in opportunity and 'best_option' in opportunity:
                         track_id = tracker.track_option_performance(
-                            opportunity['symbol'],
-                            opportunity['best_option'],
-                            opportunity.get('trading_plan', {}),
-                            scan_date
-                        )
+                            opportunity['symbol'], opportunity['best_option'],
+                            opportunity.get('trading_plan', {}), scan_date)
                         tracked_count += 1
-                        print(f"📊 Started tracking {opportunity['symbol']}: {track_id}")
+                        print(
+                            f"📊 Started tracking {opportunity['symbol']}: {track_id}"
+                        )
                 except Exception as e:
-                    print(f"⚠️ Failed to track {opportunity.get('symbol', 'unknown')}: {e}")
+                    print(
+                        f"⚠️ Failed to track {opportunity.get('symbol', 'unknown')}: {e}"
+                    )
 
         return jsonify({
-            "status": "success",
-            "scan_date": scan_date,
-            "opportunities_found": len(results.get('opportunities', [])),
-            "top_picks": results.get('top_picks', [])[:10],
-            "market_regime": results.get('market_regime', {}),
-            "performance_tracking": f"Now tracking {tracked_count} options"
+            "status":
+            "success",
+            "scan_date":
+            scan_date,
+            "opportunities_found":
+            len(results.get('opportunities', [])),
+            "top_picks":
+            results.get('top_picks', [])[:10],
+            "market_regime":
+            results.get('market_regime', {}),
+            "performance_tracking":
+            f"Now tracking {tracked_count} options"
         })
 
     except Exception as e:
         return jsonify({
-            "status": "error", 
+            "status": "error",
             "message": f"Enhanced scan failed: {str(e)}"
-                }), 500
+        }), 500
 
 
 @app.route("/explosive-scan", methods=["GET", "POST"])
@@ -809,7 +901,8 @@ def run_explosive_scan():
             symbols = data.get('symbols', None)
             filters = data.get('filters', {})
             market_data = data.get('market_data', {})
-            max_symbols = data.get('max_symbols', 400)  # Default limit for efficiency
+            max_symbols = data.get('max_symbols',
+                                   400)  # Default limit for efficiency
         else:
             scan_type = request.args.get('scan_type', 'comprehensive')
             symbols = request.args.getlist('symbols') or None
@@ -837,8 +930,8 @@ def run_explosive_scan():
             symbols=symbols,
             scan_type=scan_type,
             filters=filters,
-            market_data=market_data if request.method == 'POST' and request.is_json else None
-        )
+            market_data=market_data
+            if request.method == 'POST' and request.is_json else None)
 
         # Track performance for all opportunities found
         tracked_count = 0
@@ -853,27 +946,34 @@ def run_explosive_scan():
 
                     if best_option and trading_plan:
                         track_id = tracker.track_option_performance(
-                            symbol, 
-                            best_option, 
-                            trading_plan, 
-                            datetime.now().strftime('%Y-%m-%d')
-                        )
+                            symbol, best_option, trading_plan,
+                            datetime.now().strftime('%Y-%m-%d'))
                         tracked_count += 1
                         print(f"📊 Started tracking {symbol}: {track_id}")
                 except Exception as e:
                     print(f"⚠️ Failed to track {symbol}: {e}")
 
         return jsonify({
-            "status": "success",
-            "scan_type": scan_type,
-            "api_optimization": "Historical options + Yahoo Finance fallback",
-            "symbols_scanned": results['scan_metadata']['symbols_scanned'],
-            "opportunities_found": len(results['opportunities']),
-            "top_picks": results['top_picks'][:10],
-            "earnings_opportunities": len(results['by_category']['earnings_plays']),
-            "api_calls_saved": "Using bulk quotes + historical options",
-            "performance_tracking": f"Now tracking {tracked_count} options",
-            "summary": results['summary']
+            "status":
+            "success",
+            "scan_type":
+            scan_type,
+            "api_optimization":
+            "Historical options + Yahoo Finance fallback",
+            "symbols_scanned":
+            results['scan_metadata']['symbols_scanned'],
+            "opportunities_found":
+            len(results['opportunities']),
+            "top_picks":
+            results['top_picks'][:10],
+            "earnings_opportunities":
+            len(results['by_category']['earnings_plays']),
+            "api_calls_saved":
+            "Using bulk quotes + historical options",
+            "performance_tracking":
+            f"Now tracking {tracked_count} options",
+            "summary":
+            results['summary']
         })
 
     except Exception as e:
@@ -893,11 +993,16 @@ def monitor_positions():
         monitoring_results = scanner.monitor_active_positions()
 
         return jsonify({
-            "status": "success",
-            "positions_monitored": monitoring_results['positions_monitored'],
-            "alerts": monitoring_results['alerts'],
-            "exit_signals": monitoring_results['exit_signals'],
-            "summary_actions": monitoring_results['summary_actions']
+            "status":
+            "success",
+            "positions_monitored":
+            monitoring_results['positions_monitored'],
+            "alerts":
+            monitoring_results['alerts'],
+            "exit_signals":
+            monitoring_results['exit_signals'],
+            "summary_actions":
+            monitoring_results['summary_actions']
         })
 
     except Exception as e:
@@ -917,11 +1022,16 @@ def get_market_regime():
         regime_update = monitor.update_market_regime()
 
         return jsonify({
-            "status": "success",
-            "current_regime": regime_update['current_regime'],
-            "changes": regime_update['changes'],
-            "trading_adjustments": regime_update['trading_adjustments'],
-            "timestamp": regime_update['timestamp']
+            "status":
+            "success",
+            "current_regime":
+            regime_update['current_regime'],
+            "changes":
+            regime_update['changes'],
+            "trading_adjustments":
+            regime_update['trading_adjustments'],
+            "timestamp":
+            regime_update['timestamp']
         })
 
     except Exception as e:
@@ -948,18 +1058,30 @@ def get_live_performance():
 
         for track_id, data in performance_data.items():
             position_info = {
-                'track_id': track_id,
-                'symbol': data['symbol'],
-                'prediction_date': data['prediction_date'],
-                'option_type': data['option_details'].get('type', 'N/A'),
-                'strike': data['option_details'].get('strike', 'N/A'),
-                'expiration': data['option_details'].get('expiration', 'N/A'),
-                'entry_price': data['option_details'].get('entry_price', 0),
-                'confluence_score': data['option_details'].get('confluence_score', 0),
-                'max_profit': data.get('max_profit', 0),
-                'max_loss': data.get('max_loss', 0),
-                'final_outcome': data.get('final_outcome'),
-                'days_tracked': data.get('days_tracked', 0)
+                'track_id':
+                track_id,
+                'symbol':
+                data['symbol'],
+                'prediction_date':
+                data['prediction_date'],
+                'option_type':
+                data['option_details'].get('type', 'N/A'),
+                'strike':
+                data['option_details'].get('strike', 'N/A'),
+                'expiration':
+                data['option_details'].get('expiration', 'N/A'),
+                'entry_price':
+                data['option_details'].get('entry_price', 0),
+                'confluence_score':
+                data['option_details'].get('confluence_score', 0),
+                'max_profit':
+                data.get('max_profit', 0),
+                'max_loss':
+                data.get('max_loss', 0),
+                'final_outcome':
+                data.get('final_outcome'),
+                'days_tracked':
+                data.get('days_tracked', 0)
             }
 
             if data.get('final_outcome') is None:
@@ -1052,7 +1174,9 @@ def get_position_details(track_id):
         if daily_tracking:
             dates = sorted(daily_tracking.keys())
             price_history = [daily_tracking[date]['price'] for date in dates]
-            pnl_history = [daily_tracking[date]['pnl_percent'] for date in dates]
+            pnl_history = [
+                daily_tracking[date]['pnl_percent'] for date in dates
+            ]
         else:
             dates = []
             price_history = []
@@ -1080,21 +1204,23 @@ def get_position_details(track_id):
             "message": f"Error getting position details: {str(e)}"
         }), 500
 
-
-
     except Exception as e:
         return jsonify({
             "status": "error",
             "message": f"Error getting live performance: {str(e)}"
         }), 500
 
-
         return jsonify({
-            "status": "success",
-            "current_regime": regime_update['current_regime'],
-            "changes": regime_update['changes'],
-            "trading_adjustments": regime_update['trading_adjustments'],
-            "timestamp": regime_update['timestamp']
+            "status":
+            "success",
+            "current_regime":
+            regime_update['current_regime'],
+            "changes":
+            regime_update['changes'],
+            "trading_adjustments":
+            regime_update['trading_adjustments'],
+            "timestamp":
+            regime_update['timestamp']
         })
 
     except Exception as e:
@@ -1113,8 +1239,10 @@ def test_api_key():
         api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
         if not api_key:
             return jsonify({
-                "status": "error",
-                "message": "ALPHA_VANTAGE_API_KEY environment variable not found"
+                "status":
+                "error",
+                "message":
+                "ALPHA_VANTAGE_API_KEY environment variable not found"
             }), 500
 
         # Test with a simple quote request
@@ -1152,6 +1280,7 @@ def test_api_key():
             "message": f"API test failed: {str(e)}"
         }), 500
 
+
 @app.route("/test-bulk-quotes", methods=["GET"])
 def test_bulk_quotes():
     """Test Alpha Vantage bulk quotes functionality"""
@@ -1162,8 +1291,10 @@ def test_bulk_quotes():
         api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
         if not api_key:
             return jsonify({
-                "status": "error",
-                "message": "ALPHA_VANTAGE_API_KEY environment variable not found"
+                "status":
+                "error",
+                "message":
+                "ALPHA_VANTAGE_API_KEY environment variable not found"
             }), 500
 
         # Test with a small set of symbols
@@ -1175,20 +1306,29 @@ def test_bulk_quotes():
         data = response.json()
 
         print(f"🧪 Response status: {response.status_code}")
-        print(f"🧪 Response keys: {list(data.keys()) if isinstance(data, dict) else 'Not a dict'}")
+        print(
+            f"🧪 Response keys: {list(data.keys()) if isinstance(data, dict) else 'Not a dict'}"
+        )
         print(f"🧪 Raw response sample: {str(data)[:500]}...")
 
         # Try to parse the response
         parsed = process_alpha_vantage_bulk_response(data)
 
         return jsonify({
-            "status": "success" if len(parsed) > 0 else "no_data",
-            "test_url": url,
-            "response_keys": list(data.keys()) if isinstance(data, dict) else [],
-            "parsed_symbols": len(parsed),
-            "parsed_data": parsed,
-            "raw_response_sample": str(data)[:1000],
-            "api_key_masked": f"{api_key[:8]}...{api_key[-4:]}"
+            "status":
+            "success" if len(parsed) > 0 else "no_data",
+            "test_url":
+            url,
+            "response_keys":
+            list(data.keys()) if isinstance(data, dict) else [],
+            "parsed_symbols":
+            len(parsed),
+            "parsed_data":
+            parsed,
+            "raw_response_sample":
+            str(data)[:1000],
+            "api_key_masked":
+            f"{api_key[:8]}...{api_key[-4:]}"
         })
 
     except Exception as e:
@@ -1196,6 +1336,7 @@ def test_bulk_quotes():
             "status": "error",
             "message": f"Bulk quotes test failed: {str(e)}"
         }), 500
+
 
 @app.route("/test-earnings-verbose", methods=["GET"])
 def test_earnings_verbose():
@@ -1207,11 +1348,16 @@ def test_earnings_verbose():
         pre_earnings_stocks = discover_pre_earnings_stocks(verbose=True)
 
         return jsonify({
-            "status": "success",
-            "test_type": "verbose_earnings_discovery",
-            "candidates_found": len(pre_earnings_stocks),
-            "candidates": pre_earnings_stocks,
-            "message": f"Verbose test complete - found {len(pre_earnings_stocks)} candidates"
+            "status":
+            "success",
+            "test_type":
+            "verbose_earnings_discovery",
+            "candidates_found":
+            len(pre_earnings_stocks),
+            "candidates":
+            pre_earnings_stocks,
+            "message":
+            f"Verbose test complete - found {len(pre_earnings_stocks)} candidates"
         })
 
     except Exception as e:
@@ -1242,7 +1388,9 @@ def get_earnings_calendar():
 
         url = f'https://www.alphavantage.co/query?function=EARNINGS_CALENDAR&horizon={horizon}&apikey={api_key}'
 
-        print(f"📅 Fetching earnings calendar from Alpha Vantage (horizon: {horizon})...")
+        print(
+            f"📅 Fetching earnings calendar from Alpha Vantage (horizon: {horizon})..."
+        )
         response = requests.get(url, timeout=30)
         response.raise_for_status()
 
@@ -1265,7 +1413,8 @@ def get_earnings_calendar():
             if len(fields) >= len(headers):
                 earnings_record = {}
                 for i, header in enumerate(headers):
-                    earnings_record[header.strip().strip('"')] = fields[i].strip().strip('"')
+                    earnings_record[header.strip().strip(
+                        '"')] = fields[i].strip().strip('"')
                 earnings_data.append(earnings_record)
 
         # Filter for next 21 days
@@ -1278,7 +1427,8 @@ def get_earnings_calendar():
                 symbol = record.get('symbol', '')
                 earnings_date_str = record.get('reportDate', '')
                 if earnings_date_str and symbol:
-                    earnings_date = datetime.strptime(earnings_date_str, '%Y-%m-%d').date()
+                    earnings_date = datetime.strptime(earnings_date_str,
+                                                      '%Y-%m-%d').date()
                     days_to_earnings = (earnings_date - current_date).days
 
                     if 0 <= days_to_earnings <= 21:
@@ -1287,7 +1437,9 @@ def get_earnings_calendar():
 
                         # Track alphabet distribution
                         first_letter = symbol[0] if symbol else 'Unknown'
-                        alphabet_breakdown[first_letter] = alphabet_breakdown.get(first_letter, 0) + 1
+                        alphabet_breakdown[
+                            first_letter] = alphabet_breakdown.get(
+                                first_letter, 0) + 1
             except:
                 continue
 
@@ -1308,16 +1460,21 @@ def get_earnings_calendar():
         else:
             response_data["sample_upcoming"] = upcoming_earnings[:20]
             response_data["major_stocks_upcoming"] = [
-                record for record in upcoming_earnings 
-                if record.get('symbol', '') in ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'NFLX', 'JPM', 'BAC']
+                record for record in upcoming_earnings
+                if record.get('symbol', '') in [
+                    'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META',
+                    'NFLX', 'JPM', 'BAC'
+                ]
             ]
 
         return jsonify(response_data)
 
     except Exception as e:
         return jsonify({
-            "status": "error",
-            "message": f"Failed to fetch earnings calendar: {str(e)}"
+            "status":
+            "error",
+            "message":
+            f"Failed to fetch earnings calendar: {str(e)}"
         }), 500
 
 
@@ -1333,7 +1490,8 @@ def explosive_earnings_combo():
             filters = data.get('filters', {})
         else:
             scan_type = request.args.get('scan_type', 'earnings')
-            min_explosive_score = float(request.args.get('min_explosive_score', 35))
+            min_explosive_score = float(
+                request.args.get('min_explosive_score', 35))
             filters = {
                 'min_price': float(request.args.get('min_price', 0.05)),
                 'max_price': float(request.args.get('max_price', 5.00)),
@@ -1344,7 +1502,7 @@ def explosive_earnings_combo():
             }
 
         print("🚀 EXPLOSIVE EARNINGS COMBO SCAN - PHASE 1 + 2")
-        print("="*60)
+        print("=" * 60)
         print(f"🎯 Scan Type: {scan_type}")
         print(f"🔥 Min Explosive Score: {min_explosive_score}")
         print(f"📊 PHASE 1: Find explosive earnings candidates")
@@ -1354,44 +1512,52 @@ def explosive_earnings_combo():
 
         # PHASE 1: Run explosive discovery to find earnings candidates
         print("\n📊 PHASE 1: Running explosive earnings discovery...")
-        explosive_scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
+        explosive_scanner = ExplosiveOptionsScanner(
+            os.getenv('ALPHA_VANTAGE_API_KEY'))
 
         explosive_results = explosive_scanner.run_explosive_scan(
             symbols=None,  # Auto-discover with earnings focus
             scan_type=scan_type,
-            filters=filters
-        )
+            filters=filters)
 
         # Extract high-scoring earnings candidates for Phase 2
         earnings_candidates = []
         for symbol, data in explosive_results['opportunities'].items():
             best_score = data['best_opportunity']['total_score']
 
-            if (best_score >= min_explosive_score and 
-                data['market_data'].get('earnings_info', {}).get('is_pre_earnings')):
+            if (best_score >= min_explosive_score and data['market_data'].get(
+                    'earnings_info', {}).get('is_pre_earnings')):
                 earnings_candidates.append(symbol)
 
-        print(f"✅ PHASE 1 COMPLETE: Found {len(earnings_candidates)} high-scoring earnings candidates")
+        print(
+            f"✅ PHASE 1 COMPLETE: Found {len(earnings_candidates)} high-scoring earnings candidates"
+        )
         print(f"🎯 Earnings candidates: {earnings_candidates[:10]}...")
 
         # PHASE 2: Run full scanner_core analysis on earnings candidates
-        print(f"\n🔬 PHASE 2: Running full scanner_core analysis on {len(earnings_candidates)} candidates...")
+        print(
+            f"\n🔬 PHASE 2: Running full scanner_core analysis on {len(earnings_candidates)} candidates..."
+        )
 
         scanner_core_results = {}
         if earnings_candidates:
             from scanner_core import run_scanner
-            print(f"🔄 Running scanner_core on {len(earnings_candidates)} symbols...")
+            print(
+                f"🔄 Running scanner_core on {len(earnings_candidates)} symbols..."
+            )
             scanner_core_results = run_scanner(
                 symbols=earnings_candidates,
                 min_delta=filters.get('min_delta', 0.10),
                 max_delta=filters.get('max_delta', 0.40),
                 min_price=filters.get('min_price', 0.05),
                 max_price=filters.get('max_price', 5.00),
-                time_to_expiry_range=(filters.get('min_days', 1), filters.get('max_days', 30))
-            )
+                time_to_expiry_range=(filters.get('min_days', 1),
+                                      filters.get('max_days', 30)))
 
             if scanner_core_results:
-                print(f"✅ PHASE 2 COMPLETE: Full analysis completed on {len(scanner_core_results)} symbols")
+                print(
+                    f"✅ PHASE 2 COMPLETE: Full analysis completed on {len(scanner_core_results)} symbols"
+                )
             else:
                 print("⚠️ PHASE 2: No results from scanner_core analysis")
 
@@ -1399,15 +1565,24 @@ def explosive_earnings_combo():
         combined_results = {
             "status": "success",
             "scan_metadata": {
-                "timestamp": datetime.now().isoformat(),
-                "scan_type": f"explosive-earnings-combo-2phase ({scan_type})",
-                "phase_1_symbols_scanned": explosive_results['scan_metadata']['symbols_scanned'],
-                "phase_1_opportunities": len(explosive_results['opportunities']),
-                "earnings_candidates_found": len(earnings_candidates),
-                "phase_2_analyzed": len(scanner_core_results) if scanner_core_results else 0,
-                "min_explosive_score": min_explosive_score,
-                "filters": filters,
-                "methodology": "Phase 1: Explosive discovery → Phase 2: Full scanner_core analysis"
+                "timestamp":
+                datetime.now().isoformat(),
+                "scan_type":
+                f"explosive-earnings-combo-2phase ({scan_type})",
+                "phase_1_symbols_scanned":
+                explosive_results['scan_metadata']['symbols_scanned'],
+                "phase_1_opportunities":
+                len(explosive_results['opportunities']),
+                "earnings_candidates_found":
+                len(earnings_candidates),
+                "phase_2_analyzed":
+                len(scanner_core_results) if scanner_core_results else 0,
+                "min_explosive_score":
+                min_explosive_score,
+                "filters":
+                filters,
+                "methodology":
+                "Phase 1: Explosive discovery → Phase 2: Full scanner_core analysis"
             },
             "phase_1_explosive_results": {
                 "opportunities": explosive_results['opportunities'],
@@ -1424,42 +1599,65 @@ def explosive_earnings_combo():
         if scanner_core_results:
             for symbol, scanner_data in scanner_core_results.items():
                 # Get corresponding explosive data
-                explosive_data = explosive_results['opportunities'].get(symbol, {})
+                explosive_data = explosive_results['opportunities'].get(
+                    symbol, {})
 
                 # Combine both analyses
                 combined_opportunity = {
-                    'symbol': symbol,
-                    'explosive_score': explosive_data.get('best_opportunity', {}).get('total_score', 0),
-                    'confluence_score': scanner_data.get('confluence', {}).get('score', 0),
-                    'confluence_bias': scanner_data.get('confluence', {}).get('bias', 'N/A'),
-                    'days_to_earnings': explosive_data.get('market_data', {}).get('earnings_info', {}).get('days_to_earnings', 'N/A'),
-                    'earnings_priority': explosive_data.get('market_data', {}).get('earnings_info', {}).get('earnings_priority', 'N/A'),
-                    'has_gaps': any([
-                        tf_data.get('gap_percent', 0) != 0 
-                        for tf_data in scanner_data.get('timeframe_analysis', {}).values()
+                    'symbol':
+                    symbol,
+                    'explosive_score':
+                    explosive_data.get('best_opportunity',
+                                       {}).get('total_score', 0),
+                    'confluence_score':
+                    scanner_data.get('confluence', {}).get('score', 0),
+                    'confluence_bias':
+                    scanner_data.get('confluence', {}).get('bias', 'N/A'),
+                    'days_to_earnings':
+                    explosive_data.get('market_data',
+                                       {}).get('earnings_info',
+                                               {}).get('days_to_earnings',
+                                                       'N/A'),
+                    'earnings_priority':
+                    explosive_data.get('market_data',
+                                       {}).get('earnings_info',
+                                               {}).get('earnings_priority',
+                                                       'N/A'),
+                    'has_gaps':
+                    any([
+                        tf_data.get('gap_percent', 0) != 0
+                        for tf_data in scanner_data.get(
+                            'timeframe_analysis', {}).values()
                     ]),
-                    'volume_confluence': len(scanner_data.get('volume_profile', {}).get('confluences', [])) > 0,
-                    'trade_plan': scanner_data.get('trade_plan', {}),
+                    'volume_confluence':
+                    len(
+                        scanner_data.get('volume_profile',
+                                         {}).get('confluences', [])) > 0,
+                    'trade_plan':
+                    scanner_data.get('trade_plan', {}),
                     'patterns_found': [
                         f"{tf}:{','.join([k for k,v in tf_data.get('patterns', {}).items() if v])}"
-                        for tf, tf_data in scanner_data.get('timeframe_analysis', {}).items()
+                        for tf, tf_data in scanner_data.get(
+                            'timeframe_analysis', {}).items()
                         if any(tf_data.get('patterns', {}).values())
                     ],
-                    'explosive_analysis': explosive_data.get('best_opportunity', {}),
-                    'scanner_core_analysis': scanner_data
+                    'explosive_analysis':
+                    explosive_data.get('best_opportunity', {}),
+                    'scanner_core_analysis':
+                    scanner_data
                 }
                 final_opportunities.append(combined_opportunity)
 
         # Sort by combined score (explosive + confluence)
         final_opportunities.sort(
-            key=lambda x: (x['explosive_score'] + x['confluence_score']), 
-            reverse=True
-        )
+            key=lambda x: (x['explosive_score'] + x['confluence_score']),
+            reverse=True)
 
         combined_results['final_opportunities'] = final_opportunities
 
         # Generate comprehensive summary
-        top_opportunity = final_opportunities[0] if final_opportunities else None
+        top_opportunity = final_opportunities[
+            0] if final_opportunities else None
         combined_results['summary'] = f"""
 🎯 EXPLOSIVE EARNINGS COMBO SCAN - 2 PHASE ANALYSIS COMPLETE
 {'='*70}
@@ -1493,7 +1691,7 @@ def explosive_earnings_combo():
         import traceback
         traceback.print_exc()
         return jsonify({
-            "status": "error", 
+            "status": "error",
             "message": str(e),
             "traceback": traceback.format_exc()
         }), 500
@@ -1509,12 +1707,14 @@ def run_pre_earnings_scan():
             days_ahead = int(data.get('days_ahead', 21))  # Look 21 days ahead
             min_delta = float(data.get('min_delta', 0.25))
             max_delta = float(data.get('max_delta', 0.68))
-            priority_only = data.get('priority_only', True)  # Only critical/high priority
+            priority_only = data.get('priority_only',
+                                     True)  # Only critical/high priority
         else:
             days_ahead = int(request.args.get('days_ahead', 21))
             min_delta = float(request.args.get('min_delta', 0.25))
             max_delta = float(request.args.get('max_delta', 0.68))
-            priority_only = request.args.get('priority_only', 'true').lower() == 'true'
+            priority_only = request.args.get('priority_only',
+                                             'true').lower() == 'true'
 
         from enhanced_scanner import discover_pre_earnings_stocks, run_enhanced_scanner
 
@@ -1523,22 +1723,21 @@ def run_pre_earnings_scan():
 
         if not pre_earnings_stocks:
             return jsonify({
-                "status": "no-results", 
+                "status": "no-results",
                 "message": "No stocks found with upcoming earnings"
             })
 
         # Run enhanced scanner on just these stocks
-        results = run_enhanced_scanner(
-            symbols=pre_earnings_stocks,
-            min_delta=min_delta,
-            max_delta=max_delta
-        )
+        results = run_enhanced_scanner(symbols=pre_earnings_stocks,
+                                       min_delta=min_delta,
+                                       max_delta=max_delta)
 
         # Filter by earnings priority if requested
         if priority_only and results:
             priority_results = {}
             for symbol, data in results.items():
-                earnings_info = data.get('market_data', {}).get('earnings_info', {})
+                earnings_info = data.get('market_data',
+                                         {}).get('earnings_info', {})
                 priority = earnings_info.get('earnings_priority', 'low')
                 if priority in ['critical', 'high']:
                     priority_results[symbol] = data
@@ -1554,38 +1753,55 @@ def run_pre_earnings_scan():
         # Calculate earnings-specific stats
         earnings_stats = {}
         for symbol, data in results.items():
-            earnings_info = data.get('market_data', {}).get('earnings_info', {})
+            earnings_info = data.get('market_data',
+                                     {}).get('earnings_info', {})
             priority = earnings_info.get('earnings_priority', 'unknown')
             days_to_earnings = earnings_info.get('days_to_earnings', 999)
 
             if priority not in earnings_stats:
                 earnings_stats[priority] = []
             earnings_stats[priority].append({
-                'symbol': symbol,
-                'days_to_earnings': days_to_earnings,
-                'confluence_score': data.get('confluence', {}).get('score', 0)
+                'symbol':
+                symbol,
+                'days_to_earnings':
+                days_to_earnings,
+                'confluence_score':
+                data.get('confluence', {}).get('score', 0)
             })
 
         return jsonify({
-            "status": "completed",
-            "scan_type": "pre_earnings",
-            "message": f"Pre-earnings scan completed successfully",
-            "candidates_scanned": len(pre_earningsstocks),
-            "opportunities_found": len(results),
-            "priority_filter": priority_only,
+            "status":
+            "completed",
+            "scan_type":
+            "pre_earnings",
+            "message":
+            f"Pre-earnings scan completed successfully",
+            "candidates_scanned":
+            len(pre_earningsstocks),
+            "opportunities_found":
+            len(results),
+            "priority_filter":
+            priority_only,
             "earnings_breakdown": {
-                priority: len(stocks) for priority, stocks in earnings_stats.items()
+                priority: len(stocks)
+                for priority, stocks in earnings_stats.items()
             },
-            "top_earnings_plays": [
-                {
-                    "symbol": symbol,
-                    "days_to_earnings": data.get('market_data', {}).get('earnings_info', {}).get('days_to_earnings', 999),
-                    "earnings_priority": data.get('market_data', {}).get('earnings_info', {}).get('earnings_priority', 'unknown'),
-                    "confluence_score": data.get('confluence', {}).get('score', 0),
-                    "confidence": data.get('trade_plan', {}).get('validation_score', 0)
-                }
-                for symbol, data in list(results.items())[:10]
-            ]
+            "top_earnings_plays": [{
+                "symbol":
+                symbol,
+                "days_to_earnings":
+                data.get('market_data',
+                         {}).get('earnings_info',
+                                 {}).get('days_to_earnings', 999),
+                "earnings_priority":
+                data.get('market_data',
+                         {}).get('earnings_info',
+                                 {}).get('earnings_priority', 'unknown'),
+                "confluence_score":
+                data.get('confluence', {}).get('score', 0),
+                "confidence":
+                data.get('trade_plan', {}).get('validation_score', 0)
+            } for symbol, data in list(results.items())[:10]]
         })
 
     except Exception as e:
@@ -1656,7 +1872,9 @@ def get_formatted_plans():
 
             formatted_output += "\n" + "-" * 60 + "\n\n"
 
-        return formatted_output, 200, {'Content-Type': 'text/plain; charset=utf-8'}
+        return formatted_output, 200, {
+            'Content-Type': 'text/plain; charset=utf-8'
+        }
 
     except Exception as e:
         return f"Error retrieving formatted plans: {str(e)}", 500
@@ -1680,16 +1898,16 @@ def run_enhanced_scan():
             max_delta = float(request.args.get('max_delta', 0.68))
 
         # Run enhanced scanner
-        results = run_enhanced_scanner(
-            symbols=symbols,
-            min_delta=min_delta,
-            max_delta=max_delta
-        )
+        results = run_enhanced_scanner(symbols=symbols,
+                                       min_delta=min_delta,
+                                       max_delta=max_delta)
 
         if not results:
             return jsonify({
-                "status": "no-results",
-                "message": "Enhanced scan completed but found no high-quality opportunities"
+                "status":
+                "no-results",
+                "message":
+                "Enhanced scan completed but found no high-quality opportunities"
             })
 
         # Track performance for all results
@@ -1699,36 +1917,42 @@ def run_enhanced_scan():
 
         for symbol, data in results.items():
             try:
-                if ('options' in data and not isinstance(data['options'], bool) 
-                    and not data['options'].empty and 'trade_plan' in data 
-                    and data['trade_plan']):
+                if ('options' in data
+                        and not isinstance(data['options'], bool)
+                        and not data['options'].empty and 'trade_plan' in data
+                        and data['trade_plan']):
 
                     top_option = data['options'].iloc[0].to_dict()
                     trade_plan = data['trade_plan']
 
                     track_id = tracker.track_option_performance(
-                        symbol, top_option, trade_plan, 
-                        datetime.now().strftime('%Y-%m-%d')
-                    )
+                        symbol, top_option, trade_plan,
+                        datetime.now().strftime('%Y-%m-%d'))
                     tracked_count += 1
             except Exception as e:
                 print(f"⚠️ Failed to track {symbol}: {e}")
 
         return jsonify({
-            "status": "success",
-            "scan_type": "enhanced_comprehensive",
-            "opportunities_found": len(results),
-            "top_opportunities": [
-                {
-                    "symbol": symbol,
-                    "confluence_score": data.get('confluence', {}).get('score', 0),
-                    "bias": data.get('confluence', {}).get('bias', 'N/A'),
-                    "validation_score": data.get('trade_plan', {}).get('validation_score', 0)
-                }
-                for symbol, data in list(results.items())[:10]
-            ],
-            "performance_tracking": f"Now tracking {tracked_count} options",
-            "timestamp": datetime.now().isoformat()
+            "status":
+            "success",
+            "scan_type":
+            "enhanced_comprehensive",
+            "opportunities_found":
+            len(results),
+            "top_opportunities": [{
+                "symbol":
+                symbol,
+                "confluence_score":
+                data.get('confluence', {}).get('score', 0),
+                "bias":
+                data.get('confluence', {}).get('bias', 'N/A'),
+                "validation_score":
+                data.get('trade_plan', {}).get('validation_score', 0)
+            } for symbol, data in list(results.items())[:10]],
+            "performance_tracking":
+            f"Now tracking {tracked_count} options",
+            "timestamp":
+            datetime.now().isoformat()
         })
 
     except Exception as e:
@@ -1745,13 +1969,16 @@ def get_enhanced_scan_progress():
         from datetime import datetime
         import glob
 
-        date_str = request.args.get('date', datetime.now().strftime('%Y-%m-%d'))
+        date_str = request.args.get('date',
+                                    datetime.now().strftime('%Y-%m-%d'))
         progress_file = f'./TradingPlans/enhanced_scan_progress_{date_str}.json'
 
         if not os.path.exists(progress_file):
             return jsonify({
-                "status": "not_found",
-                "message": "No enhanced scan in progress for this date"
+                "status":
+                "not_found",
+                "message":
+                "No enhanced scan in progress for this date"
             })
 
         with open(progress_file, 'r') as f:
@@ -1762,23 +1989,30 @@ def get_enhanced_scan_progress():
         total_count = progress_data.get('total_symbols', 0)
 
         return jsonify({
-            "status": "in_progress" if processed_count < total_count else "completed",
+            "status":
+            "in_progress" if processed_count < total_count else "completed",
             "progress": {
-                "processed": processed_count,
-                "total": total_count,
-                "percentage": (processed_count / total_count * 100) if total_count > 0 else 0,
-                "remaining": total_count - processed_count
+                "processed":
+                processed_count,
+                "total":
+                total_count,
+                "percentage": (processed_count / total_count *
+                               100) if total_count > 0 else 0,
+                "remaining":
+                total_count - processed_count
             },
-            "results_found": len(results),
-            "last_updated": progress_data.get('last_updated'),
-            "top_opportunities": [
-                {
-                    "symbol": symbol,
-                    "enhanced_score": data.get('confluence', {}).get('score', 0),
-                    "confidence": data.get('trade_plan', {}).get('validation_score', 0)
-                }
-                for symbol, data in list(results.items())[:5]
-            ]
+            "results_found":
+            len(results),
+            "last_updated":
+            progress_data.get('last_updated'),
+            "top_opportunities": [{
+                "symbol":
+                symbol,
+                "enhanced_score":
+                data.get('confluence', {}).get('score', 0),
+                "confidence":
+                data.get('trade_plan', {}).get('validation_score', 0)
+            } for symbol, data in list(results.items())[:5]]
         })
 
     except Exception as e:
@@ -1809,6 +2043,7 @@ def resume_enhanced_scan():
             "message": f"Failed to resume scan: {str(e)}"
         }), 500
 
+
 @app.route("/mega-discovery-scan", methods=["GET", "POST"])
 def mega_discovery_scan():
     """Ultimate auto-discovery scan combining ALL methods with full analysis"""
@@ -1821,7 +2056,8 @@ def mega_discovery_scan():
             filters = data.get('filters', {})
         else:
             max_symbols = int(request.args.get('max_symbols', 200))
-            run_analysis = request.args.get('run_analysis', 'true').lower() == 'true'
+            run_analysis = request.args.get('run_analysis',
+                                            'true').lower() == 'true'
             filters = {
                 'min_price': float(request.args.get('min_price', 0.05)),
                 'max_price': float(request.args.get('max_price', 5.00)),
@@ -1832,7 +2068,7 @@ def mega_discovery_scan():
             }
 
         print("🚀 MEGA DISCOVERY SCAN - COMBINING ALL AUTO-DISCOVERY METHODS")
-        print("="*70)
+        print("=" * 70)
 
         all_discovered_symbols = []
         discovery_sources = {}
@@ -1857,7 +2093,7 @@ def mega_discovery_scan():
             print(f"⚠️ Alpha Vantage failed: {e}")
             discovery_sources['alpha_vantage'] = {'error': str(e)}
 
-        # Method 2: Database symbols  
+        # Method 2: Database symbols
         try:
             print("💾 Method 2: Database symbols...")
             from db_client import fetch_tickers_from_db
@@ -1904,7 +2140,9 @@ def mega_discovery_scan():
 
         # Remove duplicates while preserving order
         unique_symbols = list(dict.fromkeys(all_discovered_symbols))
-        print(f"🎯 DISCOVERY COMPLETE: {len(unique_symbols)} unique symbols from {len(all_discovered_symbols)} total")
+        print(
+            f"🎯 DISCOVERY COMPLETE: {len(unique_symbols)} unique symbols from {len(all_discovered_symbols)} total"
+        )
 
         # Limit symbols for performance
         if len(unique_symbols) > max_symbols:
@@ -1926,7 +2164,9 @@ def mega_discovery_scan():
 
         # Run full scanner_core analysis if requested
         if run_analysis and unique_symbols:
-            print(f"🔬 Running full scanner_core analysis on {len(unique_symbols)} symbols...")
+            print(
+                f"🔬 Running full scanner_core analysis on {len(unique_symbols)} symbols..."
+            )
             try:
                 from scanner_core import run_scanner
                 analysis_results = run_scanner(
@@ -1935,8 +2175,8 @@ def mega_discovery_scan():
                     max_delta=filters.get('max_delta', 0.35),
                     min_price=filters.get('min_price', 0.05),
                     max_price=filters.get('max_price', 5.00),
-                    time_to_expiry_range=(filters.get('min_days', 1), filters.get('max_days', 21))
-                )
+                    time_to_expiry_range=(filters.get('min_days', 1),
+                                          filters.get('max_days', 21)))
 
                 if analysis_results:
                     # Track performance for all results
@@ -1946,40 +2186,45 @@ def mega_discovery_scan():
 
                     for symbol, data in analysis_results.items():
                         try:
-                            if ('options' in data and not isinstance(data['options'], bool) 
-                                and not data['options'].empty and 'trade_plan' in data 
-                                and data['trade_plan']):
+                            if ('options' in data
+                                    and not isinstance(data['options'], bool)
+                                    and not data['options'].empty
+                                    and 'trade_plan' in data
+                                    and data['trade_plan']):
 
                                 top_option = data['options'].iloc[0].to_dict()
                                 trade_plan = data['trade_plan']
                                 track_id = tracker.track_option_performance(
-                                    symbol, top_option, trade_plan, 
-                                    datetime.now().strftime('%Y-%m-%d')
-                                )
+                                    symbol, top_option, trade_plan,
+                                    datetime.now().strftime('%Y-%m-%d'))
                                 tracked_count += 1
                         except Exception as e:
                             print(f"⚠️ Failed to track {symbol}: {e}")
 
                     mega_results["analysis_results"] = analysis_results
                     mega_results["opportunities_found"] = len(analysis_results)
-                    mega_results["performance_tracking"] = f"Now tracking {tracked_count} options"
+                    mega_results[
+                        "performance_tracking"] = f"Now tracking {tracked_count} options"
 
                     # Add top opportunities summary
                     top_opportunities = sorted(
-                        [(symbol, data.get('confluence', {}).get('score', 0)) 
+                        [(symbol, data.get('confluence', {}).get('score', 0))
                          for symbol, data in analysis_results.items()],
-                        key=lambda x: x[1], reverse=True
-                    )[:10]
+                        key=lambda x: x[1],
+                        reverse=True)[:10]
 
-                    mega_results["top_opportunities"] = [
-                        {
-                            "symbol": symbol,
-                            "confluence_score": score,
-                            "bias": analysis_results[symbol].get('confluence', {}).get('bias', 'N/A')
-                        }
-                        for symbol, score in top_opportunities
-                    ]
-                    print(f"✅ Analysis complete: {len(analysis_results)} opportunities found")
+                    mega_results["top_opportunities"] = [{
+                        "symbol":
+                        symbol,
+                        "confluence_score":
+                        score,
+                        "bias":
+                        analysis_results[symbol].get('confluence',
+                                                     {}).get('bias', 'N/A')
+                    } for symbol, score in top_opportunities]
+                    print(
+                        f"✅ Analysis complete: {len(analysis_results)} opportunities found"
+                    )
                 else:
                     mega_results["analysis_results"] = {}
                     mega_results["opportunities_found"] = 0
@@ -2022,7 +2267,10 @@ def discovery_info():
                 'sample_symbols': av_data['all_symbols'][:10]
             }
         except Exception as e:
-            discovery_breakdown['alpha_vantage'] = {'status': 'error', 'message': str(e)}
+            discovery_breakdown['alpha_vantage'] = {
+                'status': 'error',
+                'message': str(e)
+            }
 
         # Database
         try:
@@ -2034,7 +2282,10 @@ def discovery_info():
                 'sample_symbols': db_symbols[:10]
             }
         except Exception as e:
-            discovery_breakdown['database'] = {'status': 'error', 'message': str(e)}
+            discovery_breakdown['database'] = {
+                'status': 'error',
+                'message': str(e)
+            }
 
         # High volume
         try:
@@ -2046,7 +2297,10 @@ def discovery_info():
                 'sample_symbols': volume_symbols[:10]
             }
         except Exception as e:
-            discovery_breakdown['high_volume'] = {'status': 'error', 'message': str(e)}
+            discovery_breakdown['high_volume'] = {
+                'status': 'error',
+                'message': str(e)
+            }
 
         # Earnings
         try:
@@ -2058,7 +2312,10 @@ def discovery_info():
                 'sample_symbols': earnings_symbols[:10]
             }
         except Exception as e:
-            discovery_breakdown['earnings'] = {'status': 'error', 'message': str(e)}
+            discovery_breakdown['earnings'] = {
+                'status': 'error',
+                'message': str(e)
+            }
 
         # Calculate totals
         total_discovered = 0
