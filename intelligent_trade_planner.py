@@ -101,14 +101,6 @@ class IntelligentTradePlanner:
             option_data, score_analysis, market_data
         )
 
-        earnings_info = market_data.get('earnings_info', {})
-        days_to_earnings = earnings_info.get('days_to_earnings')
-        earnings_priority = earnings_info.get('earnings_priority')
-
-        best_rr = None
-        if risk_reward.get('risk_reward_ratios'):
-            best_rr = max(risk_reward['risk_reward_ratios'].values())
-
         # Compile the complete plan
         trade_plan = {
             'symbol': symbol,
@@ -135,9 +127,6 @@ class IntelligentTradePlanner:
             'exit_strategy': exit_strategy,
             'risk_reward': risk_reward,
             'execution_notes': execution_notes,
-            'days_to_earnings': days_to_earnings,
-            'earnings_priority': earnings_priority,
-            'best_risk_reward': best_rr,
             'plan_generated': datetime.now().isoformat(),
             'plan_validity': self._calculate_plan_validity(option_data)
         }
@@ -512,12 +501,6 @@ class IntelligentTradePlanner:
         if days_to_expiry < 7:
             notes.append(f"⏰ NEAR EXPIRATION: Only {days_to_expiry} days left, gamma play")
 
-        earnings_info = market_data.get('earnings_info', {})
-        if earnings_info:
-            dte = earnings_info.get('days_to_earnings')
-            if dte is not None:
-                notes.append(f"📅 Earnings in {dte} days ({earnings_info.get('earnings_priority', 'N/A')})")
-
         # Score-based notes
         if score_analysis['confidence'] >= 80:
             notes.append("✅ HIGH CONFIDENCE SETUP: Can be more aggressive with position")
@@ -603,10 +586,6 @@ class IntelligentTradePlanner:
             formatted += f"  • {target}: {ratio:.2f}:1\n"
 
         formatted += f"- Breakeven Win Rate: {rr['breakeven_win_rate']:.1f}%\n"
-        if plan.get('best_risk_reward'):
-            formatted += f"- Best R/R: {plan['best_risk_reward']:.2f}:1\n"
-        if plan.get('days_to_earnings') is not None:
-            formatted += f"- Earnings in {plan['days_to_earnings']} days ({plan.get('earnings_priority','N/A')})\n"
 
         # Add execution notes
         if plan['execution_notes']:
