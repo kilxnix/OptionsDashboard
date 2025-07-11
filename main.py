@@ -861,7 +861,7 @@ def enhanced_scan():
                         print(
                             f"📊 Started tracking {opportunity['symbol']}: {track_id}"
                         )
-                except Exception as e:
+                except Exception as e:```python
                     print(
                         f"⚠️ Failed to track {opportunity.get('symbol', 'unknown')}: {e}"
                     )
@@ -1547,7 +1547,7 @@ def jpm_explosion_hunter():
         from explosive_options_scanner import ExplosiveOptionsScanner
         scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
 
-        
+
 @app.route("/explosive-earnings-combo", methods=["GET", "POST"])
 def explosive_earnings_combo():
     """Combined explosive scan that finds earnings candidates AND runs full scanner_core analysis"""
@@ -1697,7 +1697,8 @@ def explosive_earnings_combo():
                     any([
                         tf_data.get('gap_percent', 0) != 0
                         for tf_data in scanner_data.get(
-                            'timeframe_analysis', {}).values()
+                            'timeframe_analysis',```python
+ {}).values()
                     ]),
                     'volume_confluence':
                     len(
@@ -2503,7 +2504,7 @@ def discovery_info():
         try:
             from scanner_core import get_optionable_stocks_with_volume
             volume_symbols = get_optionable_stocks_with_volume()
-            discovery_breakdown['high_volume'] = {
+            discovery_breakdown['highvolume'] = {
                 'status': 'success',
                 'total_symbols': len(volume_symbols),
                 'sample_symbols': volume_symbols[:10]
