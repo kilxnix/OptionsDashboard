@@ -2531,8 +2531,7 @@ def mega_discovery_scan():
 
         # Method 3: High-volume optionable stocks
         try:
-            print("📈 Method 3: Highpython
--volume optionable stocks...")
+            print("📈 Method 3: High-volume optionable stocks...")
             from scanner_core import get_optionable_stocks_with_volume
             volume_symbols = get_optionable_stocks_with_volume()
             all_discovered_symbols.extend(volume_symbols)
