@@ -862,7 +862,8 @@ def enhanced_scan():
                             f"📊 Started tracking {opportunity['symbol']}: {track_id}"
                         )
                 except Exception as e:
-                    print(
+                    print```python
+(
                         f"⚠️ Failed to track {opportunity.get('symbol', 'unknown')}: {e}"
                     )
 
@@ -1477,7 +1478,6 @@ def get_earnings_calendar():
             f"Failed to fetch earnings calendar: {str(e)}"
         }), 500
 
-
 @app.route('/api/jpm-explosion-hunter', methods=['GET'])
 def jpm_explosion_hunter():
     """
@@ -1492,10 +1492,10 @@ def jpm_explosion_hunter():
         # Import and use existing explosive scanner
         from explosive_options_scanner import ExplosiveOptionsScanner
         import os
-        
+
         # Initialize with JPM-specific configuration
         scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
-        
+
         # Run explosive scan with JPM-optimized filters
         jpm_filters = {
             'min_price': 0.10,
@@ -1507,59 +1507,59 @@ def jpm_explosion_hunter():
             'min_volume': 500,
             'min_oi': 100
         }
-        
+
         # Get symbols at price extremes (the key JPM characteristic)
         extreme_symbols = get_symbols_at_extremes()
-        
+
         explosion_candidates = []
-        
+
         for symbol in extreme_symbols:
             try:
                 # Use existing market data fetching
                 market_data = scanner._fetch_enhanced_market_data(symbol)
                 if not market_data:
                     continue
-                
+
                 current_price = market_data['current_price']
-                
+
                 # Check for JPM-like price action (at extremes with reversal potential)
                 if not is_at_price_extreme(symbol, current_price):
                     continue
-                
-                
+
+
                 # Get options using existing scanner infrastructure
                 options_data = scanner._fetch_all_options(symbol)
                 if options_data is None or options_data.empty:
                     continue
-                
+
                 # Apply JPM-specific option filters using existing filter system
                 filtered_options = scanner._apply_filters(options_data, jpm_filters)
                 if filtered_options.empty:
                     continue
-                
+
                 # Score options using existing system with JPM pattern emphasis
                 for idx, option in filtered_options.iterrows():
                     try:
                         option_dict = option.to_dict()
-                        
+
                         # Use existing scoring but add JPM pattern multipliers
                         base_score, analysis = scanner.grader.calculate_option_score(
                             option_dict, market_data
                         )
-                        
+
                         # Apply JPM pattern multipliers
                         jpm_multiplier = calculate_jpm_pattern_multiplier(
                             option_dict, market_data, symbol
                         )
-                        
+
                         final_score = base_score * jpm_multiplier
-                        
+
                         if final_score >= 70:  # High threshold for JPM patterns
                             # Generate trade plan using existing planner
                             trade_plan = scanner.planner.generate_intelligent_plan(
                                 option_dict, analysis, market_data
                             )
-                            
+
                             candidate = {
                                 'symbol': symbol,
                                 'option_symbol': option_dict.get('contractSymbol', 'N/A'),
@@ -1577,21 +1577,21 @@ def jpm_explosion_hunter():
                                 'days_to_expiry': option_dict.get('days_to_expiry', 0),
                                 'recommendation': generate_jpm_recommendation(final_score)
                             }
-                            
+
                             explosion_candidates.append(candidate)
-                            
+
                     except Exception as e:
                         print(f"⚠️ Option scoring error for {symbol}: {e}")
                         continue
-                        
+
             except Exception as e:
                 print(f"Error processing {symbol}: {str(e)}")
                 continue
-        
-        
+
+
         # Sort by JPM score
         explosion_candidates.sort(key=lambda x: x['jpm_score'], reverse=True)
-        
+
         return jsonify({
             'status': 'success',
             'pattern': 'JPM_EXPLOSION_HUNTER_INTEGRATED',
@@ -1608,7 +1608,7 @@ def jpm_explosion_hunter():
                 'positioning': 'Puts near highs, calls near lows for reversal plays'
             }
         })
-        
+
     except Exception as e:
         return jsonify({
             'status': 'error',
@@ -1622,32 +1622,32 @@ def get_symbols_at_extremes():
         # Use existing Alpha Vantage screener integration
         api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
         url = f'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey={api_key}'
-        
+
         response = requests.get(url, timeout=30)
         data = response.json()
-        
+
         extreme_symbols = []
-        
+
         # Get top gainers (potential reversal candidates at highs)
         for item in data.get('top_gainers', [])[:20]:
             symbol = item['ticker']
             change_pct = float(item.get('change_percent', '0%').replace('%', ''))
             if change_pct >= 5.0:  # Significant move that could be at extreme
                 extreme_symbols.append(symbol)
-        
+
         # Get top losers (potential reversal candidates at lows)  
         for item in data.get('top_losers', [])[:20]:
             symbol = item['ticker']
             change_pct = abs(float(item.get('change_percent', '0%').replace('%', '')))
             if change_pct >= 5.0:  # Significant decline that could be at extreme
                 extreme_symbols.append(symbol)
-        
+
         # Add known high-volatility stocks that often hit extremes
         volatility_stocks = ['TSLA', 'NVDA', 'AMD', 'COIN', 'HOOD', 'PLTR', 'GME', 'AMC']
         extreme_symbols.extend(volatility_stocks)
-        
+
         return list(set(extreme_symbols))  # Remove duplicates
-        
+
     except:
         # Fallback list
         return ['TSLA', 'NVDA', 'AMD', 'SPY', 'QQQ', 'COIN', 'HOOD', 'PLTR', 'GME', 'AMC']
@@ -1659,19 +1659,19 @@ def is_at_price_extreme(symbol, current_price):
         import yfinance as yf
         ticker = yf.Ticker(symbol)
         hist = ticker.history(period="1y")
-        
+
         if hist.empty:
             return True  # Include if we can't verify
-        
+
         high_52w = hist['High'].max()
         low_52w = hist['Low'].min()
-        
+
         # Within 2% of 52-week high or low
         near_high = current_price >= (high_52w * 0.98)
         near_low = current_price <= (low_52w * 1.02)
-        
+
         return near_high or near_low
-        
+
     except:
         return True  # Include if verification fails
 
@@ -1679,38 +1679,38 @@ def is_at_price_extreme(symbol, current_price):
 def calculate_jpm_pattern_multiplier(option_dict, market_data, symbol):
     """Calculate JPM pattern-specific multiplier for scoring"""
     multiplier = 1.0
-    
+
     # Volume/OI surge multiplier (core JPM signal)
     volume = option_dict.get('volume', 0)
     oi = option_dict.get('open_interest', 1)
     vol_oi_ratio = volume / max(oi, 1)
-    
+
     if vol_oi_ratio >= 10.0:
         multiplier *= 2.0  # Extreme unusual activity
     elif vol_oi_ratio >= 5.0:
         multiplier *= 1.5  # JPM-like activity
     elif vol_oi_ratio >= 3.0:
         multiplier *= 1.2  # Significant activity
-    
+
     # IV discount multiplier
     iv_discount = calculate_iv_discount(option_dict, market_data)
     if iv_discount >= 0.20:
         multiplier *= 1.3  # Very cheap relative to historical
     elif iv_discount >= 0.15:
         multiplier *= 1.2  # JPM-like discount
-    
+
     # Days to expiration sweet spot
     dte = option_dict.get('days_to_expiry', 0)
     if 2 <= dte <= 5:
         multiplier *= 1.3  # JPM sweet spot
     elif dte <= 7:
         multiplier *= 1.1  # Close to sweet spot
-    
+
     # Delta range bonus
     delta = abs(option_dict.get('delta', 0))
     if 0.25 <= delta <= 0.35:
         multiplier *= 1.2  # JPM optimal range
-    
+
     return multiplier
 
 
@@ -1718,7 +1718,7 @@ def calculate_iv_discount(option_dict, market_data):
     """Calculate IV discount vs historical volatility"""
     iv = option_dict.get('implied_volatility', option_dict.get('impliedVolatility', 0.25))
     hist_vol = market_data.get('volatility_30d', 25) / 100  # Convert to decimal
-    
+
     if hist_vol > 0:
         return max(0, (hist_vol - iv) / hist_vol)
     return 0
@@ -1727,23 +1727,24 @@ def calculate_iv_discount(option_dict, market_data):
 def get_jpm_pattern_signals(option_dict, market_data):
     """Get specific JPM pattern signals"""
     signals = []
-    
+
     vol_oi_ratio = option_dict['volume'] / max(option_dict['open_interest'], 1)
     if vol_oi_ratio >= 5.0:
         signals.append(f"Volume surge: {vol_oi_ratio:.1f}x OI")
-    
+
     iv_discount = calculate_iv_discount(option_dict, market_data)
     if iv_discount >= 0.15:
         signals.append(f"IV discount: {iv_discount:.1%} below historical")
-    
+
     dte = option_dict.get('days_to_expiry', 0)
     if 2 <= dte <= 5:
         signals.append(f"Gamma zone: {dte} days to expiry")
-    
+
     delta = abs(option_dict.get('delta', 0))
     if 0.25 <= delta <= 0.35:
-        signals.append(f"Optimal delta: {delta:.3f}")
-    
+        signals```python
+.append(f"Optimal delta: {delta:.3f}")
+
     return signals
 
 
@@ -2058,7 +2059,7 @@ def run_pre_earnings_scan():
             "message":
             f"Pre-earnings scan completed successfully",
             "candidates_scanned":
-            len(pre_earningsstocks),
+            len(pre_earnings_stocks),
             "opportunities_found":
             len(results),
             "priority_filter":
@@ -2530,7 +2531,8 @@ def mega_discovery_scan():
 
         # Method 3: High-volume optionable stocks
         try:
-            print("📈 Method 3: High-volume optionable stocks...")
+            print("📈 Method 3: Highpython
+-volume optionable stocks...")
             from scanner_core import get_optionable_stocks_with_volume
             volume_symbols = get_optionable_stocks_with_volume()
             all_discovered_symbols.extend(volume_symbols)
