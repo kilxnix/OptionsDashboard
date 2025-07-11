@@ -859,8 +859,9 @@ def enhanced_scan():
                             opportunity.get('trading_plan', {}), scan_date)
                         tracked_count += 1
                         print(
-                            f"📊 Started tracking {opportunity['symbol']}: {trackid}"
+                            f"📊 Started tracking {opportunity['symbol']}: {track_id}"
                         )
+```python
                 except Exception as e:
                     print(
                         f"⚠️ Failed to track {opportunity.get('symbol', 'unknown')}: {e}"
@@ -1477,285 +1478,258 @@ def get_earnings_calendar():
             f"Failed to fetch earnings calendar: {str(e)}"
         }), 500
 
-@app.route('/api/jpm-explosion-hunter', methods=['GET'])
+@app.route('/api/jpm-explosion-hunter', methods=['GET', 'POST'])
 def jpm_explosion_hunter():
     """
-    Hunt for options with the exact JPM explosion pattern integrated into existing scanner:
-    - Stocks at extremes (52w high/low) → reversal positioning
-    - Low IV vs historical volatility → cheap premium entry
-    - High volume/OI ratio (5x+) → unusual activity detection
-    - 2-5 days to expiration → gamma acceleration zone
-    - Delta 0.25-0.35 → optimal leverage/probability balance
+    Phase 2: Find options matching the JPM explosion pattern from your example contract.
+    This takes results from explosive-earnings-combo and filters for JPM-like setups.
+
+    JPM Example Pattern:
+    - Strike 315 CALL expiring 2025-07-25 (17 days out)
+    - Delta: 0.15696, Gamma: 0.01411, Theta: -0.09836
+    - Volume: 121, OI: 129, IV: 0.23438
+    - Price: $1.52, Current stock: $293.725
     """
     try:
-        # Import and use existing explosive scanner
-        from explosive_options_scanner import ExplosiveOptionsScanner
-        import os
-        import yfinance as yf
+        # Get parameters
+        if request.method == 'POST' and request.is_json:
+            data = request.get_json()
+            source_symbols = data.get('symbols', [])
+            strict_match = data.get('strict_match', True)
+        else:
+            source_symbols = request.args.getlist('symbols')
+            strict_match = request.args.get('strict_match', 'true').lower() == 'true'
 
-        # Initialize with JPM-specific configuration
-        scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
+        print("🎯 JPM EXPLOSION HUNTER - PHASE 2 PATTERN MATCHING")
+        print("=" * 60)
+        print(f"📋 Target Pattern: JPM 315C exp 7/25 @ $1.52")
+        print(f"🔍 Delta: ~0.157, Gamma: ~0.014, Theta: ~-0.098")
+        print(f"📊 Volume/OI: 121/129, IV: ~0.234")
 
-        # Run explosive scan with JPM-optimized filters
-        jpm_filters = {
-            'min_price': 0.10,
-            'max_price': 5.00,
-            'min_delta': 0.25,
-            'max_delta': 0.35,
-            'min_days': 2,
-            'max_days': 5,
-            'min_volume': 500,
-            'min_oi': 100
+        # If no symbols provided, get from most recent explosive-earnings-combo results
+        if not source_symbols:
+            print("📂 No symbols provided - loading from recent explosive scan results...")
+            import glob
+            pattern = os.path.join('./TradingPlans', 'explosive_scan_*.json')
+            files = glob.glob(pattern)
+            if files:
+                latest_file = max(files, key=os.path.getctime)
+                with open(latest_file, 'r') as f:
+                    scan_data = json.load(f)
+                    source_symbols = list(scan_data.get('opportunities', {}).keys())
+                    print(f"📊 Loaded {len(source_symbols)} symbols from {os.path.basename(latest_file)}")
+            else:
+                # Fallback to common symbols
+                source_symbols = ['SPY', 'QQQ', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'JPM', 'BAC', 'WFC']
+                print(f"⚠️ No scan results found - using fallback symbols")
+
+        # JPM pattern criteria (from your example)
+        jpm_criteria = {
+            'days_to_expiry': (10, 25),      # 17 days ± range  
+            'delta_range': (0.10, 0.25),     # 0.157 ± range
+            'gamma_range': (0.008, 0.020),   # 0.014 ± range
+            'theta_max': -0.05,              # Theta < -0.05 (more negative is worse)
+            'price_range': (0.50, 5.00),     # $1.52 ± range
+            'iv_range': (0.15, 0.35),        # 0.234 ± range
+            'volume_min': 50,                # 121 minimum activity
+            'oi_min': 50,                    # 129 minimum OI
+            'volume_oi_ratio_min': 0.5       # Active but not crazy
         }
 
-        # Get symbols at price extremes (the key JPM characteristic)
-        extreme_symbols = get_symbols_at_extremes()
+        if strict_match:
+            # Tighter criteria for exact JPM-like patterns
+            jmp_criteria['days_to_expiry'] = (14, 21)
+            jpm_criteria['delta_range'] = (0.12, 0.20)
+            jpm_criteria['gamma_range'] = (0.010, 0.018)
+            jpm_criteria['volume_min'] = 75
 
-        explosion_candidates = []
+        print(f"🎯 Scanning {len(source_symbols)} symbols for JPM pattern matches...")
 
-        for symbol in extreme_symbols:
+        from explosive_options_scanner import ExplosiveOptionsScanner
+        scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
+
+        jpm_matches = []
+        processed_count = 0
+
+        for symbol in source_symbols[:50]:  # Limit for performance
             try:
-                # Use existing market data fetching
+                processed_count += 1
+                print(f"  📊 Scanning {symbol} ({processed_count}/{min(len(source_symbols), 50)})...")
+
+                # Get options data
+                options_data = scanner._fetch_all_options(symbol)
+                if options_data is None or options_data.empty:
+                    continue
+
+                # Get market data
                 market_data = scanner._fetch_enhanced_market_data(symbol)
                 if not market_data:
                     continue
 
                 current_price = market_data['current_price']
 
-                # Check for JPM-like price action (at extremes with reversal potential)
-                if not is_at_price_extreme(symbol, current_price):
-                    continue
-
-
-                # Get options using existing scanner infrastructure
-                options_data = scanner._fetch_all_options(symbol)
-                if options_data is None or options_data.empty:
-                    continue
-
-                # Apply JPM-specific option filters using existing filter system
-                filtered_options = scanner._apply_filters(options_data, jpm_filters)
-                if filtered_options.empty:
-                    continue
-
-                # Score options using existing system with JPM pattern emphasis
-                for idx, option in filtered_options.iterrows():
+                # Filter options matching JPM criteria
+                for idx, option in options_data.iterrows():
                     try:
                         option_dict = option.to_dict()
 
-                        # Use existing scoring but add JPM pattern multipliers
-                        base_score, analysis = scanner.grader.calculate_option_score(
-                            option_dict, market_data
-                        )
+                        # Extract key values with safe defaults
+                        dte = option_dict.get('days_to_expiry', 0)
+                        delta = abs(float(option_dict.get('delta', 0)))
+                        gamma = float(option_dict.get('gamma', 0))
+                        theta = float(option_dict.get('theta', 0))
+                        price = float(option_dict.get('mark', option_dict.get('lastPrice', 0)))
+                        iv = float(option_dict.get('impliedVolatility', 0))
+                        volume = float(option_dict.get('volume', 0))
+                        oi = float(option_dict.get('open_interest', 0))
+                        strike = float(option_dict.get('strike', 0))
+                        option_type = option_dict.get('type', '').lower()
 
-                        # Apply JPM pattern multipliers
-                        jpm_multiplier = calculate_jpm_pattern_multiplier(
-                            option_dict, market_data, symbol
-                        )
+                        # Skip if essential data is missing
+                        if not all([dte, delta, price, strike]):
+                            continue
 
-                        final_score = base_score * jpm_multiplier
+                        # Apply JPM pattern matching criteria
+                        criteria_met = 0
+                        total_criteria = 9
 
-                        if final_score >= 70:  # High threshold for JPM patterns
-                            # Generate trade plan using existing planner
-                            trade_plan = scanner.planner.generate_intelligent_plan(
-                                option_dict, analysis, market_data
-                            )
+                        # 1. Days to expiry
+                        if jpm_criteria['days_to_expiry'][0] <= dte <= jpm_criteria['days_to_expiry'][1]:
+                            criteria_met += 1
 
-                            candidate = {
+                        # 2. Delta range  
+                        if jpm_criteria['delta_range'][0] <= delta <= jpm_criteria['delta_range'][1]:
+                            criteria_met += 1
+
+                        # 3. Gamma range
+                        if jpm_criteria['gamma_range'][0] <= gamma <= jpm_criteria['gamma_range'][1]:
+                            criteria_met += 1
+
+                        # 4. Theta (not too negative)
+                        if theta >= jpm_criteria['theta_max']:
+                            criteria_met += 1
+
+                        # 5. Price range
+                        if jpm_criteria['price_range'][0] <= price <= jpm_criteria['price_range'][1]:
+                            criteria_met += 1
+
+                        # 6. IV range
+                        if jpm_criteria['iv_range'][0] <= iv <= jpm_criteria['iv_range'][1]:
+                            criteria_met += 1
+
+                        # 7. Volume minimum
+                        if volume >= jpm_criteria['volume_min']:
+                            criteria_met += 1
+
+                        # 8. OI minimum
+                        if oi >= jpm_criteria['oi_min']:
+                            criteria_met += 1
+
+                        # 9. Volume/OI ratio
+                        vol_oi_ratio = volume / max(oi, 1)
+                        if vol_oi_ratio >= jpm_criteria['volume_oi_ratio_min']:
+                            criteria_met += 1
+
+                        # Calculate match percentage
+                        match_percentage = (criteria_met / total_criteria) * 100
+
+                        # Only include if meets minimum threshold
+                        min_threshold = 70 if strict_match else 60
+                        if match_percentage >= min_threshold:
+
+                            # Calculate similarity score to JPM example
+                            jpm_delta_target = 0.15696
+                            jpm_gamma_target = 0.01411  
+                            jpm_price_target = 1.52
+                            jpm_iv_target = 0.23438
+
+                            similarity_score = (
+                                100 - abs(delta - jpm_delta_target) * 200 +  # Delta similarity
+                                100 - abs(gamma - jpm_gamma_target) * 3000 + # Gamma similarity  
+                                100 - abs(price - jpm_price_target) * 20 +   # Price similarity
+                                100 - abs(iv - jpm_iv_target) * 200          # IV similarity
+                            ) / 4
+
+                            jpm_match = {
                                 'symbol': symbol,
-                                'option_symbol': option_dict.get('contractSymbol', 'N/A'),
-                                'strike': option_dict['strike'],
-                                'expiration': option_dict['expiration'],
-                                'option_type': option_dict['type'],
-                                'current_price': current_price,
-                                'jpm_score': round(final_score, 2),
-                                'base_score': round(base_score, 2),
-                                'jpm_multiplier': round(jpm_multiplier, 2),
-                                'pattern_signals': get_jpm_pattern_signals(option_dict, market_data),
-                                'trading_plan': trade_plan,
-                                'volume_surge': option_dict['volume'] / max(option_dict['open_interest'], 1),
-                                'iv_discount': calculate_iv_discount(option_dict, market_data),
-                                'days_to_expiry': option_dict.get('days_to_expiry', 0),
-                                'recommendation': generate_jpm_recommendation(final_score)
+                                'contract': f"{symbol} {strike} {option_type.upper()} exp {option_dict.get('expiration')}",
+                                'match_percentage': round(match_percentage, 1),
+                                'similarity_score': round(max(0, similarity_score), 1),
+                                'current_stock_price': current_price,
+                                'strike': strike,
+                                'option_type': option_type,
+                                'expiration': option_dict.get('expiration'),
+                                'days_to_expiry': dte,
+                                'option_price': price,
+                                'delta': round(delta, 5),
+                                'gamma': round(gamma, 5), 
+                                'theta': round(theta, 5),
+                                'iv': round(iv, 4),
+                                'volume': int(volume),
+                                'open_interest': int(oi),
+                                'volume_oi_ratio': round(vol_oi_ratio, 2),
+                                'criteria_analysis': {
+                                    'dte_match': jpm_criteria['days_to_expiry'][0] <= dte <= jpm_criteria['days_to_expiry'][1],
+                                    'delta_match': jpm_criteria['delta_range'][0] <= delta <= jpm_criteria['delta_range'][1],
+                                    'gamma_match': jpm_criteria['gamma_range'][0] <= gamma <= jpm_criteria['gamma_range'][1],
+                                    'theta_match': theta >= jpm_criteria['theta_max'],
+                                    'price_match': jpm_criteria['price_range'][0] <= price <= jpm_criteria['price_range'][1],
+                                    'iv_match': jpm_criteria['iv_range'][0] <= iv <= jpm_criteria['iv_range'][1],
+                                    'volume_match': volume >= jpm_criteria['volume_min'],
+                                    'oi_match': oi >= jpm_criteria['oi_min'],
+                                    'activity_match': vol_oi_ratio >= jpm_criteria['volume_oi_ratio_min']
+                                }
                             }
 
-                            explosion_candidates.append(candidate)
+                            jpm_matches.append(jpm_match)
 
                     except Exception as e:
-                        print(f"⚠️ Option scoring error for {symbol}: {e}")
                         continue
 
             except Exception as e:
-                print(f"Error processing {symbol}: {str(e)}")
+                print(f"  ❌ Error scanning {symbol}: {str(e)}")
                 continue
 
+        # Sort by similarity score first, then match percentage
+        jpm_matches.sort(key=lambda x: (x['similarity_score'], x['match_percentage']), reverse=True)
 
-        # Sort by JPM score
-        explosion_candidates.sort(key=lambda x: x['jpm_score'], reverse=True)
+        print(f"✅ JPM Pattern Hunt Complete!")
+        print(f"📊 Found {len(jpm_matches)} matches from {processed_count} symbols scanned")
 
         return jsonify({
             'status': 'success',
-            'pattern': 'JPM_EXPLOSION_HUNTER_INTEGRATED',
-            'total_candidates': len(explosion_candidates),
-            'candidates': explosion_candidates[:15],  # Top 15 JPM patterns
-            'scan_time': datetime.now().isoformat(),
-            'methodology': 'Integrated with existing explosive scanner for JPM pattern detection',
-            'jpm_criteria': {
-                'price_extremes': 'Within 2% of 52-week high/low with reversal setup',
-                'iv_discount': '15%+ below historical volatility',
-                'volume_surge': '5x+ volume/OI ratio indicating unusual activity',
-                'time_frame': '2-5 days to expiration for gamma acceleration',
-                'delta_range': '0.25-0.35 for optimal leverage/probability balance',
-                'positioning': 'Puts near highs, calls near lows for reversal plays'
-            }
+            'scan_type': 'jpm_explosion_hunter_phase2',
+            'methodology': 'Pattern matching against JPM 315C example contract',
+            'jpm_reference': {
+                'symbol': 'JPM',
+                'strike': 315.0,
+                'type': 'call', 
+                'expiration': '2025-07-25',
+                'days_to_expiry': 17,
+                'price': 1.52,
+                'delta': 0.15696,
+                'gamma': 0.01411,
+                'theta': -0.09836,
+                'iv': 0.23438,
+                'volume': 121,
+                'open_interest': 129
+            },
+            'scan_summary': {
+                'symbols_scanned': processed_count,
+                'matches_found': len(jpm_matches),
+                'strict_mode': strict_match,
+                'min_threshold': f"{70 if strict_match else 60}% criteria match"
+            },
+            'pattern_criteria': jpm_criteria,
+            'matches': jpm_matches[:20],  # Top 20 matches
+            'scan_time': datetime.now().isoformat()
         })
 
     except Exception as e:
         return jsonify({
             'status': 'error',
-            'message': str(e)
+            'message': f"JPM explosion hunter failed: {str(e)}"
         }), 500
-
-
-def get_symbols_at_extremes():
-    """Get symbols currently at 52-week price extremes"""
-    try:
-        # Use existing Alpha Vantage screener integration
-        api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
-        url = f'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey={api_key}'
-
-        response = requests.get(url, timeout=30)
-        data = response.json()
-
-        extreme_symbols = []
-
-        # Get top gainers (potential reversal candidates at highs)
-        for item in data.get('top_gainers', [])[:20]:
-            symbol = item['ticker']
-            change_pct = float(item.get('change_percent', '0%').replace('%', ''))
-            if change_pct >= 5.0:  # Significant move that could be at extreme
-                extreme_symbols.append(symbol)
-
-        # Get top losers (potential reversal candidates at lows)  
-        for item in data.get('top_losers', [])[:20]:
-            symbol = item['ticker']
-            change_pct = abs(float(item.get('change_percent', '0%').replace('%', '')))
-            if change_pct >= 5.0:  # Significant decline that could be at extreme
-                extreme_symbols.append(symbol)
-
-        # Add known high-volatility stocks that often hit extremes
-        volatility_stocks = ['TSLA', 'NVDA', 'AMD', 'COIN', 'HOOD', 'PLTR', 'GME', 'AMC']
-        extreme_symbols.extend(volatility_stocks)
-
-        return list(set(extreme_symbols))  # Remove duplicates
-
-    except:
-        # Fallback list
-        return ['TSLA', 'NVDA', 'AMD', 'SPY', 'QQQ', 'COIN', 'HOOD', 'PLTR', 'GME', 'AMC']
-
-
-def is_at_price_extreme(symbol, current_price):
-    """Check if stock is at 52-week extreme using Yahoo Finance"""
-    try:
-        import yfinance as yf
-        ticker = yf.Ticker(symbol)
-        hist = ticker.history(period="1y")
-
-        if hist.empty:
-            return True  # Include if we can't verify
-
-        high_52w = hist['High'].max()
-        low_52w = hist['Low'].min()
-
-        # Within 2% of 52-week high or low
-        near_high = current_price >= (high_52w * 0.98)
-        near_low = current_price <= (low_52w * 1.02)
-
-        return near_high or near_low
-
-    except:
-        return True  # Include if verification fails
-
-
-def calculate_jpm_pattern_multiplier(option_dict, market_data, symbol):
-    """Calculate JPM pattern-specific multiplier for scoring"""
-    multiplier = 1.0
-
-    # Volume/OI surge multiplier (core JPM signal)
-    volume = option_dict.get('volume', 0)
-    oi = option_dict.get('open_interest', 1)
-    vol_oi_ratio = volume / max(oi, 1)
-
-    if vol_oi_ratio >= 10.0:
-        multiplier *= 2.0  # Extreme unusual activity
-    elif vol_oi_ratio >= 5.0:
-        multiplier *= 1.5  # JPM-like activity
-    elif vol_oi_ratio >= 3.0:
-        multiplier *= 1.2  # Significant activity
-
-    # IV discount multiplier
-    iv_discount = calculate_iv_discount(option_dict, market_data)
-    if iv_discount >= 0.20:
-        multiplier *= 1.3  # Very cheap relative to historical
-    elif iv_discount >= 0.15:
-        multiplier *= 1.2  # JPM-like discount
-
-    # Days to expiration sweet spot
-    dte = option_dict.get('days_to_expiry', 0)
-    if 2 <= dte <= 5:
-        multiplier *= 1.3  # JPM sweet spot
-    elif dte <= 7:
-        multiplier *= 1.1  # Close to sweet spot
-
-    # Delta range bonus
-    delta = abs(option_dict.get('delta', 0))
-    if 0.25 <= delta <= 0.35:
-        multiplier *= 1.2  # JPM optimal range
-
-    return multiplier
-
-
-def calculate_iv_discount(option_dict, market_data):
-    """Calculate IV discount vs historical volatility"""
-    iv = option_dict.get('implied_volatility', option_dict.get('impliedVolatility', 0.25))
-    hist_vol = market_data.get('volatility_30d', 25) / 100  # Convert to decimal
-
-    if hist_vol > 0:
-        return max(0, (hist_vol - iv) / hist_vol)
-    return 0
-
-
-def get_jpm_pattern_signals(option_dict, market_data):
-    """Get specific JPM pattern signals"""
-    signals = []
-
-    vol_oi_ratio = option_dict['volume'] / max(option_dict['open_interest'], 1)
-    if vol_oi_ratio >= 5.0:
-        signals.append(f"Volume surge: {vol_oi_ratio:.1f}x OI")
-
-    iv_discount = calculate_iv_discount(option_dict, market_data)
-    if iv_discount >= 0.15:
-        signals.append(f"IV discount: {iv_discount:.1%} below historical")
-
-    dte = option_dict.get('days_to_expiry', 0)
-    if 2 <= dte <= 5:
-        signals.append(f"Gamma zone: {dte} days to expiry")
-
-    delta = abs(option_dict.get('delta', 0))
-    if 0.25 <= delta <= 0.35:
-        signals.append(f"Optimal delta: {delta:.3f}")
-
-    return signals
-
-def generate_jpm_recommendation(score):
-    """Generate JPM-specific recommendation"""
-    if score >= 85:
-        return "🔥 EXPLOSIVE JPM PATTERN - Strong reversal setup"
-    elif score >= 75:
-        return "⚡ HIGH JPM POTENTIAL - Excellent unusual activity"
-    elif score >= 70:
-        return "✅ SOLID JPM SETUP - Good reversal opportunity"
-    else:
-        return "⚠️ WEAK JPM SIGNAL - Monitor for confirmation"
 
 
 @app.route("/explosive-earnings-combo", methods=["GET", "POST"])
@@ -2502,7 +2476,7 @@ def mega_discovery_scan():
                 'count': len(av_symbols),
                 'symbols': av_symbols[:20],  # Sample
                 'categories': {
-                    'top_gainers': len(av_data['top_gainers']),
+                    'top_python
                     'top_losers': len(av_data['top_losers']),
                     'most_active': len(av_data['most_active'])
                 }
