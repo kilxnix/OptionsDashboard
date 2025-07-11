@@ -2,14 +2,8 @@
 import os
 import json
 import numpy as np
-# pandas is an optional dependency in some environments.  To avoid
-# "cannot access local variable 'pd'" errors when pandas is missing or
-# imported lazily, we import it within a try/except block and fall back
-# to a lightweight stub when not available.
-try:
-    import pandas as pd
-except Exception:  # pragma: no cover - handled for restricted envs
-    pd = None
+# Import pandas normally - it's required for this functionality
+import pandas as pd
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple
 import concurrent.futures
@@ -219,7 +213,7 @@ class ExplosiveOptionsScanner:
                         required_fields = ['strike', 'expiration', 'type', 'delta', 'gamma', 'theta', 'volume', 'mark', 'open_interest']
                         for field in required_fields:
                             field_value = option_dict.get(field)
-                            if field not in option_dict or field_value is None or field_value == '' or str(field_value).lower() == 'nan':
+                            if field not in option_dict or field_value is None or field_value == '' or (pd.isna(field_value) if pd.notna else False):
                                 if field == 'strike':
                                     option_dict[field] = 100.0
                                 elif field == 'expiration':
@@ -259,7 +253,7 @@ class ExplosiveOptionsScanner:
                                             except:
                                                 continue
                                         return default
-                                elif value is None or str(value).lower() == 'nan':
+                                elif value is None or (pd.isna(value) if hasattr(pd, 'isna') else str(value).lower() == 'nan'):
                                     return default
                                 else:
                                     # Clean and convert string/numeric
@@ -287,7 +281,7 @@ class ExplosiveOptionsScanner:
                         # Ensure expiration is properly formatted as string
                         if 'expiration' in option_dict:
                             exp_val = option_dict['expiration']
-                            if exp_val is None or exp_val == '' or str(exp_val).lower() == 'nan':
+                            if exp_val is None or exp_val == '' or (pd.isna(exp_val) if hasattr(pd, 'isna') else str(exp_val).lower() == 'nan'):
                                 option_dict['expiration'] = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
                             else:
                                 # Standardize expiration format
@@ -764,10 +758,6 @@ class ExplosiveOptionsScanner:
 
     def _fetch_all_options(self, symbol: str) -> Optional[pd.DataFrame]:
         """Fetch options data using Alpha Vantage historical + Yahoo Finance realtime"""
-        # Ensure pandas is available even if the module-level import failed
-        global pd
-        if pd is None:
-            import pandas as pd
         
         try:
             # FIRST: Try Alpha Vantage historical options (you have access)
@@ -963,9 +953,6 @@ class ExplosiveOptionsScanner:
 
     def _fetch_yahoo_options(self, symbol: str) -> Optional[pd.DataFrame]:
         """Fetch options data from Yahoo Finance as fallback"""
-        global pd
-        if pd is None:
-            import pandas as pd
 
         try:
             import yfinance as yf
@@ -1087,9 +1074,6 @@ class ExplosiveOptionsScanner:
 
     def _apply_filters(self, options_data: pd.DataFrame, filters: Dict) -> pd.DataFrame:
         """Apply filters to options data using safe helpers"""
-        global pd
-        if pd is None:
-            import pandas as pd
         if options_data is None or options_data.empty:
             return pd.DataFrame()
 
