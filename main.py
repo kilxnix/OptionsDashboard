@@ -861,7 +861,6 @@ def enhanced_scan():
                         print(
                             f"📊 Started tracking {opportunity['symbol']}: {track_id}"
                         )
-```python
                 except Exception as e:
                     print(
                         f"⚠️ Failed to track {opportunity.get('symbol', 'unknown')}: {e}"
@@ -2476,7 +2475,8 @@ def mega_discovery_scan():
                 'count': len(av_symbols),
                 'symbols': av_symbols[:20],  # Sample
                 'categories': {
-                    'top_python
+                    'top_gainers': len(av_data['top_gainers']),
+                    'topgainers': len(av_data['top_gainers']),
                     'top_losers': len(av_data['top_losers']),
                     'most_active': len(av_data['most_active'])
                 }
