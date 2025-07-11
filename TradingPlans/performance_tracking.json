@@ -2806,5 +2806,77 @@
     "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
+  },
+  "ABBV_197.5_call_2025-07-18 00:00:00_2025-07-11": {
+    "symbol": "ABBV",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 197.5,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 3.1,
+      "predicted_target": 5.42,
+      "predicted_bias": "Bearish",
+      "confluence_score": 7.85,
+      "delta": 0.30931,
+      "gamma": 0.07809,
+      "theta": -0.10647,
+      "implied_vol": "0.15634"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAPL_210.0_put_2025-07-25 00:00:00_2025-07-11": {
+    "symbol": "AAPL",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 210.0,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 2.75,
+      "predicted_target": 4.81,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.45,
+      "delta": -0.38157,
+      "gamma": 0.03777,
+      "theta": -0.11831,
+      "implied_vol": "0.23438"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "GS_712.5_call_2025-07-11 00:00:00_2025-07-11": {
+    "symbol": "GS",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 712.5,
+      "type": "call",
+      "expiration": "2025-07-11 00:00:00",
+      "entry_price": 1.94,
+      "predicted_target": 3.4,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.57,
+      "delta": 0.35502,
+      "gamma": 0.04279,
+      "theta": -1.64906,
+      "implied_vol": "0.23438"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
   }
 }

@@ -1,0 +1,23 @@
+{
+  "scan_metadata": {
+    "timestamp": "2025-07-11T22:25:28.842888",
+    "scan_type": "unusual_activity",
+    "symbols_scanned": 0,
+    "filters_applied": {
+      "min_price": 0.05,
+      "max_price": 5.0,
+      "min_delta": 0.2,
+      "max_delta": 0.4,
+      "min_days": 0,
+      "max_days": 7
+    }
+  },
+  "opportunities": {},
+  "top_picks": [],
+  "by_category": {
+    "earnings_plays": [],
+    "unusual_activity": [],
+    "technical_setups": [],
+    "volatility_plays": []
+  }
+}

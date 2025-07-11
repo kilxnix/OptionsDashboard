@@ -11032,3 +11032,75 @@ Delta: -0.33815 | Gamma: 0.03024 | Theta: -0.26873 | Score: 0.69
 
 ================================================================================
 
+📈 Trade Plan for ABBV (Bearish Bias)
+
+🔹 Option: $$192.5 Put expiring 2025-07-25
+🔹 Entry Price: $3.10
+🔹 Stop Loss: $2.33
+🔹 Initial Target: $5.42
+🔹 Final Target: $10.85
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.38490 | Gamma: 0.03536 | Theta: -0.12844 | Score: 0.78
+
+================================================================================
+
+📈 Trade Plan for AAPL (Bearish Bias)
+
+🔹 Option: $$210.0 Put expiring 2025-07-25
+🔹 Entry Price: $2.75
+🔹 Stop Loss: $2.06
+🔹 Initial Target: $4.81
+🔹 Final Target: $9.62
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.38157 | Gamma: 0.03777 | Theta: -0.11831 | Score: 0.80
+
+================================================================================
+
+📈 Trade Plan for CVNA (Bullish Bias)
+
+🔹 Option: $$355.0 Call expiring 2025-07-18
+🔹 Entry Price: $5.00
+🔹 Stop Loss: $3.75
+🔹 Initial Target: $8.75
+🔹 Final Target: $17.50
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.34512 | Gamma: 0.01757 | Theta: -0.49663 | Score: 0.66
+
+================================================================================
+
+📈 Trade Plan for GS (Bearish Bias)
+
+🔹 Option: $$705.0 Put expiring 2025-07-11
+🔹 Entry Price: $1.94
+🔹 Stop Loss: $1.46
+🔹 Initial Target: $3.40
+🔹 Final Target: $6.79
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.31180 | Gamma: 0.04065 | Theta: -1.51201 | Score: 0.64
+
+================================================================================
+
