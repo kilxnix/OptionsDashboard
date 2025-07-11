@@ -1839,7 +1839,7 @@ def run_pre_earnings_scan():
                 data.get('confluence', {}).get('score', 0),
                 "confidence":
                 data.get('trade_plan', {}).get('validation_score', 0)
-            } for symbol, data in list(results.items())[:10]]
+            })
 
         return jsonify({
             "status":
