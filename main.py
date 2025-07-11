@@ -1740,7 +1740,8 @@ def get_jpm_pattern_signals(option_dict, market_data):
     if 2 <= dte <= 5:
         signals.append(f"Gamma zone: {dte} days to expiry")
 
-    delta = abs(option_dict.get('delta', 0))    if 0.25 <= delta <= 0.35:
+    delta = abs(option_dict.get('delta', 0))
+    if 0.25 <= delta <= 0.35:
         signals.append(f"Optimal delta: {delta:.3f}")
 
     return signals
