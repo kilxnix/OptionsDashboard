@@ -859,7 +859,7 @@ def enhanced_scan():
                             opportunity.get('trading_plan', {}), scan_date)
                         tracked_count += 1
                         print(
-                            f"📊 Started tracking {opportunity['symbol']}: {track_id}"
+                            f"📊 Started tracking {opportunity['symbol']}: {trackid}"
                         )
                 except Exception as e:
                     print(
@@ -1491,6 +1491,7 @@ def jpm_explosion_hunter():
         # Import and use existing explosive scanner
         from explosive_options_scanner import ExplosiveOptionsScanner
         import os
+        import yfinance as yf
 
         # Initialize with JPM-specific configuration
         scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
@@ -1739,12 +1740,10 @@ def get_jpm_pattern_signals(option_dict, market_data):
     if 2 <= dte <= 5:
         signals.append(f"Gamma zone: {dte} days to expiry")
 
-    delta = abs(option_dict.get('delta', 0))
-    if 0.25 <= delta <= 0.35:
+    delta = abs(option_dict.get('delta', 0))    if 0.25 <= delta <= 0.35:
         signals.append(f"Optimal delta: {delta:.3f}")
 
     return signals
-
 
 def generate_jpm_recommendation(score):
     """Generate JPM-specific recommendation"""
