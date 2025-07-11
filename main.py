@@ -1705,8 +1705,7 @@ def explosive_earnings_combo():
                     'confluence_score':
                     scanner_data.get('confluence', {}).get('score', 0),
                     'confluence_bias':
-                    scanner_data<replit_final_file>
-.get('confluence', {}).get('bias', 'N/A'),
+                    scanner_data.get('confluence', {}).get('bias', 'N/A'),
                     'days_to_earnings':
                     explosive_data.get('market_data',
                                        {}).get('earnings_info',
