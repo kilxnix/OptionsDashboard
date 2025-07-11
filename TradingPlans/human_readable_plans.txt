@@ -11104,3 +11104,129 @@ Delta: -0.31180 | Gamma: 0.04065 | Theta: -1.51201 | Score: 0.64
 
 ================================================================================
 
+📈 Trade Plan for ABT (Bearish Bias)
+
+🔹 Option: $$130.0 Put expiring 2025-09-19
+🔹 Entry Price: $4.45
+🔹 Stop Loss: $3.34
+🔹 Initial Target: $7.79
+🔹 Final Target: $15.58
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.35378 | Gamma: 0.02485 | Theta: -0.03312 | Score: 0.95
+
+================================================================================
+
+📈 Trade Plan for ABBV (Bearish Bias)
+
+🔹 Option: $$192.5 Put expiring 2025-07-25
+🔹 Entry Price: $3.10
+🔹 Stop Loss: $2.33
+🔹 Initial Target: $5.42
+🔹 Final Target: $10.85
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.38490 | Gamma: 0.03536 | Theta: -0.12844 | Score: 0.78
+
+================================================================================
+
+📈 Trade Plan for AAPL (Bearish Bias)
+
+🔹 Option: $$210.0 Put expiring 2025-07-25
+🔹 Entry Price: $2.75
+🔹 Stop Loss: $2.06
+🔹 Initial Target: $4.81
+🔹 Final Target: $9.62
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.38157 | Gamma: 0.03777 | Theta: -0.11831 | Score: 0.80
+
+================================================================================
+
+📈 Trade Plan for CMG (Bearish Bias)
+
+🔹 Option: $$55.0 Put expiring 2025-07-18
+🔹 Entry Price: $0.39
+🔹 Stop Loss: $0.29
+🔹 Initial Target: $0.68
+🔹 Final Target: $1.36
+🔹 Position Size: 4 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.25173 | Gamma: 0.13968 | Theta: -0.04379 | Score: 1.87
+
+================================================================================
+
+📈 Trade Plan for HOOD (Bearish Bias)
+
+🔹 Option: $$96.0 Put expiring 2025-07-25
+🔹 Entry Price: $3.50
+🔹 Stop Loss: $2.62
+🔹 Initial Target: $6.12
+🔹 Final Target: $12.25
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.38134 | Gamma: 0.03148 | Theta: -0.14895 | Score: 0.75
+
+================================================================================
+
+📈 Trade Plan for NET (Bearish Bias)
+
+🔹 Option: $$177.5 Put expiring 2025-07-18
+🔹 Entry Price: $2.98
+🔹 Stop Loss: $2.23
+🔹 Initial Target: $5.21
+🔹 Final Target: $10.43
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.33815 | Gamma: 0.03024 | Theta: -0.26873 | Score: 0.69
+
+================================================================================
+
+📈 Trade Plan for NFLX (Bearish Bias)
+
+🔹 Option: $$1240.0 Put expiring 2025-07-11
+🔹 Entry Price: $4.45
+🔹 Stop Loss: $3.34
+🔹 Initial Target: $7.79
+🔹 Final Target: $15.58
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.30679 | Gamma: 0.01616 | Theta: -3.76939 | Score: 0.63
+
+================================================================================
+
