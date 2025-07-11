@@ -2044,6 +2044,145 @@ def resume_enhanced_scan():
         }), 500
 
 
+@app.route("/explosive-techvol-scan", methods=["GET", "POST"])
+def explosive_techvol_scan():
+    """Find short-term technical or volatility driven setups."""
+    try:
+        from explosive_options_scanner import ExplosiveOptionsScanner
+
+        if request.method == 'POST' and request.is_json:
+            data = request.get_json()
+            mode = data.get('mode', 'technical')
+            top_n = int(data.get('top_n', 10))
+            filters = data.get('filters', {})
+        else:
+            mode = request.args.get('mode', 'technical')
+            top_n = int(request.args.get('top_n', 10))
+            filters = {
+                'min_price': float(request.args.get('min_price', 0.05)),
+                'max_price': float(request.args.get('max_price', 5.00)),
+                'min_delta': float(request.args.get('min_delta', 0.20)),
+                'max_delta': float(request.args.get('max_delta', 0.40)),
+                'min_days': int(request.args.get('min_days', 0)),
+                'max_days': int(request.args.get('max_days', 7))
+            }
+
+        scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
+
+        # Phase 1: get earnings plays to avoid duplicates
+        earnings_results = scanner.run_explosive_scan(
+            scan_type='earnings',
+            filters=filters
+        )
+        earnings_symbols = set(earnings_results.get('opportunities', {}).keys())
+
+        # Phase 2: scan for unusual activity/technical setups
+        results = scanner.run_explosive_scan(
+            scan_type='unusual_activity',
+            filters=filters
+        )
+
+        opportunities = []
+
+        for symbol, data in results.get('opportunities', {}).items():
+            if symbol in earnings_symbols:
+                continue
+
+            best = data.get('best_opportunity', {})
+            market = data.get('market_data', {})
+
+            dte = best.get('days_to_expiry', 0)
+            delta = best.get('delta', 0)
+            vol = best.get('volume', 0)
+            mark = best.get('mark', 0)
+            oi = best.get('open_interest', 1)
+            iv = best.get('impliedVolatility', 0)
+            hv = market.get('volatility_30d', 0) / 100
+            price = market.get('current_price', 0)
+            high = market.get('high', 0)
+            iv_percentile = best.get('iv_percentile') or market.get('iv_percentile')
+            near_high = high > 0 and price >= high * 0.95
+            volume_oi = vol / max(oi, 1)
+            notional = vol * mark * 100
+
+            low_iv = False
+            if iv_percentile is not None:
+                try:
+                    ivp = float(iv_percentile)
+                    low_iv = ivp <= 20
+                except (TypeError, ValueError):
+                    low_iv = False
+            elif hv > 0:
+                low_iv = iv < hv * 0.8
+
+            earnings_flag = market.get('earnings_info', {}).get('is_pre_earnings', False)
+
+            if (
+                dte <= filters.get('max_days', 7)
+                and 0.2 <= abs(delta) <= 0.4
+                and volume_oi >= 3
+                and low_iv
+                and oi >= 100
+                and notional >= 1000
+            ):
+                if mode == 'earnings' and not earnings_flag:
+                    continue
+
+                iv_score = 0
+                if iv_percentile is not None:
+                    iv_score = max(0, 20 - float(iv_percentile))
+                elif hv:
+                    iv_score = max(0, hv - iv) / hv * 20
+
+                score = (
+                    min(volume_oi, 10) * 5 +
+                    iv_score +
+                    (5 if near_high else 0) +
+                    (5 if earnings_flag and mode == 'earnings' else 0)
+                )
+
+                opportunities.append({
+                    'symbol': symbol,
+                    'expiration': best.get('expiration'),
+                    'strike': best.get('strike'),
+                    'type': best.get('type'),
+                    'delta': delta,
+                    'theta': best.get('theta'),
+                    'gamma': best.get('gamma'),
+                    'iv': iv,
+                    'iv_percentile': iv_percentile,
+                    'volume': vol,
+                    'open_interest': oi,
+                    'dte': dte,
+                    'volume_oi_ratio': round(volume_oi, 2),
+                    'near_52w_high': near_high,
+                    'score': round(score, 2),
+                    'trading_plan': data.get('trading_plan', {})
+                })
+
+        opportunities.sort(key=lambda x: x['score'], reverse=True)
+        top_opps = opportunities[:top_n]
+
+        summary = (
+            f"Found {len(opportunities)} technical/vol opportunities. "
+            f"Top pick: {top_opps[0]['symbol'] if top_opps else 'N/A'}"
+        )
+
+        return jsonify({
+            'status': 'success',
+            'mode': mode,
+            'total_found': len(opportunities),
+            'top_opportunities': top_opps,
+            'summary': summary
+        })
+
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': f"Technical vol scan failed: {str(e)}"
+        }), 500
+
+
 @app.route("/mega-discovery-scan", methods=["GET", "POST"])
 def mega_discovery_scan():
     """Ultimate auto-discovery scan combining ALL methods with full analysis"""
