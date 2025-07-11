@@ -1616,6 +1616,34 @@ def jpm_explosion_hunter():
         if jpm_matches:
             print(f"🏆 Best Match: {jpm_matches[0]['contract_symbol']} ({jpm_matches[0]['similarity_score']:.1%} similar)")
 
+        # Save JPM hunter results to dedicated file
+        timestamp = datetime.now().strftime('%H%M%S')
+        date_str = datetime.now().strftime('%Y-%m-%d')
+        jpm_filename = os.path.join('./TradingPlans', f'jpm_explosion_hunter_{date_str}_{timestamp}.json')
+
+        jpm_results = {
+            "scan_metadata": {
+                "timestamp": datetime.now().isoformat(),
+                "scan_type": "jpm_explosion_hunter",
+                "jpm_reference_pattern": jpm_reference,
+                "similarity_threshold": similarity_threshold,
+                "source_file": latest_file if not source_symbols else "custom_symbols",
+                "total_symbols": len(source_symbols),
+                "symbols_analyzed": symbols_analyzed
+            },
+            "jpm_matches": jpm_matches,
+            "top_10_matches": jpm_matches[:10],
+            "summary": f"Found {len(jpm_matches)} JPM-like options from {symbols_analyzed} symbols analyzed"
+        }
+
+        # Save results
+        try:
+            with open(jpm_filename, 'w') as f:
+                json.dump(jmp_results, f, indent=2, default=str)
+            print(f"💾 JPM hunter results saved to {jpm_filename}")
+        except Exception as e:
+            print(f"⚠️ Could not save JPM results: {e}")
+
         return jsonify({
             "status": "success",
             "total_symbols": len(source_symbols),
@@ -1623,6 +1651,7 @@ def jpm_explosion_hunter():
             "jpm_matches": jpm_matches[:10],  # Top 10 matches
             "jpm_reference_pattern": jpm_reference,
             "similarity_threshold": similarity_threshold,
+            "results_saved_to": jpm_filename,
             "summary": f"Found {len(jpm_matches)} JPM-like options from {symbols_analyzed} symbols analyzed"
         })
 
@@ -1638,14 +1667,14 @@ def jpm_explosion_hunter():
 def calculate_jpm_similarity(option_dict, jpm_reference):
     """Calculate similarity score between option and JPM reference pattern"""
     try:
-        # Similarity weights (total = 1.0)
+        # Optimized similarity weights (total = 1.0) - Based on JPM explosion characteristics
         weights = {
-            'delta': 0.25,
-            'gamma': 0.20,
-            'theta': 0.15,
-            'price': 0.20,
-            'iv': 0.10,
-            'days_to_expiry': 0.10
+            'delta': 0.30,        # Most important - directional exposure
+            'price': 0.25,        # Critical - entry cost and risk
+            'gamma': 0.20,        # Important - acceleration potential  
+            'days_to_expiry': 0.15,  # Key - time decay window
+            'theta': 0.07,        # Moderate - time decay rate
+            'iv': 0.03           # Least - already captured in price
         }
 
         total_similarity = 0.0
