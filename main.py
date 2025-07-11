@@ -863,8 +863,6 @@ def enhanced_scan():
                         )
                 except Exception as e:
                     print(
-                        fThis commit removes a stray markdown code block that was causing a syntax error in the /enhanced-scan route.
-```python
                         f"⚠️ Failed to track {opportunity.get('symbol', 'unknown')}: {e}"
                     )
 
