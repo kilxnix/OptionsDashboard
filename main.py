@@ -1537,7 +1537,7 @@ def jpm_explosion_hunter():
 
         if strict_match:
             # Tighter criteria for exact JPM-like patterns
-            jmp_criteria['days_to_expiry'] = (14, 21)
+            jpm_criteria['days_to_expiry'] = (14, 21)
             jpm_criteria['delta_range'] = (0.12, 0.20)
             jpm_criteria['gamma_range'] = (0.010, 0.018)
             jpm_criteria['volume_min'] = 75
@@ -1547,190 +1547,7 @@ def jpm_explosion_hunter():
         from explosive_options_scanner import ExplosiveOptionsScanner
         scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
 
-        jpm_matches = []
-        processed_count = 0
-
-        for symbol in source_symbols[:50]:  # Limit for performance
-            try:
-                processed_count += 1
-                print(f"  📊 Scanning {symbol} ({processed_count}/{min(len(source_symbols), 50)})...")
-
-                # Get options data
-                options_data = scanner._fetch_all_options(symbol)
-                if options_data is None or options_data.empty:
-                    continue
-
-                # Get market data
-                market_data = scanner._fetch_enhanced_market_data(symbol)
-                if not market_data:
-                    continue
-
-                current_price = market_data['current_price']
-
-                # Filter options matching JPM criteria
-                for idx, option in options_data.iterrows():
-                    try:
-                        option_dict = option.to_dict()
-
-                        # Extract key values with safe defaults
-                        dte = option_dict.get('days_to_expiry', 0)
-                        delta = abs(float(option_dict.get('delta', 0)))
-                        gamma = float(option_dict.get('gamma', 0))
-                        theta = float(option_dict.get('theta', 0))
-                        price = float(option_dict.get('mark', option_dict.get('lastPrice', 0)))
-                        iv = float(option_dict.get('impliedVolatility', 0))
-                        volume = float(option_dict.get('volume', 0))
-                        oi = float(option_dict.get('open_interest', 0))
-                        strike = float(option_dict.get('strike', 0))
-                        option_type = option_dict.get('type', '').lower()
-
-                        # Skip if essential data is missing
-                        if not all([dte, delta, price, strike]):
-                            continue
-
-                        # Apply JPM pattern matching criteria
-                        criteria_met = 0
-                        total_criteria = 9
-
-                        # 1. Days to expiry
-                        if jpm_criteria['days_to_expiry'][0] <= dte <= jpm_criteria['days_to_expiry'][1]:
-                            criteria_met += 1
-
-                        # 2. Delta range  
-                        if jpm_criteria['delta_range'][0] <= delta <= jpm_criteria['delta_range'][1]:
-                            criteria_met += 1
-
-                        # 3. Gamma range
-                        if jpm_criteria['gamma_range'][0] <= gamma <= jpm_criteria['gamma_range'][1]:
-                            criteria_met += 1
-
-                        # 4. Theta (not too negative)
-                        if theta >= jpm_criteria['theta_max']:
-                            criteria_met += 1
-
-                        # 5. Price range
-                        if jpm_criteria['price_range'][0] <= price <= jpm_criteria['price_range'][1]:
-                            criteria_met += 1
-
-                        # 6. IV range
-                        if jpm_criteria['iv_range'][0] <= iv <= jpm_criteria['iv_range'][1]:
-                            criteria_met += 1
-
-                        # 7. Volume minimum
-                        if volume >= jpm_criteria['volume_min']:
-                            criteria_met += 1
-
-                        # 8. OI minimum
-                        if oi >= jpm_criteria['oi_min']:
-                            criteria_met += 1
-
-                        # 9. Volume/OI ratio
-                        vol_oi_ratio = volume / max(oi, 1)
-                        if vol_oi_ratio >= jpm_criteria['volume_oi_ratio_min']:
-                            criteria_met += 1
-
-                        # Calculate match percentage
-                        match_percentage = (criteria_met / total_criteria) * 100
-
-                        # Only include if meets minimum threshold
-                        min_threshold = 70 if strict_match else 60
-                        if match_percentage >= min_threshold:
-
-                            # Calculate similarity score to JPM example
-                            jpm_delta_target = 0.15696
-                            jpm_gamma_target = 0.01411  
-                            jpm_price_target = 1.52
-                            jpm_iv_target = 0.23438
-
-                            similarity_score = (
-                                100 - abs(delta - jpm_delta_target) * 200 +  # Delta similarity
-                                100 - abs(gamma - jpm_gamma_target) * 3000 + # Gamma similarity  
-                                100 - abs(price - jpm_price_target) * 20 +   # Price similarity
-                                100 - abs(iv - jpm_iv_target) * 200          # IV similarity
-                            ) / 4
-
-                            jpm_match = {
-                                'symbol': symbol,
-                                'contract': f"{symbol} {strike} {option_type.upper()} exp {option_dict.get('expiration')}",
-                                'match_percentage': round(match_percentage, 1),
-                                'similarity_score': round(max(0, similarity_score), 1),
-                                'current_stock_price': current_price,
-                                'strike': strike,
-                                'option_type': option_type,
-                                'expiration': option_dict.get('expiration'),
-                                'days_to_expiry': dte,
-                                'option_price': price,
-                                'delta': round(delta, 5),
-                                'gamma': round(gamma, 5), 
-                                'theta': round(theta, 5),
-                                'iv': round(iv, 4),
-                                'volume': int(volume),
-                                'open_interest': int(oi),
-                                'volume_oi_ratio': round(vol_oi_ratio, 2),
-                                'criteria_analysis': {
-                                    'dte_match': jpm_criteria['days_to_expiry'][0] <= dte <= jpm_criteria['days_to_expiry'][1],
-                                    'delta_match': jpm_criteria['delta_range'][0] <= delta <= jpm_criteria['delta_range'][1],
-                                    'gamma_match': jpm_criteria['gamma_range'][0] <= gamma <= jpm_criteria['gamma_range'][1],
-                                    'theta_match': theta >= jpm_criteria['theta_max'],
-                                    'price_match': jpm_criteria['price_range'][0] <= price <= jpm_criteria['price_range'][1],
-                                    'iv_match': jpm_criteria['iv_range'][0] <= iv <= jpm_criteria['iv_range'][1],
-                                    'volume_match': volume >= jpm_criteria['volume_min'],
-                                    'oi_match': oi >= jpm_criteria['oi_min'],
-                                    'activity_match': vol_oi_ratio >= jpm_criteria['volume_oi_ratio_min']
-                                }
-                            }
-
-                            jpm_matches.append(jpm_match)
-
-                    except Exception as e:
-                        continue
-
-            except Exception as e:
-                print(f"  ❌ Error scanning {symbol}: {str(e)}")
-                continue
-
-        # Sort by similarity score first, then match percentage
-        jpm_matches.sort(key=lambda x: (x['similarity_score'], x['match_percentage']), reverse=True)
-
-        print(f"✅ JPM Pattern Hunt Complete!")
-        print(f"📊 Found {len(jpm_matches)} matches from {processed_count} symbols scanned")
-
-        return jsonify({
-            'status': 'success',
-            'scan_type': 'jpm_explosion_hunter_phase2',
-            'methodology': 'Pattern matching against JPM 315C example contract',
-            'jpm_reference': {
-                'symbol': 'JPM',
-                'strike': 315.0,
-                'type': 'call', 
-                'expiration': '2025-07-25',
-                'days_to_expiry': 17,
-                'price': 1.52,
-                'delta': 0.15696,
-                'gamma': 0.01411,
-                'theta': -0.09836,
-                'iv': 0.23438,
-                'volume': 121,
-                'open_interest': 129
-            },
-            'scan_summary': {
-                'symbols_scanned': processed_count,
-                'matches_found': len(jpm_matches),
-                'strict_mode': strict_match,
-                'min_threshold': f"{70 if strict_match else 60}% criteria match"
-            },
-            'pattern_criteria': jpm_criteria,
-            'matches': jpm_matches[:20],  # Top 20 matches
-            'scan_time': datetime.now().isoformat()
-        })
-
-    except Exception as e:
-        return jsonify({
-            'status': 'error',
-            'message': f"JPM explosion hunter failed: {str(e)}"
-        }), 500
-
-
+        
 @app.route("/explosive-earnings-combo", methods=["GET", "POST"])
 def explosive_earnings_combo():
     """Combined explosive scan that finds earnings candidates AND runs full scanner_core analysis"""
@@ -2019,8 +1836,10 @@ def run_pre_earnings_scan():
                 'days_to_earnings':
                 days_to_earnings,
                 'confluence_score':
-                data.get('confluence', {}).get('score', 0)
-            })
+                data.get('confluence', {}).get('score', 0),
+                "confidence":
+                data.get('trade_plan', {}).get('validation_score', 0)
+            } for symbol, data in list(results.items())[:10]]
 
         return jsonify({
             "status":
