@@ -860,7 +860,7 @@ def enhanced_scan():
                         tracked_count += 1
                         print(
                             f"📊 Started tracking {opportunity['symbol']}: {track_id}"
-                        )
+                                                )
                 except Exception as e:
                     print(
                         f"⚠️ Failed to track {opportunity.get('symbol', 'unknown')}: {e}"
@@ -1639,7 +1639,7 @@ def jpm_explosion_hunter():
         # Save results
         try:
             with open(jpm_filename, 'w') as f:
-                json.dump(jmp_results, f, indent=2, default=str)
+                json.dump(jpm_results, f, indent=2, default=str)
             print(f"💾 JPM hunter results saved to {jpm_filename}")
         except Exception as e:
             print(f"⚠️ Could not save JPM results: {e}")
