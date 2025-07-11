@@ -2878,5 +2878,29 @@
     "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
+  },
+  "CMG_55.0_put_2025-07-18 00:00:00_2025-07-11": {
+    "symbol": "CMG",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 55.0,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.39,
+      "predicted_target": 0.68,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.71,
+      "delta": -0.25173,
+      "gamma": 0.13968,
+      "theta": -0.04379,
+      "implied_vol": "0.27341"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
   }
 }
