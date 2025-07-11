@@ -1,0 +1,63 @@
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Serving Flask app 'main'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://172.31.128.72:8080
+Press CTRL+C to quit
+ * Restarting with stat
+Mounting Google Drive...
+Using existing directory: ./TradingPlans
+Starting Flask app on 0.0.0.0:8080...
+ * Debugger is active!
+ * Debugger PIN: 311-050-973
+172.31.128.72 - - [11/Jul/2025 00:19:23] "GET / HTTP/1.1" 200 -
+🚀 EXPLOSIVE EARNINGS COMBO SCAN - PHASE 1 + 2
+============================================================
+🎯 Scan Type: earnings
+🔥 Min Explosive Score: 47.0
+📊 PHASE 1: Find explosive earnings candidates
+🔬 PHASE 2: Run full scanner_core analysis on best candidates
+
+📊 PHASE 1: Running explosive earnings discovery...
+🚀 EXPLOSIVE OPTIONS SCANNER - 2025-07-11 00:19:28
+============================================================
+📊 Filtered from 10 to 9 quality optionable symbols
+🎯 Optimized for your API limits: 2 discovery calls + efficient bulk processing
+🔍 Scanning 9 symbols for explosive opportunities...
+📊 Fetching bulk market data using REALTIME_BULK_QUOTES API...
+📊 Processing 9 symbols using REALTIME_BULK_QUOTES API...
+🔑 Using API key: 7CSZH1JP...TPTE
+⚡ Rate limit: 150 requests/minute (upgraded plan)
+📊 Processing chunk 1: symbols 1-9
+📊 API Response Status: 200
+❌ API access issue: Thank you for using Alpha Vantage! Please contact premium@alphavantage.co if you are targeting a higher API call volume.
+✅ Successfully fetched bulk data for 0 symbols
+✅ 0 symbols have valid market data
+💾 Results saved to ./TradingPlans/explosive_scan_2025-07-11_001928.json
+
+
+📊 EXPLOSIVE OPTIONS SCAN SUMMARY
+==================================================
+Scan Time: 2025-07-11T00:19:28.680428
+Symbols Scanned: 0
+Opportunities Found: 0
+
+🏆 TOP 3 EXPLOSIVE PICKS:
+
+📈 OPPORTUNITIES BY CATEGORY:
+
+✅ PHASE 1 COMPLETE: Found 0 high-scoring earnings candidates
+🎯 Earnings candidates: []...
+
+🔬 PHASE 2: Running full scanner_core analysis on 0 candidates...
+❌ Error in explosive-earnings-combo: 'NoneType' object is not subscriptable
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 1480, in explosive_earnings_combo
+    • Explosive Score: {top_opportunity['explosive_score']:.1f}/100 {'' if top_opportunity else 'N/A'}
+                        ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+TypeError: 'NoneType' object is not subscriptable
+172.31.128.72 - - [11/Jul/2025 00:19:28] "GET /explosive-earnings-combo?scan_type=earnings&min_explosive_score=47&entry_price=2.8 HTTP/1.1"
