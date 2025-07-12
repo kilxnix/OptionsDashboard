@@ -554,35 +554,5 @@ def test_type_fixes():
     print(filtered)
 
 
-def safe_extract_numeric(value, default=0):
-    """Safely extract numeric value from various formats"""
-    try:
-        if isinstance(value, dict):
-            # Yahoo Finance format
-            if 'raw' in value:
-                return float(value['raw'])
-            elif 'fmt' in value:
-                # Remove formatting and convert
-                fmt_val = str(value['fmt']).replace(',', '').replace('$', '').replace('%', '')
-                return float(fmt_val)
-            else:
-                # Try first numeric value
-                for v in value.values():
-                    try:
-                        return float(v)
-                    except:
-                        continue
-                return default
-        elif pd.isna(value) or value is None:
-            return default
-        else:
-            # Clean and convert string/numeric
-            import re
-            cleaned = re.sub(r'[^\d\.\-]', '', str(value))
-            return float(cleaned) if cleaned and cleaned != '-' else default
-    except:
-        return default
-
-
 if __name__ == "__main__":
     test_type_fixes()

@@ -11,5 +11,3 @@ lxml
 beautifulsoup4
 numpy
 psycopg2-binary
-cachetools
-cachetools

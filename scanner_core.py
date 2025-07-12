@@ -351,28 +351,35 @@ def get_nasdaq100_components():
 
 
 def is_likely_optionable(symbol):
-    """Filter out symbols unlikely to have active options - LESS AGGRESSIVE"""
+    """Filter out symbols unlikely to have active options"""
     if not symbol or len(symbol) < 1:
         return False
 
-    # Only exclude obvious non-optionable patterns - be much more permissive
+    # Remove obvious warrants, rights, units
     exclusion_patterns = [
-        'TEST', 'HALT',  # Test/halted symbols only
+        'W', 'WS', 'WT', 'WW', 'WI',  # Warrants
+        'U', 'UN',  # Units
+        'R', 'RT',  # Rights  
+        '+', '=', '-',  # Special characters
+        'TEST', 'HALT'  # Test/halted symbols
     ]
 
     for pattern in exclusion_patterns:
         if pattern in symbol.upper():
             return False
 
-    # Skip if too long (usually derivatives) - but allow up to 5 chars
+    # Skip if contains numbers (often warrants)
+    if any(char.isdigit() for char in symbol):
+        return False
+
+    # Skip if too long (usually derivatives)
     if len(symbol) > 5:
         return False
 
-    # Skip if too short
-    if len(symbol) < 1:
+    # Skip if too short (often problematic)
+    if len(symbol) < 2:
         return False
 
-    # Allow almost everything else - let the actual options fetch determine optionability
     return True
 
 
@@ -444,26 +451,20 @@ class CompleteOptionsScanner:
                 url = (f'https://www.alphavantage.co/query?function={function}'
                        f'&symbol={symbol}&apikey={self.api_key}')
 
-            print(f"🌐 Alpha Vantage API call: {function} for {symbol} ({timeframe})")
             response = requests.get(url, timeout=15)  # Add timeout
             response.raise_for_status()  # Raise exception for bad status codes
             data = response.json()
 
-            # Debug: Print response keys to see what Alpha Vantage actually returns
-            print(f"🔍 Alpha Vantage response keys for {symbol}: {list(data.keys())}")
-
             if 'Error Message' in data:
-                print(f"❌ Alpha Vantage error for {symbol}: {data['Error Message']}")
-                return None
-
-            if 'Information' in data:
-                print(f"ℹ️ Alpha Vantage info for {symbol}: {data['Information']}")
+                print(
+                    f"Error fetching data for {symbol}: {data['Error Message']}"
+                )
                 return None
 
             key_prefix = tf_config['key_prefix']
             if key_prefix not in data:
-                print(f"⚠️ No '{key_prefix}' in Alpha Vantage response for {symbol} at {timeframe}")
-                print(f"   Available keys: {list(data.keys())}")
+                print(
+                    f"No data available for {symbol} at {timeframe} timeframe")
                 return self._fetch_yfinance_fallback(symbol, timeframe)
 
             # Convert to DataFrame
