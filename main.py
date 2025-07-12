@@ -1888,6 +1888,20 @@ def explosive_earnings_combo():
         # Generate comprehensive summary
         top_opportunity = final_opportunities[
             0] if final_opportunities else None
+        
+        if top_opportunity:
+            top_symbol = top_opportunity['symbol']
+            top_explosive_score = f"{top_opportunity['explosive_score']:.1f}/100"
+            top_confluence_score = f"{top_opportunity['confluence_score']:.1f}/10"
+            top_bias = top_opportunity['confluence_bias']
+            top_days_to_earnings = top_opportunity['days_to_earnings']
+        else:
+            top_symbol = 'None'
+            top_explosive_score = 'N/A'
+            top_confluence_score = 'N/A'
+            top_bias = 'N/A'
+            top_days_to_earnings = 'N/A'
+        
         combined_results['summary'] = f"""
 🎯 EXPLOSIVE EARNINGS COMBO SCAN - 2 PHASE ANALYSIS COMPLETE
 {'='*70}
@@ -1904,11 +1918,11 @@ def explosive_earnings_combo():
    • Confluence Scoring: ✅
 
 🏆 TOP COMBINED OPPORTUNITY:
-   • Symbol: {top_opportunity['symbol'] if top_opportunity else 'None'}
-   • Explosive Score: {top_opportunity['explosive_score']:.1f}/100 {'' if top_opportunity else 'N/A'}
-   • Confluence Score: {top_opportunity['confluence_score']:.1f}/10 {'' if top_opportunity else 'N/A'}
-   • Bias: {top_opportunity['confluence_bias'] if top_opportunity else 'N/A'}
-   • Days to Earnings: {top_opportunity['days_to_earnings'] if top_opportunity else 'N/A'}
+   • Symbol: {top_symbol}
+   • Explosive Score: {top_explosive_score}
+   • Confluence Score: {top_confluence_score}
+   • Bias: {top_bias}
+   • Days to Earnings: {top_days_to_earnings}
 
 💡 METHODOLOGY: Two-phase analysis combining explosive discovery with comprehensive technical analysis
         """.strip()

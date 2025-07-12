@@ -324,7 +324,8 @@ class ExplosiveOptionsScanner:
                         except (ValueError, TypeError):
                             score = 0
 
-                        if score >= self.scan_config['min_score']:
+                        # Ensure score is numeric for comparison
+                        if isinstance(score, (int, float)) and score >= self.scan_config['min_score']:
                             option_dict['score_analysis'] = analysis
                             option_dict['total_score'] = score
 
