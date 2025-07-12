@@ -1506,8 +1506,8 @@ def jpm_explosion_hunter():
         print(f"📊 Volume/OI: 121/129, IV: 0.234")
         print(f"🎯 Similarity Threshold: {similarity_threshold:.1%}")
 
-        # JPM reference pattern
-        jpm_reference = {
+        # NET reference pattern
+        net_reference = {
             'delta': 0.15696,
             'gamma': 0.01411,
             'theta': -0.09836,
@@ -1578,7 +1578,7 @@ def jpm_explosion_hunter():
                             option_dict['days_to_expiry'] = 30  # Default
 
                         # Calculate similarity score
-                        similarity_score = calculate_jpm_similarity(option_dict, jpm_reference)
+                        similarity_score = calculate_net_similarity(option_dict, net_reference)
 
                         # Check if it meets threshold
                         if similarity_score >= similarity_threshold:
@@ -1588,12 +1588,12 @@ def jpm_explosion_hunter():
                                 'similarity_score': round(similarity_score, 3),
                                 'contract_symbol': f"{symbol} {option_dict['strike']} {option_dict['type'].upper()} exp {option_dict['expiration'][:10]}",
                                 'comparison': {
-                                    'delta_diff': abs(option_dict['delta'] - jpm_reference['delta']),
-                                    'gamma_diff': abs(option_dict['gamma'] - jpm_reference['gamma']),
-                                    'theta_diff': abs(option_dict['theta'] - jpm_reference['theta']),
-                                    'price_diff': abs(option_dict['price'] - jpm_reference['price']),
-                                    'iv_diff': abs(option_dict['iv'] - jpm_reference['iv']),
-                                    'days_diff': abs(option_dict['days_to_expiry'] - jpm_reference['days_to_expiry'])
+                                    'delta_diff': abs(option_dict['delta'] - net_reference['delta']),
+                                    'gamma_diff': abs(option_dict['gamma'] - net_reference['gamma']),
+                                    'theta_diff': abs(option_dict['theta'] - net_reference['theta']),
+                                    'price_diff': abs(option_dict['price'] - net_reference['price']),
+                                    'iv_diff': abs(option_dict['iv'] - net_reference['iv']),
+                                    'days_diff': abs(option_dict['days_to_expiry'] - net_reference['days_to_expiry'])
                                 }
                             }
                             jpm_matches.append(match)
@@ -1625,7 +1625,7 @@ def jpm_explosion_hunter():
             "scan_metadata": {
                 "timestamp": datetime.now().isoformat(),
                 "scan_type": "jpm_explosion_hunter",
-                "jpm_reference_pattern": jpm_reference,
+                "net_reference_pattern": net_reference,
                 "similarity_threshold": similarity_threshold,
                 "source_file": latest_file if not source_symbols else "custom_symbols",
                 "total_symbols": len(source_symbols),
@@ -1633,7 +1633,7 @@ def jpm_explosion_hunter():
             },
             "jpm_matches": jpm_matches,
             "top_10_matches": jpm_matches[:10],
-            "summary": f"Found {len(jpm_matches)} JPM-like options from {symbols_analyzed} symbols analyzed"
+            "summary": f"Found {len(jpm_matches)} NET-like options from {symbols_analyzed} symbols analyzed"
         }
 
         # Save results
@@ -1648,11 +1648,11 @@ def jpm_explosion_hunter():
             "status": "success",
             "total_symbols": len(source_symbols),
             "symbols_analyzed": symbols_analyzed,
-            "jpm_matches": jpm_matches[:10],  # Top 10 matches
-            "jpm_reference_pattern": jpm_reference,
+            "net_matches": jpm_matches[:10],  # Top 10 matches
+            "net_reference_pattern": net_reference,
             "similarity_threshold": similarity_threshold,
             "results_saved_to": jpm_filename,
-            "summary": f"Found {len(jpm_matches)} JPM-like options from {symbols_analyzed} symbols analyzed"
+            "summary": f"Found {len(jpm_matches)} NET-like options from {symbols_analyzed} symbols analyzed"
         })
 
     except Exception as e:
@@ -1664,14 +1664,14 @@ def jpm_explosion_hunter():
         }), 500
 
 
-def calculate_jpm_similarity(option_dict, jpm_reference):
-    """Calculate similarity score between option and JPM reference pattern"""
+def calculate_net_similarity(option_dict, net_reference):
+    """Calculate similarity score between option and NET reference pattern"""
     try:
-        # Optimized similarity weights (total = 1.0) - Based on JPM explosion characteristics
+        # Optimized similarity weights (total = 1.0) - Based on NET explosion characteristics
         weights = {
             'delta': 0.30,        # Most important - directional exposure
             'price': 0.25,        # Critical - entry cost and risk
-            'gamma': 0.20,        # Important - acceleration potential  
+            'gamma': 0.20,        # Important - acceleration potential
             'days_to_expiry': 0.15,  # Key - time decay window
             'theta': 0.07,        # Moderate - time decay rate
             'iv': 0.03           # Least - already captured in price
@@ -1681,9 +1681,9 @@ def calculate_jpm_similarity(option_dict, jpm_reference):
 
         # Calculate similarity for each metric (1.0 = perfect match, 0.0 = very different)
         for metric, weight in weights.items():
-            if metric in option_dict and metric in jpm_reference:
+            if metric in option_dict and metric in net_reference:
                 option_val = option_dict[metric]
-                ref_val = jpm_reference[metric]
+                ref_val = net_reference[metric]
 
                 # Calculate percentage difference
                 if ref_val != 0:
@@ -1704,7 +1704,8 @@ def calculate_jpm_similarity(option_dict, jpm_reference):
 
         return min(1.0, total_similarity)  # Cap at 1.0
 
-    except Exception as e:
+    except Exception as```python
+ e:
         print(f"Error calculating similarity: {e}")
         return 0.0
 
@@ -2486,8 +2487,7 @@ def mega_discovery_scan():
             from scanner_core import get_optionable_stocks_with_volume
             volume_symbols = get_optionable_stocks_with_volume()
             all_discovered_symbols.extend(volume_symbols)
-            discovery_sources['high_volume'] = {
-                'count': len(volume_symbols),
+            discovery_sources['high_volume'] = {'count': len(volume_symbols),
                 'symbols': volume_symbols[:20]
             }
             print(f"✅ High Volume: {len(volume_symbols)} symbols")
