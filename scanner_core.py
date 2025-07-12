@@ -444,20 +444,26 @@ class CompleteOptionsScanner:
                 url = (f'https://www.alphavantage.co/query?function={function}'
                        f'&symbol={symbol}&apikey={self.api_key}')
 
+            print(f"🌐 Alpha Vantage API call: {function} for {symbol} ({timeframe})")
             response = requests.get(url, timeout=15)  # Add timeout
             response.raise_for_status()  # Raise exception for bad status codes
             data = response.json()
 
+            # Debug: Print response keys to see what Alpha Vantage actually returns
+            print(f"🔍 Alpha Vantage response keys for {symbol}: {list(data.keys())}")
+
             if 'Error Message' in data:
-                print(
-                    f"Error fetching data for {symbol}: {data['Error Message']}"
-                )
+                print(f"❌ Alpha Vantage error for {symbol}: {data['Error Message']}")
+                return None
+
+            if 'Information' in data:
+                print(f"ℹ️ Alpha Vantage info for {symbol}: {data['Information']}")
                 return None
 
             key_prefix = tf_config['key_prefix']
             if key_prefix not in data:
-                print(
-                    f"No data available for {symbol} at {timeframe} timeframe")
+                print(f"⚠️ No '{key_prefix}' in Alpha Vantage response for {symbol} at {timeframe}")
+                print(f"   Available keys: {list(data.keys())}")
                 return self._fetch_yfinance_fallback(symbol, timeframe)
 
             # Convert to DataFrame
