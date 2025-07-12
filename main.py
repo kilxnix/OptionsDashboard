@@ -1704,8 +1704,7 @@ def calculate_net_similarity(option_dict, net_reference):
 
         return min(1.0, total_similarity)  # Cap at 1.0
 
-    except Exception as```python
- e:
+    except Exception as e:
         print(f"Error calculating similarity: {e}")
         return 0.0
 
