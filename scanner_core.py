@@ -351,35 +351,28 @@ def get_nasdaq100_components():
 
 
 def is_likely_optionable(symbol):
-    """Filter out symbols unlikely to have active options"""
+    """Filter out symbols unlikely to have active options - LESS AGGRESSIVE"""
     if not symbol or len(symbol) < 1:
         return False
 
-    # Remove obvious warrants, rights, units
+    # Only exclude obvious non-optionable patterns - be much more permissive
     exclusion_patterns = [
-        'W', 'WS', 'WT', 'WW', 'WI',  # Warrants
-        'U', 'UN',  # Units
-        'R', 'RT',  # Rights  
-        '+', '=', '-',  # Special characters
-        'TEST', 'HALT'  # Test/halted symbols
+        'TEST', 'HALT',  # Test/halted symbols only
     ]
 
     for pattern in exclusion_patterns:
         if pattern in symbol.upper():
             return False
 
-    # Skip if contains numbers (often warrants)
-    if any(char.isdigit() for char in symbol):
-        return False
-
-    # Skip if too long (usually derivatives)
+    # Skip if too long (usually derivatives) - but allow up to 5 chars
     if len(symbol) > 5:
         return False
 
-    # Skip if too short (often problematic)
-    if len(symbol) < 2:
+    # Skip if too short
+    if len(symbol) < 1:
         return False
 
+    # Allow almost everything else - let the actual options fetch determine optionability
     return True
 
 
