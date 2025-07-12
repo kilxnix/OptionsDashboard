@@ -15,7 +15,6 @@ from immediate_fixes import safe_apply_filters, process_alpha_vantage_bulk_respo
 from enhanced_options_grader import EnhancedOptionsGrader
 from intelligent_trade_planner import IntelligentTradePlanner
 from performance_tracker import PerformanceTracker
-from enhanced_utils import enhanced_pre_filter
 
 class ExplosiveOptionsScanner:
     """
@@ -191,16 +190,6 @@ class ExplosiveOptionsScanner:
             # Fix data types first
             options_data = fix_options_dataframe(options_data)
 
-            # Track total options volume for pre-filtering
-            total_vol = 0
-            if 'volume' in options_data.columns:
-                total_vol = options_data['volume'].fillna(0).astype(float).sum()
-            market_data['options_volume'] = float(total_vol)
-
-            # Apply stricter pre-filter
-            if not enhanced_pre_filter(market_data):
-                return None
-
             # Apply initial filters after ensuring data is properly formatted
             if filters:
                 try:
@@ -324,8 +313,7 @@ class ExplosiveOptionsScanner:
                         except (ValueError, TypeError):
                             score = 0
 
-                        # Ensure score is numeric for comparison
-                        if isinstance(score, (int, float)) and score >= self.scan_config['min_score']:
+                        if score >= self.scan_config['min_score']:
                             option_dict['score_analysis'] = analysis
                             option_dict['total_score'] = score
 
@@ -622,8 +610,6 @@ class ExplosiveOptionsScanner:
                 change_percent = abs(base_data.get('change_percent', 0))
                 volatility = max(change_percent * 10, 25.0)  # Estimate volatility
 
-                five_day_change = base_data.get('change_percent', 0)
-
                 # Get earnings info
                 earnings_info = self._get_earnings_info(symbol)
 
@@ -636,7 +622,6 @@ class ExplosiveOptionsScanner:
                     'beta': 1.0,  # Default
                     'earnings_info': earnings_info,
                     'volume_avg': base_data.get('volume', 0),
-                    '5_day_change': five_day_change,
                     'change_percent': base_data.get('change_percent', 0),
                     'high': base_data.get('high', 0),
                     'low': base_data.get('low', 0)
@@ -687,13 +672,6 @@ class ExplosiveOptionsScanner:
             else:
                 volatility = 25.0  # Default volatility
 
-            if len(prices) >= 6:
-                five_day_change = (prices[0] - prices[5]) / prices[5] * 100
-            elif len(prices) >= 2:
-                five_day_change = (prices[0] - prices[1]) / prices[1] * 100
-            else:
-                five_day_change = 0.0
-
             # Get earnings info from Alpha Vantage earnings calendar
             earnings_info = self._get_earnings_info(symbol)
 
@@ -705,8 +683,7 @@ class ExplosiveOptionsScanner:
                 'sector': 'Unknown',
                 'beta': 1.0,
                 'earnings_info': earnings_info,
-                'volume_avg': 0,
-                '5_day_change': five_day_change
+                'volume_avg': 0
             }
 
         except Exception as e:
