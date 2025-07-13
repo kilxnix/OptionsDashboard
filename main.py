@@ -859,7 +859,7 @@ def enhanced_scan():
                             opportunity.get('trading_plan', {}), scan_date)
                         tracked_count += 1
                         print(
-                            f"📊 Started tracking {opportunity['symbol']}: {track_id}"
+                            f"📊 Started tracking {opportunity['symbol']}: {trackid}"
                                                 )
                 except Exception as e:
                     print(
@@ -1577,6 +1577,44 @@ def jpm_explosion_hunter():
                         except:
                             option_dict['days_to_expiry'] = 30  # Default
 
+                        # Calculate similarity score based on Greeks and other factors
+                        def calculate_similarity(option, reference):
+                            try:
+                                # Extract values safely
+                                delta_diff = abs(float(option.get('delta', 0)) - reference['delta'])
+                                gamma_diff = abs(float(option.get('gamma', 0)) - reference['gamma'])
+
+                                # Theta comparison: match both sign and magnitude
+                                option_theta = float(option.get('theta', 0))
+                                ref_theta = reference['theta']
+
+                                # If signs are different, heavily penalize
+                                if (option_theta > 0) != (ref_theta > 0):
+                                    theta_diff = abs(option_theta) + abs(ref_theta)  # Heavy penalty for sign mismatch
+                                else:
+                                    theta_diff = abs(option_theta - ref_theta)  # Normal difference for same sign
+
+                                price_diff = abs(float(option.get('mark', option.get('lastPrice', 0))) - reference['price'])
+                                iv_diff = abs(float(option.get('impliedVolatility', 0)) - reference['iv'])
+                                days_diff = abs(int(option.get('days_to_expiry', 0)) - reference['days_to_expiry'])
+
+                                # Weighted similarity calculation (lower is more similar)
+                                similarity = (
+                                    delta_diff * 25 +      # Delta weight
+                                    gamma_diff * 50 +      # Gamma weight  
+                                    theta_diff * 15 +      # Theta weight (now preserves sign)
+                                    (price_diff / max(reference['price'], 0.01)) * 10 +  # Price % diff
+                                    iv_diff * 20 +         # IV weight
+                                    (days_diff / 30) * 5   # Days weight (normalized)
+                                )
+
+                                # Convert to percentage (higher = more similar)
+                                similarity_score = max(0, (1 - similarity) * 100)
+                                return min(100, similarity_score)
+
+                            except Exception as e:
+                                print(f"Error calculating similarity: {e}")
+                                return 0
                         # Calculate similarity score
                         similarity_score = calculate_net_similarity(option_dict, net_reference)
 
@@ -1658,6 +1696,7 @@ def jpm_explosion_hunter():
     except Exception as e:
         import traceback
         return jsonify({
+            ```text
             "status": "error",
             "message": f"JPM explosion hunter failed: {str(e)}",
             "traceback": traceback.format_exc()
@@ -2443,7 +2482,6 @@ def mega_discovery_scan():
 
         all_discovered_symbols = []
         discovery_sources = {}
-
         # Method 1: Alpha Vantage Screeners
         try:
             print("📊 Method 1: Alpha Vantage Screeners...")
