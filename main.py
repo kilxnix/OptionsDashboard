@@ -1696,7 +1696,6 @@ def jpm_explosion_hunter():
     except Exception as e:
         import traceback
         return jsonify({
-            ```text
             "status": "error",
             "message": f"JPM explosion hunter failed: {str(e)}",
             "traceback": traceback.format_exc()
