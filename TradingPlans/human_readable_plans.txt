@@ -11230,3 +11230,129 @@ Delta: -0.30679 | Gamma: 0.01616 | Theta: -3.76939 | Score: 0.63
 
 ================================================================================
 
+📈 Trade Plan for AAPL (Bearish Bias)
+
+🔹 Option: $$207.5 Put expiring 2025-07-25
+🔹 Entry Price: $2.20
+🔹 Stop Loss: $1.65
+🔹 Initial Target: $3.85
+🔹 Final Target: $7.70
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.32996 | Gamma: 0.03736 | Theta: -0.11684 | Score: 0.77
+
+================================================================================
+
+📈 Trade Plan for GE (Bullish Bias)
+
+🔹 Option: $$262.5 Call expiring 2025-07-18
+🔹 Entry Price: $5.05
+🔹 Stop Loss: $3.79
+🔹 Initial Target: $8.84
+🔹 Final Target: $17.68
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.36616 | Gamma: 0.02096 | Theta: -0.49310 | Score: 0.68
+
+================================================================================
+
+📈 Trade Plan for MS (Bearish Bias)
+
+🔹 Option: $$140.0 Put expiring 2025-08-15
+🔹 Entry Price: $3.90
+🔹 Stop Loss: $2.92
+🔹 Initial Target: $6.83
+🔹 Final Target: $13.65
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.39388 | Gamma: 0.02981 | Theta: -0.06384 | Score: 0.86
+
+================================================================================
+
+📈 Trade Plan for MSFT (Bullish Bias)
+
+🔹 Option: $$507.5 Call expiring 2025-07-18
+🔹 Entry Price: $2.35
+🔹 Stop Loss: $1.76
+🔹 Initial Target: $4.11
+🔹 Final Target: $8.22
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.35079 | Gamma: 0.03887 | Theta: -0.27321 | Score: 0.71
+
+================================================================================
+
+📈 Trade Plan for ABBV (Bearish Bias)
+
+🔹 Option: $$190.0 Put expiring 2025-07-25
+🔹 Entry Price: $2.91
+🔹 Stop Loss: $2.18
+🔹 Initial Target: $5.09
+🔹 Final Target: $10.19
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.38321 | Gamma: 0.03704 | Theta: -0.13140 | Score: 0.78
+
+================================================================================
+
+📈 Trade Plan for AAPL (Bearish Bias)
+
+🔹 Option: $$207.5 Put expiring 2025-07-25
+🔹 Entry Price: $2.20
+🔹 Stop Loss: $1.65
+🔹 Initial Target: $3.85
+🔹 Final Target: $7.70
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.32996 | Gamma: 0.03736 | Theta: -0.11684 | Score: 0.77
+
+================================================================================
+
+📈 Trade Plan for XOM (Bullish Bias)
+
+🔹 Option: $$117.0 Call expiring 2025-07-25
+🔹 Entry Price: $1.18
+🔹 Stop Loss: $0.89
+🔹 Initial Target: $2.06
+🔹 Final Target: $4.13
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.37190 | Gamma: 0.09513 | Theta: -0.05867 | Score: 1.31
+
+================================================================================
+
