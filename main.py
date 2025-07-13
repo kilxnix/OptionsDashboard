@@ -2466,6 +2466,192 @@ def explosive_techvol_scan():
         }), 500
 
 
+@app.route("/explosive-52week-combo", methods=["GET", "POST"])
+def explosive_52week_combo():
+    """Two-phase scan: 52-week extremes discovery then full options analysis"""
+    try:
+        if request.method == 'POST' and request.is_json:
+            data = request.get_json()
+            min_explosive_score = data.get('min_explosive_score', 35)
+            entry_price = data.get('entry_price')
+            filters = data.get('filters', {})
+            if entry_price and 'max_price' not in filters:
+                filters['max_price'] = float(entry_price)
+        else:
+            min_explosive_score = float(request.args.get('min_explosive_score', 35))
+            entry_price = request.args.get('entry_price')
+            if entry_price:
+                max_price_limit = float(entry_price)
+            else:
+                max_price_limit = float(request.args.get('max_price', 5.00))
+
+            filters = {
+                'min_price': float(request.args.get('min_price', 0.05)),
+                'max_price': max_price_limit,
+                'min_delta': float(request.args.get('min_delta', 0.10)),
+                'max_delta': float(request.args.get('max_delta', 0.40)),
+                'min_days': int(request.args.get('min_days', 1)),
+                'max_days': int(request.args.get('max_days', 30))
+            }
+
+        print("🚀 EXPLOSIVE 52-WEEK COMBO SCAN - PHASE 1 + 2")
+        print("=" * 70)
+        print(f"🔥 Min Explosive Score: {min_explosive_score}")
+
+        api_key = os.getenv('ALPHA_VANTAGE_API_KEY')
+
+        def track_call(state):
+            now = time.time()
+            if now - state['start'] >= 60:
+                state['count'] = 0
+                state['start'] = now
+            state['count'] += 1
+            if state['count'] >= 145:
+                wait = 60 - (now - state['start']) + 1
+                if wait > 0:
+                    print(f"⏳ API throttle: waiting {wait:.1f}s")
+                    time.sleep(wait)
+                    state['count'] = 0
+                    state['start'] = time.time()
+
+        def fetch_price_history(symbol, state):
+            track_call(state)
+            url = (
+                f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED'
+                f'&symbol={symbol}&outputsize=full&apikey={api_key}'
+            )
+            resp = requests.get(url, timeout=30)
+            data = resp.json()
+            if 'Time Series (Daily)' not in data:
+                return None
+            df = pd.DataFrame.from_dict(data['Time Series (Daily)'], orient='index')
+            df.columns = [
+                'Open', 'High', 'Low', 'Close', 'Adjusted_Close',
+                'Volume', 'Dividend_Amount', 'Split_Coefficient'
+            ]
+            for col in df.columns:
+                df[col] = pd.to_numeric(df[col], errors='coerce')
+            df.index = pd.to_datetime(df.index)
+            df.sort_index(inplace=True)
+            return df.tail(260)
+
+        from scanner_core import discover_high_volume_movers_expanded
+        symbols_to_scan = discover_high_volume_movers_expanded()
+        phase_state = {'count': 0, 'start': time.time()}
+        extreme_symbols = {}
+
+        print(f"📊 PHASE 1: Checking {len(symbols_to_scan)} symbols for extremes...")
+        for sym in symbols_to_scan:
+            hist = fetch_price_history(sym, phase_state)
+            if hist is None or hist.empty:
+                continue
+            high_52 = hist['High'].max()
+            low_52 = hist['Low'].min()
+            last = hist.iloc[-1]
+            last_price = float(last['Close'])
+            last_volume = float(last['Volume'])
+            avg_volume = float(hist['Volume'].tail(20).mean())
+
+            near_high = last_price >= 0.95 * high_52
+            near_low = last_price <= 1.05 * low_52
+            volume_surge = last_volume >= 1.5 * avg_volume
+
+            if volume_surge and (near_high or near_low):
+                if near_high:
+                    proximity = min(max((last_price - 0.95 * high_52) / (0.05 * high_52), 0), 1)
+                else:
+                    proximity = min(max((1.05 * low_52 - last_price) / (0.05 * low_52), 0), 1)
+                volume_ratio = min(last_volume / max(avg_volume, 1), 3) / 3
+                score = round((proximity * 50) + (volume_ratio * 50), 1)
+
+                extreme_symbols[sym] = {
+                    'last_price': last_price,
+                    'last_volume': int(last_volume),
+                    'avg_volume': int(avg_volume),
+                    'high_52': high_52,
+                    'low_52': low_52,
+                    'volume_ratio': round(last_volume / max(avg_volume, 1), 2),
+                    'near_high': near_high,
+                    'near_low': near_low,
+                    'score': score
+                }
+
+        candidates = [s for s, d in extreme_symbols.items() if d['score'] >= min_explosive_score]
+        print(f"✅ PHASE 1 COMPLETE: {len(candidates)} symbols meet criteria")
+
+        scanner_core_results = {}
+        if candidates:
+            from scanner_core import run_scanner
+            print(f"🔬 PHASE 2: Running scanner_core on {len(candidates)} symbols")
+            scanner_core_results = run_scanner(
+                symbols=candidates,
+                min_delta=filters.get('min_delta', 0.10),
+                max_delta=filters.get('max_delta', 0.40),
+                min_price=filters.get('min_price', 0.05),
+                max_price=filters.get('max_price', 5.00),
+                time_to_expiry_range=(filters.get('min_days', 1), filters.get('max_days', 30))
+            )
+
+        final_opportunities = []
+        for symbol in candidates:
+            if symbol not in scanner_core_results:
+                continue
+            sc_data = scanner_core_results[symbol]
+            trade_plan = sc_data.get('trade_plan', {})
+            final_opportunities.append({
+                'symbol': symbol,
+                'option': trade_plan.get('option_symbol', f"{symbol} {trade_plan.get('strike', '')} {trade_plan.get('type', '')}"),
+                'explosive_score': extreme_symbols[symbol]['score'],
+                'confluence_score': sc_data.get('confluence', {}).get('score', 0),
+                'confluence_bias': sc_data.get('confluence', {}).get('bias', 'N/A'),
+                'trade_plan': trade_plan,
+                'explosive_analysis': extreme_symbols[symbol],
+                'scanner_core_analysis': sc_data
+            })
+
+        final_opportunities.sort(key=lambda x: (x['explosive_score'] + x['confluence_score']), reverse=True)
+
+        combined_results = {
+            'status': 'success',
+            'scan_metadata': {
+                'timestamp': datetime.now().isoformat(),
+                'scan_type': 'explosive-52week-combo-2phase',
+                'phase_1_symbols_scanned': len(symbols_to_scan),
+                'phase_1_opportunities': len(extreme_symbols),
+                'phase_2_symbols_analyzed': len(scanner_core_results),
+                'min_explosive_score': min_explosive_score,
+                'filters': filters
+            },
+            'phase_1_results': extreme_symbols,
+            'phase_2_results': scanner_core_results,
+            'final_opportunities': final_opportunities
+        }
+
+        top = final_opportunities[0] if final_opportunities else None
+        summary = (
+            f"📊 PHASE 1 – Scanned {len(symbols_to_scan)} symbols, "
+            f"{len(extreme_symbols)} met criteria. "
+            f"🔬 PHASE 2 – {len(scanner_core_results)} analyzed, "
+            f"{len(final_opportunities)} opportunities found."
+        )
+        if top:
+            summary += (
+                f" 🏆 Top: {top['symbol']} {top['trade_plan'].get('strike','')} "
+                f"{top['trade_plan'].get('type','')} - Explosive {top['explosive_score']:.1f}/100, "
+                f"Confluence {top['confluence_score']:.1f}/10"
+            )
+
+        combined_results['summary'] = summary
+        print(summary)
+        return jsonify(make_json_safe(combined_results))
+
+    except Exception as e:
+        print(f"❌ Error in explosive-52week-combo: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+
 @app.route("/mega-discovery-scan", methods=["GET", "POST"])
 def mega_discovery_scan():
     """Ultimate auto-discovery scan combining ALL methods with full analysis"""
