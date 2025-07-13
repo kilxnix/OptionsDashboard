@@ -3142,5 +3142,29 @@
     "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
+  },
+  "QS_6.0_put_2026-01-16 00:00:00_2025-07-13": {
+    "symbol": "QS",
+    "prediction_date": "2025-07-13",
+    "option_details": {
+      "strike": 6.0,
+      "type": "put",
+      "expiration": "2026-01-16 00:00:00",
+      "entry_price": 0.59,
+      "predicted_target": 1.03,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.38,
+      "delta": -0.14634,
+      "gamma": 0.04114,
+      "theta": -0.00315,
+      "implied_vol": "0.83925"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
   }
 }

@@ -11464,3 +11464,21 @@ Delta: 0.35079 | Gamma: 0.03887 | Theta: -0.27321 | Score: 0.71
 
 ================================================================================
 
+📈 Trade Plan for QS (Bearish Bias)
+
+🔹 Option: $$6.0 Put expiring 2026-01-16
+🔹 Entry Price: $0.59
+🔹 Stop Loss: $0.44
+🔹 Initial Target: $1.03
+🔹 Final Target: $2.06
+🔹 Position Size: 3 contracts
+🔹 Max Hold Time: 10 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.14634 | Gamma: 0.04114 | Theta: -0.00315 | Score: 5.75
+
+================================================================================
+

@@ -280,3 +280,50 @@ Trade Plan:
   Expiration: 2025-07-18
   Max Hold: 6 hours
 ============================================================
+
+============================================================
+Symbol: QS - 20:47:49
+Confluence Score: 8.38/10
+Bias: Bearish
+
+Top Options Found: 81
+
+Option 1:
+  Strike: $6.0 Put
+  Expiration: 2026-01-16 00:00:00
+  Delta: -0.1463
+  Gamma: 0.0411
+  Theta: -0.0032
+  Volume: 144
+  Score: 5.75
+  IV: 83.93%
+
+Option 2:
+  Strike: $6.0 Put
+  Expiration: 2025-11-21 00:00:00
+  Delta: -0.1418
+  Gamma: 0.0430
+  Theta: -0.0042
+  Volume: 279
+  Score: 4.63
+  IV: 93.68%
+
+Option 3:
+  Strike: $7.0 Put
+  Expiration: 2025-08-29 00:00:00
+  Delta: -0.1633
+  Gamma: 0.0762
+  Theta: -0.0079
+  Volume: 11
+  Score: 4.39
+  IV: 95.63%
+
+Trade Plan:
+  Entry: $0.59
+  Stop: $0.44
+  Target: $1.03
+  Position Size: 3 contracts
+  Strike: $6.0 Put
+  Expiration: 2026-01-16
+  Max Hold: 10 hours
+============================================================
