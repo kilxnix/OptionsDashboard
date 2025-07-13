@@ -1755,14 +1755,27 @@ def explosive_earnings_combo():
             data = request.get_json()
             scan_type = data.get('scan_type', 'earnings')
             min_explosive_score = data.get('min_explosive_score', 35)
+            
+            # Handle entry_price parameter in POST data
+            entry_price = data.get('entry_price')
             filters = data.get('filters', {})
+            if entry_price and 'max_price' not in filters:
+                filters['max_price'] = float(entry_price)
         else:
             scan_type = request.args.get('scan_type', 'earnings')
             min_explosive_score = float(
                 request.args.get('min_explosive_score', 35))
+            
+            # Handle entry_price parameter
+            entry_price = request.args.get('entry_price')
+            if entry_price:
+                max_price_limit = float(entry_price)
+            else:
+                max_price_limit = float(request.args.get('max_price', 5.00))
+            
             filters = {
                 'min_price': float(request.args.get('min_price', 0.05)),
-                'max_price': float(request.args.get('max_price', 5.00)),
+                'max_price': max_price_limit,  # Use entry_price if provided
                 'min_delta': float(request.args.get('min_delta', 0.10)),
                 'max_delta': float(request.args.get('max_delta', 0.40)),
                 'min_days': int(request.args.get('min_days', 1)),
