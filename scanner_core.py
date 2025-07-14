@@ -2115,6 +2115,11 @@ def run_scanner(symbols=None,
 
                         top_option = select_top_option_candidate(
                             candidates, confluence, symbol)
+                        
+                        if top_option is None:
+                            print(f"⏭️ Skipping {symbol} - no options align with {confluence['bias']} bias")
+                            continue
+                            
                         trade_plan = generate_trade_plan(
                             top_option, symbol_context)
                         output_file = "./TradingPlans/human_readable_plans.txt"
@@ -2215,7 +2220,7 @@ def filter_options_by_bias(candidates_df, symbol_bias):
 def select_top_option_candidate(candidates_df, analysis_results, symbol):
     """
     Select the best option candidate matching the symbol bias.
-    Prioritizes bias alignment over raw score.
+    Only returns options that align with the directional bias - no contradictory fallbacks.
     """
     bias = analysis_results.get("bias", "neutral").lower()
 
@@ -2233,12 +2238,11 @@ def select_top_option_candidate(candidates_df, analysis_results, symbol):
     if not matching_options.empty:
         top_option = matching_options.sort_values(by="score", ascending=False).iloc[0]
         print(f"✅ Selected {top_option['type'].upper()} for {symbol} ({bias} bias) - Score: {top_option['score']:.2f}")
+        return top_option
     else:
-        # Fallback to highest scoring option regardless of type
-        top_option = candidates_df.sort_values(by="score", ascending=False).iloc[0]
-        print(f"⚠️ No {option_type_wanted} found for {symbol} ({bias} bias). Using fallback {top_option['type'].upper()} with score {top_option['score']:.2f}")
-
-    return top_option
+        # NO FALLBACK TO OPPOSITE DIRECTION - this would be contradictory
+        print(f"❌ No {option_type_wanted} found for {symbol} ({bias} bias). Skipping symbol - won't trade against the signal.")
+        return None
 
 
 def save_summary_report(results, filepath):
