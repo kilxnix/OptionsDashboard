@@ -2542,42 +2542,108 @@ def explosive_52week_combo():
 
         print(f"📊 PHASE 1: Checking {len(symbols_to_scan)} symbols for extremes...")
         for sym in symbols_to_scan:
-            hist = fetch_price_history(sym, phase_state)
-            if hist is None or hist.empty:
-                continue
-            high_52 = hist['High'].max()
-            low_52 = hist['Low'].min()
-            last = hist.iloc[-1]
-            last_price = float(last['Close'])
-            last_volume = float(last['Volume'])
-            avg_volume = float(hist['Volume'].tail(20).mean())
+            try:
+                hist = fetch_price_history(sym, phase_state)
+                if hist is None or hist.empty:
+                    print(f"⚠️ No data for {sym}")
+                    continue
+                
+                # Calculate 52-week highs/lows (or available data range)
+                high_52 = hist['High'].max()
+                low_52 = hist['Low'].min()
+                last = hist.iloc[-1]
+                last_price = float(last['Close'])
+                last_volume = float(last['Volume']) if not pd.isna(last['Volume']) else 0
+                
+                # Use more recent volume average (5-day instead of 20)
+                recent_volume = hist['Volume'].tail(5)
+                avg_volume = float(recent_volume.mean()) if not recent_volume.empty else 1
 
-            near_high = last_price >= 0.95 * high_52
-            near_low = last_price <= 1.05 * low_52
-            volume_surge = last_volume >= 1.5 * avg_volume
+                # More generous proximity thresholds
+                near_high = last_price >= 0.90 * high_52  # Changed from 0.95 to 0.90
+                near_low = last_price <= 1.10 * low_52   # Changed from 1.05 to 1.10
+                volume_surge = last_volume >= 1.2 * avg_volume  # Changed from 1.5 to 1.2
 
-            if volume_surge and (near_high or near_low):
+                print(f"📈 {sym}: Price ${last_price:.2f}, High ${high_52:.2f} ({last_price/high_52:.1%}), Low ${low_52:.2f} ({last_price/low_52:.1%}), Vol {last_volume/avg_volume:.1f}x")
+
+                # Score based on proximity to extremes AND volume
+                score = 0
+                
                 if near_high:
-                    proximity = min(max((last_price - 0.95 * high_52) / (0.05 * high_52), 0), 1)
-                else:
-                    proximity = min(max((1.05 * low_52 - last_price) / (0.05 * low_52), 0), 1)
-                volume_ratio = min(last_volume / max(avg_volume, 1), 3) / 3
-                score = round((proximity * 50) + (volume_ratio * 50), 1)
+                    # Score higher the closer to 52-week high
+                    proximity_score = (last_price / high_52) * 30  # Max 30 points
+                    score += proximity_score
+                    print(f"  🔥 Near 52-week high: +{proximity_score:.1f} points")
+                
+                if near_low:
+                    # Score higher the closer to 52-week low (oversold bounce potential)
+                    proximity_score = (1 - (last_price / low_52 - 1) / 0.10) * 25  # Max 25 points
+                    score += proximity_score
+                    print(f"  📉 Near 52-week low: +{proximity_score:.1f} points")
+                
+                # Volume score (more weight for volume surge)
+                volume_ratio = last_volume / max(avg_volume, 1)
+                volume_score = min(volume_ratio * 20, 40)  # Max 40 points for volume
+                score += volume_score
+                print(f"  📊 Volume surge ({volume_ratio:.1f}x): +{volume_score:.1f} points")
+                
+                # Recent momentum bonus (if price moved >2% today)
+                if len(hist) > 1:
+                    prev_close = hist.iloc[-2]['Close']
+                    daily_change = (last_price - prev_close) / prev_close
+                    if abs(daily_change) > 0.02:  # >2% move
+                        momentum_score = min(abs(daily_change) * 100, 15)  # Max 15 points
+                        score += momentum_score
+                        print(f"  ⚡ Daily momentum ({daily_change:.1%}): +{momentum_score:.1f} points")
 
-                extreme_symbols[sym] = {
-                    'last_price': last_price,
-                    'last_volume': int(last_volume),
-                    'avg_volume': int(avg_volume),
-                    'high_52': high_52,
-                    'low_52': low_52,
-                    'volume_ratio': round(last_volume / max(avg_volume, 1), 2),
-                    'near_high': near_high,
-                    'near_low': near_low,
-                    'score': score
-                }
+                score = round(score, 1)
+                print(f"  🎯 Total Score: {score:.1f}")
 
-        candidates = [s for s, d in extreme_symbols.items() if d['score'] >= min_explosive_score]
-        print(f"✅ PHASE 1 COMPLETE: {len(candidates)} symbols meet criteria")
+                # Store all symbols with basic info (lower threshold for inclusion)
+                if score > 10:  # Very low threshold to see more candidates
+                    extreme_symbols[sym] = {
+                        'last_price': last_price,
+                        'last_volume': int(last_volume),
+                        'avg_volume': int(avg_volume),
+                        'high_52': high_52,
+                        'low_52': low_52,
+                        'volume_ratio': round(volume_ratio, 2),
+                        'near_high': near_high,
+                        'near_low': near_low,
+                        'score': score,
+                        'proximity_to_high': round((last_price / high_52) * 100, 1),
+                        'proximity_to_low': round((last_price / low_52) * 100, 1)
+                    }
+                    print(f"  ✅ {sym} added with score {score:.1f}")
+
+            except Exception as e:
+                print(f"❌ Error processing {sym}: {e}")
+                continue
+
+        # Show top candidates regardless of min_explosive_score for debugging
+        if extreme_symbols:
+            sorted_symbols = sorted(extreme_symbols.items(), key=lambda x: x[1]['score'], reverse=True)
+            print(f"\n🏆 TOP 10 CANDIDATES BY SCORE:")
+            for i, (sym, data) in enumerate(sorted_symbols[:10], 1):
+                print(f"  {i}. {sym}: {data['score']:.1f} (High: {data['proximity_to_high']:.1f}%, Low: {data['proximity_to_low']:.1f}%, Vol: {data['volume_ratio']:.1f}x)")
+
+        # Use a more reasonable threshold - either min_explosive_score OR top 20% of found symbols
+        score_threshold = min_explosive_score
+        if extreme_symbols:
+            # If min_explosive_score is too high, use 80th percentile of found scores
+            all_scores = [d['score'] for d in extreme_symbols.values()]
+            percentile_80 = np.percentile(all_scores, 80) if all_scores else 0
+            score_threshold = min(min_explosive_score, max(percentile_80, 25))  # At least 25, but not more than min_explosive_score
+
+        candidates = [s for s, d in extreme_symbols.items() if d['score'] >= score_threshold]
+        
+        print(f"✅ PHASE 1 COMPLETE: {len(candidates)} symbols meet criteria (threshold: {score_threshold:.1f})")
+        if score_threshold != min_explosive_score:
+            print(f"  📊 Used adaptive threshold {score_threshold:.1f} instead of {min_explosive_score:.1f}")
+        
+        # Show selected candidates
+        if candidates:
+            print(f"🎯 Selected candidates: {candidates[:10]}")  # Show first 10
 
         scanner_core_results = {}
         if candidates:
