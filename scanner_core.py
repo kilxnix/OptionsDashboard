@@ -355,20 +355,37 @@ def is_likely_optionable(symbol):
     if not symbol or len(symbol) < 1:
         return False
 
-    # Remove obvious warrants, rights, units
+    # Create a whitelist of known good stocks that were being incorrectly filtered
+    known_optionable = {
+        'LRCX', 'LUV', 'MARA', 'PLTR', 'UBER', 'LYFT', 'NFLX', 'MSFT', 'GOOGL', 
+        'AMZN', 'TSLA', 'META', 'NVDA', 'AAPL', 'AMD', 'INTC', 'CRM', 'ADBE',
+        'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'USB', 'PNC', 'COF', 'AXP',
+        'XOM', 'CVX', 'COP', 'EOG', 'SLB', 'HAL', 'OXY', 'MPC', 'VLO', 'PSX',
+        'SPY', 'QQQ', 'IWM', 'DIA', 'XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLP',
+        'GME', 'AMC', 'BB', 'COIN', 'HOOD', 'RIVN', 'LCID', 'SOFI', 'NKLA'
+    }
+    
+    # If it's in our known good list, always allow it
+    if symbol.upper() in known_optionable:
+        return True
+
+    # More specific exclusion patterns that won't catch legitimate stocks
     exclusion_patterns = [
-        'W', 'WS', 'WT', 'WW', 'WI',  # Warrants
-        'U', 'UN',  # Units
-        'R', 'RT',  # Rights  
-        '+', '=', '-',  # Special characters
+        'WS', 'WT', 'WW', 'WI',  # Warrants (but not just 'W')
+        'UN',  # Units (but not just 'U')
+        'RT',  # Rights (but not just 'R')
+        '+', '=',  # Special characters (but not '-' which is in some ETFs)
         'TEST', 'HALT'  # Test/halted symbols
     ]
 
+    # Check for exact matches or as suffixes (more precise)
     for pattern in exclusion_patterns:
-        if pattern in symbol.upper():
+        if (symbol.upper() == pattern or 
+            symbol.upper().endswith(pattern) or
+            pattern in symbol.upper()):
             return False
 
-    # Skip if contains numbers (often warrants)
+    # Skip if contains numbers (often warrants) but be more specific
     if any(char.isdigit() for char in symbol):
         return False
 
