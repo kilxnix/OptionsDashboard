@@ -244,90 +244,129 @@ class AdvancedBacktester:
     def simulate_option_performance(self, trade: TradePlan) -> Dict:
         """Simulate option performance based on stock price movement"""
         try:
+            # Validate trade data
+            if not trade.symbol or not trade.entry_price:
+                return {'status': 'ERROR', 'reason': 'Invalid trade data'}
+            
             # Get stock price data
             ticker = yf.Ticker(trade.symbol)
             
             # Calculate days since prediction
-            prediction_date = pd.to_datetime(trade.prediction_date)
+            try:
+                prediction_date = pd.to_datetime(trade.prediction_date)
+            except:
+                prediction_date = datetime.now() - timedelta(days=30)  # Default fallback
+                
             days_elapsed = (datetime.now() - prediction_date).days
             
             if days_elapsed <= 0:
                 return {'status': 'FUTURE_TRADE', 'reason': 'Trade is in the future'}
             
-            # Get historical stock data
-            end_date = datetime.now()
-            start_date = prediction_date
+            # Get historical stock data with error handling
+            try:
+                end_date = datetime.now()
+                start_date = max(prediction_date, datetime.now() - timedelta(days=365))  # Limit lookback
+                
+                hist = ticker.history(start=start_date, end=end_date, interval='1d')
+                
+                if hist.empty or len(hist) < 2:
+                    return {'status': 'NO_STOCK_DATA', 'reason': 'Insufficient stock price data'}
+                
+            except Exception as e:
+                return {'status': 'NO_STOCK_DATA', 'reason': f'Stock data fetch error: {str(e)}'}
             
-            hist = ticker.history(start=start_date, end=end_date, interval='1d')
+            # Calculate stock price movement with safety checks
+            try:
+                entry_stock_price = float(hist['Close'].iloc[0])
+                current_stock_price = float(hist['Close'].iloc[-1])
+                max_stock_price = float(hist['High'].max())
+                min_stock_price = float(hist['Low'].min())
+                
+                if entry_stock_price <= 0:
+                    return {'status': 'ERROR', 'reason': 'Invalid entry stock price'}
+                
+            except Exception as e:
+                return {'status': 'ERROR', 'reason': f'Price calculation error: {str(e)}'}
             
-            if hist.empty:
-                return {'status': 'NO_STOCK_DATA', 'reason': 'No stock price data available'}
-            
-            # Calculate stock price movement
-            entry_stock_price = hist['Close'].iloc[0]
-            current_stock_price = hist['Close'].iloc[-1]
-            max_stock_price = hist['High'].max()
-            min_stock_price = hist['Low'].min()
-            
-            # Estimate option price changes (simplified Black-Scholes approximation)
+            # Calculate percentage changes
             stock_change_pct = (current_stock_price - entry_stock_price) / entry_stock_price
             max_stock_change_pct = (max_stock_price - entry_stock_price) / entry_stock_price
             min_stock_change_pct = (min_stock_price - entry_stock_price) / entry_stock_price
             
-            # Estimate option price changes using delta (simplified)
-            delta = abs(trade.delta) if trade.delta else 0.3  # Default delta if not available
+            # Validate trade attributes with defaults
+            entry_price = float(trade.entry_price) if trade.entry_price else 1.0
+            initial_target = float(trade.initial_target) if trade.initial_target else entry_price * 1.5
+            final_target = float(trade.final_target) if trade.final_target else entry_price * 2.0
+            stop_loss = float(trade.stop_loss) if trade.stop_loss else entry_price * 0.7
+            position_size = int(trade.position_size) if trade.position_size else 1
+            delta = abs(float(trade.delta)) if trade.delta else 0.3
             
-            # Calculate estimated option prices
-            current_option_est = trade.entry_price * (1 + stock_change_pct * delta * 3)  # Amplify with leverage
-            max_option_est = trade.entry_price * (1 + max_stock_change_pct * delta * 3)
-            min_option_est = trade.entry_price * (1 + min_stock_change_pct * delta * 3)
+            # Calculate estimated option prices using enhanced model
+            option_type = getattr(trade, 'option_type', 'call') or 'call'
             
-            # Ensure prices don't go negative
-            current_option_est = max(0.01, current_option_est)
-            max_option_est = max(0.01, max_option_est)
-            min_option_est = max(0.01, min_option_est)
+            # Direction multiplier for calls vs puts
+            if option_type.lower() == 'call':
+                direction_multiplier = 1
+            else:  # put
+                direction_multiplier = -1
             
-            # Check targets
-            hit_initial = max_option_est >= trade.initial_target
-            hit_final = max_option_est >= trade.final_target
-            hit_stop = min_option_est <= trade.stop_loss
+            # Enhanced option price estimation
+            leverage_factor = min(5, max(2, delta * 8))  # Dynamic leverage based on delta
             
-            # Determine exit scenario
-            if hit_stop:
-                exit_price = trade.stop_loss
+            current_option_est = max(0.01, entry_price * (1 + stock_change_pct * delta * leverage_factor * direction_multiplier))
+            max_option_est = max(0.01, entry_price * (1 + max_stock_change_pct * delta * leverage_factor * direction_multiplier))
+            min_option_est = max(0.01, entry_price * (1 + min_stock_change_pct * delta * leverage_factor * direction_multiplier))
+            
+            # For puts, flip the logic
+            if option_type.lower() == 'put':
+                # For puts, we want the minimum stock price to give maximum option value
+                temp = max_option_est
+                max_option_est = min_option_est
+                min_option_est = temp
+            
+            # Check targets with proper logic
+            hit_initial = max_option_est >= initial_target
+            hit_final = max_option_est >= final_target  
+            hit_stop = min_option_est <= stop_loss
+            
+            # Determine exit scenario with priority
+            if hit_stop and not hit_initial:
+                exit_price = stop_loss
                 status = 'STOPPED_OUT'
             elif hit_final:
-                exit_price = trade.final_target
+                exit_price = final_target
                 status = 'FINAL_TARGET'
             elif hit_initial:
-                exit_price = trade.initial_target
+                exit_price = initial_target
                 status = 'INITIAL_TARGET'
             else:
                 exit_price = current_option_est
                 status = 'TIME_EXIT'
             
             # Calculate P&L
-            profit_loss = (exit_price - trade.entry_price) * trade.position_size * 100
-            profit_loss_pct = ((exit_price - trade.entry_price) / trade.entry_price) * 100
+            profit_loss = (exit_price - entry_price) * position_size * 100
+            profit_loss_pct = ((exit_price - entry_price) / entry_price) * 100 if entry_price > 0 else 0
             
             return {
                 'status': status,
-                'profit_loss': profit_loss,
-                'profit_loss_pct': profit_loss_pct,
+                'profit_loss': round(profit_loss, 2),
+                'profit_loss_pct': round(profit_loss_pct, 2),
                 'hit_initial': hit_initial,
                 'hit_final': hit_final,
                 'hit_stop': hit_stop,
-                'entry_price': trade.entry_price,
-                'exit_price': exit_price,
-                'max_price_est': max_option_est,
-                'min_price_est': min_option_est,
-                'current_price_est': current_option_est,
-                'stock_change_pct': stock_change_pct * 100,
-                'days_elapsed': days_elapsed
+                'entry_price': entry_price,
+                'exit_price': round(exit_price, 2),
+                'max_price_est': round(max_option_est, 2),
+                'min_price_est': round(min_option_est, 2),
+                'current_price_est': round(current_option_est, 2),
+                'stock_change_pct': round(stock_change_pct * 100, 2),
+                'days_elapsed': days_elapsed,
+                'option_type': option_type
             }
             
         except Exception as e:
-            return {'status': 'ERROR', 'reason': f'Simulation error: {str(e)}'}
+            import traceback
+            return {'status': 'ERROR', 'reason': f'Simulation error: {str(e)}', 'traceback': traceback.format_exc()}
     
     def backtest_all_trades(self):
         """Run backtest on all loaded trades"""
@@ -359,98 +398,162 @@ class AdvancedBacktester:
         
         if not valid_results:
             print("❌ No valid results to analyze")
-            return
+            print(f"Total results processed: {len(self.results)}")
+            
+            # Show error breakdown
+            error_breakdown = {}
+            for r in self.results:
+                status = r.get('status', 'UNKNOWN')
+                error_breakdown[status] = error_breakdown.get(status, 0) + 1
+            
+            print("Error breakdown:")
+            for status, count in error_breakdown.items():
+                print(f"  {status}: {count}")
+            
+            return pd.DataFrame()
         
-        # Convert to DataFrame for analysis
+        # Convert to DataFrame for analysis with safe data extraction
         results_data = []
         for r in valid_results:
-            trade = r['trade']
-            results_data.append({
-                'symbol': trade.symbol,
-                'bias': trade.bias,
-                'strike': trade.strike,
-                'type': trade.option_type,
-                'status': r['status'],
-                'profit_loss': r.get('profit_loss', 0),
-                'profit_loss_pct': r.get('profit_loss_pct', 0),
-                'hit_initial': r.get('hit_initial', False),
-                'hit_final': r.get('hit_final', False),
-                'hit_stop': r.get('hit_stop', False),
-                'delta': trade.delta or 0,
-                'gamma': trade.gamma or 0,
-                'theta': trade.theta or 0,
-                'score': trade.score or 0,
-                'confluence_score': trade.confluence_score or 0,
-                'days_elapsed': r.get('days_elapsed', 0),
-                'stock_change_pct': r.get('stock_change_pct', 0),
-                'prediction_date': trade.prediction_date
-            })
+            try:
+                trade = r['trade']
+                
+                # Safely extract trade data with defaults
+                symbol = getattr(trade, 'symbol', 'UNKNOWN')
+                bias = getattr(trade, 'bias', 'Unknown')
+                strike = getattr(trade, 'strike', 0)
+                option_type = getattr(trade, 'option_type', 'call')
+                delta = getattr(trade, 'delta', None)
+                gamma = getattr(trade, 'gamma', None)  
+                theta = getattr(trade, 'theta', None)
+                score = getattr(trade, 'score', None)
+                confluence_score = getattr(trade, 'confluence_score', None)
+                prediction_date = getattr(trade, 'prediction_date', None)
+                
+                # Convert None values to appropriate defaults
+                delta = float(delta) if delta is not None else 0.0
+                gamma = float(gamma) if gamma is not None else 0.0
+                theta = float(theta) if theta is not None else 0.0
+                score = float(score) if score is not None else 0.0
+                confluence_score = float(confluence_score) if confluence_score is not None else 0.0
+                
+                results_data.append({
+                    'symbol': symbol,
+                    'bias': bias,
+                    'strike': float(strike) if strike else 0.0,
+                    'type': str(option_type),
+                    'status': r.get('status', 'UNKNOWN'),
+                    'profit_loss': float(r.get('profit_loss', 0)),
+                    'profit_loss_pct': float(r.get('profit_loss_pct', 0)),
+                    'hit_initial': bool(r.get('hit_initial', False)),
+                    'hit_final': bool(r.get('hit_final', False)),
+                    'hit_stop': bool(r.get('hit_stop', False)),
+                    'delta': delta,
+                    'gamma': gamma,
+                    'theta': theta,
+                    'score': score,
+                    'confluence_score': confluence_score,
+                    'days_elapsed': int(r.get('days_elapsed', 0)),
+                    'stock_change_pct': float(r.get('stock_change_pct', 0)),
+                    'prediction_date': str(prediction_date) if prediction_date else 'Unknown'
+                })
+            except Exception as e:
+                print(f"⚠️ Error processing result: {e}")
+                continue
+        
+        if not results_data:
+            print("❌ No valid data to analyze after processing")
+            return pd.DataFrame()
         
         df = pd.DataFrame(results_data)
         
         # 1. Overall Performance
         print(f"\n🎯 OVERALL PERFORMANCE:")
         print(f"   Total trades analyzed: {len(df)}")
-        print(f"   Win rate (hit any target): {((df['hit_initial'] | df['hit_final']).sum() / len(df) * 100):.1f}%")
-        print(f"   Initial target rate: {(df['hit_initial'].sum() / len(df) * 100):.1f}%")
-        print(f"   Final target rate: {(df['hit_final'].sum() / len(df) * 100):.1f}%")
-        print(f"   Stop loss rate: {(df['hit_stop'].sum() / len(df) * 100):.1f}%")
+        
+        win_rate = ((df['hit_initial'] | df['hit_final']).sum() / len(df) * 100) if len(df) > 0 else 0
+        initial_rate = (df['hit_initial'].sum() / len(df) * 100) if len(df) > 0 else 0
+        final_rate = (df['hit_final'].sum() / len(df) * 100) if len(df) > 0 else 0
+        stop_rate = (df['hit_stop'].sum() / len(df) * 100) if len(df) > 0 else 0
+        
+        print(f"   Win rate (hit any target): {win_rate:.1f}%")
+        print(f"   Initial target rate: {initial_rate:.1f}%")
+        print(f"   Final target rate: {final_rate:.1f}%")
+        print(f"   Stop loss rate: {stop_rate:.1f}%")
         print(f"   Average P&L: ${df['profit_loss'].mean():.2f}")
         print(f"   Total P&L: ${df['profit_loss'].sum():.2f}")
         
         # 2. Performance by Score Ranges
-        print(f"\n📈 PERFORMANCE BY SCORE RANGES:")
-        score_bins = [0, 5, 7, 8, 9, 10]
-        df['score_range'] = pd.cut(df['confluence_score'], bins=score_bins, include_lowest=True)
+        try:
+            print(f"\n📈 PERFORMANCE BY SCORE RANGES:")
+            score_bins = [0, 5, 7, 8, 9, 10]
+            df['score_range'] = pd.cut(df['confluence_score'], bins=score_bins, include_lowest=True)
+            
+            score_analysis = df.groupby('score_range', observed=False).agg({
+                'hit_initial': 'mean',
+                'hit_final': 'mean', 
+                'profit_loss_pct': 'mean',
+                'profit_loss': 'count'
+            }).round(3)
+            score_analysis.columns = ['Initial_Target_%', 'Final_Target_%', 'Avg_Return_%', 'Count']
+            print(score_analysis)
+        except Exception as e:
+            print(f"⚠️ Error in score analysis: {e}")
         
-        score_analysis = df.groupby('score_range', observed=False).agg({
-            'hit_initial': 'mean',
-            'hit_final': 'mean',
-            'profit_loss_pct': 'mean',
-            'profit_loss': 'count'
-        }).round(3)
-        score_analysis.columns = ['Initial_Target_%', 'Final_Target_%', 'Avg_Return_%', 'Count']
-        print(score_analysis)
+        # 3. Performance by Greeks (with error handling)
+        try:
+            print(f"\n⚡ PERFORMANCE BY GREEKS:")
+            
+            successful_trades = df[df['hit_initial'] | df['hit_final']]
+            unsuccessful_trades = df[~(df['hit_initial'] | df['hit_final'])]
+            
+            if len(successful_trades) > 0 and len(unsuccessful_trades) > 0:
+                print(f"   Successful trades - Avg Delta: {successful_trades['delta'].mean():.3f}")
+                print(f"   Unsuccessful trades - Avg Delta: {unsuccessful_trades['delta'].mean():.3f}")
+                print(f"   Successful trades - Avg Gamma: {successful_trades['gamma'].mean():.3f}")
+                print(f"   Unsuccessful trades - Avg Gamma: {unsuccessful_trades['gamma'].mean():.3f}")
+                print(f"   Successful trades - Avg Score: {successful_trades['score'].mean():.2f}")
+                print(f"   Unsuccessful trades - Avg Score: {unsuccessful_trades['score'].mean():.2f}")
+        except Exception as e:
+            print(f"⚠️ Error in Greeks analysis: {e}")
         
-        # 3. Performance by Greeks
-        print(f"\n⚡ PERFORMANCE BY GREEKS:")
+        # 4. Performance by Option Type and Bias (with error handling)
+        try:
+            print(f"\n🎭 PERFORMANCE BY TYPE & BIAS:")
+            type_bias_analysis = df.groupby(['type', 'bias']).agg({
+                'hit_initial': 'mean',
+                'profit_loss_pct': 'mean',
+                'profit_loss': 'count'
+            }).round(3)
+            print(type_bias_analysis)
+        except Exception as e:
+            print(f"⚠️ Error in type/bias analysis: {e}")
         
-        # Delta analysis
-        successful_trades = df[df['hit_initial'] | df['hit_final']]
-        unsuccessful_trades = df[~(df['hit_initial'] | df['hit_final'])]
-        
-        if len(successful_trades) > 0 and len(unsuccessful_trades) > 0:
-            print(f"   Successful trades - Avg Delta: {successful_trades['delta'].mean():.3f}")
-            print(f"   Unsuccessful trades - Avg Delta: {unsuccessful_trades['delta'].mean():.3f}")
-            print(f"   Successful trades - Avg Gamma: {successful_trades['gamma'].mean():.3f}")
-            print(f"   Unsuccessful trades - Avg Gamma: {unsuccessful_trades['gamma'].mean():.3f}")
-            print(f"   Successful trades - Avg Score: {successful_trades['score'].mean():.2f}")
-            print(f"   Unsuccessful trades - Avg Score: {unsuccessful_trades['score'].mean():.2f}")
-        
-        # 4. Performance by Option Type and Bias
-        print(f"\n🎭 PERFORMANCE BY TYPE & BIAS:")
-        type_bias_analysis = df.groupby(['type', 'bias']).agg({
-            'hit_initial': 'mean',
-            'profit_loss_pct': 'mean',
-            'profit_loss': 'count'
-        }).round(3)
-        print(type_bias_analysis)
-        
-        # 5. Time-based Performance
-        print(f"\n⏰ TIME-BASED PERFORMANCE:")
-        df['days_held'] = pd.cut(df['days_elapsed'], bins=[0, 3, 7, 14, 30, 365], labels=['0-3d', '3-7d', '7-14d', '14-30d', '30d+'])
-        time_analysis = df.groupby('days_held', observed=False).agg({
-            'hit_initial': 'mean',
-            'profit_loss_pct': 'mean'
-        }).round(3)
-        print(time_analysis)
+        # 5. Time-based Performance (with error handling)
+        try:
+            print(f"\n⏰ TIME-BASED PERFORMANCE:")
+            df['days_held'] = pd.cut(df['days_elapsed'], bins=[0, 3, 7, 14, 30, 365], 
+                                   labels=['0-3d', '3-7d', '7-14d', '14-30d', '30d+'])
+            time_analysis = df.groupby('days_held', observed=False).agg({
+                'hit_initial': 'mean',
+                'profit_loss_pct': 'mean'
+            }).round(3)
+            print(time_analysis)
+        except Exception as e:
+            print(f"⚠️ Error in time analysis: {e}")
         
         # 6. Optimization Recommendations
         print(f"\n💡 OPTIMIZATION RECOMMENDATIONS:")
-        self.generate_recommendations(df)
+        try:
+            self.generate_recommendations(df)
+        except Exception as e:
+            print(f"⚠️ Error generating recommendations: {e}")
         
         # Save results
-        self.save_detailed_results(df)
+        try:
+            self.save_detailed_results(df)
+        except Exception as e:
+            print(f"⚠️ Error saving results: {e}")
         
         return df
     
