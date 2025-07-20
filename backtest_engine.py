@@ -244,129 +244,193 @@ class AdvancedBacktester:
     def simulate_option_performance(self, trade: TradePlan) -> Dict:
         """Simulate option performance based on stock price movement"""
         try:
-            # Validate trade data
-            if not trade.symbol or not trade.entry_price:
-                return {'status': 'ERROR', 'reason': 'Invalid trade data'}
+            # Validate trade data with more robust checking
+            if not hasattr(trade, 'symbol') or not trade.symbol:
+                return {'status': 'ERROR', 'reason': 'No symbol provided'}
             
-            # Get stock price data
-            ticker = yf.Ticker(trade.symbol)
+            # Check entry price with multiple possible attributes
+            entry_price = None
+            for attr in ['entry_price', 'mark', 'lastPrice', 'price']:
+                if hasattr(trade, attr):
+                    val = getattr(trade, attr)
+                    if val and val != 0:
+                        try:
+                            entry_price = float(val)
+                            break
+                        except (ValueError, TypeError):
+                            continue
             
-            # Calculate days since prediction
+            if not entry_price or entry_price <= 0:
+                return {'status': 'ERROR', 'reason': 'No valid entry price found'}
+            
+            # Get stock price data with timeout and retry
             try:
-                prediction_date = pd.to_datetime(trade.prediction_date)
-            except:
-                prediction_date = datetime.now() - timedelta(days=30)  # Default fallback
+                ticker = yf.Ticker(trade.symbol)
                 
-            days_elapsed = (datetime.now() - prediction_date).days
-            
-            if days_elapsed <= 0:
-                return {'status': 'FUTURE_TRADE', 'reason': 'Trade is in the future'}
-            
-            # Get historical stock data with error handling
-            try:
+                # Calculate days since prediction with better fallback
+                prediction_date = None
+                for attr in ['prediction_date', 'date', 'scan_date']:
+                    if hasattr(trade, attr):
+                        date_val = getattr(trade, attr)
+                        if date_val:
+                            try:
+                                prediction_date = pd.to_datetime(date_val)
+                                break
+                            except:
+                                continue
+                
+                if not prediction_date:
+                    prediction_date = datetime.now() - timedelta(days=30)  # Default fallback
+                    
+                days_elapsed = (datetime.now() - prediction_date).days
+                
+                if days_elapsed <= 0:
+                    return {'status': 'FUTURE_TRADE', 'reason': 'Trade is in the future'}
+                
+                if days_elapsed > 365:
+                    return {'status': 'TOO_OLD', 'reason': 'Trade is too old to analyze'}
+                
+                # Get historical stock data with better error handling
                 end_date = datetime.now()
-                start_date = max(prediction_date, datetime.now() - timedelta(days=365))  # Limit lookback
+                start_date = max(prediction_date - timedelta(days=5), datetime.now() - timedelta(days=365))
                 
-                hist = ticker.history(start=start_date, end=end_date, interval='1d')
+                hist = ticker.history(start=start_date, end=end_date, interval='1d', timeout=30)
                 
-                if hist.empty or len(hist) < 2:
-                    return {'status': 'NO_STOCK_DATA', 'reason': 'Insufficient stock price data'}
+                if hist is None or hist.empty or len(hist) < 2:
+                    return {'status': 'NO_STOCK_DATA', 'reason': f'No stock data for {trade.symbol}'}
                 
             except Exception as e:
-                return {'status': 'NO_STOCK_DATA', 'reason': f'Stock data fetch error: {str(e)}'}
+                return {'status': 'NO_STOCK_DATA', 'reason': f'Data fetch error for {trade.symbol}: {str(e)[:100]}'}
             
-            # Calculate stock price movement with safety checks
+            # Calculate stock price movement with robust error handling
             try:
-                entry_stock_price = float(hist['Close'].iloc[0])
-                current_stock_price = float(hist['Close'].iloc[-1])
-                max_stock_price = float(hist['High'].max())
-                min_stock_price = float(hist['Low'].min())
+                # Use the closest date to prediction as entry
+                hist_sorted = hist.sort_index()
+                entry_stock_price = float(hist_sorted['Close'].iloc[0])
+                current_stock_price = float(hist_sorted['Close'].iloc[-1])
                 
-                if entry_stock_price <= 0:
-                    return {'status': 'ERROR', 'reason': 'Invalid entry stock price'}
+                # Check for valid prices
+                if entry_stock_price <= 0 or current_stock_price <= 0:
+                    return {'status': 'ERROR', 'reason': 'Invalid stock prices found'}
+                
+                max_stock_price = float(hist_sorted['High'].max())
+                min_stock_price = float(hist_sorted['Low'].min())
+                
+                # Calculate percentage changes
+                stock_change_pct = (current_stock_price - entry_stock_price) / entry_stock_price
+                max_stock_change_pct = (max_stock_price - entry_stock_price) / entry_stock_price
+                min_stock_change_pct = (min_stock_price - entry_stock_price) / entry_stock_price
                 
             except Exception as e:
-                return {'status': 'ERROR', 'reason': f'Price calculation error: {str(e)}'}
+                return {'status': 'ERROR', 'reason': f'Price calculation error: {str(e)[:100]}'}
             
-            # Calculate percentage changes
-            stock_change_pct = (current_stock_price - entry_stock_price) / entry_stock_price
-            max_stock_change_pct = (max_stock_price - entry_stock_price) / entry_stock_price
-            min_stock_change_pct = (min_stock_price - entry_stock_price) / entry_stock_price
+            # Extract trade attributes with comprehensive defaults
+            try:
+                # Initial and final targets
+                initial_target = entry_price * 1.5  # Default 50% gain
+                final_target = entry_price * 2.0    # Default 100% gain
+                stop_loss = entry_price * 0.7       # Default 30% loss
+                position_size = 1                   # Default 1 contract
+                delta = 0.3                         # Default delta
+                
+                # Try to get actual values from trade object
+                for attr, default in [
+                    ('initial_target', initial_target),
+                    ('final_target', final_target),
+                    ('stop_loss', stop_loss),
+                    ('position_size', position_size),
+                    ('delta', delta)
+                ]:
+                    if hasattr(trade, attr):
+                        val = getattr(trade, attr)
+                        if val is not None:
+                            try:
+                                if attr == 'position_size':
+                                    locals()[attr] = max(1, int(float(val)))
+                                else:
+                                    locals()[attr] = float(val)
+                            except (ValueError, TypeError):
+                                pass  # Keep default
+                
+                # Ensure delta is reasonable
+                delta = min(1.0, max(0.1, abs(delta)))
+                
+                # Get option type
+                option_type = 'call'  # Default
+                for attr in ['option_type', 'type', 'optionType']:
+                    if hasattr(trade, attr):
+                        val = getattr(trade, attr)
+                        if val and str(val).lower() in ['call', 'put']:
+                            option_type = str(val).lower()
+                            break
+                
+            except Exception as e:
+                return {'status': 'ERROR', 'reason': f'Trade attribute extraction error: {str(e)[:100]}'}
             
-            # Validate trade attributes with defaults
-            entry_price = float(trade.entry_price) if trade.entry_price else 1.0
-            initial_target = float(trade.initial_target) if trade.initial_target else entry_price * 1.5
-            final_target = float(trade.final_target) if trade.final_target else entry_price * 2.0
-            stop_loss = float(trade.stop_loss) if trade.stop_loss else entry_price * 0.7
-            position_size = int(trade.position_size) if trade.position_size else 1
-            delta = abs(float(trade.delta)) if trade.delta else 0.3
-            
-            # Calculate estimated option prices using enhanced model
-            option_type = getattr(trade, 'option_type', 'call') or 'call'
-            
-            # Direction multiplier for calls vs puts
-            if option_type.lower() == 'call':
-                direction_multiplier = 1
-            else:  # put
-                direction_multiplier = -1
-            
-            # Enhanced option price estimation
-            leverage_factor = min(5, max(2, delta * 8))  # Dynamic leverage based on delta
-            
-            current_option_est = max(0.01, entry_price * (1 + stock_change_pct * delta * leverage_factor * direction_multiplier))
-            max_option_est = max(0.01, entry_price * (1 + max_stock_change_pct * delta * leverage_factor * direction_multiplier))
-            min_option_est = max(0.01, entry_price * (1 + min_stock_change_pct * delta * leverage_factor * direction_multiplier))
-            
-            # For puts, flip the logic
-            if option_type.lower() == 'put':
-                # For puts, we want the minimum stock price to give maximum option value
-                temp = max_option_est
-                max_option_est = min_option_est
-                min_option_est = temp
-            
-            # Check targets with proper logic
-            hit_initial = max_option_est >= initial_target
-            hit_final = max_option_est >= final_target  
-            hit_stop = min_option_est <= stop_loss
-            
-            # Determine exit scenario with priority
-            if hit_stop and not hit_initial:
-                exit_price = stop_loss
-                status = 'STOPPED_OUT'
-            elif hit_final:
-                exit_price = final_target
-                status = 'FINAL_TARGET'
-            elif hit_initial:
-                exit_price = initial_target
-                status = 'INITIAL_TARGET'
-            else:
-                exit_price = current_option_est
-                status = 'TIME_EXIT'
-            
-            # Calculate P&L
-            profit_loss = (exit_price - entry_price) * position_size * 100
-            profit_loss_pct = ((exit_price - entry_price) / entry_price) * 100 if entry_price > 0 else 0
-            
-            return {
-                'status': status,
-                'profit_loss': round(profit_loss, 2),
-                'profit_loss_pct': round(profit_loss_pct, 2),
-                'hit_initial': hit_initial,
-                'hit_final': hit_final,
-                'hit_stop': hit_stop,
-                'entry_price': entry_price,
-                'exit_price': round(exit_price, 2),
-                'max_price_est': round(max_option_est, 2),
-                'min_price_est': round(min_option_est, 2),
-                'current_price_est': round(current_option_est, 2),
-                'stock_change_pct': round(stock_change_pct * 100, 2),
-                'days_elapsed': days_elapsed,
-                'option_type': option_type
-            }
+            # Calculate option price estimates with improved model
+            try:
+                # Direction multiplier for calls vs puts
+                direction_multiplier = 1 if option_type.lower() == 'call' else -1
+                
+                # More conservative leverage factor
+                leverage_factor = min(4, max(1.5, delta * 6))
+                
+                # Estimate option prices
+                current_option_est = max(0.01, entry_price * (1 + stock_change_pct * delta * leverage_factor * direction_multiplier))
+                max_option_est = max(0.01, entry_price * (1 + max_stock_change_pct * delta * leverage_factor * direction_multiplier))
+                min_option_est = max(0.01, entry_price * (1 + min_stock_change_pct * delta * leverage_factor * direction_multiplier))
+                
+                # For puts, flip the min/max logic
+                if option_type.lower() == 'put':
+                    temp = max_option_est
+                    max_option_est = min_option_est  
+                    min_option_est = temp
+                
+                # Check target hits
+                hit_initial = max_option_est >= initial_target
+                hit_final = max_option_est >= final_target
+                hit_stop = min_option_est <= stop_loss
+                
+                # Determine exit scenario
+                if hit_stop and not hit_initial:
+                    exit_price = stop_loss
+                    status = 'STOPPED_OUT'
+                elif hit_final:
+                    exit_price = final_target
+                    status = 'FINAL_TARGET'
+                elif hit_initial:
+                    exit_price = initial_target
+                    status = 'INITIAL_TARGET'
+                else:
+                    exit_price = current_option_est
+                    status = 'TIME_EXIT'
+                
+                # Calculate P&L
+                profit_loss = (exit_price - entry_price) * position_size * 100
+                profit_loss_pct = ((exit_price - entry_price) / entry_price) * 100
+                
+                return {
+                    'status': status,
+                    'profit_loss': round(profit_loss, 2),
+                    'profit_loss_pct': round(profit_loss_pct, 2),
+                    'hit_initial': hit_initial,
+                    'hit_final': hit_final,
+                    'hit_stop': hit_stop,
+                    'entry_price': entry_price,
+                    'exit_price': round(exit_price, 2),
+                    'max_price_est': round(max_option_est, 2),
+                    'min_price_est': round(min_option_est, 2),
+                    'current_price_est': round(current_option_est, 2),
+                    'stock_change_pct': round(stock_change_pct * 100, 2),
+                    'days_elapsed': days_elapsed,
+                    'option_type': option_type
+                }
+                
+            except Exception as e:
+                return {'status': 'ERROR', 'reason': f'Option calculation error: {str(e)[:100]}'}
             
         except Exception as e:
-            import traceback
-            return {'status': 'ERROR', 'reason': f'Simulation error: {str(e)}', 'traceback': traceback.format_exc()}
+            return {'status': 'ERROR', 'reason': f'General simulation error: {str(e)[:100]}'}
     
     def backtest_all_trades(self):
         """Run backtest on all loaded trades"""
@@ -394,7 +458,7 @@ class AdvancedBacktester:
         print("="*80)
         
         # Filter valid results
-        valid_results = [r for r in self.results if r.get('status') not in ['ERROR', 'NO_STOCK_DATA', 'FUTURE_TRADE']]
+        valid_results = [r for r in self.results if r.get('status') not in ['ERROR', 'NO_STOCK_DATA', 'FUTURE_TRADE', 'TOO_OLD']]
         
         if not valid_results:
             print("❌ No valid results to analyze")
@@ -406,9 +470,17 @@ class AdvancedBacktester:
                 status = r.get('status', 'UNKNOWN')
                 error_breakdown[status] = error_breakdown.get(status, 0) + 1
             
-            print("Error breakdown:")
-            for status, count in error_breakdown.items():
+            print("\n📊 Error breakdown:")
+            for status, count in sorted(error_breakdown.items(), key=lambda x: x[1], reverse=True):
                 print(f"  {status}: {count}")
+                
+            # Show some sample error reasons for debugging
+            for status in ['ERROR', 'NO_STOCK_DATA']:
+                sample_errors = [r.get('reason', 'No reason') for r in self.results if r.get('status') == status][:3]
+                if sample_errors:
+                    print(f"\n  Sample {status} reasons:")
+                    for reason in sample_errors:
+                        print(f"    - {reason}")
             
             return pd.DataFrame()
         
