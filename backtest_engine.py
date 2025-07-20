@@ -197,49 +197,51 @@ class AdvancedBacktester:
         print(f"Parsed {len(trades)} trades from human readable file")
         return trades
     
-    def get_option_price_history(self, symbol: str, strike: float, option_type: str, 
-                                expiry: str, start_date: datetime, days: int = 30) -> Optional[Dict]:
-        """Get option price history using yfinance"""
+    def get_historical_option_data(self, symbol: str, strike: float, option_type: str, 
+                                          expiry: str, trade_date: str) -> Optional[Dict]:
+        """Get historical option data using Alpha Vantage"""
+        if not self.av_key:
+            return None
+            
         try:
-            ticker = yf.Ticker(symbol)
+            # Format the date for Alpha Vantage API
+            formatted_date = pd.to_datetime(trade_date).strftime('%Y-%m-%d')
             
-            # Format expiration date for yfinance
-            exp_date = pd.to_datetime(expiry).strftime('%Y-%m-%d')
+            # Alpha Vantage historical options endpoint
+            url = f"https://www.alphavantage.co/query"
+            params = {
+                'function': 'HISTORICAL_OPTIONS',
+                'symbol': symbol,
+                'date': formatted_date,
+                'apikey': self.av_key
+            }
             
-            # Get option chain for the expiration date
-            try:
-                options = ticker.option_chain(exp_date)
-                
-                if option_type.lower() == 'call':
-                    chain = options.calls
-                else:
-                    chain = options.puts
-                
-                # Find the specific strike
-                option_row = chain[chain['strike'] == strike]
-                
-                if not option_row.empty:
-                    current_price = float(option_row.iloc[0]['lastPrice'])
-                    bid = float(option_row.iloc[0]['bid'])
-                    ask = float(option_row.iloc[0]['ask'])
-                    volume = float(option_row.iloc[0]['volume'])
-                    
-                    return {
-                        'current_price': current_price,
-                        'bid': bid,
-                        'ask': ask,
-                        'mid_price': (bid + ask) / 2 if bid > 0 and ask > 0 else current_price,
-                        'volume': volume,
-                        'available': True
-                    }
-                else:
-                    return {'available': False, 'reason': 'Strike not found'}
-                    
-            except Exception as e:
-                return {'available': False, 'reason': f'Option chain error: {str(e)}'}
-                
+            response = requests.get(url, params=params, timeout=30)
+            data = response.json()
+            
+            if 'data' in data:
+                # Find the specific option contract
+                for contract in data['data']:
+                    if (float(contract.get('strike', 0)) == strike and 
+                        contract.get('type', '').lower() == option_type.lower() and
+                        contract.get('expiration', '') == expiry):
+                        
+                        return {
+                            'price': float(contract.get('last', 0)),
+                            'bid': float(contract.get('bid', 0)),
+                            'ask': float(contract.get('ask', 0)),
+                            'volume': float(contract.get('volume', 0)),
+                            'delta': float(contract.get('delta', 0)),
+                            'gamma': float(contract.get('gamma', 0)),
+                            'theta': float(contract.get('theta', 0)),
+                            'iv': float(contract.get('implied_volatility', 0)),
+                            'available': True
+                        }
+            
+            return {'available': False, 'reason': 'Contract not found in historical data'}
+            
         except Exception as e:
-            return {'available': False, 'reason': f'Symbol error: {str(e)}'}
+            return {'available': False, 'reason': f'Alpha Vantage error: {str(e)}'}
     
     def simulate_option_performance(self, trade: TradePlan) -> Dict:
         """Simulate option performance based on stock price movement"""
@@ -287,8 +289,7 @@ class AdvancedBacktester:
                 if days_elapsed <= 0:
                     return {'status': 'FUTURE_TRADE', 'reason': 'Trade is in the future'}
                 
-                if days_elapsed > 365:
-                    return {'status': 'TOO_OLD', 'reason': 'Trade is too old to analyze'}
+                # No upper limit on age since Alpha Vantage has 15+ years of data
                 
                 # Get historical stock data with better error handling
                 end_date = datetime.now()
@@ -458,7 +459,7 @@ class AdvancedBacktester:
         print("="*80)
         
         # Filter valid results
-        valid_results = [r for r in self.results if r.get('status') not in ['ERROR', 'NO_STOCK_DATA', 'FUTURE_TRADE', 'TOO_OLD']]
+        valid_results = [r for r in self.results if r.get('status') not in ['ERROR', 'NO_STOCK_DATA', 'FUTURE_TRADE']]
         
         if not valid_results:
             print("❌ No valid results to analyze")
