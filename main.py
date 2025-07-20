@@ -1204,29 +1204,242 @@ def get_position_details(track_id):
             "message": f"Error getting position details: {str(e)}"
         }), 500
 
+
+@app.route("/backtest/run", methods=["GET", "POST"])
+def run_comprehensive_backtest():
+    """Run comprehensive backtest on all historical trades"""
+    try:
+        from backtest_engine import AdvancedBacktester
+        
+        # Get parameters
+        if request.method == 'POST' and request.is_json:
+            data = request.get_json()
+            include_human_readable = data.get('include_human_readable', False)
+            min_score_filter = data.get('min_score_filter', 0)
+            days_lookback = data.get('days_lookback', 365)
+        else:
+            include_human_readable = request.args.get('include_human_readable', 'false').lower() == 'true'
+            min_score_filter = float(request.args.get('min_score_filter', 0))
+            days_lookback = int(request.args.get('days_lookback', 365))
+        
+        print("🚀 Starting comprehensive backtest...")
+        
+        # Initialize backtester
+        backtester = AdvancedBacktester()
+        
+        # Load historical trades from JSON files
+        trades = backtester.load_all_historical_trades()
+        
+        # Optionally include human readable file
+        if include_human_readable:
+            human_file = "./TradingPlans/human_readable_plans.txt"
+            if os.path.exists(human_file):
+                human_trades = backtester.parse_human_readable_file(human_file)
+                trades.extend(human_trades)
+                print(f"Added {len(human_trades)} trades from human readable file")
+        
+        if not trades:
+            return jsonify({
+                "status": "error",
+                "message": "No historical trades found to backtest"
+            }), 404
+        
+        # Filter by date and score if specified
+        filtered_trades = []
+        cutoff_date = datetime.now() - timedelta(days=days_lookback)
+        
+        for trade in trades:
+            # Check date filter
+            trade_date = pd.to_datetime(trade.prediction_date)
+            if trade_date < cutoff_date:
+                continue
+            
+            # Check score filter
+            score = getattr(trade, 'confluence_score', 0) or getattr(trade, 'score', 0)
+            if score < min_score_filter:
+                continue
+                
+            filtered_trades.append(trade)
+        
+        backtester.trades = filtered_trades
+        
+        if not filtered_trades:
+            return jsonify({
+                "status": "error",
+                "message": f"No trades match filters (min_score: {min_score_filter}, days_lookback: {days_lookback})"
+            }), 404
+        
+        # Run backtest
+        backtester.backtest_all_trades()
+        
+        # Analyze results
+        results_df = backtester.analyze_results()
+        
+        # Generate summary for API response
+        valid_results = [r for r in backtester.results if r.get('status') not in ['ERROR', 'NO_STOCK_DATA', 'FUTURE_TRADE']]
+        
+        if valid_results:
+            df = pd.DataFrame([{
+                'hit_initial': r.get('hit_initial', False),
+                'hit_final': r.get('hit_final', False),
+                'hit_stop': r.get('hit_stop', False),
+                'profit_loss': r.get('profit_loss', 0),
+                'profit_loss_pct': r.get('profit_loss_pct', 0),
+                'confluence_score': getattr(r['trade'], 'confluence_score', 0) or getattr(r['trade'], 'score', 0)
+            } for r in valid_results])
+            
+            # Calculate summary statistics
+            win_rate = (df['hit_initial'] | df['hit_final']).mean() * 100
+            initial_target_rate = df['hit_initial'].mean() * 100
+            final_target_rate = df['hit_final'].mean() * 100
+            stop_loss_rate = df['hit_stop'].mean() * 100
+            avg_return = df['profit_loss_pct'].mean()
+            total_pnl = df['profit_loss'].sum()
+            
+            # Best performing score threshold
+            high_score_trades = df[df['confluence_score'] >= 8]
+            high_score_win_rate = 0
+            if len(high_score_trades) > 0:
+                high_score_win_rate = (high_score_trades['hit_initial'] | high_score_trades['hit_final']).mean() * 100
+        
+        else:
+            win_rate = initial_target_rate = final_target_rate = stop_loss_rate = 0
+            avg_return = total_pnl = high_score_win_rate = 0
+        
+        return jsonify({
+            "status": "success",
+            "backtest_summary": {
+                "total_trades_analyzed": len(backtester.trades),
+                "valid_results": len(valid_results),
+                "filters_applied": {
+                    "min_score_filter": min_score_filter,
+                    "days_lookback": days_lookback,
+                    "include_human_readable": include_human_readable
+                },
+                "performance_metrics": {
+                    "win_rate": round(win_rate, 2),
+                    "initial_target_rate": round(initial_target_rate, 2),
+                    "final_target_rate": round(final_target_rate, 2),
+                    "stop_loss_rate": round(stop_loss_rate, 2),
+                    "average_return_pct": round(avg_return, 2),
+                    "total_pnl": round(total_pnl, 2),
+                    "high_score_win_rate": round(high_score_win_rate, 2)
+                },
+                "optimization_insights": [
+                    f"Trades with scores >= 8 show {high_score_win_rate:.1f}% win rate",
+                    f"Overall win rate: {win_rate:.1f}% across {len(valid_results)} trades",
+                    f"Consider focusing on confluence scores >= 8 for better performance",
+                    f"Stop loss hit rate: {stop_loss_rate:.1f}% - consider tighter risk management"
+                ]
+            },
+            "timestamp": datetime.now().isoformat(),
+            "files_generated": [
+                "backtest_results_[timestamp].csv",
+                "backtest_summary_[timestamp].json"
+            ]
+        })
+    
     except Exception as e:
+        import traceback
         return jsonify({
             "status": "error",
-            "message": f"Error getting live performance: {str(e)}"
+            "message": f"Backtesting failed: {str(e)}",
+            "traceback": traceback.format_exc()
         }), 500
 
-        return jsonify({
-            "status":
-            "success",
-            "current_regime":
-            regime_update['current_regime'],
-            "changes":
-            regime_update['changes'],
-            "trading_adjustments":
-            regime_update['trading_adjustments'],
-            "timestamp":
-            regime_update['timestamp']
-        })
 
+@app.route("/backtest/optimize-thresholds", methods=["GET", "POST"])
+def optimize_scanner_thresholds():
+    """Optimize scanner thresholds based on backtest results"""
+    try:
+        from backtest_engine import AdvancedBacktester
+        
+        print("🎯 Optimizing scanner thresholds based on historical performance...")
+        
+        # Run backtest first
+        backtester = AdvancedBacktester()
+        trades = backtester.load_all_historical_trades()
+        
+        if not trades:
+            return jsonify({
+                "status": "error", 
+                "message": "No historical data for optimization"
+            }), 404
+        
+        backtester.backtest_all_trades()
+        
+        # Analyze for optimal thresholds
+        valid_results = [r for r in backtester.results if r.get('status') not in ['ERROR', 'NO_STOCK_DATA', 'FUTURE_TRADE']]
+        
+        if not valid_results:
+            return jsonify({
+                "status": "error",
+                "message": "No valid results for optimization"
+            }), 404
+        
+        # Find optimal thresholds
+        df = pd.DataFrame([{
+            'confluence_score': getattr(r['trade'], 'confluence_score', 0) or getattr(r['trade'], 'score', 0),
+            'delta': getattr(r['trade'], 'delta', 0) or 0,
+            'gamma': getattr(r['trade'], 'gamma', 0) or 0,
+            'theta': getattr(r['trade'], 'theta', 0) or 0,
+            'successful': r.get('hit_initial', False) or r.get('hit_final', False)
+        } for r in valid_results])
+        
+        # Find optimal score threshold (maximize win rate with reasonable sample size)
+        optimal_thresholds = {}
+        
+        for threshold in [5, 6, 7, 8, 9]:
+            subset = df[df['confluence_score'] >= threshold]
+            if len(subset) >= 10:  # Minimum sample size
+                win_rate = subset['successful'].mean()
+                optimal_thresholds[threshold] = {
+                    'win_rate': win_rate * 100,
+                    'sample_size': len(subset)
+                }
+        
+        # Find best threshold
+        best_threshold = max(optimal_thresholds.keys(), key=lambda x: optimal_thresholds[x]['win_rate'])
+        
+        # Find optimal Greeks ranges
+        successful_trades = df[df['successful'] == True]
+        delta_mean = successful_trades['delta'].mean()
+        delta_std = successful_trades['delta'].std()
+        
+        gamma_mean = successful_trades['gamma'].mean()
+        gamma_std = successful_trades['gamma'].std()
+        
+        recommendations = {
+            "optimal_confluence_threshold": best_threshold,
+            "confluence_threshold_analysis": optimal_thresholds,
+            "optimal_delta_range": [
+                max(0, delta_mean - delta_std), 
+                min(1, delta_mean + delta_std)
+            ],
+            "optimal_gamma_range": [
+                max(0, gamma_mean - gamma_std),
+                gamma_mean + gamma_std
+            ],
+            "implementation_suggestions": [
+                f"Set minimum confluence score to {best_threshold} (current best performing)",
+                f"Focus on delta range {delta_mean-delta_std:.3f} to {delta_mean+delta_std:.3f}",
+                f"Prioritize gamma > {gamma_mean:.3f} for explosive potential",
+                "Consider implementing dynamic thresholds based on market volatility"
+            ]
+        }
+        
+        return jsonify({
+            "status": "success",
+            "optimization_results": recommendations,
+            "sample_size": len(df),
+            "successful_trades": len(successful_trades),
+            "timestamp": datetime.now().isoformat()
+        })
+    
     except Exception as e:
         return jsonify({
             "status": "error",
-            "message": f"Market regime analysis failed: {str(e)}"
+            "message": f"Optimization failed: {str(e)}"
         }), 500
 
 
