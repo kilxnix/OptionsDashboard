@@ -307,15 +307,25 @@ class AdvancedBacktester:
             try:
                 # Use the closest date to prediction as entry
                 hist_sorted = hist.sort_index()
+                
+                # Handle potential NaN values
+                hist_sorted = hist_sorted.dropna()
+                if hist_sorted.empty:
+                    return {'status': 'NO_STOCK_DATA', 'reason': 'No valid price data after cleaning'}
+                
                 entry_stock_price = float(hist_sorted['Close'].iloc[0])
                 current_stock_price = float(hist_sorted['Close'].iloc[-1])
                 
                 # Check for valid prices
-                if entry_stock_price <= 0 or current_stock_price <= 0:
+                if pd.isna(entry_stock_price) or pd.isna(current_stock_price) or entry_stock_price <= 0 or current_stock_price <= 0:
                     return {'status': 'ERROR', 'reason': 'Invalid stock prices found'}
                 
                 max_stock_price = float(hist_sorted['High'].max())
                 min_stock_price = float(hist_sorted['Low'].min())
+                
+                # Check for valid max/min prices
+                if pd.isna(max_stock_price) or pd.isna(min_stock_price):
+                    return {'status': 'ERROR', 'reason': 'Invalid max/min prices'}
                 
                 # Calculate percentage changes
                 stock_change_pct = (current_stock_price - entry_stock_price) / entry_stock_price
@@ -344,12 +354,15 @@ class AdvancedBacktester:
                 ]:
                     if hasattr(trade, attr):
                         val = getattr(trade, attr)
-                        if val is not None:
+                        if val is not None and str(val).strip() != '' and str(val) != 'nan':
                             try:
                                 if attr == 'position_size':
-                                    locals()[attr] = max(1, int(float(val)))
+                                    parsed_val = int(float(val))
+                                    locals()[attr] = max(1, parsed_val)
                                 else:
-                                    locals()[attr] = float(val)
+                                    parsed_val = float(val)
+                                    if not pd.isna(parsed_val) and parsed_val > 0:
+                                        locals()[attr] = parsed_val
                             except (ValueError, TypeError):
                                 pass  # Keep default
                 
@@ -361,8 +374,8 @@ class AdvancedBacktester:
                 for attr in ['option_type', 'type', 'optionType']:
                     if hasattr(trade, attr):
                         val = getattr(trade, attr)
-                        if val and str(val).lower() in ['call', 'put']:
-                            option_type = str(val).lower()
+                        if val and str(val).strip().lower() in ['call', 'put']:
+                            option_type = str(val).strip().lower()
                             break
                 
             except Exception as e:
@@ -439,12 +452,21 @@ class AdvancedBacktester:
         
         for i, trade in enumerate(self.trades):
             if i % 10 == 0:
-                print(f"Processing trade {i+1}/{len(self.trades)}: {trade.symbol}")
+                print(f"Processing trade {i+1}/{len(self.trades)}: {getattr(trade, 'symbol', 'Unknown')}")
             
-            # Simulate the trade performance
-            result = self.simulate_option_performance(trade)
-            result['trade'] = trade
-            self.results.append(result)
+            try:
+                # Simulate the trade performance
+                result = self.simulate_option_performance(trade)
+                result['trade'] = trade
+                self.results.append(result)
+            except Exception as e:
+                print(f"⚠️ Error processing trade {i+1}: {str(e)[:100]}")
+                # Add error result so we can track failures
+                self.results.append({
+                    'status': 'ERROR',
+                    'reason': f'Processing error: {str(e)[:100]}',
+                    'trade': trade
+                })
             
             # Small delay to avoid overwhelming APIs
             if i % 50 == 0:
