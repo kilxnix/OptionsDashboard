@@ -604,15 +604,36 @@ class RealtimeExplosiveScanner:
     
     def _get_yfinance_options(self, symbol: str) -> Optional[pd.DataFrame]:
         """
-        Fallback to Yahoo Finance for options data
+        Fallback to Yahoo Finance for options data with rate limiting
         """
         try:
+            import time
+            
+            # Simple rate limiting for Yahoo Finance
+            if not hasattr(self, '_last_yf_request'):
+                self._last_yf_request = 0
+                
+            current_time = time.time()
+            time_since_last = current_time - self._last_yf_request
+            
+            if time_since_last < 2.0:  # Minimum 2 seconds between requests
+                wait_time = 2.0 - time_since_last
+                print(f"⏳ Yahoo Finance rate limit: waiting {wait_time:.1f}s for {symbol}")
+                time.sleep(wait_time)
+            
+            self._last_yf_request = time.time()
+            
             ticker = yf.Ticker(symbol)
-            expirations = ticker.options[:3]  # Next 3 expirations
+            expirations = ticker.options[:2]  # Reduced from 3 to 2 expirations
             
             all_options = []
-            for exp in expirations:
-                opt_chain = ticker.option_chain(exp)
+            for i, exp in enumerate(expirations):
+                try:
+                    # Add small delay between expiration requests
+                    if i > 0:
+                        time.sleep(0.5)
+                        
+                    opt_chain = ticker.option_chain(exp)
                 
                 # Process calls
                 calls = opt_chain.calls.copy()
