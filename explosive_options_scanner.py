@@ -752,8 +752,7 @@ class ExplosiveOptionsScanner:
 
                 # Filter for recent data only (last 30 days)
                 if 'date' in df.columns:
-                    df['date'] = pd.to_datetime(```python
-df['date'])
+                    df['date'] = pd.to_datetime(df['date'])
                     cutoff_date = datetime.now() - timedelta(days=30)
                     df = df[df['date'] >= cutoff_date]
 
