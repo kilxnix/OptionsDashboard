@@ -125,7 +125,10 @@ class YahooFinanceManager:
                     puts['expiration'] = exp_date
                     puts['symbol'] = symbol
 
-                    all_options.extend([calls, puts])
+                    if not calls.empty:
+                        all_options.append(calls)
+                    if not puts.empty:
+                        all_options.append(puts)
 
                 except Exception as e:
                     print(f"⚠️ Error fetching {exp_date} options for {symbol}: {e}")
@@ -134,16 +137,11 @@ class YahooFinanceManager:
             # Combine all DataFrames into one
             if all_options:
                 import pandas as pd
-                # Ensure all items are DataFrames before concatenating
-                valid_dfs = []
-                for item in all_options:
-                    if isinstance(item, pd.DataFrame) and not item.empty:
-                        valid_dfs.append(item)
-
-                if valid_dfs:
-                    combined_options = pd.concat(valid_dfs, ignore_index=True)
+                try:
+                    combined_options = pd.concat(all_options, ignore_index=True)
                     return combined_options
-                else:
+                except Exception as e:
+                    print(f"⚠️ Error combining options data for {symbol}: {e}")
                     return None
             else:
                 return None
