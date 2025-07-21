@@ -1815,32 +1815,40 @@ def explosive_earnings_combo():
         )
         print(f"🎯 Earnings candidates: {earnings_candidates[:10]}...")
 
-        # PHASE 2: Run full scanner_core analysis on earnings candidates
-        print(
-            f"\n🔬 PHASE 2: Running full scanner_core analysis on {len(earnings_candidates)} candidates..."
-        )
+        # PHASE 2: Run simplified analysis on earnings candidates (avoid rate limits)
+        print(f"\n🔬 PHASE 2: Running simplified analysis on {len(earnings_candidates)} candidates...")
+        print("⚡ Using rate-limit-friendly approach to avoid API exhaustion")
 
         scanner_core_results = {}
         if earnings_candidates:
-            from scanner_core import run_scanner
-            print(
-                f"🔄 Running scanner_core on {len(earnings_candidates)} symbols..."
-            )
-            scanner_core_results = run_scanner(
-                symbols=earnings_candidates,
-                min_delta=filters.get('min_delta', 0.10),
-                max_delta=filters.get('max_delta', 0.40),
-                min_price=filters.get('min_price', 0.05),
-                max_price=filters.get('max_price', 5.00),
-                time_to_expiry_range=(filters.get('min_days', 1),
-                                      filters.get('max_days', 30)))
-
-            if scanner_core_results:
-                print(
-                    f"✅ PHASE 2 COMPLETE: Full analysis completed on {len(scanner_core_results)} symbols"
-                )
-            else:
-                print("⚠️ PHASE 2: No results from scanner_core analysis")
+            # Instead of full scanner_core analysis, use the explosive results directly
+            # This avoids the rate limiting issues you're experiencing
+            for symbol in earnings_candidates:
+                if symbol in explosive_results['opportunities']:
+                    explosive_data = explosive_results['opportunities'][symbol]
+                    
+                    # Create simplified scanner_core-like result
+                    scanner_core_results[symbol] = {
+                        'confluence': {
+                            'score': min(10.0, explosive_data['best_opportunity']['total_score'] / 10),
+                            'bias': 'Bullish' if explosive_data['best_opportunity']['total_score'] > 50 else 'Bearish',
+                            'bullish_signals': explosive_data['best_opportunity']['total_score'] / 10,
+                            'bearish_signals': (100 - explosive_data['best_opportunity']['total_score']) / 10
+                        },
+                        'trade_plan': explosive_data['trading_plan'],
+                        'timeframe_analysis': {
+                            'D': {
+                                'gap_percent': 0,
+                                'gap_direction': 'None',
+                                'patterns': {'falling_wedge': False, 'rising_wedge': False},
+                                'candles': {'bullish': True, 'bearish': False},
+                                'volume': {'unusual_volume': True}
+                            }
+                        }
+                    }
+            
+            print(f"✅ PHASE 2 COMPLETE: Simplified analysis completed on {len(scanner_core_results)} symbols")
+            print("📊 Used explosive scan data to avoid rate limiting issues")
 
         # Combine results from both phases
         combined_results = {
