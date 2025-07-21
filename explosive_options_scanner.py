@@ -924,53 +924,89 @@ class ExplosiveOptionsScanner:
             return self._fetch_yahoo_options(symbol)
 
     def _fetch_yahoo_options(self, symbol: str) -> Optional[pd.DataFrame]:
-        """Fetch options data from Yahoo Finance using managed requests"""
+        """Fetch options data from Yahoo Finance as fallback"""
         try:
-            from yahoo_finance_manager import yahoo_manager
+            import yfinance as yf
 
             print(f"🌐 Fetching Yahoo Finance options for {symbol}...")
+            ticker = yf.Ticker(symbol)
 
-            # Use the managed request system
-            all_options = yahoo_manager.request_options_data(symbol, timeout=30.0)
+            # Get available expiration dates
+            try:
+                expirations = ticker.options
+                if not expirations:
+                    print(f"❌ No options available for {symbol} on Yahoo Finance")
+                    return None
+            except Exception as e:
+                print(f"❌ Error getting expiration dates for {symbol}: {e}")
+                return None
+
+            # Fetch options data for all available expirations (limit to first 4 for performance)
+            all_options = []
+            for exp_date in expirations[:4]:  # Limit to avoid too many calls
+                try:
+                    option_chain = ticker.option_chain(exp_date)
+
+                    # Process calls
+                    calls = option_chain.calls.copy()
+                    calls['type'] = 'call'
+                    calls['expiration'] = exp_date
+                    calls['symbol'] = symbol
+
+                    # Process puts  
+                    puts = option_chain.puts.copy()
+                    puts['type'] = 'put'
+                    puts['expiration'] = exp_date
+                    puts['symbol'] = symbol
+
+                    all_options.extend([calls, puts])
+
+                except Exception as e:
+                    print(f"⚠️ Error fetching {exp_date} options for {symbol}: {e}")
+                    continue
 
             if not all_options:
-                print(f"❌ No options data available for {symbol}")
+                print(f"❌ No valid options data found for {symbol}")
                 return None
+
+            # Combine all options data
+            df = pd.concat(all_options, ignore_index=True)
+            print(f"✅ Yahoo Finance options found for {symbol}: {len(df)} contracts")
 
                 # Standardize Yahoo Finance columns to match Alpha Vantage format
             column_mapping = {
                 'lastPrice': 'mark',
-                'openInterest': 'open_interest',
+                'openInterest': 'open_interest', 
                 'impliedVolatility': 'impliedVolatility',
                 'contractSymbol': 'contractSymbol'
             }
 
             for old_col, new_col in column_mapping.items():
-                if old_col in all_options.columns:
-                    all_options[new_col] = all_options[old_col]
+                if old_col in df.columns:
+                    df[new_col] = df[old_col]
 
             # Calculate mark price from bid/ask if lastPrice not available
-            if 'mark' not in all_options.columns:
-                if 'ask' in all_options.columns and 'bid' in all_options.columns:
-                    all_options['ask'] = pd.to_numeric(all_options['ask'], errors='coerce').fillna(0.5)
-                    all_options['bid'] = pd.to_numeric(all_options['bid'], errors='coerce').fillna(0.5)
-                    all_options['mark'] = (all_options['ask'] + all_options['bid']) / 2
+            if 'mark' not in df.columns:
+                if 'ask' in df.columns and 'bid' in df.columns:
+                    df['ask'] = pd.to_numeric(df['ask'], errors='coerce').fillna(0.5)
+                    df['bid'] = pd.to_numeric(df['bid'], errors='coerce').fillna(0.5)
+                    df['mark'] = (df['ask'] + df['bid']) / 2
                 else:
-                    all_options['mark'] = 0.5
+                    df['mark'] = 0.5
 
             # Add required columns with defaults if missing
             required_defaults = {
                 'volume': 100,
                 'open_interest': 50,
                 'delta': 0.3,
-                'gamma': 0.01,
+                'gamma': 0.01, 
                 'theta': -0.05,
                 'impliedVolatility': 0.25
             }
 
             for col, default_val in required_defaults.items():
-                if col not in all_options.columns:
-                    all_options[col] = default_val
+                if col not in df.columns:
+                    df[col] = default_val
 
             # Standardize expiration format and calculate days to expiry
             def calculate_days_to_expiry(exp_str):
@@ -983,25 +1019,25 @@ class ExplosiveOptionsScanner:
                 except:
                     return 30
 
-            all_options['days_to_expiry'] = all_options['expiration'].apply(calculate_days_to_expiry)
+            df['days_to_expiry'] = df['expiration'].apply(calculate_days_to_expiry)
 
             # Ensure expiration is in YYYY-MM-DD format
-            all_options['expiration'] = pd.to_datetime(all_options['expiration']).dt.strftime('%Y-%m-%d')
+            df['expiration'] = pd.to_datetime(df['expiration']).dt.strftime('%Y-%m-%d')
 
             # Convert numeric columns with error handling
             numeric_cols = ['mark', 'strike', 'volume', 'open_interest', 'delta', 'gamma', 'theta', 'impliedVolatility']
             for col in numeric_cols:
-                if col in all_options.columns:
-                    all_options[col] = pd.to_numeric(all_options[col], errors='coerce')
+                if col in df.columns:
+                    df[col] = pd.to_numeric(df[col], errors='coerce')
 
                     # Fill NaN values with appropriate defaults
                     defaults_map = {
                         'mark': 0.5, 'strike': 100, 'volume': 50, 'open_interest': 50,
                         'delta': 0.3, 'gamma': 0.01, 'theta': -0.05, 'impliedVolatility': 0.25
                     }
-                    all_options[col] = all_options[col].fillna(defaults_map.get(col, 0))
+                    df[col] = df[col].fillna(defaults_map.get(col, 0))
 
-            return all_options
+            return df
 
         except Exception as e:
             print(f"❌ Yahoo Finance options fetch failed for {symbol}: {e}")
@@ -1147,7 +1183,7 @@ Opportunities Found: {len(results['opportunities'])}
         actions = []
 
         # Critical exit signals
-        critical_exits = [s for s in monitoring_results['exit_signals']
+        critical_exits = [s for s in monitoring_results['exit_signals'] 
                          if s.get('urgency') == 'CRITICAL']
         if critical_exits:
             actions.append(f"🚨 IMMEDIATE ACTION: {len(critical_exits)} positions require immediate exit")
