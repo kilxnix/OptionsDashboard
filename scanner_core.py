@@ -738,8 +738,7 @@ class CompleteOptionsScanner:
                 print(f"❌ Alpha Vantage historical options error for {symbol}: {data['Error Message']}")
                 # Try real-time options as fallback
                 print(f"🔄 Trying real-time options for {symbol}...")
-                return```python
- self._fetch_realtime_options(symbol)
+                return self._fetch_realtime_options(symbol)
 
             if 'data' in data and data['data'] and len(data['data']) > 0:
                 df = pd.DataFrame(data['data'])
