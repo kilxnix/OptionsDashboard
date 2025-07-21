@@ -364,7 +364,7 @@ def is_likely_optionable(symbol):
         'SPY', 'QQQ', 'IWM', 'DIA', 'XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLP',
         'GME', 'AMC', 'BB', 'COIN', 'HOOD', 'RIVN', 'LCID', 'SOFI', 'NKLA'
     }
-    
+
     # If it's in our known good list, always allow it
     if symbol.upper() in known_optionable:
         return True
@@ -738,7 +738,8 @@ class CompleteOptionsScanner:
                 print(f"❌ Alpha Vantage historical options error for {symbol}: {data['Error Message']}")
                 # Try real-time options as fallback
                 print(f"🔄 Trying real-time options for {symbol}...")
-                return self._fetch_realtime_options(symbol)
+                return```python
+ self._fetch_realtime_options(symbol)
 
             if 'data' in data and data['data'] and len(data['data']) > 0:
                 df = pd.DataFrame(data['data'])
@@ -1154,11 +1155,24 @@ class CompleteOptionsScanner:
         # Check if this is real-time options data (missing Greeks)
         has_greeks = all(col in options_data.columns for col in ['delta', 'gamma', 'theta'])
 
+        # Also check if the Greeks columns actually have valid data (not all NaN/None)
+        if has_greeks:
+            greeks_have_data = (
+                options_data['delta'].notna().any() and 
+                options_data['gamma'].notna().any() and 
+                options_data['theta'].notna().any()
+            )
+            has_greeks = has_greeks and greeks_have_data
+
         if not has_greeks:
             print(f"⚠️ Real-time options data detected (no Greeks available). Adding estimated Greeks...")
+            print(f"📊 Available columns: {list(options_data.columns)}")
             # Add estimated Greeks based on moneyness and time
             options_data = self._add_estimated_greeks(options_data)
             print(f"✅ Added estimated Greeks for {len(options_data)} options")
+            print(f"📊 Updated columns: {list(options_data.columns)}")
+        else:
+            print(f"✅ Historical options data detected - Greeks available: delta, gamma, theta")
 
         required_cols = {
             'strike', 'type', 'expiration', 'delta', 'gamma', 'theta',
@@ -1225,21 +1239,21 @@ class CompleteOptionsScanner:
     def _add_estimated_greeks(self, options_data):
         """Add estimated Greeks when missing from real-time data"""
         df = options_data.copy()
-        
+
         # Estimate delta based on moneyness and option type
         if 'delta' not in df.columns:
             df['delta'] = df.apply(self._estimate_delta, axis=1)
-        
+
         # Estimate gamma (roughly inverse of time and proportional to at-the-money)
         if 'gamma' not in df.columns:
             df['gamma'] = df.apply(self._estimate_gamma, axis=1)
-        
+
         # Estimate theta (time decay)
         if 'theta' not in df.columns:
             df['theta'] = df.apply(self._estimate_theta, axis=1)
-        
+
         return df
-    
+
     def _estimate_delta(self, row):
         """Estimate delta based on moneyness and option type"""
         try:
@@ -1252,7 +1266,7 @@ class CompleteOptionsScanner:
                 return min(-0.05, max(-0.95, -0.3))  # Default to moderate put delta
         except:
             return 0.3 if row.get('type', 'call').lower() == 'call' else -0.3
-    
+
     def _estimate_gamma(self, row):
         """Estimate gamma - highest at-the-money"""
         try:
@@ -1260,7 +1274,7 @@ class CompleteOptionsScanner:
             return 0.02  # Reasonable default
         except:
             return 0.01
-    
+
     def _estimate_theta(self, row):
         """Estimate theta (time decay)"""
         try:
@@ -1484,7 +1498,7 @@ def print_analysis(symbol,
             tabulate(
                 [["Entry Price", f"${trade_plan['entry_price']:.2f}"],
                  ["Stop Loss", f"${trade_plan['stop_loss']:.2f}"],
-                 ["Initial Target", f"${trade_plan['initial_target']:.2f}"],
+                 ["Initial Target", f"${trade_plan['initial_target']:.2ff}"],
                  ["Final Target", f"${trade_plan['final_target']:.2f}"],
                  ["Position Size", f"{trade_plan['position_size']} contracts"],
                  ["Max Hold Time", trade_plan['max_hold_time']],
@@ -2180,11 +2194,11 @@ def run_scanner(symbols=None,
 
                         top_option = select_top_option_candidate(
                             candidates, confluence, symbol)
-                        
+
                         if top_option is None:
                             print(f"⏭️ Skipping {symbol} - no options align with {confluence['bias']} bias")
                             continue
-                            
+
                         trade_plan = generate_trade_plan(
                             top_option, symbol_context)
                         output_file = "./TradingPlans/human_readable_plans.txt"
@@ -2244,8 +2258,7 @@ def run_scanner(symbols=None,
 
                         results[symbol] = result_data
 
-                        # Save this result immediately
-                        save_individual_result(symbol, result_data)
+                        # Save this result immediatelysave_individual_result(symbol, result_data)
                     else:
                         print("No valid options found matching criteria")
                 else:
