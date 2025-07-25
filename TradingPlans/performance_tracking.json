@@ -8206,5 +8206,101 @@
     "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
+  },
+  "SBUX_93.0_put_2025-07-25 00:00:00_2025-07-25": {
+    "symbol": "SBUX",
+    "prediction_date": "2025-07-25",
+    "option_details": {
+      "strike": 93.0,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.31,
+      "predicted_target": 0.54,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.57,
+      "delta": -0.30696,
+      "gamma": 0.24451,
+      "theta": -0.24888,
+      "implied_vol": "0.29292"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "TDOC_7.5_put_2025-10-17 00:00:00_2025-07-25": {
+    "symbol": "TDOC",
+    "prediction_date": "2025-07-25",
+    "option_details": {
+      "strike": 7.5,
+      "type": "put",
+      "expiration": "2025-10-17 00:00:00",
+      "entry_price": 0.92,
+      "predicted_target": 1.61,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.77,
+      "delta": -0.32189,
+      "gamma": 0.12893,
+      "theta": -0.00547,
+      "implied_vol": "0.70267"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "RIOT_10.0_put_2026-01-16 00:00:00_2025-07-25": {
+    "symbol": "RIOT",
+    "prediction_date": "2025-07-25",
+    "option_details": {
+      "strike": 10.0,
+      "type": "put",
+      "expiration": "2026-01-16 00:00:00",
+      "entry_price": 0.81,
+      "predicted_target": 1.42,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.17,
+      "delta": -0.15118,
+      "gamma": 0.03019,
+      "theta": -0.00481,
+      "implied_vol": "0.76120"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "CVS_70.0_call_2025-10-17 00:00:00_2025-07-25": {
+    "symbol": "CVS",
+    "prediction_date": "2025-07-25",
+    "option_details": {
+      "strike": 70.0,
+      "type": "call",
+      "expiration": "2025-10-17 00:00:00",
+      "entry_price": 1.04,
+      "predicted_target": 1.82,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.89,
+      "delta": 0.11791,
+      "gamma": 0.02549,
+      "theta": -0.00978,
+      "implied_vol": "0.27341"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
   }
 }
