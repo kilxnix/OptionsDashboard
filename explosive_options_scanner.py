@@ -487,6 +487,13 @@ class ExplosiveOptionsScanner:
 
         return filtered_symbols
 
+    def _is_optionable(self, symbol: str) -> bool:
+        """Check if a symbol has listed options via yfinance"""
+        try:
+            return bool(yf.Ticker(symbol).options)
+        except Exception:
+            return False
+
     def _get_critical_earnings_plays(self) -> List[Tuple[str, int]]:
         """Get stocks reporting earnings in next 0-7 days with exact timing"""
         try:
@@ -515,27 +522,31 @@ class ExplosiveOptionsScanner:
                     symbol = fields[symbol_idx].strip().strip('"')
                     earnings_date_str = fields[date_idx].strip().strip('"')
 
-                    if symbol and earnings_date_str:
-                        earnings_date = datetime.strptime(earnings_date_str, '%Y-%m-%d').date()
-                        days_to_earnings = (earnings_date - current_date).days
+                    if not symbol or not earnings_date_str:
+                        continue
 
-                        # CRITICAL: Only next 7 days (this week + weekend)
-                        if 0 <= days_to_earnings <= 7:
-                            # Filter for optionable stocks
-                            if (len(symbol) <= 5 and 
-                                symbol.replace('-', '').isalpha() and 
-                                not symbol.endswith('F')):
-                                critical_earnings.append((symbol, days_to_earnings))
-                                print(f"   🔥 FOUND: {symbol} reports in {days_to_earnings} days ({earnings_date})")
+                    earnings_date = datetime.strptime(earnings_date_str, '%Y-%m-%d').date()
+                    days_to_earnings = (earnings_date - current_date).days
 
-                except Exception as e:
+                    if 0 <= days_to_earnings <= 7:
+                        if (len(symbol) <= 5 and symbol.replace('-', '').isalpha() and not symbol.endswith('F')
+                                and self._is_optionable(symbol)):
+                            critical_earnings.append((symbol, days_to_earnings))
+                            print(f"   🔥 FOUND: {symbol} reports in {days_to_earnings} days ({earnings_date})")
+
+                except Exception:
                     continue
 
-            # Sort by days to earnings (most urgent first)
-            critical_earnings.sort(key=lambda x: x[1])
+            # Deduplicate and sort by urgency
+            unique = []
+            seen = set()
+            for sym, days in sorted(critical_earnings, key=lambda x: x[1]):
+                if sym not in seen:
+                    unique.append((sym, days))
+                    seen.add(sym)
 
-            print(f"✅ Found {len(critical_earnings)} CRITICAL earnings plays")
-            return critical_earnings
+            print(f"✅ Found {len(unique)} CRITICAL earnings plays")
+            return unique
 
         except Exception as e:
             print(f"❌ Critical earnings fetch failed: {e}")
