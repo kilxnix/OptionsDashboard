@@ -403,75 +403,138 @@ class ExplosiveOptionsScanner:
 
     def _discover_symbols(self, scan_type: str) -> List[str]:
         """
-        Discover symbols efficiently using your upgraded Alpha Vantage plan
+        Discover symbols efficiently with AGGRESSIVE earnings focus
         """
         symbols = []
 
         if scan_type == 'earnings':
-            # Get pre-earnings stocks (1 API call)
-            symbols = self._get_pre_earnings_stocks()
-            # Add high-volume liquid stocks as backup
-            liquid_stocks = ['SPY', 'QQQ', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'AMD']
-            symbols.extend([s for s in liquid_stocks if s not in symbols])
+            print(f"🎯 EARNINGS SCAN: Finding stocks reporting THIS WEEK...")
+            
+            # Get ACTUAL pre-earnings stocks with strict timing
+            earnings_this_week = self._get_critical_earnings_plays()
+            
+            if earnings_this_week:
+                print(f"🔥 CRITICAL: Found {len(earnings_this_week)} stocks reporting in next 7 days!")
+                for symbol, days in earnings_this_week:
+                    print(f"   📅 {symbol}: {days} days to earnings")
+                symbols = [s[0] for s in earnings_this_week]  # Extract just symbols
+            else:
+                print(f"⚠️ No critical earnings found, expanding search...")
+                symbols = self._get_pre_earnings_stocks()
+                
+            # Only add backups if we found very few real earnings plays
+            if len(symbols) < 5:
+                print(f"🔄 Adding high-IV backup candidates...")
+                liquid_stocks = ['TSLA', 'NVDA', 'AMD', 'META', 'GOOGL', 'AMZN', 'NFLX', 'CRM']
+                symbols.extend([s for s in liquid_stocks if s not in symbols])
 
         elif scan_type == 'unusual_activity':
-            # Focus on known active options symbols to save API calls
             symbols = ['SPY', 'QQQ', 'AAPL', 'TSLA', 'NVDA', 'AMD', 'META', 'AMZN', 'MSFT', 'GOOGL',
                       'GME', 'AMC', 'PLTR', 'COIN', 'SOXL', 'TQQQ', 'IWM', 'XLE', 'GLD', 'NFLX']
 
         elif scan_type == 'quick':
-            # Get top movers (1 API call) but limit to 100 to stay efficient
             movers = self._get_top_movers()
-            symbols = movers[:100]  # Limit for efficiency
+            symbols = movers[:100]
 
-        else:  # comprehensive
-            print(f"📊 Running comprehensive scan with API optimization...")
+        else:  # comprehensive - but PRIORITIZE earnings
+            print(f"📊 COMPREHENSIVE SCAN: Earnings first, then everything else...")
 
-            # Get earnings (1 API call)
-            earnings = self._get_pre_earnings_stocks()
-            print(f"📈 Earnings symbols found: {len(earnings)}")
-
-            # Get top movers (1 API call) 
+            # STEP 1: Get critical earnings (highest priority)
+            critical_earnings = self._get_critical_earnings_plays()
+            earnings_symbols = [s[0] for s in critical_earnings] if critical_earnings else []
+            
+            # STEP 2: Get broader earnings
+            all_earnings = self._get_pre_earnings_stocks()
+            
+            # STEP 3: Get movers
             movers = self._get_top_movers()
-            print(f"📊 Top movers found: {len(movers)}")
+            
+            # STEP 4: High volume backups
+            high_volume = ['SPY', 'QQQ', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'AMD']
 
-            # Add high-volume optionable stocks (no API call needed)
-            high_volume = ['SPY', 'QQQ', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'AMD', 
-                          'NFLX', 'COIN', 'PLTR', 'GME', 'AMC', 'SOXL', 'TQQQ', 'IWM', 'XLE', 'GLD',
-                          'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'V', 'MA', 'PYPL', 'SQ', 'CRM', 'ORCL',
-                          'DIS', 'UBER', 'LYFT', 'F', 'GM', 'BA', 'GE', 'XOM', 'CVX', 'KO', 'PEP']
+            print(f"🔥 Critical earnings (0-7 days): {len(earnings_symbols)}")
+            print(f"📈 All earnings (0-21 days): {len(all_earnings)}")
+            print(f"📊 Top movers: {len(movers)}")
 
-            print(f"🔥 High-volume optionable stocks: {len(high_volume)}")
+            # PRIORITIZE: Critical earnings first, then broader earnings, then movers
+            symbols = earnings_symbols.copy()
+            symbols.extend([s for s in all_earnings if s not in symbols])
+            symbols.extend([s for s in movers if s not in symbols])
+            symbols.extend([s for s in high_volume if s not in symbols])
 
-            # Combine and prioritize (earnings first, then movers, then high-volume)
-            all_symbols = earnings.copy()
-            all_symbols.extend([s for s in movers if s not in all_symbols])
-            all_symbols.extend([s for s in high_volume if s not in all_symbols])
+            # Limit but keep earnings bias
+            symbols = symbols[:300]  # Smaller focused list
 
-            # Limit total symbols to optimize API usage (bulk quotes can handle ~600-800 efficiently)
-            symbols = all_symbols[:600]  # Balance between coverage and efficiency
-
-        # Always include focus list first
-        if self.scan_config['focus_list']:
-            symbols = self.scan_config['focus_list'] + [s for s in symbols if s not in self.scan_config['focus_list']]
-
-        # Filter out likely non-optionable symbols
+        # Filter for optionable stocks
         filtered_symbols = []
         for symbol in symbols:
-            # Keep only likely optionable US stocks
-            if (len(symbol) <= 4 and 
-                symbol.isalpha() and 
-                not any(char in symbol for char in ['.', '-']) and
-                not symbol.endswith('F')):  # Avoid foreign stocks
+            if (len(symbol) <= 5 and 
+                symbol.replace('-', '').replace('.', '').isalpha() and 
+                not symbol.endswith('F')):
                 filtered_symbols.append(symbol)
 
-        print(f"📊 Filtered from {len(symbols)} to {len(filtered_symbols)} quality optionable symbols")
-        print(f"🎯 Optimized for your API limits: 2 discovery calls + efficient bulk processing")
-
+        print(f"📊 Final scan list: {len(filtered_symbols)} symbols")
+        if scan_type == 'earnings':
+            print(f"🎯 EARNINGS FOCUS: Prioritizing {min(20, len(filtered_symbols))} top candidates")
+            
         return filtered_symbols
 
+    def _get_critical_earnings_plays(self) -> List[Tuple[str, int]]:
+        """Get stocks reporting earnings in next 0-7 days with exact timing"""
+        try:
+            print(f"🔍 Fetching CRITICAL earnings calendar (next 7 days)...")
+            url = f'https://www.alphavantage.co/query?function=EARNINGS_CALENDAR&horizon=3month&apikey={self.av_key}'
+            response = requests.get(url, timeout=30)
+
+            lines = response.text.strip().split('\n')
+            if len(lines) < 2:
+                print(f"❌ No earnings calendar data received")
+                return []
+
+            headers = lines[0].split(',')
+            symbol_idx = headers.index('symbol') if 'symbol' in headers else 0
+            date_idx = headers.index('reportDate') if 'reportDate' in headers else 1
+
+            current_date = datetime.now().date()
+            critical_earnings = []
+
+            print(f"📅 Current date: {current_date}")
+            print(f"🔍 Scanning earnings calendar for IMMINENT reports...")
+
+            for line in lines[1:]:
+                try:
+                    fields = line.split(',')
+                    symbol = fields[symbol_idx].strip().strip('"')
+                    earnings_date_str = fields[date_idx].strip().strip('"')
+
+                    if symbol and earnings_date_str:
+                        earnings_date = datetime.strptime(earnings_date_str, '%Y-%m-%d').date()
+                        days_to_earnings = (earnings_date - current_date).days
+
+                        # CRITICAL: Only next 7 days (this week + weekend)
+                        if 0 <= days_to_earnings <= 7:
+                            # Filter for optionable stocks
+                            if (len(symbol) <= 5 and 
+                                symbol.replace('-', '').isalpha() and 
+                                not symbol.endswith('F')):
+                                critical_earnings.append((symbol, days_to_earnings))
+                                print(f"   🔥 FOUND: {symbol} reports in {days_to_earnings} days ({earnings_date})")
+
+                except Exception as e:
+                    continue
+
+            # Sort by days to earnings (most urgent first)
+            critical_earnings.sort(key=lambda x: x[1])
+            
+            print(f"✅ Found {len(critical_earnings)} CRITICAL earnings plays")
+            return critical_earnings
+
+        except Exception as e:
+            print(f"❌ Critical earnings fetch failed: {e}")
+            return []
+
     def _get_pre_earnings_stocks(self) -> List[str]:
-        """Get stocks with upcoming earnings"""
+        """Get stocks with upcoming earnings (broader 21-day window)"""
         try:
             url = f'https://www.alphavantage.co/query?function=EARNINGS_CALENDAR&horizon=3month&apikey={self.av_key}'
             response = requests.get(url, timeout=30)
@@ -695,14 +758,14 @@ class ExplosiveOptionsScanner:
             return None
 
     def _get_earnings_info(self, symbol: str) -> Dict:
-        """Get earnings information from Alpha Vantage"""
+        """Get earnings information with CRITICAL timing priority"""
         try:
             url = f'https://www.alphavantage.co/query?function=EARNINGS_CALENDAR&horizon=3month&apikey={self.av_key}'
             response = requests.get(url, timeout=30)
 
             lines = response.text.strip().split('\n')
             if len(lines) < 2:
-                return {'is_pre_earnings': False, 'days_to_earnings': None}
+                return {'is_pre_earnings': False, 'days_to_earnings': None, 'earnings_multiplier': 1.0}
 
             headers = lines[0].split(',')
             symbol_idx = headers.index('symbol') if 'symbol' in headers else 0
@@ -720,18 +783,51 @@ class ExplosiveOptionsScanner:
                         earnings_date = datetime.strptime(earnings_date_str, '%Y-%m-%d').date()
                         days_to_earnings = (earnings_date - current_date).days
 
+                        # MASSIVE scoring bonuses for imminent earnings
+                        if days_to_earnings <= 1:
+                            earnings_multiplier = 3.0  # 300% bonus for tomorrow/today
+                            priority = 'NUCLEAR'
+                        elif days_to_earnings <= 3:
+                            earnings_multiplier = 2.5  # 250% bonus for this week
+                            priority = 'CRITICAL'
+                        elif days_to_earnings <= 7:
+                            earnings_multiplier = 2.0  # 200% bonus for next week
+                            priority = 'HIGH'
+                        elif days_to_earnings <= 14:
+                            earnings_multiplier = 1.5  # 150% bonus for 2 weeks
+                            priority = 'MEDIUM'
+                        elif days_to_earnings <= 21:
+                            earnings_multiplier = 1.2  # 120% bonus for 3 weeks
+                            priority = 'LOW'
+                        else:
+                            earnings_multiplier = 1.0
+                            priority = 'NONE'
+
                         return {
                             'is_pre_earnings': 0 <= days_to_earnings <= 21,
                             'days_to_earnings': days_to_earnings,
-                            'earnings_priority': 'critical' if days_to_earnings <= 3 else 'high' if days_to_earnings <= 7 else 'medium'
+                            'earnings_priority': priority,
+                            'earnings_multiplier': earnings_multiplier,
+                            'earnings_date': earnings_date.strftime('%Y-%m-%d'),
+                            'urgency_level': 'IMMEDIATE' if days_to_earnings <= 3 else 'HIGH' if days_to_earnings <= 7 else 'NORMAL'
                         }
                 except:
                     continue
 
-            return {'is_pre_earnings': False, 'days_to_earnings': None}
+            return {
+                'is_pre_earnings': False, 
+                'days_to_earnings': None, 
+                'earnings_multiplier': 1.0,
+                'earnings_priority': 'NONE'
+            }
 
         except:
-            return {'is_pre_earnings': False, 'days_to_earnings': None}
+            return {
+                'is_pre_earnings': False, 
+                'days_to_earnings': None, 
+                'earnings_multiplier': 1.0,
+                'earnings_priority': 'NONE'
+            }
 
     def _fetch_all_options(self, symbol: str) -> Optional[pd.DataFrame]:
         """Fetch options data using Alpha Vantage historical + Yahoo Finance realtime"""
