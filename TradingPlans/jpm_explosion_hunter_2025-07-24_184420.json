@@ -1,0 +1,5275 @@
+{
+  "scan_metadata": {
+    "timestamp": "2025-07-24T18:44:20.109009",
+    "scan_type": "jpm_explosion_hunter",
+    "net_reference_pattern": {
+      "delta": 0.15696,
+      "gamma": 0.01411,
+      "theta": -0.09836,
+      "price": 1.52,
+      "iv": 0.23438,
+      "days_to_expiry": 17
+    },
+    "similarity_threshold": 0.7,
+    "source_file": "custom_symbols",
+    "total_symbols": 39,
+    "symbols_analyzed": 30
+  },
+  "jpm_matches": [
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.16988,
+        "gamma": 0.01256,
+        "theta": -0.11514,
+        "price": 1.62,
+        "iv": 0.35146,
+        "volume": 3542.0,
+        "open_interest": 27253.0,
+        "strike": 250.0,
+        "type": "call",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.906,
+      "contract_symbol": "AMZN 250.0 CALL exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.012920000000000015,
+        "gamma_diff": 0.0015499999999999993,
+        "theta_diff": 0.016780000000000003,
+        "price_diff": 0.10000000000000009,
+        "iv_diff": 0.11707999999999999,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.14689,
+        "gamma": 0.01266,
+        "theta": -0.13443,
+        "price": 1.37,
+        "iv": 0.37097,
+        "volume": 93.0,
+        "open_interest": 302.0,
+        "strike": 255.0,
+        "type": "call",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.896,
+      "contract_symbol": "BA 255.0 CALL exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.010069999999999996,
+        "gamma_diff": 0.00145,
+        "theta_diff": 0.03606999999999999,
+        "price_diff": 0.1499999999999999,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.14966,
+        "gamma": 0.01188,
+        "theta": -0.13833,
+        "price": 1.58,
+        "iv": 0.40999,
+        "volume": 217.0,
+        "open_interest": 1335.0,
+        "strike": 210.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.89,
+      "contract_symbol": "AMZN 210.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.007300000000000001,
+        "gamma_diff": 0.0022299999999999993,
+        "theta_diff": 0.039970000000000006,
+        "price_diff": 0.06000000000000005,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.15117,
+        "gamma": 0.01077,
+        "theta": -0.11356,
+        "price": 1.58,
+        "iv": 0.54657,
+        "volume": 715.0,
+        "open_interest": 4641.0,
+        "strike": 185.0,
+        "type": "call",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.884,
+      "contract_symbol": "AMD 185.0 CALL exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.00578999999999999,
+        "gamma_diff": 0.0033399999999999992,
+        "theta_diff": 0.015199999999999991,
+        "price_diff": 0.06000000000000005,
+        "iv_diff": 0.31218999999999997,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.14788,
+        "gamma": 0.0115,
+        "theta": -0.1406,
+        "price": 1.56,
+        "iv": 0.40999,
+        "volume": 81.0,
+        "open_interest": 275.0,
+        "strike": 215.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.881,
+      "contract_symbol": "BA 215.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.009079999999999977,
+        "gamma_diff": 0.0026099999999999995,
+        "theta_diff": 0.04224,
+        "price_diff": 0.040000000000000036,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.1777,
+        "gamma": 0.01395,
+        "theta": -0.15642,
+        "price": 1.63,
+        "iv": 0.39048,
+        "volume": 16.0,
+        "open_interest": 65.0,
+        "strike": 247.5,
+        "type": "call",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.879,
+      "contract_symbol": "AMZN 247.5 CALL exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.02074000000000001,
+        "gamma_diff": 0.00015999999999999868,
+        "theta_diff": 0.05806,
+        "price_diff": 0.10999999999999988,
+        "iv_diff": 0.1561,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.16908,
+        "gamma": 0.01615,
+        "theta": -0.08792,
+        "price": 1.27,
+        "iv": 0.50755,
+        "volume": 593.0,
+        "open_interest": 6280.0,
+        "strike": 140.0,
+        "type": "call",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.878,
+      "contract_symbol": "BABA 140.0 CALL exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.01212000000000002,
+        "gamma_diff": 0.002040000000000002,
+        "theta_diff": 0.010440000000000005,
+        "price_diff": 0.25,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.14946,
+        "gamma": 0.01196,
+        "theta": -0.13839,
+        "price": 1.65,
+        "iv": 0.5856,
+        "volume": 10.0,
+        "open_interest": 275.0,
+        "strike": 141.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.877,
+      "contract_symbol": "AMD 141.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.007499999999999979,
+        "gamma_diff": 0.002149999999999999,
+        "theta_diff": 0.04003000000000001,
+        "price_diff": 0.1299999999999999,
+        "iv_diff": 0.35122,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.16537,
+        "gamma": 0.01169,
+        "theta": -0.11018,
+        "price": 1.96,
+        "iv": 0.37097,
+        "volume": 618.0,
+        "open_interest": 21423.0,
+        "strike": 210.0,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.876,
+      "contract_symbol": "AMZN 210.0 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.00841,
+        "gamma_diff": 0.0024199999999999985,
+        "theta_diff": 0.011819999999999997,
+        "price_diff": 0.43999999999999995,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.178,
+        "gamma": 0.01434,
+        "theta": -0.15265,
+        "price": 1.71,
+        "iv": 0.37097,
+        "volume": 32.0,
+        "open_interest": 11.0,
+        "strike": 252.5,
+        "type": "call",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.876,
+      "contract_symbol": "BA 252.5 CALL exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.021040000000000003,
+        "gamma_diff": 0.00023000000000000104,
+        "theta_diff": 0.054290000000000005,
+        "price_diff": 0.18999999999999995,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.14663,
+        "gamma": 0.01026,
+        "theta": -0.10753,
+        "price": 1.67,
+        "iv": 0.39048,
+        "volume": 92.0,
+        "open_interest": 365.0,
+        "strike": 207.5,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.875,
+      "contract_symbol": "AMZN 207.5 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.010329999999999978,
+        "gamma_diff": 0.0038499999999999993,
+        "theta_diff": 0.009169999999999998,
+        "price_diff": 0.1499999999999999,
+        "iv_diff": 0.1561,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.15218,
+        "gamma": 0.01171,
+        "theta": -0.15055,
+        "price": 1.44,
+        "iv": 0.60511,
+        "volume": 68.0,
+        "open_interest": 186.0,
+        "strike": 182.5,
+        "type": "call",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.874,
+      "contract_symbol": "AMD 182.5 CALL exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.004779999999999979,
+        "gamma_diff": 0.0023999999999999994,
+        "theta_diff": 0.052189999999999986,
+        "price_diff": 0.08000000000000007,
+        "iv_diff": 0.37073,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.16327,
+        "gamma": 0.01267,
+        "theta": -0.14658,
+        "price": 1.82,
+        "iv": 0.5856,
+        "volume": 156.0,
+        "open_interest": 548.0,
+        "strike": 142.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.87,
+      "contract_symbol": "AMD 142.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.00631000000000001,
+        "gamma_diff": 0.0014399999999999986,
+        "theta_diff": 0.048219999999999985,
+        "price_diff": 0.30000000000000004,
+        "iv_diff": 0.35122,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.15208,
+        "gamma": 0.01057,
+        "theta": -0.09131,
+        "price": 1.77,
+        "iv": 0.33194,
+        "volume": 19.0,
+        "open_interest": 30.0,
+        "strike": 260.0,
+        "type": "call",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.87,
+      "contract_symbol": "BA 260.0 CALL exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.0048799999999999955,
+        "gamma_diff": 0.0035399999999999997,
+        "theta_diff": 0.007050000000000001,
+        "price_diff": 0.25,
+        "iv_diff": 0.09756000000000001,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.15866,
+        "gamma": 0.01112,
+        "theta": -0.11129,
+        "price": 1.94,
+        "iv": 0.54657,
+        "volume": 1330.0,
+        "open_interest": 15493.0,
+        "strike": 140.0,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.869,
+      "contract_symbol": "AMD 140.0 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.001700000000000007,
+        "gamma_diff": 0.0029899999999999996,
+        "theta_diff": 0.012929999999999997,
+        "price_diff": 0.41999999999999993,
+        "iv_diff": 0.31218999999999997,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.17627,
+        "gamma": 0.01266,
+        "theta": -0.09281,
+        "price": 1.85,
+        "iv": 0.31243,
+        "volume": 82.0,
+        "open_interest": 747.0,
+        "strike": 250.0,
+        "type": "call",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.869,
+      "contract_symbol": "AMZN 250.0 CALL exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.01931000000000002,
+        "gamma_diff": 0.00145,
+        "theta_diff": 0.005549999999999999,
+        "price_diff": 0.33000000000000007,
+        "iv_diff": 0.07804999999999998,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.14574,
+        "gamma": 0.00998,
+        "theta": -0.10972,
+        "price": 1.67,
+        "iv": 0.39048,
+        "volume": 27.0,
+        "open_interest": 27.0,
+        "strike": 212.5,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.868,
+      "contract_symbol": "BA 212.5 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.01121999999999998,
+        "gamma_diff": 0.00413,
+        "theta_diff": 0.011359999999999995,
+        "price_diff": 0.1499999999999999,
+        "iv_diff": 0.1561,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.16361,
+        "gamma": 0.01134,
+        "theta": -0.11211,
+        "price": 2.04,
+        "iv": 0.37097,
+        "volume": 480.0,
+        "open_interest": 1744.0,
+        "strike": 215.0,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.866,
+      "contract_symbol": "BA 215.0 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.006650000000000017,
+        "gamma_diff": 0.00277,
+        "theta_diff": 0.013749999999999998,
+        "price_diff": 0.52,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.13429,
+        "gamma": 0.0122,
+        "theta": -0.12337,
+        "price": 1.23,
+        "iv": 0.37097,
+        "volume": 1040.0,
+        "open_interest": 7800.0,
+        "strike": 250.0,
+        "type": "call",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.862,
+      "contract_symbol": "AMZN 250.0 CALL exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.022669999999999996,
+        "gamma_diff": 0.0019099999999999985,
+        "theta_diff": 0.02500999999999999,
+        "price_diff": 0.29000000000000004,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.1703,
+        "gamma": 0.01302,
+        "theta": -0.157,
+        "price": 1.73,
+        "iv": 0.5856,
+        "volume": 343.0,
+        "open_interest": 4034.0,
+        "strike": 180.0,
+        "type": "call",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.861,
+      "contract_symbol": "AMD 180.0 CALL exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.013340000000000019,
+        "gamma_diff": 0.001089999999999999,
+        "theta_diff": 0.05864,
+        "price_diff": 0.20999999999999996,
+        "iv_diff": 0.35122,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.15618,
+        "gamma": 0.01662,
+        "theta": -0.05509,
+        "price": 1.29,
+        "iv": 0.40999,
+        "volume": 63.0,
+        "open_interest": 642.0,
+        "strike": 110.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.858,
+      "contract_symbol": "BABA 110.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.0007799999999999752,
+        "gamma_diff": 0.00251,
+        "theta_diff": 0.04327,
+        "price_diff": 0.22999999999999998,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.16169,
+        "gamma": 0.014,
+        "theta": -0.23355,
+        "price": 1.48,
+        "iv": 0.48804,
+        "volume": 388.0,
+        "open_interest": 2298.0,
+        "strike": 212.5,
+        "type": "put",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.857,
+      "contract_symbol": "AMZN 212.5 PUT exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.004730000000000012,
+        "gamma_diff": 0.00010999999999999899,
+        "theta_diff": 0.13519,
+        "price_diff": 0.040000000000000036,
+        "iv_diff": 0.25366,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.18276,
+        "gamma": 0.01284,
+        "theta": -0.12366,
+        "price": 1.9,
+        "iv": 0.35146,
+        "volume": 636.0,
+        "open_interest": 5697.0,
+        "strike": 255.0,
+        "type": "call",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.857,
+      "contract_symbol": "BA 255.0 CALL exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.025800000000000017,
+        "gamma_diff": 0.0012699999999999986,
+        "theta_diff": 0.025300000000000003,
+        "price_diff": 0.3799999999999999,
+        "iv_diff": 0.11707999999999999,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.16477,
+        "gamma": 0.01302,
+        "theta": -0.06605,
+        "price": 1.61,
+        "iv": 0.48804,
+        "volume": 2.0,
+        "open_interest": 162.0,
+        "strike": 145.0,
+        "type": "call",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.856,
+      "contract_symbol": "BABA 145.0 CALL exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.007810000000000011,
+        "gamma_diff": 0.001089999999999999,
+        "theta_diff": 0.032310000000000005,
+        "price_diff": 0.09000000000000008,
+        "iv_diff": 0.25366,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.13637,
+        "gamma": 0.01124,
+        "theta": -0.13016,
+        "price": 1.48,
+        "iv": 0.5856,
+        "volume": 359.0,
+        "open_interest": 2036.0,
+        "strike": 140.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.855,
+      "contract_symbol": "AMD 140.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.020589999999999997,
+        "gamma_diff": 0.0028699999999999993,
+        "theta_diff": 0.031799999999999995,
+        "price_diff": 0.040000000000000036,
+        "iv_diff": 0.35122,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.14522,
+        "gamma": 0.01279,
+        "theta": -0.06979,
+        "price": 1.25,
+        "iv": 0.50755,
+        "volume": 28.0,
+        "open_interest": 65.0,
+        "strike": 145.0,
+        "type": "call",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.854,
+      "contract_symbol": "BABA 145.0 CALL exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.01174,
+        "gamma_diff": 0.00132,
+        "theta_diff": 0.028569999999999998,
+        "price_diff": 0.27,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.13029,
+        "gamma": 0.01027,
+        "theta": -0.0985,
+        "price": 1.27,
+        "iv": 0.35146,
+        "volume": 2413.0,
+        "open_interest": 7470.0,
+        "strike": 260.0,
+        "type": "call",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.847,
+      "contract_symbol": "BA 260.0 CALL exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.02667,
+        "gamma_diff": 0.0038399999999999997,
+        "theta_diff": 0.00014000000000000123,
+        "price_diff": 0.25,
+        "iv_diff": 0.11707999999999999,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.16641,
+        "gamma": 0.01638,
+        "theta": -0.04881,
+        "price": 1.52,
+        "iv": 0.39048,
+        "volume": 28.0,
+        "open_interest": 184.0,
+        "strike": 110.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.842,
+      "contract_symbol": "BABA 110.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.009450000000000014,
+        "gamma_diff": 0.0022699999999999994,
+        "theta_diff": 0.049550000000000004,
+        "price_diff": 0.0,
+        "iv_diff": 0.1561,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.1756,
+        "gamma": 0.01187,
+        "theta": -0.12532,
+        "price": 1.89,
+        "iv": 0.54657,
+        "volume": 71.0,
+        "open_interest": 37.0,
+        "strike": 182.5,
+        "type": "call",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.841,
+      "contract_symbol": "AMD 182.5 CALL exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.018640000000000018,
+        "gamma_diff": 0.002239999999999999,
+        "theta_diff": 0.026959999999999984,
+        "price_diff": 0.3699999999999999,
+        "iv_diff": 0.31218999999999997,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.14873,
+        "gamma": 0.01521,
+        "theta": -0.04543,
+        "price": 1.29,
+        "iv": 0.39048,
+        "volume": 4.0,
+        "open_interest": 46.0,
+        "strike": 109.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.839,
+      "contract_symbol": "BABA 109.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.008229999999999987,
+        "gamma_diff": 0.0011000000000000003,
+        "theta_diff": 0.052930000000000005,
+        "price_diff": 0.22999999999999998,
+        "iv_diff": 0.1561,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.14254,
+        "gamma": 0.01408,
+        "theta": -0.0465,
+        "price": 1.2,
+        "iv": 0.40999,
+        "volume": 4.0,
+        "open_interest": 29.0,
+        "strike": 108.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.833,
+      "contract_symbol": "BABA 108.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.014419999999999988,
+        "gamma_diff": 2.9999999999998778e-05,
+        "theta_diff": 0.05186,
+        "price_diff": 0.32000000000000006,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.17778,
+        "gamma": 0.01339,
+        "theta": -0.15468,
+        "price": 2.01,
+        "iv": 0.5856,
+        "volume": 57.0,
+        "open_interest": 469.0,
+        "strike": 143.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.831,
+      "contract_symbol": "AMD 143.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.020820000000000005,
+        "gamma_diff": 0.0007199999999999984,
+        "theta_diff": 0.05632000000000001,
+        "price_diff": 0.48999999999999977,
+        "iv_diff": 0.35122,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.16884,
+        "gamma": 0.01091,
+        "theta": -0.09988,
+        "price": 1.97,
+        "iv": 0.50755,
+        "volume": 430.0,
+        "open_interest": 335.0,
+        "strike": 185.0,
+        "type": "call",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.831,
+      "contract_symbol": "AMD 185.0 CALL exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.011880000000000002,
+        "gamma_diff": 0.0031999999999999997,
+        "theta_diff": 0.0015199999999999936,
+        "price_diff": 0.44999999999999996,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.14958,
+        "gamma": 0.01353,
+        "theta": -0.21816,
+        "price": 1.31,
+        "iv": 0.46853,
+        "volume": 144.0,
+        "open_interest": 913.0,
+        "strike": 217.5,
+        "type": "put",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.831,
+      "contract_symbol": "BA 217.5 PUT exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.007379999999999998,
+        "gamma_diff": 0.0005799999999999989,
+        "theta_diff": 0.11979999999999999,
+        "price_diff": 0.20999999999999996,
+        "iv_diff": 0.23415,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.18406,
+        "gamma": 0.01358,
+        "theta": -0.15772,
+        "price": 1.97,
+        "iv": 0.40999,
+        "volume": 17.0,
+        "open_interest": 163.0,
+        "strike": 212.5,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.83,
+      "contract_symbol": "AMZN 212.5 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.027100000000000013,
+        "gamma_diff": 0.0005299999999999992,
+        "theta_diff": 0.059359999999999996,
+        "price_diff": 0.44999999999999996,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.18117,
+        "gamma": 0.01312,
+        "theta": -0.16003,
+        "price": 1.94,
+        "iv": 0.40999,
+        "volume": 111.0,
+        "open_interest": 107.0,
+        "strike": 217.5,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.83,
+      "contract_symbol": "BA 217.5 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.02421000000000001,
+        "gamma_diff": 0.0009899999999999996,
+        "theta_diff": 0.06167,
+        "price_diff": 0.41999999999999993,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.1534,
+        "gamma": 0.00987,
+        "theta": -0.09142,
+        "price": 1.98,
+        "iv": 0.52706,
+        "volume": 7.0,
+        "open_interest": 95.0,
+        "strike": 138.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.828,
+      "contract_symbol": "AMD 138.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.00355999999999998,
+        "gamma_diff": 0.004239999999999999,
+        "theta_diff": 0.006940000000000002,
+        "price_diff": 0.45999999999999996,
+        "iv_diff": 0.29267999999999994,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.17533,
+        "gamma": 0.01791,
+        "theta": -0.05926,
+        "price": 1.5,
+        "iv": 0.40999,
+        "volume": 15.0,
+        "open_interest": 69.0,
+        "strike": 111.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.827,
+      "contract_symbol": "BABA 111.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.018370000000000025,
+        "gamma_diff": 0.0037999999999999996,
+        "theta_diff": 0.0391,
+        "price_diff": 0.020000000000000018,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.1383,
+        "gamma": 0.01532,
+        "theta": -0.05087,
+        "price": 1.12,
+        "iv": 0.40999,
+        "volume": 6.0,
+        "open_interest": 63.0,
+        "strike": 109.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.826,
+      "contract_symbol": "BABA 109.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.018659999999999982,
+        "gamma_diff": 0.001210000000000001,
+        "theta_diff": 0.047490000000000004,
+        "price_diff": 0.3999999999999999,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.13093,
+        "gamma": 0.01058,
+        "theta": -0.1309,
+        "price": 1.35,
+        "iv": 0.60511,
+        "volume": 10.0,
+        "open_interest": 309.0,
+        "strike": 139.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.824,
+      "contract_symbol": "AMD 139.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.026029999999999998,
+        "gamma_diff": 0.0035299999999999984,
+        "theta_diff": 0.032539999999999986,
+        "price_diff": 0.16999999999999993,
+        "iv_diff": 0.37073,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.17067,
+        "gamma": 0.01576,
+        "theta": -0.23132,
+        "price": 1.5,
+        "iv": 0.44901,
+        "volume": 865.0,
+        "open_interest": 4572.0,
+        "strike": 245.0,
+        "type": "call",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.822,
+      "contract_symbol": "AMZN 245.0 CALL exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.01371,
+        "gamma_diff": 0.0016500000000000004,
+        "theta_diff": 0.13296,
+        "price_diff": 0.020000000000000018,
+        "iv_diff": 0.21463000000000002,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.20025,
+        "gamma": 0.01391,
+        "theta": -0.12784,
+        "price": 2.08,
+        "iv": 0.35146,
+        "volume": 111.0,
+        "open_interest": 148.0,
+        "strike": 247.5,
+        "type": "call",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.821,
+      "contract_symbol": "AMZN 247.5 CALL exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.04329000000000002,
+        "gamma_diff": 0.0001999999999999988,
+        "theta_diff": 0.029480000000000006,
+        "price_diff": 0.56,
+        "iv_diff": 0.11707999999999999,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.14867,
+        "gamma": 0.01837,
+        "theta": -0.06128,
+        "price": 1.01,
+        "iv": 0.40999,
+        "volume": 17.0,
+        "open_interest": 316.0,
+        "strike": 111.0,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.821,
+      "contract_symbol": "BABA 111.0 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.008289999999999992,
+        "gamma_diff": 0.004260000000000002,
+        "theta_diff": 0.03708,
+        "price_diff": 0.51,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.13692,
+        "gamma": 0.00914,
+        "theta": -0.08998,
+        "price": 1.48,
+        "iv": 0.52706,
+        "volume": 75.0,
+        "open_interest": 644.0,
+        "strike": 190.0,
+        "type": "call",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.82,
+      "contract_symbol": "AMD 190.0 CALL exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.020040000000000002,
+        "gamma_diff": 0.004969999999999999,
+        "theta_diff": 0.008379999999999999,
+        "price_diff": 0.040000000000000036,
+        "iv_diff": 0.29267999999999994,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.13726,
+        "gamma": 0.01031,
+        "theta": -0.06673,
+        "price": 1.44,
+        "iv": 0.29292,
+        "volume": 125.0,
+        "open_interest": 521.0,
+        "strike": 255.0,
+        "type": "call",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.819,
+      "contract_symbol": "AMZN 255.0 CALL exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.019699999999999995,
+        "gamma_diff": 0.0037999999999999996,
+        "theta_diff": 0.031630000000000005,
+        "price_diff": 0.08000000000000007,
+        "iv_diff": 0.05854000000000001,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.16498,
+        "gamma": 0.01035,
+        "theta": -0.0958,
+        "price": 2.15,
+        "iv": 0.52706,
+        "volume": 3.0,
+        "open_interest": 99.0,
+        "strike": 139.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.815,
+      "contract_symbol": "AMD 139.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.00802,
+        "gamma_diff": 0.0037599999999999995,
+        "theta_diff": 0.0025600000000000067,
+        "price_diff": 0.6299999999999999,
+        "iv_diff": 0.29267999999999994,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.13601,
+        "gamma": 0.00899,
+        "theta": -0.08442,
+        "price": 1.72,
+        "iv": 0.37097,
+        "volume": 66.0,
+        "open_interest": 881.0,
+        "strike": 205.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.811,
+      "contract_symbol": "AMZN 205.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.020949999999999996,
+        "gamma_diff": 0.0051199999999999996,
+        "theta_diff": 0.013940000000000008,
+        "price_diff": 0.19999999999999996,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.17394,
+        "gamma": 0.01628,
+        "theta": -0.22968,
+        "price": 1.48,
+        "iv": 0.4295,
+        "volume": 2475.0,
+        "open_interest": 1011.0,
+        "strike": 250.0,
+        "type": "call",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.809,
+      "contract_symbol": "BA 250.0 CALL exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.016980000000000023,
+        "gamma_diff": 0.00217,
+        "theta_diff": 0.13132,
+        "price_diff": 0.040000000000000036,
+        "iv_diff": 0.19512,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.13868,
+        "gamma": 0.01402,
+        "theta": -0.19752,
+        "price": 1.14,
+        "iv": 0.4295,
+        "volume": 306.0,
+        "open_interest": 201.0,
+        "strike": 252.5,
+        "type": "call",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.808,
+      "contract_symbol": "BA 252.5 CALL exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.01827999999999999,
+        "gamma_diff": 8.99999999999998e-05,
+        "theta_diff": 0.09916,
+        "price_diff": 0.3800000000000001,
+        "iv_diff": 0.19512,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.16978,
+        "gamma": 0.02004,
+        "theta": -0.06673,
+        "price": 1.19,
+        "iv": 0.40999,
+        "volume": 264.0,
+        "open_interest": 151.0,
+        "strike": 112.0,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.808,
+      "contract_symbol": "BABA 112.0 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.012819999999999998,
+        "gamma_diff": 0.0059299999999999995,
+        "theta_diff": 0.031630000000000005,
+        "price_diff": 0.33000000000000007,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.16937,
+        "gamma": 0.01094,
+        "theta": -0.09368,
+        "price": 2.25,
+        "iv": 0.50755,
+        "volume": 68.0,
+        "open_interest": 352.0,
+        "strike": 140.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.806,
+      "contract_symbol": "AMD 140.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.012410000000000004,
+        "gamma_diff": 0.003169999999999999,
+        "theta_diff": 0.004680000000000004,
+        "price_diff": 0.73,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.18023,
+        "gamma": 0.01142,
+        "theta": -0.09552,
+        "price": 2.29,
+        "iv": 0.35146,
+        "volume": 75.0,
+        "open_interest": 1306.0,
+        "strike": 210.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.805,
+      "contract_symbol": "AMZN 210.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.023270000000000013,
+        "gamma_diff": 0.0026899999999999997,
+        "theta_diff": 0.002840000000000009,
+        "price_diff": 0.77,
+        "iv_diff": 0.11707999999999999,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.11988,
+        "gamma": 0.00872,
+        "theta": -0.09613,
+        "price": 1.35,
+        "iv": 0.39048,
+        "volume": 299.0,
+        "open_interest": 13278.0,
+        "strike": 210.0,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.805,
+      "contract_symbol": "BA 210.0 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.03707999999999999,
+        "gamma_diff": 0.005389999999999999,
+        "theta_diff": 0.0022300000000000098,
+        "price_diff": 0.16999999999999993,
+        "iv_diff": 0.1561,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.15674,
+        "gamma": 0.00936,
+        "theta": -0.08588,
+        "price": 1.96,
+        "iv": 0.50755,
+        "volume": 69.0,
+        "open_interest": 381.0,
+        "strike": 190.0,
+        "type": "call",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.804,
+      "contract_symbol": "AMD 190.0 CALL exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.00021999999999999797,
+        "gamma_diff": 0.004749999999999999,
+        "theta_diff": 0.012480000000000005,
+        "price_diff": 0.43999999999999995,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.12007,
+        "gamma": 0.00894,
+        "theta": -0.09393,
+        "price": 1.3,
+        "iv": 0.39048,
+        "volume": 345.0,
+        "open_interest": 7516.0,
+        "strike": 205.0,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.803,
+      "contract_symbol": "AMZN 205.0 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.03688999999999999,
+        "gamma_diff": 0.005169999999999999,
+        "theta_diff": 0.004430000000000003,
+        "price_diff": 0.21999999999999997,
+        "iv_diff": 0.1561,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.12829,
+        "gamma": 0.01043,
+        "theta": -0.13393,
+        "price": 1.19,
+        "iv": 0.60511,
+        "volume": 1339.0,
+        "open_interest": 1393.0,
+        "strike": 185.0,
+        "type": "call",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.802,
+      "contract_symbol": "AMD 185.0 CALL exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.02867,
+        "gamma_diff": 0.0036799999999999992,
+        "theta_diff": 0.03556999999999999,
+        "price_diff": 0.33000000000000007,
+        "iv_diff": 0.37073,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.17851,
+        "gamma": 0.01108,
+        "theta": -0.09729,
+        "price": 2.32,
+        "iv": 0.35146,
+        "volume": 89.0,
+        "open_interest": 96.0,
+        "strike": 215.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.802,
+      "contract_symbol": "BA 215.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.021550000000000014,
+        "gamma_diff": 0.0030299999999999997,
+        "theta_diff": 0.0010700000000000015,
+        "price_diff": 0.7999999999999998,
+        "iv_diff": 0.11707999999999999,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.14229,
+        "gamma": 0.00939,
+        "theta": -0.08701,
+        "price": 1.94,
+        "iv": 0.52706,
+        "volume": 18.0,
+        "open_interest": 1104.0,
+        "strike": 137.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.8,
+      "contract_symbol": "AMD 137.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.014669999999999989,
+        "gamma_diff": 0.0047199999999999985,
+        "theta_diff": 0.011349999999999999,
+        "price_diff": 0.41999999999999993,
+        "iv_diff": 0.29267999999999994,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.12491,
+        "gamma": 0.01006,
+        "theta": -0.07336,
+        "price": 1.26,
+        "iv": 0.31243,
+        "volume": 5.0,
+        "open_interest": 410.0,
+        "strike": 255.0,
+        "type": "call",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.8,
+      "contract_symbol": "AMZN 255.0 CALL exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.032049999999999995,
+        "gamma_diff": 0.00405,
+        "theta_diff": 0.02500000000000001,
+        "price_diff": 0.26,
+        "iv_diff": 0.07804999999999998,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.19647,
+        "gamma": 0.01615,
+        "theta": -0.08182,
+        "price": 1.81,
+        "iv": 0.48804,
+        "volume": 28.0,
+        "open_interest": 238.0,
+        "strike": 140.0,
+        "type": "call",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.798,
+      "contract_symbol": "BABA 140.0 CALL exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.03951000000000002,
+        "gamma_diff": 0.002040000000000002,
+        "theta_diff": 0.01654,
+        "price_diff": 0.29000000000000004,
+        "iv_diff": 0.25366,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.19283,
+        "gamma": 0.01305,
+        "theta": -0.12833,
+        "price": 2.21,
+        "iv": 0.52706,
+        "volume": 2874.0,
+        "open_interest": 7593.0,
+        "strike": 180.0,
+        "type": "call",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.797,
+      "contract_symbol": "AMD 180.0 CALL exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.03587000000000001,
+        "gamma_diff": 0.0010599999999999984,
+        "theta_diff": 0.029969999999999997,
+        "price_diff": 0.69,
+        "iv_diff": 0.29267999999999994,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.11952,
+        "gamma": 0.01018,
+        "theta": -0.11878,
+        "price": 1.16,
+        "iv": 0.40999,
+        "volume": 33.0,
+        "open_interest": 26.0,
+        "strike": 207.5,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.797,
+      "contract_symbol": "AMZN 207.5 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.03743999999999999,
+        "gamma_diff": 0.0039299999999999995,
+        "theta_diff": 0.020419999999999994,
+        "price_diff": 0.3600000000000001,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.11863,
+        "gamma": 0.00988,
+        "theta": -0.12106,
+        "price": 1.23,
+        "iv": 0.40999,
+        "volume": 1.0,
+        "open_interest": 8.0,
+        "strike": 212.5,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.795,
+      "contract_symbol": "BA 212.5 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.03832999999999999,
+        "gamma_diff": 0.004229999999999999,
+        "theta_diff": 0.022699999999999998,
+        "price_diff": 0.29000000000000004,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.12173,
+        "gamma": 0.01402,
+        "theta": -0.04664,
+        "price": 0.97,
+        "iv": 0.40999,
+        "volume": 5.0,
+        "open_interest": 323.0,
+        "strike": 108.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.795,
+      "contract_symbol": "BABA 108.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.035229999999999984,
+        "gamma_diff": 8.99999999999998e-05,
+        "theta_diff": 0.05172,
+        "price_diff": 0.55,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.14837,
+        "gamma": 0.00824,
+        "theta": -0.14394,
+        "price": 1.92,
+        "iv": 0.70267,
+        "volume": 5.0,
+        "open_interest": 1052.0,
+        "strike": 195.0,
+        "type": "call",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.793,
+      "contract_symbol": "ARM 195.0 CALL exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.008589999999999987,
+        "gamma_diff": 0.0058699999999999985,
+        "theta_diff": 0.04558000000000001,
+        "price_diff": 0.3999999999999999,
+        "iv_diff": 0.46829,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.13665,
+        "gamma": 0.0136,
+        "theta": -0.19935,
+        "price": 1.1,
+        "iv": 0.44901,
+        "volume": 414.0,
+        "open_interest": 854.0,
+        "strike": 247.5,
+        "type": "call",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.793,
+      "contract_symbol": "AMZN 247.5 CALL exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.020309999999999995,
+        "gamma_diff": 0.00051,
+        "theta_diff": 0.10099,
+        "price_diff": 0.41999999999999993,
+        "iv_diff": 0.21463000000000002,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.13166,
+        "gamma": 0.0089,
+        "theta": -0.08259,
+        "price": 1.67,
+        "iv": 0.52706,
+        "volume": 533.0,
+        "open_interest": 654.0,
+        "strike": 136.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.792,
+      "contract_symbol": "AMD 136.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.02529999999999999,
+        "gamma_diff": 0.005209999999999999,
+        "theta_diff": 0.015770000000000006,
+        "price_diff": 0.1499999999999999,
+        "iv_diff": 0.29267999999999994,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.18933,
+        "gamma": 0.01272,
+        "theta": -0.08278,
+        "price": 2.2,
+        "iv": 0.29292,
+        "volume": 68.0,
+        "open_interest": 429.0,
+        "strike": 250.0,
+        "type": "call",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.791,
+      "contract_symbol": "AMZN 250.0 CALL exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.03237000000000001,
+        "gamma_diff": 0.0013899999999999989,
+        "theta_diff": 0.015579999999999997,
+        "price_diff": 0.6800000000000002,
+        "iv_diff": 0.05854000000000001,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.12922,
+        "gamma": 0.0167,
+        "theta": -0.05579,
+        "price": 0.86,
+        "iv": 0.40999,
+        "volume": 2560.0,
+        "open_interest": 8016.0,
+        "strike": 110.0,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.791,
+      "contract_symbol": "BABA 110.0 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.027739999999999987,
+        "gamma_diff": 0.0025900000000000003,
+        "theta_diff": 0.042570000000000004,
+        "price_diff": 0.66,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.17928,
+        "gamma": 0.01587,
+        "theta": -0.23462,
+        "price": 1.71,
+        "iv": 0.44901,
+        "volume": 230.0,
+        "open_interest": 1782.0,
+        "strike": 220.0,
+        "type": "put",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.79,
+      "contract_symbol": "BA 220.0 PUT exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.022320000000000007,
+        "gamma_diff": 0.0017599999999999994,
+        "theta_diff": 0.13626,
+        "price_diff": 0.18999999999999995,
+        "iv_diff": 0.21463000000000002,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.19297,
+        "gamma": 0.01408,
+        "theta": -0.16263,
+        "price": 2.21,
+        "iv": 0.5856,
+        "volume": 47.0,
+        "open_interest": 426.0,
+        "strike": 144.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.789,
+      "contract_symbol": "AMD 144.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.036010000000000014,
+        "gamma_diff": 2.9999999999998778e-05,
+        "theta_diff": 0.06427,
+        "price_diff": 0.69,
+        "iv_diff": 0.35122,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.15571,
+        "gamma": 0.01088,
+        "theta": -0.28852,
+        "price": 1.94,
+        "iv": 0.87827,
+        "volume": 248.0,
+        "open_interest": 644.0,
+        "strike": 140.0,
+        "type": "put",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.788,
+      "contract_symbol": "ARM 140.0 PUT exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.0012500000000000011,
+        "gamma_diff": 0.0032299999999999985,
+        "theta_diff": 0.19016,
+        "price_diff": 0.41999999999999993,
+        "iv_diff": 0.64389,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.1192,
+        "gamma": 0.00991,
+        "theta": -0.12266,
+        "price": 1.22,
+        "iv": 0.60511,
+        "volume": 40.0,
+        "open_interest": 391.0,
+        "strike": 138.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.788,
+      "contract_symbol": "AMD 138.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.03775999999999999,
+        "gamma_diff": 0.004199999999999999,
+        "theta_diff": 0.024300000000000002,
+        "price_diff": 0.30000000000000004,
+        "iv_diff": 0.37073,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.12413,
+        "gamma": 0.00869,
+        "theta": -0.07683,
+        "price": 1.64,
+        "iv": 0.35146,
+        "volume": 12.0,
+        "open_interest": 98.0,
+        "strike": 210.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.788,
+      "contract_symbol": "BA 210.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.032829999999999984,
+        "gamma_diff": 0.0054199999999999995,
+        "theta_diff": 0.021530000000000007,
+        "price_diff": 0.11999999999999988,
+        "iv_diff": 0.11707999999999999,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.1821,
+        "gamma": 0.01069,
+        "theta": -0.09306,
+        "price": 2.15,
+        "iv": 0.33194,
+        "volume": 5.0,
+        "open_interest": 14.0,
+        "strike": 260.0,
+        "type": "call",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.782,
+      "contract_symbol": "BA 260.0 CALL exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.025140000000000023,
+        "gamma_diff": 0.0034199999999999994,
+        "theta_diff": 0.005299999999999999,
+        "price_diff": 0.6299999999999999,
+        "iv_diff": 0.09756000000000001,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.14617,
+        "gamma": 0.00999,
+        "theta": -0.29465,
+        "price": 1.65,
+        "iv": 0.91729,
+        "volume": 27.0,
+        "open_interest": 50.0,
+        "strike": 187.5,
+        "type": "call",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.781,
+      "contract_symbol": "ARM 187.5 CALL exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.010789999999999994,
+        "gamma_diff": 0.004119999999999999,
+        "theta_diff": 0.19629000000000002,
+        "price_diff": 0.1299999999999999,
+        "iv_diff": 0.68291,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.19611,
+        "gamma": 0.0127,
+        "theta": -0.12526,
+        "price": 2.46,
+        "iv": 0.37097,
+        "volume": 15.0,
+        "open_interest": 489.0,
+        "strike": 217.5,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.779,
+      "contract_symbol": "BA 217.5 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.03915000000000002,
+        "gamma_diff": 0.0014099999999999998,
+        "theta_diff": 0.026900000000000007,
+        "price_diff": 0.94,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.14319,
+        "gamma": 0.00827,
+        "theta": -0.13124,
+        "price": 2.11,
+        "iv": 0.68315,
+        "volume": 1484.0,
+        "open_interest": 1203.0,
+        "strike": 135.0,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.777,
+      "contract_symbol": "ARM 135.0 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.013769999999999977,
+        "gamma_diff": 0.00584,
+        "theta_diff": 0.03287999999999999,
+        "price_diff": 0.5899999999999999,
+        "iv_diff": 0.44877,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.1989,
+        "gamma": 0.01313,
+        "theta": -0.12328,
+        "price": 2.52,
+        "iv": 0.37097,
+        "volume": 135.0,
+        "open_interest": 372.0,
+        "strike": 212.5,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.777,
+      "contract_symbol": "AMZN 212.5 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.041940000000000005,
+        "gamma_diff": 0.00098,
+        "theta_diff": 0.024919999999999998,
+        "price_diff": 1.0,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.21382,
+        "gamma": 0.01412,
+        "theta": -0.13629,
+        "price": 2.28,
+        "iv": 0.35146,
+        "volume": 52.0,
+        "open_interest": 25.0,
+        "strike": 252.5,
+        "type": "call",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.775,
+      "contract_symbol": "BA 252.5 CALL exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.05686000000000002,
+        "gamma_diff": 1.0000000000001327e-05,
+        "theta_diff": 0.03792999999999999,
+        "price_diff": 0.7599999999999998,
+        "iv_diff": 0.11707999999999999,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.16217,
+        "gamma": 0.00943,
+        "theta": -0.20252,
+        "price": 2.02,
+        "iv": 0.78071,
+        "volume": 12.0,
+        "open_interest": 28.0,
+        "strike": 190.0,
+        "type": "call",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.774,
+      "contract_symbol": "ARM 190.0 CALL exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.00521000000000002,
+        "gamma_diff": 0.00468,
+        "theta_diff": 0.10416,
+        "price_diff": 0.5,
+        "iv_diff": 0.54633,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.12152,
+        "gamma": 0.00842,
+        "theta": -0.07817,
+        "price": 1.5,
+        "iv": 0.52706,
+        "volume": 45.0,
+        "open_interest": 450.0,
+        "strike": 135.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.773,
+      "contract_symbol": "AMD 135.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.035439999999999985,
+        "gamma_diff": 0.005689999999999999,
+        "theta_diff": 0.02019,
+        "price_diff": 0.020000000000000018,
+        "iv_diff": 0.29267999999999994,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.12709,
+        "gamma": 0.01301,
+        "theta": -0.04305,
+        "price": 1.04,
+        "iv": 0.40999,
+        "volume": 102.0,
+        "open_interest": 6.0,
+        "strike": 107.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.773,
+      "contract_symbol": "BABA 107.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.02986999999999998,
+        "gamma_diff": 0.0010999999999999985,
+        "theta_diff": 0.055310000000000005,
+        "price_diff": 0.48,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.14362,
+        "gamma": 0.01031,
+        "theta": -0.27344,
+        "price": 1.77,
+        "iv": 0.87827,
+        "volume": 8.0,
+        "open_interest": 169.0,
+        "strike": 139.0,
+        "type": "put",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.771,
+      "contract_symbol": "ARM 139.0 PUT exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.01333999999999999,
+        "gamma_diff": 0.0037999999999999996,
+        "theta_diff": 0.17508,
+        "price_diff": 0.25,
+        "iv_diff": 0.64389,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.13295,
+        "gamma": 0.0089,
+        "theta": -0.06625,
+        "price": 1.78,
+        "iv": 0.33194,
+        "volume": 248.0,
+        "open_interest": 395.0,
+        "strike": 205.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.771,
+      "contract_symbol": "AMZN 205.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.024009999999999976,
+        "gamma_diff": 0.005209999999999999,
+        "theta_diff": 0.03211,
+        "price_diff": 0.26,
+        "iv_diff": 0.09756000000000001,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.18201,
+        "gamma": 0.01145,
+        "theta": -0.09795,
+        "price": 2.51,
+        "iv": 0.50755,
+        "volume": 12.0,
+        "open_interest": 68.0,
+        "strike": 141.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.77,
+      "contract_symbol": "AMD 141.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.025050000000000017,
+        "gamma_diff": 0.002659999999999999,
+        "theta_diff": 0.0004100000000000076,
+        "price_diff": 0.9899999999999998,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.15484,
+        "gamma": 0.00929,
+        "theta": -0.07932,
+        "price": 2.26,
+        "iv": 0.50755,
+        "volume": 6.0,
+        "open_interest": 86.0,
+        "strike": 137.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.77,
+      "contract_symbol": "AMD 137.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.002119999999999983,
+        "gamma_diff": 0.00482,
+        "theta_diff": 0.01904,
+        "price_diff": 0.7399999999999998,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.17998,
+        "gamma": 0.02182,
+        "theta": -0.10108,
+        "price": 1.08,
+        "iv": 0.46853,
+        "volume": 469.0,
+        "open_interest": 1631.0,
+        "strike": 135.0,
+        "type": "call",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.77,
+      "contract_symbol": "BABA 135.0 CALL exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.023020000000000013,
+        "gamma_diff": 0.00771,
+        "theta_diff": 0.00272,
+        "price_diff": 0.43999999999999995,
+        "iv_diff": 0.23415,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.16858,
+        "gamma": 0.01097,
+        "theta": -0.32376,
+        "price": 1.94,
+        "iv": 0.91729,
+        "volume": 74.0,
+        "open_interest": 410.0,
+        "strike": 185.0,
+        "type": "call",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.769,
+      "contract_symbol": "ARM 185.0 CALL exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.01162000000000002,
+        "gamma_diff": 0.0031399999999999987,
+        "theta_diff": 0.2254,
+        "price_diff": 0.41999999999999993,
+        "iv_diff": 0.68291,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.1092,
+        "gamma": 0.01493,
+        "theta": -0.07473,
+        "price": 0.61,
+        "iv": 0.48804,
+        "volume": 326.0,
+        "open_interest": 381.0,
+        "strike": 140.0,
+        "type": "call",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.767,
+      "contract_symbol": "BABA 140.0 CALL exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.04775999999999998,
+        "gamma_diff": 0.0008200000000000013,
+        "theta_diff": 0.023629999999999998,
+        "price_diff": 0.91,
+        "iv_diff": 0.25366,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.12263,
+        "gamma": 0.00873,
+        "theta": -0.0671,
+        "price": 1.42,
+        "iv": 0.31243,
+        "volume": 8.0,
+        "open_interest": 3.0,
+        "strike": 265.0,
+        "type": "call",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.765,
+      "contract_symbol": "BA 265.0 CALL exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.034329999999999986,
+        "gamma_diff": 0.005379999999999999,
+        "theta_diff": 0.031259999999999996,
+        "price_diff": 0.10000000000000009,
+        "iv_diff": 0.07804999999999998,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.11145,
+        "gamma": 0.01505,
+        "theta": -0.05035,
+        "price": 0.72,
+        "iv": 0.40999,
+        "volume": 1.0,
+        "open_interest": 410.0,
+        "strike": 109.0,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.765,
+      "contract_symbol": "BABA 109.0 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.045509999999999995,
+        "gamma_diff": 0.0009399999999999999,
+        "theta_diff": 0.048010000000000004,
+        "price_diff": 0.8,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.11762,
+        "gamma": 0.00702,
+        "theta": -0.1225,
+        "price": 1.54,
+        "iv": 0.70267,
+        "volume": 11.0,
+        "open_interest": 2005.0,
+        "strike": 200.0,
+        "type": "call",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.764,
+      "contract_symbol": "ARM 200.0 CALL exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.039339999999999986,
+        "gamma_diff": 0.007089999999999999,
+        "theta_diff": 0.024139999999999995,
+        "price_diff": 0.020000000000000018,
+        "iv_diff": 0.46829,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.13111,
+        "gamma": 0.00723,
+        "theta": -0.10658,
+        "price": 1.79,
+        "iv": 0.64413,
+        "volume": 2.0,
+        "open_interest": 70.0,
+        "strike": 200.0,
+        "type": "call",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.763,
+      "contract_symbol": "ARM 200.0 CALL exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.025849999999999984,
+        "gamma_diff": 0.006879999999999999,
+        "theta_diff": 0.008219999999999991,
+        "price_diff": 0.27,
+        "iv_diff": 0.40974999999999995,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.20511,
+        "gamma": 0.01277,
+        "theta": -0.11083,
+        "price": 2.4,
+        "iv": 0.33194,
+        "volume": 54.0,
+        "open_interest": 67.0,
+        "strike": 255.0,
+        "type": "call",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.763,
+      "contract_symbol": "BA 255.0 CALL exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.04815,
+        "gamma_diff": 0.0013399999999999992,
+        "theta_diff": 0.012469999999999995,
+        "price_diff": 0.8799999999999999,
+        "iv_diff": 0.09756000000000001,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.19252,
+        "gamma": 0.02168,
+        "theta": -0.07206,
+        "price": 1.41,
+        "iv": 0.40999,
+        "volume": 230.0,
+        "open_interest": 40.0,
+        "strike": 113.0,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.763,
+      "contract_symbol": "BABA 113.0 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.03556000000000001,
+        "gamma_diff": 0.007570000000000002,
+        "theta_diff": 0.026300000000000004,
+        "price_diff": 0.1100000000000001,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.12406,
+        "gamma": 0.00828,
+        "theta": -0.15574,
+        "price": 1.67,
+        "iv": 0.74169,
+        "volume": 53.0,
+        "open_interest": 348.0,
+        "strike": 135.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.762,
+      "contract_symbol": "ARM 135.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.032899999999999985,
+        "gamma_diff": 0.00583,
+        "theta_diff": 0.05737999999999999,
+        "price_diff": 0.1499999999999999,
+        "iv_diff": 0.5073099999999999,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.16837,
+        "gamma": 0.01145,
+        "theta": -0.30349,
+        "price": 2.13,
+        "iv": 0.87827,
+        "volume": 54.0,
+        "open_interest": 175.0,
+        "strike": 141.0,
+        "type": "put",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.761,
+      "contract_symbol": "ARM 141.0 PUT exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.011410000000000003,
+        "gamma_diff": 0.002659999999999999,
+        "theta_diff": 0.20512999999999998,
+        "price_diff": 0.6099999999999999,
+        "iv_diff": 0.64389,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.15967,
+        "gamma": 0.02082,
+        "theta": -0.15444,
+        "price": 1.04,
+        "iv": 0.46853,
+        "volume": 591.0,
+        "open_interest": 986.0,
+        "strike": 148.0,
+        "type": "put",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.761,
+      "contract_symbol": "AMD 148.0 PUT exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.002710000000000018,
+        "gamma_diff": 0.006710000000000002,
+        "theta_diff": 0.05607999999999999,
+        "price_diff": 0.48,
+        "iv_diff": 0.23415,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.14511,
+        "gamma": 0.00871,
+        "theta": -0.07638,
+        "price": 2.22,
+        "iv": 0.35146,
+        "volume": 7.0,
+        "open_interest": 22.0,
+        "strike": 210.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.76,
+      "contract_symbol": "BA 210.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.01185,
+        "gamma_diff": 0.0053999999999999986,
+        "theta_diff": 0.02198,
+        "price_diff": 0.7000000000000002,
+        "iv_diff": 0.11707999999999999,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.11005,
+        "gamma": 0.00834,
+        "theta": -0.08997,
+        "price": 1.25,
+        "iv": 0.56608,
+        "volume": 361.0,
+        "open_interest": 8050.0,
+        "strike": 135.0,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.759,
+      "contract_symbol": "AMD 135.0 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.04690999999999999,
+        "gamma_diff": 0.005769999999999999,
+        "theta_diff": 0.008390000000000009,
+        "price_diff": 0.27,
+        "iv_diff": 0.3317,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.19572,
+        "gamma": 0.01918,
+        "theta": -0.06331,
+        "price": 1.71,
+        "iv": 0.40999,
+        "volume": 2.0,
+        "open_interest": 66.0,
+        "strike": 112.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.759,
+      "contract_symbol": "BABA 112.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.03876000000000002,
+        "gamma_diff": 0.00507,
+        "theta_diff": 0.03505,
+        "price_diff": 0.18999999999999995,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.16254,
+        "gamma": 0.00836,
+        "theta": -0.1233,
+        "price": 2.38,
+        "iv": 0.64413,
+        "volume": 0.0,
+        "open_interest": 46.0,
+        "strike": 195.0,
+        "type": "call",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.757,
+      "contract_symbol": "ARM 195.0 CALL exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.005580000000000002,
+        "gamma_diff": 0.00575,
+        "theta_diff": 0.024940000000000004,
+        "price_diff": 0.8599999999999999,
+        "iv_diff": 0.40974999999999995,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.19514,
+        "gamma": 0.01724,
+        "theta": -0.05659,
+        "price": 1.77,
+        "iv": 0.40999,
+        "volume": 13.0,
+        "open_interest": 4.0,
+        "strike": 111.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.757,
+      "contract_symbol": "BABA 111.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.03818000000000002,
+        "gamma_diff": 0.003129999999999999,
+        "theta_diff": 0.04177,
+        "price_diff": 0.25,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "CELH",
+      "option": {
+        "delta": 0.16697,
+        "gamma": 0.01981,
+        "theta": -0.04164,
+        "price": 1.28,
+        "iv": 0.87827,
+        "volume": 0.0,
+        "open_interest": 18.0,
+        "strike": 36.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.757,
+      "contract_symbol": "CELH 36.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.010010000000000019,
+        "gamma_diff": 0.005700000000000002,
+        "theta_diff": 0.05672,
+        "price_diff": 0.24,
+        "iv_diff": 0.64389,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.13209,
+        "gamma": 0.00974,
+        "theta": -0.25835,
+        "price": 1.58,
+        "iv": 0.87827,
+        "volume": 19.0,
+        "open_interest": 109.0,
+        "strike": 138.0,
+        "type": "put",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.756,
+      "contract_symbol": "ARM 138.0 PUT exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.024869999999999975,
+        "gamma_diff": 0.004369999999999999,
+        "theta_diff": 0.15999000000000002,
+        "price_diff": 0.06000000000000005,
+        "iv_diff": 0.64389,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.13831,
+        "gamma": 0.01891,
+        "theta": -0.14044,
+        "price": 0.9,
+        "iv": 0.46853,
+        "volume": 333.0,
+        "open_interest": 2800.0,
+        "strike": 147.0,
+        "type": "put",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.756,
+      "contract_symbol": "AMD 147.0 PUT exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.01865,
+        "gamma_diff": 0.0048000000000000004,
+        "theta_diff": 0.042080000000000006,
+        "price_diff": 0.62,
+        "iv_diff": 0.23415,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.10502,
+        "gamma": 0.00956,
+        "theta": -0.07794,
+        "price": 1.01,
+        "iv": 0.33194,
+        "volume": 466.0,
+        "open_interest": 6092.0,
+        "strike": 255.0,
+        "type": "call",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.756,
+      "contract_symbol": "AMZN 255.0 CALL exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.051939999999999986,
+        "gamma_diff": 0.0045499999999999985,
+        "theta_diff": 0.020420000000000008,
+        "price_diff": 0.51,
+        "iv_diff": 0.09756000000000001,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.14429,
+        "gamma": 0.00886,
+        "theta": -0.07575,
+        "price": 2.1,
+        "iv": 0.50755,
+        "volume": 41.0,
+        "open_interest": 111.0,
+        "strike": 136.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.755,
+      "contract_symbol": "AMD 136.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.012669999999999987,
+        "gamma_diff": 0.0052499999999999995,
+        "theta_diff": 0.022610000000000005,
+        "price_diff": 0.5800000000000001,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.19893,
+        "gamma": 0.01282,
+        "theta": -0.128,
+        "price": 2.55,
+        "iv": 0.54657,
+        "volume": 548.0,
+        "open_interest": 191.0,
+        "strike": 143.0,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.754,
+      "contract_symbol": "AMD 143.0 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.04197000000000001,
+        "gamma_diff": 0.0012899999999999995,
+        "theta_diff": 0.02964,
+        "price_diff": 1.0299999999999998,
+        "iv_diff": 0.31218999999999997,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.10874,
+        "gamma": 0.01194,
+        "theta": -0.0648,
+        "price": 0.82,
+        "iv": 0.50755,
+        "volume": 733.0,
+        "open_interest": 4700.0,
+        "strike": 145.0,
+        "type": "call",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.754,
+      "contract_symbol": "BABA 145.0 CALL exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.048219999999999985,
+        "gamma_diff": 0.00217,
+        "theta_diff": 0.033560000000000006,
+        "price_diff": 0.7000000000000001,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.10815,
+        "gamma": 0.00924,
+        "theta": -0.11451,
+        "price": 1.1,
+        "iv": 0.60511,
+        "volume": 8.0,
+        "open_interest": 757.0,
+        "strike": 137.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.753,
+      "contract_symbol": "AMD 137.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.04880999999999999,
+        "gamma_diff": 0.004869999999999999,
+        "theta_diff": 0.016149999999999998,
+        "price_diff": 0.41999999999999993,
+        "iv_diff": 0.37073,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.11014,
+        "gamma": 0.00865,
+        "theta": -0.091,
+        "price": 1.12,
+        "iv": 0.54657,
+        "volume": 617.0,
+        "open_interest": 4478.0,
+        "strike": 190.0,
+        "type": "call",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.753,
+      "contract_symbol": "AMD 190.0 CALL exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.04681999999999999,
+        "gamma_diff": 0.00546,
+        "theta_diff": 0.007360000000000005,
+        "price_diff": 0.3999999999999999,
+        "iv_diff": 0.31218999999999997,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.12787,
+        "gamma": 0.0172,
+        "theta": -0.13876,
+        "price": 0.78,
+        "iv": 0.48804,
+        "volume": 360.0,
+        "open_interest": 1646.0,
+        "strike": 146.0,
+        "type": "put",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.752,
+      "contract_symbol": "AMD 146.0 PUT exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.029089999999999977,
+        "gamma_diff": 0.0030900000000000007,
+        "theta_diff": 0.04039999999999999,
+        "price_diff": 0.74,
+        "iv_diff": 0.25366,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.15692,
+        "gamma": 0.00817,
+        "theta": -0.11449,
+        "price": 2.63,
+        "iv": 0.64413,
+        "volume": 1.0,
+        "open_interest": 49.0,
+        "strike": 135.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.751,
+      "contract_symbol": "ARM 135.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 3.999999999998449e-05,
+        "gamma_diff": 0.005939999999999999,
+        "theta_diff": 0.01612999999999999,
+        "price_diff": 1.1099999999999999,
+        "iv_diff": 0.40974999999999995,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.1194,
+        "gamma": 0.00785,
+        "theta": -0.16022,
+        "price": 1.44,
+        "iv": 0.7612,
+        "volume": 5.0,
+        "open_interest": 47.0,
+        "strike": 195.0,
+        "type": "call",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.75,
+      "contract_symbol": "ARM 195.0 CALL exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.03755999999999998,
+        "gamma_diff": 0.00626,
+        "theta_diff": 0.06186,
+        "price_diff": 0.08000000000000007,
+        "iv_diff": 0.52682,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.1658,
+        "gamma": 0.00971,
+        "theta": -0.08286,
+        "price": 2.45,
+        "iv": 0.50755,
+        "volume": 14.0,
+        "open_interest": 299.0,
+        "strike": 138.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.75,
+      "contract_symbol": "AMD 138.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.008840000000000015,
+        "gamma_diff": 0.004399999999999999,
+        "theta_diff": 0.0155,
+        "price_diff": 0.9300000000000002,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.21186,
+        "gamma": 0.01552,
+        "theta": -0.17444,
+        "price": 2.06,
+        "iv": 0.39048,
+        "volume": 278.0,
+        "open_interest": 2311.0,
+        "strike": 245.0,
+        "type": "call",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.748,
+      "contract_symbol": "AMZN 245.0 CALL exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.054900000000000004,
+        "gamma_diff": 0.0014100000000000015,
+        "theta_diff": 0.07608000000000001,
+        "price_diff": 0.54,
+        "iv_diff": 0.1561,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.12688,
+        "gamma": 0.0105,
+        "theta": -0.05739,
+        "price": 1.11,
+        "iv": 0.50755,
+        "volume": 70.0,
+        "open_interest": 1052.0,
+        "strike": 150.0,
+        "type": "call",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.746,
+      "contract_symbol": "BABA 150.0 CALL exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.030079999999999996,
+        "gamma_diff": 0.0036099999999999986,
+        "theta_diff": 0.040970000000000006,
+        "price_diff": 0.4099999999999999,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.1531,
+        "gamma": 0.00746,
+        "theta": -0.10379,
+        "price": 2.33,
+        "iv": 0.62462,
+        "volume": 3.0,
+        "open_interest": 52.0,
+        "strike": 200.0,
+        "type": "call",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.745,
+      "contract_symbol": "ARM 200.0 CALL exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.0038599999999999746,
+        "gamma_diff": 0.00665,
+        "theta_diff": 0.00542999999999999,
+        "price_diff": 0.81,
+        "iv_diff": 0.3902399999999999,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.12674,
+        "gamma": 0.01188,
+        "theta": -0.19845,
+        "price": 1.08,
+        "iv": 0.48804,
+        "volume": 765.0,
+        "open_interest": 3701.0,
+        "strike": 210.0,
+        "type": "put",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.745,
+      "contract_symbol": "AMZN 210.0 PUT exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.030219999999999997,
+        "gamma_diff": 0.0022299999999999993,
+        "theta_diff": 0.10008999999999998,
+        "price_diff": 0.43999999999999995,
+        "iv_diff": 0.25366,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.13177,
+        "gamma": 0.00911,
+        "theta": -0.28027,
+        "price": 1.41,
+        "iv": 0.93681,
+        "volume": 17.0,
+        "open_interest": 119.0,
+        "strike": 190.0,
+        "type": "call",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.743,
+      "contract_symbol": "ARM 190.0 CALL exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.02518999999999999,
+        "gamma_diff": 0.004999999999999999,
+        "theta_diff": 0.18191000000000002,
+        "price_diff": 0.1100000000000001,
+        "iv_diff": 0.70243,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.11006,
+        "gamma": 0.01547,
+        "theta": -0.12491,
+        "price": 0.67,
+        "iv": 0.48804,
+        "volume": 1596.0,
+        "open_interest": 3049.0,
+        "strike": 145.0,
+        "type": "put",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.743,
+      "contract_symbol": "AMD 145.0 PUT exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.04689999999999998,
+        "gamma_diff": 0.00136,
+        "theta_diff": 0.02654999999999999,
+        "price_diff": 0.85,
+        "iv_diff": 0.25366,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.13867,
+        "gamma": 0.01895,
+        "theta": -0.14591,
+        "price": 0.79,
+        "iv": 0.46853,
+        "volume": 662.0,
+        "open_interest": 720.0,
+        "strike": 172.5,
+        "type": "call",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.743,
+      "contract_symbol": "AMD 172.5 CALL exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.01829,
+        "gamma_diff": 0.004840000000000002,
+        "theta_diff": 0.04755000000000001,
+        "price_diff": 0.73,
+        "iv_diff": 0.23415,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.20959,
+        "gamma": 0.01432,
+        "theta": -0.18449,
+        "price": 2.18,
+        "iv": 0.60511,
+        "volume": 129.0,
+        "open_interest": 261.0,
+        "strike": 177.5,
+        "type": "call",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.742,
+      "contract_symbol": "AMD 177.5 CALL exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.05263000000000001,
+        "gamma_diff": 0.00021000000000000012,
+        "theta_diff": 0.08612999999999998,
+        "price_diff": 0.6600000000000001,
+        "iv_diff": 0.37073,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "BMY",
+      "option": {
+        "delta": 0.16008,
+        "gamma": 0.01492,
+        "theta": -0.00305,
+        "price": 1.27,
+        "iv": 0.21487,
+        "volume": 0.0,
+        "open_interest": 19.0,
+        "strike": 80.0,
+        "type": "call",
+        "expiration": "2027-12-17",
+        "days_to_expiry": 875
+      },
+      "similarity_score": 0.742,
+      "contract_symbol": "BMY 80.0 CALL exp 2027-12-17",
+      "comparison": {
+        "delta_diff": 0.0031200000000000117,
+        "gamma_diff": 0.00081,
+        "theta_diff": 0.09531,
+        "price_diff": 0.25,
+        "iv_diff": 0.01951,
+        "days_diff": 858
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.11266,
+        "gamma": 0.00631,
+        "theta": -0.09856,
+        "price": 1.5,
+        "iv": 0.66364,
+        "volume": 0.0,
+        "open_interest": 1.0,
+        "strike": 205.0,
+        "type": "call",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.741,
+      "contract_symbol": "ARM 205.0 CALL exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.04429999999999999,
+        "gamma_diff": 0.0078,
+        "theta_diff": 0.00019999999999999185,
+        "price_diff": 0.020000000000000018,
+        "iv_diff": 0.42926,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.21334,
+        "gamma": 0.01601,
+        "theta": -0.17079,
+        "price": 2.09,
+        "iv": 0.37097,
+        "volume": 881.0,
+        "open_interest": 319.0,
+        "strike": 250.0,
+        "type": "call",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.741,
+      "contract_symbol": "BA 250.0 CALL exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.05638000000000001,
+        "gamma_diff": 0.0019000000000000006,
+        "theta_diff": 0.07243,
+        "price_diff": 0.5699999999999998,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.11187,
+        "gamma": 0.00794,
+        "theta": -0.07377,
+        "price": 1.44,
+        "iv": 0.52706,
+        "volume": 512.0,
+        "open_interest": 551.0,
+        "strike": 134.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.74,
+      "contract_symbol": "AMD 134.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.04508999999999999,
+        "gamma_diff": 0.00617,
+        "theta_diff": 0.02459,
+        "price_diff": 0.08000000000000007,
+        "iv_diff": 0.29267999999999994,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.13417,
+        "gamma": 0.00843,
+        "theta": -0.07216,
+        "price": 1.94,
+        "iv": 0.50755,
+        "volume": 34.0,
+        "open_interest": 511.0,
+        "strike": 135.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.74,
+      "contract_symbol": "AMD 135.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.022789999999999977,
+        "gamma_diff": 0.005679999999999999,
+        "theta_diff": 0.0262,
+        "price_diff": 0.41999999999999993,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.09682,
+        "gamma": 0.00944,
+        "theta": -0.09989,
+        "price": 0.88,
+        "iv": 0.37097,
+        "volume": 79.0,
+        "open_interest": 167.0,
+        "strike": 260.0,
+        "type": "call",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.739,
+      "contract_symbol": "BA 260.0 CALL exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.060139999999999985,
+        "gamma_diff": 0.004669999999999999,
+        "theta_diff": 0.0015300000000000036,
+        "price_diff": 0.64,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.14469,
+        "gamma": 0.02271,
+        "theta": -0.06908,
+        "price": 0.72,
+        "iv": 0.39048,
+        "volume": 69.0,
+        "open_interest": 236.0,
+        "strike": 113.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.739,
+      "contract_symbol": "BABA 113.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.012269999999999975,
+        "gamma_diff": 0.008600000000000002,
+        "theta_diff": 0.02928,
+        "price_diff": 0.8,
+        "iv_diff": 0.1561,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.12127,
+        "gamma": 0.00786,
+        "theta": -0.07193,
+        "price": 1.48,
+        "iv": 0.50755,
+        "volume": 16.0,
+        "open_interest": 64.0,
+        "strike": 195.0,
+        "type": "call",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.738,
+      "contract_symbol": "AMD 195.0 CALL exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.035689999999999986,
+        "gamma_diff": 0.006249999999999999,
+        "theta_diff": 0.02643000000000001,
+        "price_diff": 0.040000000000000036,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.10469,
+        "gamma": 0.00646,
+        "theta": -0.10866,
+        "price": 1.45,
+        "iv": 0.70267,
+        "volume": 238.0,
+        "open_interest": 2443.0,
+        "strike": 130.0,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.737,
+      "contract_symbol": "ARM 130.0 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.05226999999999998,
+        "gamma_diff": 0.00765,
+        "theta_diff": 0.010300000000000004,
+        "price_diff": 0.07000000000000006,
+        "iv_diff": 0.46829,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.10978,
+        "gamma": 0.00844,
+        "theta": -0.07256,
+        "price": 1.17,
+        "iv": 0.33194,
+        "volume": 3.0,
+        "open_interest": 18.0,
+        "strike": 265.0,
+        "type": "call",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.737,
+      "contract_symbol": "BA 265.0 CALL exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.047179999999999986,
+        "gamma_diff": 0.00567,
+        "theta_diff": 0.025800000000000003,
+        "price_diff": 0.3500000000000001,
+        "iv_diff": 0.09756000000000001,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.12571,
+        "gamma": 0.0092,
+        "theta": -0.25526,
+        "price": 1.46,
+        "iv": 0.89778,
+        "volume": 6.0,
+        "open_interest": 90.0,
+        "strike": 137.0,
+        "type": "put",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.736,
+      "contract_symbol": "ARM 137.0 PUT exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.03125,
+        "gamma_diff": 0.0049099999999999994,
+        "theta_diff": 0.15689999999999998,
+        "price_diff": 0.06000000000000005,
+        "iv_diff": 0.6634,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.17703,
+        "gamma": 0.00951,
+        "theta": -0.15725,
+        "price": 2.45,
+        "iv": 0.68315,
+        "volume": 8.0,
+        "open_interest": 1355.0,
+        "strike": 190.0,
+        "type": "call",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.736,
+      "contract_symbol": "ARM 190.0 CALL exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.020070000000000005,
+        "gamma_diff": 0.0046,
+        "theta_diff": 0.05889,
+        "price_diff": 0.9300000000000002,
+        "iv_diff": 0.44877,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.10316,
+        "gamma": 0.00854,
+        "theta": -0.115,
+        "price": 1.07,
+        "iv": 0.4295,
+        "volume": 49.0,
+        "open_interest": 190.0,
+        "strike": 210.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.736,
+      "contract_symbol": "BA 210.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.05379999999999999,
+        "gamma_diff": 0.0055699999999999986,
+        "theta_diff": 0.016640000000000002,
+        "price_diff": 0.44999999999999996,
+        "iv_diff": 0.19512,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.10335,
+        "gamma": 0.00876,
+        "theta": -0.1124,
+        "price": 0.97,
+        "iv": 0.4295,
+        "volume": 598.0,
+        "open_interest": 2056.0,
+        "strike": 205.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.733,
+      "contract_symbol": "AMZN 205.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.05360999999999999,
+        "gamma_diff": 0.005349999999999999,
+        "theta_diff": 0.014039999999999997,
+        "price_diff": 0.55,
+        "iv_diff": 0.19512,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.10647,
+        "gamma": 0.01275,
+        "theta": -0.04247,
+        "price": 0.83,
+        "iv": 0.40999,
+        "volume": 5.0,
+        "open_interest": 538.0,
+        "strike": 107.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.733,
+      "contract_symbol": "BABA 107.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.05048999999999999,
+        "gamma_diff": 0.00136,
+        "theta_diff": 0.05589,
+        "price_diff": 0.6900000000000001,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.19512,
+        "gamma": 0.01195,
+        "theta": -0.10213,
+        "price": 2.73,
+        "iv": 0.50755,
+        "volume": 20.0,
+        "open_interest": 66.0,
+        "strike": 142.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.732,
+      "contract_symbol": "AMD 142.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.03816,
+        "gamma_diff": 0.0021599999999999987,
+        "theta_diff": 0.0037699999999999956,
+        "price_diff": 1.21,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.15925,
+        "gamma": 0.02548,
+        "theta": -0.06975,
+        "price": 0.84,
+        "iv": 0.37097,
+        "volume": 78.0,
+        "open_interest": 148.0,
+        "strike": 114.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.732,
+      "contract_symbol": "BABA 114.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.0022900000000000142,
+        "gamma_diff": 0.01137,
+        "theta_diff": 0.028609999999999997,
+        "price_diff": 0.68,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "BMY",
+      "option": {
+        "delta": 0.15153,
+        "gamma": 0.01343,
+        "theta": -0.00379,
+        "price": 1.75,
+        "iv": 0.33194,
+        "volume": 1.0,
+        "open_interest": 128.0,
+        "strike": 38.0,
+        "type": "put",
+        "expiration": "2026-09-18",
+        "days_to_expiry": 420
+      },
+      "similarity_score": 0.731,
+      "contract_symbol": "BMY 38.0 PUT exp 2026-09-18",
+      "comparison": {
+        "delta_diff": 0.00542999999999999,
+        "gamma_diff": 0.00068,
+        "theta_diff": 0.09457,
+        "price_diff": 0.22999999999999998,
+        "iv_diff": 0.09756000000000001,
+        "days_diff": 403
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.094,
+        "gamma": 0.01379,
+        "theta": -0.11144,
+        "price": 0.58,
+        "iv": 0.48804,
+        "volume": 280.0,
+        "open_interest": 1793.0,
+        "strike": 144.0,
+        "type": "put",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.729,
+      "contract_symbol": "AMD 144.0 PUT exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.06295999999999999,
+        "gamma_diff": 0.0003199999999999991,
+        "theta_diff": 0.013079999999999994,
+        "price_diff": 0.9400000000000001,
+        "iv_diff": 0.25366,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.11984,
+        "gamma": 0.01212,
+        "theta": -0.1863,
+        "price": 0.88,
+        "iv": 0.44901,
+        "volume": 335.0,
+        "open_interest": 505.0,
+        "strike": 255.0,
+        "type": "call",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.729,
+      "contract_symbol": "BA 255.0 CALL exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.037119999999999986,
+        "gamma_diff": 0.0019899999999999987,
+        "theta_diff": 0.08793999999999999,
+        "price_diff": 0.64,
+        "iv_diff": 0.21463000000000002,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.12283,
+        "gamma": 0.00764,
+        "theta": -0.07064,
+        "price": 1.67,
+        "iv": 0.52706,
+        "volume": 0.0,
+        "open_interest": 59.0,
+        "strike": 133.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.728,
+      "contract_symbol": "AMD 133.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.034129999999999994,
+        "gamma_diff": 0.006469999999999999,
+        "theta_diff": 0.02772000000000001,
+        "price_diff": 0.1499999999999999,
+        "iv_diff": 0.29267999999999994,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.1882,
+        "gamma": 0.01118,
+        "theta": -0.08255,
+        "price": 2.67,
+        "iv": 0.33194,
+        "volume": 298.0,
+        "open_interest": 481.0,
+        "strike": 210.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.728,
+      "contract_symbol": "AMZN 210.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.031240000000000018,
+        "gamma_diff": 0.0029299999999999986,
+        "theta_diff": 0.015810000000000005,
+        "price_diff": 1.15,
+        "iv_diff": 0.09756000000000001,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.14102,
+        "gamma": 0.00899,
+        "theta": -0.05159,
+        "price": 1.71,
+        "iv": 0.27341,
+        "volume": 145.0,
+        "open_interest": 6517.0,
+        "strike": 260.0,
+        "type": "call",
+        "expiration": "2025-09-19",
+        "days_to_expiry": 56
+      },
+      "similarity_score": 0.728,
+      "contract_symbol": "AMZN 260.0 CALL exp 2025-09-19",
+      "comparison": {
+        "delta_diff": 0.015939999999999982,
+        "gamma_diff": 0.0051199999999999996,
+        "theta_diff": 0.046770000000000006,
+        "price_diff": 0.18999999999999995,
+        "iv_diff": 0.03902999999999998,
+        "days_diff": 39
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.18158,
+        "gamma": 0.01201,
+        "theta": -0.31827,
+        "price": 2.33,
+        "iv": 0.87827,
+        "volume": 57.0,
+        "open_interest": 218.0,
+        "strike": 142.0,
+        "type": "put",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.727,
+      "contract_symbol": "ARM 142.0 PUT exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.024620000000000003,
+        "gamma_diff": 0.0020999999999999994,
+        "theta_diff": 0.21991,
+        "price_diff": 0.81,
+        "iv_diff": 0.64389,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.09994,
+        "gamma": 0.01503,
+        "theta": -0.11557,
+        "price": 0.56,
+        "iv": 0.46853,
+        "volume": 2429.0,
+        "open_interest": 2893.0,
+        "strike": 175.0,
+        "type": "call",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.727,
+      "contract_symbol": "AMD 175.0 CALL exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.05701999999999999,
+        "gamma_diff": 0.0009200000000000007,
+        "theta_diff": 0.017210000000000003,
+        "price_diff": 0.96,
+        "iv_diff": 0.23415,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.20881,
+        "gamma": 0.01477,
+        "theta": -0.17038,
+        "price": 2.42,
+        "iv": 0.5856,
+        "volume": 1245.0,
+        "open_interest": 1587.0,
+        "strike": 145.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.727,
+      "contract_symbol": "AMD 145.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.05185000000000001,
+        "gamma_diff": 0.0006600000000000009,
+        "theta_diff": 0.07202,
+        "price_diff": 0.8999999999999999,
+        "iv_diff": 0.35122,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.09537,
+        "gamma": 0.01344,
+        "theta": -0.04503,
+        "price": 0.61,
+        "iv": 0.40999,
+        "volume": 19.0,
+        "open_interest": 35.0,
+        "strike": 108.0,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.726,
+      "contract_symbol": "BABA 108.0 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.06158999999999999,
+        "gamma_diff": 0.0006699999999999987,
+        "theta_diff": 0.05333,
+        "price_diff": 0.91,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.12447,
+        "gamma": 0.00801,
+        "theta": -0.06856,
+        "price": 1.79,
+        "iv": 0.50755,
+        "volume": 2.0,
+        "open_interest": 173.0,
+        "strike": 134.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.725,
+      "contract_symbol": "AMD 134.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.03248999999999999,
+        "gamma_diff": 0.0060999999999999995,
+        "theta_diff": 0.029800000000000007,
+        "price_diff": 0.27,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "CELH",
+      "option": {
+        "delta": 0.14835,
+        "gamma": 0.01346,
+        "theta": -0.01026,
+        "price": 1.62,
+        "iv": 0.54657,
+        "volume": 4.0,
+        "open_interest": 8868.0,
+        "strike": 33.33,
+        "type": "put",
+        "expiration": "2026-01-16",
+        "days_to_expiry": 175
+      },
+      "similarity_score": 0.723,
+      "contract_symbol": "CELH 33.33 PUT exp 2026-01-16",
+      "comparison": {
+        "delta_diff": 0.008609999999999979,
+        "gamma_diff": 0.0006499999999999995,
+        "theta_diff": 0.0881,
+        "price_diff": 0.10000000000000009,
+        "iv_diff": 0.31218999999999997,
+        "days_diff": 158
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.17717,
+        "gamma": 0.01013,
+        "theta": -0.08636,
+        "price": 2.65,
+        "iv": 0.50755,
+        "volume": 3.0,
+        "open_interest": 65.0,
+        "strike": 139.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.721,
+      "contract_symbol": "AMD 139.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.020210000000000006,
+        "gamma_diff": 0.003979999999999999,
+        "theta_diff": 0.011999999999999997,
+        "price_diff": 1.13,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.21251,
+        "gamma": 0.01555,
+        "theta": -0.16323,
+        "price": 2.46,
+        "iv": 0.39048,
+        "volume": 129.0,
+        "open_interest": 2415.0,
+        "strike": 215.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.721,
+      "contract_symbol": "AMZN 215.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.055550000000000016,
+        "gamma_diff": 0.0014400000000000003,
+        "theta_diff": 0.06486999999999998,
+        "price_diff": 0.94,
+        "iv_diff": 0.1561,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.20055,
+        "gamma": 0.02332,
+        "theta": -0.10814,
+        "price": 1.29,
+        "iv": 0.46853,
+        "volume": 9.0,
+        "open_interest": 8.0,
+        "strike": 134.0,
+        "type": "call",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.721,
+      "contract_symbol": "BABA 134.0 CALL exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.04359000000000002,
+        "gamma_diff": 0.009210000000000001,
+        "theta_diff": 0.009779999999999997,
+        "price_diff": 0.22999999999999998,
+        "iv_diff": 0.23415,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.17089,
+        "gamma": 0.01109,
+        "theta": -0.05237,
+        "price": 1.91,
+        "iv": 0.46853,
+        "volume": 612.0,
+        "open_interest": 12379.0,
+        "strike": 150.0,
+        "type": "call",
+        "expiration": "2025-09-19",
+        "days_to_expiry": 56
+      },
+      "similarity_score": 0.721,
+      "contract_symbol": "BABA 150.0 CALL exp 2025-09-19",
+      "comparison": {
+        "delta_diff": 0.013929999999999998,
+        "gamma_diff": 0.00302,
+        "theta_diff": 0.04599,
+        "price_diff": 0.3899999999999999,
+        "iv_diff": 0.23415,
+        "days_diff": 39
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.09779,
+        "gamma": 0.00859,
+        "theta": -0.10649,
+        "price": 0.99,
+        "iv": 0.60511,
+        "volume": 42.0,
+        "open_interest": 265.0,
+        "strike": 136.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.72,
+      "contract_symbol": "AMD 136.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.059169999999999986,
+        "gamma_diff": 0.005519999999999999,
+        "theta_diff": 0.008129999999999998,
+        "price_diff": 0.53,
+        "iv_diff": 0.37073,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "BMY",
+      "option": {
+        "delta": 0.15805,
+        "gamma": 0.01638,
+        "theta": -0.00632,
+        "price": 1.36,
+        "iv": 0.37097,
+        "volume": 0.0,
+        "open_interest": 0.0,
+        "strike": 39.0,
+        "type": "put",
+        "expiration": "2026-03-20",
+        "days_to_expiry": 238
+      },
+      "similarity_score": 0.72,
+      "contract_symbol": "BMY 39.0 PUT exp 2026-03-20",
+      "comparison": {
+        "delta_diff": 0.0010900000000000076,
+        "gamma_diff": 0.0022699999999999994,
+        "theta_diff": 0.09204,
+        "price_diff": 0.15999999999999992,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 221
+      }
+    },
+    {
+      "symbol": "CNC",
+      "option": {
+        "delta": 0.16045,
+        "gamma": 0.01395,
+        "theta": -0.00436,
+        "price": 1.23,
+        "iv": 0.48804,
+        "volume": 0.0,
+        "open_interest": 287.0,
+        "strike": 67.5,
+        "type": "call",
+        "expiration": "2027-01-15",
+        "days_to_expiry": 539
+      },
+      "similarity_score": 0.72,
+      "contract_symbol": "CNC 67.5 CALL exp 2027-01-15",
+      "comparison": {
+        "delta_diff": 0.003490000000000021,
+        "gamma_diff": 0.00015999999999999868,
+        "theta_diff": 0.094,
+        "price_diff": 0.29000000000000004,
+        "iv_diff": 0.25366,
+        "days_diff": 522
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.11272,
+        "gamma": 0.01196,
+        "theta": -0.03963,
+        "price": 0.93,
+        "iv": 0.40999,
+        "volume": 1.0,
+        "open_interest": 148.0,
+        "strike": 106.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.719,
+      "contract_symbol": "BABA 106.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.04423999999999999,
+        "gamma_diff": 0.002149999999999999,
+        "theta_diff": 0.058730000000000004,
+        "price_diff": 0.59,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.11284,
+        "gamma": 0.00651,
+        "theta": -0.09154,
+        "price": 1.8,
+        "iv": 0.64413,
+        "volume": 4.0,
+        "open_interest": 138.0,
+        "strike": 130.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.718,
+      "contract_symbol": "ARM 130.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.04411999999999999,
+        "gamma_diff": 0.007599999999999999,
+        "theta_diff": 0.006820000000000007,
+        "price_diff": 0.28,
+        "iv_diff": 0.40974999999999995,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.20189,
+        "gamma": 0.01609,
+        "theta": -0.26793,
+        "price": 1.99,
+        "iv": 0.48804,
+        "volume": 936.0,
+        "open_interest": 3477.0,
+        "strike": 215.0,
+        "type": "put",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.718,
+      "contract_symbol": "AMZN 215.0 PUT exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.04493,
+        "gamma_diff": 0.001980000000000001,
+        "theta_diff": 0.16957,
+        "price_diff": 0.47,
+        "iv_diff": 0.25366,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.11597,
+        "gamma": 0.01135,
+        "theta": -0.18333,
+        "price": 0.98,
+        "iv": 0.46853,
+        "volume": 1197.0,
+        "open_interest": 614.0,
+        "strike": 215.0,
+        "type": "put",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.718,
+      "contract_symbol": "BA 215.0 PUT exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.040989999999999985,
+        "gamma_diff": 0.0027599999999999986,
+        "theta_diff": 0.08496999999999999,
+        "price_diff": 0.54,
+        "iv_diff": 0.23415,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.1786,
+        "gamma": 0.01056,
+        "theta": -0.19814,
+        "price": 2.52,
+        "iv": 0.74169,
+        "volume": 104.0,
+        "open_interest": 384.0,
+        "strike": 140.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.717,
+      "contract_symbol": "ARM 140.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.02164000000000002,
+        "gamma_diff": 0.0035499999999999993,
+        "theta_diff": 0.09978000000000001,
+        "price_diff": 1.0,
+        "iv_diff": 0.5073099999999999,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.12561,
+        "gamma": 0.00652,
+        "theta": -0.09057,
+        "price": 1.85,
+        "iv": 0.62462,
+        "volume": 0.0,
+        "open_interest": 2.0,
+        "strike": 205.0,
+        "type": "call",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.717,
+      "contract_symbol": "ARM 205.0 CALL exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.03134999999999999,
+        "gamma_diff": 0.0075899999999999995,
+        "theta_diff": 0.007790000000000005,
+        "price_diff": 0.33000000000000007,
+        "iv_diff": 0.3902399999999999,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.11274,
+        "gamma": 0.00693,
+        "theta": -0.06812,
+        "price": 1.46,
+        "iv": 0.37097,
+        "volume": 25.0,
+        "open_interest": 55.0,
+        "strike": 205.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.717,
+      "contract_symbol": "BA 205.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.04421999999999998,
+        "gamma_diff": 0.007179999999999999,
+        "theta_diff": 0.030240000000000003,
+        "price_diff": 0.06000000000000005,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.09718,
+        "gamma": 0.0075,
+        "theta": -0.08282,
+        "price": 1.11,
+        "iv": 0.39048,
+        "volume": 5.0,
+        "open_interest": 16.0,
+        "strike": 207.5,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.716,
+      "contract_symbol": "BA 207.5 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.059779999999999986,
+        "gamma_diff": 0.0066099999999999996,
+        "theta_diff": 0.015539999999999998,
+        "price_diff": 0.4099999999999999,
+        "iv_diff": 0.1561,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.18652,
+        "gamma": 0.01085,
+        "theta": -0.08413,
+        "price": 2.8,
+        "iv": 0.33194,
+        "volume": 35.0,
+        "open_interest": 80.0,
+        "strike": 215.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.716,
+      "contract_symbol": "BA 215.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.029560000000000003,
+        "gamma_diff": 0.003259999999999999,
+        "theta_diff": 0.014230000000000007,
+        "price_diff": 1.2799999999999998,
+        "iv_diff": 0.09756000000000001,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.12136,
+        "gamma": 0.02012,
+        "theta": -0.06131,
+        "price": 0.6,
+        "iv": 0.39048,
+        "volume": 16.0,
+        "open_interest": 123.0,
+        "strike": 112.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.716,
+      "contract_symbol": "BABA 112.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.03559999999999999,
+        "gamma_diff": 0.00601,
+        "theta_diff": 0.03705,
+        "price_diff": 0.92,
+        "iv_diff": 0.1561,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "CELH",
+      "option": {
+        "delta": 0.15771,
+        "gamma": 0.0151,
+        "theta": -0.01158,
+        "price": 1.19,
+        "iv": 0.50755,
+        "volume": 5.0,
+        "open_interest": 2767.0,
+        "strike": 70.0,
+        "type": "call",
+        "expiration": "2026-01-16",
+        "days_to_expiry": 175
+      },
+      "similarity_score": 0.716,
+      "contract_symbol": "CELH 70.0 CALL exp 2026-01-16",
+      "comparison": {
+        "delta_diff": 0.0007500000000000007,
+        "gamma_diff": 0.0009900000000000013,
+        "theta_diff": 0.08678,
+        "price_diff": 0.33000000000000007,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 158
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.21341,
+        "gamma": 0.01337,
+        "theta": -0.13332,
+        "price": 2.74,
+        "iv": 0.54657,
+        "volume": 74.0,
+        "open_interest": 98.0,
+        "strike": 144.0,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.715,
+      "contract_symbol": "AMD 144.0 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.05645,
+        "gamma_diff": 0.0007399999999999993,
+        "theta_diff": 0.03495999999999999,
+        "price_diff": 1.2200000000000002,
+        "iv_diff": 0.31218999999999997,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.22309,
+        "gamma": 0.01422,
+        "theta": -0.14009,
+        "price": 2.6,
+        "iv": 0.52706,
+        "volume": 98.0,
+        "open_interest": 71.0,
+        "strike": 177.5,
+        "type": "call",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.712,
+      "contract_symbol": "AMD 177.5 CALL exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.06613000000000002,
+        "gamma_diff": 0.00011000000000000072,
+        "theta_diff": 0.04172999999999999,
+        "price_diff": 1.08,
+        "iv_diff": 0.29267999999999994,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.09683,
+        "gamma": 0.00766,
+        "theta": -0.08063,
+        "price": 1.06,
+        "iv": 0.39048,
+        "volume": 64.0,
+        "open_interest": 84.0,
+        "strike": 202.5,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.711,
+      "contract_symbol": "AMZN 202.5 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.06012999999999999,
+        "gamma_diff": 0.006449999999999999,
+        "theta_diff": 0.01773000000000001,
+        "price_diff": 0.45999999999999996,
+        "iv_diff": 0.1561,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "CNC",
+      "option": {
+        "delta": 0.15016,
+        "gamma": 0.01349,
+        "theta": -0.00404,
+        "price": 1.77,
+        "iv": 0.54657,
+        "volume": 0.0,
+        "open_interest": 16.0,
+        "strike": 20.0,
+        "type": "put",
+        "expiration": "2026-09-18",
+        "days_to_expiry": 420
+      },
+      "similarity_score": 0.711,
+      "contract_symbol": "CNC 20.0 PUT exp 2026-09-18",
+      "comparison": {
+        "delta_diff": 0.0068000000000000005,
+        "gamma_diff": 0.000619999999999999,
+        "theta_diff": 0.09432,
+        "price_diff": 0.25,
+        "iv_diff": 0.31218999999999997,
+        "days_diff": 403
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.15019,
+        "gamma": 0.00801,
+        "theta": -0.06251,
+        "price": 2.01,
+        "iv": 0.31243,
+        "volume": 92.0,
+        "open_interest": 1807.0,
+        "strike": 270.0,
+        "type": "call",
+        "expiration": "2025-09-19",
+        "days_to_expiry": 56
+      },
+      "similarity_score": 0.71,
+      "contract_symbol": "BA 270.0 CALL exp 2025-09-19",
+      "comparison": {
+        "delta_diff": 0.006769999999999998,
+        "gamma_diff": 0.0060999999999999995,
+        "theta_diff": 0.03585000000000001,
+        "price_diff": 0.48999999999999977,
+        "iv_diff": 0.07804999999999998,
+        "days_diff": 39
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.13209,
+        "gamma": 0.01121,
+        "theta": -0.0331,
+        "price": 1.28,
+        "iv": 0.39048,
+        "volume": 610.0,
+        "open_interest": 6254.0,
+        "strike": 105.0,
+        "type": "put",
+        "expiration": "2025-09-19",
+        "days_to_expiry": 56
+      },
+      "similarity_score": 0.71,
+      "contract_symbol": "BABA 105.0 PUT exp 2025-09-19",
+      "comparison": {
+        "delta_diff": 0.024869999999999975,
+        "gamma_diff": 0.0029,
+        "theta_diff": 0.06526000000000001,
+        "price_diff": 0.24,
+        "iv_diff": 0.1561,
+        "days_diff": 39
+      }
+    },
+    {
+      "symbol": "BILI",
+      "option": {
+        "delta": 0.15163,
+        "gamma": 0.01629,
+        "theta": -0.0045,
+        "price": 1.54,
+        "iv": 0.60511,
+        "volume": 15.0,
+        "open_interest": 133.0,
+        "strike": 17.0,
+        "type": "put",
+        "expiration": "2026-06-18",
+        "days_to_expiry": 328
+      },
+      "similarity_score": 0.71,
+      "contract_symbol": "BILI 17.0 PUT exp 2026-06-18",
+      "comparison": {
+        "delta_diff": 0.005330000000000001,
+        "gamma_diff": 0.0021799999999999996,
+        "theta_diff": 0.09386,
+        "price_diff": 0.020000000000000018,
+        "iv_diff": 0.37073,
+        "days_diff": 311
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.11392,
+        "gamma": 0.00724,
+        "theta": -0.06703,
+        "price": 1.61,
+        "iv": 0.52706,
+        "volume": 15.0,
+        "open_interest": 90.0,
+        "strike": 132.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.708,
+      "contract_symbol": "AMD 132.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.043039999999999995,
+        "gamma_diff": 0.006869999999999999,
+        "theta_diff": 0.03133,
+        "price_diff": 0.09000000000000008,
+        "iv_diff": 0.29267999999999994,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.21571,
+        "gamma": 0.01601,
+        "theta": -0.07523,
+        "price": 2.17,
+        "iv": 0.46853,
+        "volume": 118.0,
+        "open_interest": 345.0,
+        "strike": 140.0,
+        "type": "call",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.708,
+      "contract_symbol": "BABA 140.0 CALL exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.058750000000000024,
+        "gamma_diff": 0.0019000000000000006,
+        "theta_diff": 0.023129999999999998,
+        "price_diff": 0.6499999999999999,
+        "iv_diff": 0.23415,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "BMY",
+      "option": {
+        "delta": 0.14704,
+        "gamma": 0.01293,
+        "theta": -0.00305,
+        "price": 1.05,
+        "iv": 0.23438,
+        "volume": 0.0,
+        "open_interest": 57.0,
+        "strike": 85.0,
+        "type": "call",
+        "expiration": "2027-12-17",
+        "days_to_expiry": 875
+      },
+      "similarity_score": 0.708,
+      "contract_symbol": "BMY 85.0 CALL exp 2027-12-17",
+      "comparison": {
+        "delta_diff": 0.009919999999999984,
+        "gamma_diff": 0.0011799999999999988,
+        "theta_diff": 0.09531,
+        "price_diff": 0.47,
+        "iv_diff": 0.0,
+        "days_diff": 858
+      }
+    },
+    {
+      "symbol": "CELH",
+      "option": {
+        "delta": 0.16676,
+        "gamma": 0.01641,
+        "theta": -0.01464,
+        "price": 1.53,
+        "iv": 0.5856,
+        "volume": 5.0,
+        "open_interest": 2383.0,
+        "strike": 35.0,
+        "type": "put",
+        "expiration": "2025-11-21",
+        "days_to_expiry": 119
+      },
+      "similarity_score": 0.708,
+      "contract_symbol": "CELH 35.0 PUT exp 2025-11-21",
+      "comparison": {
+        "delta_diff": 0.009800000000000003,
+        "gamma_diff": 0.0023000000000000017,
+        "theta_diff": 0.08372,
+        "price_diff": 0.010000000000000009,
+        "iv_diff": 0.35122,
+        "days_diff": 102
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.09917,
+        "gamma": 0.00604,
+        "theta": -0.11122,
+        "price": 1.28,
+        "iv": 0.72218,
+        "volume": 12.0,
+        "open_interest": 6.0,
+        "strike": 205.0,
+        "type": "call",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.705,
+      "contract_symbol": "ARM 205.0 CALL exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.057789999999999994,
+        "gamma_diff": 0.008069999999999999,
+        "theta_diff": 0.012859999999999996,
+        "price_diff": 0.24,
+        "iv_diff": 0.4878,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.10807,
+        "gamma": 0.01002,
+        "theta": -0.05878,
+        "price": 0.88,
+        "iv": 0.52706,
+        "volume": 54.0,
+        "open_interest": 1311.0,
+        "strike": 150.0,
+        "type": "call",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.705,
+      "contract_symbol": "BABA 150.0 CALL exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.04888999999999999,
+        "gamma_diff": 0.00409,
+        "theta_diff": 0.039580000000000004,
+        "price_diff": 0.64,
+        "iv_diff": 0.29267999999999994,
+        "days_diff": 11
+      }
+    },
+    {
+      "symbol": "CNC",
+      "option": {
+        "delta": 0.16109,
+        "gamma": 0.01344,
+        "theta": -0.00453,
+        "price": 1.15,
+        "iv": 0.50755,
+        "volume": 2.0,
+        "open_interest": 824.0,
+        "strike": 70.0,
+        "type": "call",
+        "expiration": "2027-01-15",
+        "days_to_expiry": 539
+      },
+      "similarity_score": 0.705,
+      "contract_symbol": "CNC 70.0 CALL exp 2027-01-15",
+      "comparison": {
+        "delta_diff": 0.0041300000000000225,
+        "gamma_diff": 0.0006699999999999987,
+        "theta_diff": 0.09383,
+        "price_diff": 0.3700000000000001,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 522
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.20511,
+        "gamma": 0.01865,
+        "theta": -0.05533,
+        "price": 1.96,
+        "iv": 0.39048,
+        "volume": 13.0,
+        "open_interest": 46.0,
+        "strike": 112.0,
+        "type": "put",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.704,
+      "contract_symbol": "BABA 112.0 PUT exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.04815,
+        "gamma_diff": 0.004540000000000001,
+        "theta_diff": 0.043030000000000006,
+        "price_diff": 0.43999999999999995,
+        "iv_diff": 0.1561,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.19964,
+        "gamma": 0.01091,
+        "theta": -0.10033,
+        "price": 2.56,
+        "iv": 0.50755,
+        "volume": 46.0,
+        "open_interest": 743.0,
+        "strike": 185.0,
+        "type": "call",
+        "expiration": "2025-08-29",
+        "days_to_expiry": 35
+      },
+      "similarity_score": 0.703,
+      "contract_symbol": "AMD 185.0 CALL exp 2025-08-29",
+      "comparison": {
+        "delta_diff": 0.042680000000000023,
+        "gamma_diff": 0.0031999999999999997,
+        "theta_diff": 0.0019699999999999995,
+        "price_diff": 1.04,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 18
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.10785,
+        "gamma": 0.01152,
+        "theta": -0.1686,
+        "price": 0.8,
+        "iv": 0.44901,
+        "volume": 2449.0,
+        "open_interest": 7706.0,
+        "strike": 250.0,
+        "type": "call",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.703,
+      "contract_symbol": "AMZN 250.0 CALL exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.04910999999999999,
+        "gamma_diff": 0.0025899999999999986,
+        "theta_diff": 0.07024,
+        "price_diff": 0.72,
+        "iv_diff": 0.21463000000000002,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.2168,
+        "gamma": 0.02327,
+        "theta": -0.07717,
+        "price": 1.58,
+        "iv": 0.40999,
+        "volume": 25.0,
+        "open_interest": 7.0,
+        "strike": 114.0,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.702,
+      "contract_symbol": "BABA 114.0 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.059840000000000004,
+        "gamma_diff": 0.00916,
+        "theta_diff": 0.02119,
+        "price_diff": 0.06000000000000005,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "ARM",
+      "option": {
+        "delta": 0.19342,
+        "gamma": 0.01196,
+        "theta": -0.35307,
+        "price": 2.36,
+        "iv": 0.91729,
+        "volume": 72.0,
+        "open_interest": 448.0,
+        "strike": 182.5,
+        "type": "call",
+        "expiration": "2025-08-01",
+        "days_to_expiry": 7
+      },
+      "similarity_score": 0.701,
+      "contract_symbol": "ARM 182.5 CALL exp 2025-08-01",
+      "comparison": {
+        "delta_diff": 0.03646000000000002,
+        "gamma_diff": 0.002149999999999999,
+        "theta_diff": 0.25471,
+        "price_diff": 0.8399999999999999,
+        "iv_diff": 0.68291,
+        "days_diff": 10
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.10272,
+        "gamma": 0.00747,
+        "theta": -0.06942,
+        "price": 1.3,
+        "iv": 0.52706,
+        "volume": 6.0,
+        "open_interest": 103.0,
+        "strike": 133.0,
+        "type": "put",
+        "expiration": "2025-08-22",
+        "days_to_expiry": 28
+      },
+      "similarity_score": 0.701,
+      "contract_symbol": "AMD 133.0 PUT exp 2025-08-22",
+      "comparison": {
+        "delta_diff": 0.05423999999999998,
+        "gamma_diff": 0.006639999999999999,
+        "theta_diff": 0.028940000000000007,
+        "price_diff": 0.21999999999999997,
+        "iv_diff": 0.29267999999999994,
+        "days_diff": 11
+      }
+    }
+  ],
+  "top_10_matches": [
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.16988,
+        "gamma": 0.01256,
+        "theta": -0.11514,
+        "price": 1.62,
+        "iv": 0.35146,
+        "volume": 3542.0,
+        "open_interest": 27253.0,
+        "strike": 250.0,
+        "type": "call",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.906,
+      "contract_symbol": "AMZN 250.0 CALL exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.012920000000000015,
+        "gamma_diff": 0.0015499999999999993,
+        "theta_diff": 0.016780000000000003,
+        "price_diff": 0.10000000000000009,
+        "iv_diff": 0.11707999999999999,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.14689,
+        "gamma": 0.01266,
+        "theta": -0.13443,
+        "price": 1.37,
+        "iv": 0.37097,
+        "volume": 93.0,
+        "open_interest": 302.0,
+        "strike": 255.0,
+        "type": "call",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.896,
+      "contract_symbol": "BA 255.0 CALL exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.010069999999999996,
+        "gamma_diff": 0.00145,
+        "theta_diff": 0.03606999999999999,
+        "price_diff": 0.1499999999999999,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.14966,
+        "gamma": 0.01188,
+        "theta": -0.13833,
+        "price": 1.58,
+        "iv": 0.40999,
+        "volume": 217.0,
+        "open_interest": 1335.0,
+        "strike": 210.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.89,
+      "contract_symbol": "AMZN 210.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.007300000000000001,
+        "gamma_diff": 0.0022299999999999993,
+        "theta_diff": 0.039970000000000006,
+        "price_diff": 0.06000000000000005,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.15117,
+        "gamma": 0.01077,
+        "theta": -0.11356,
+        "price": 1.58,
+        "iv": 0.54657,
+        "volume": 715.0,
+        "open_interest": 4641.0,
+        "strike": 185.0,
+        "type": "call",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.884,
+      "contract_symbol": "AMD 185.0 CALL exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.00578999999999999,
+        "gamma_diff": 0.0033399999999999992,
+        "theta_diff": 0.015199999999999991,
+        "price_diff": 0.06000000000000005,
+        "iv_diff": 0.31218999999999997,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.14788,
+        "gamma": 0.0115,
+        "theta": -0.1406,
+        "price": 1.56,
+        "iv": 0.40999,
+        "volume": 81.0,
+        "open_interest": 275.0,
+        "strike": 215.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.881,
+      "contract_symbol": "BA 215.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.009079999999999977,
+        "gamma_diff": 0.0026099999999999995,
+        "theta_diff": 0.04224,
+        "price_diff": 0.040000000000000036,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.1777,
+        "gamma": 0.01395,
+        "theta": -0.15642,
+        "price": 1.63,
+        "iv": 0.39048,
+        "volume": 16.0,
+        "open_interest": 65.0,
+        "strike": 247.5,
+        "type": "call",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.879,
+      "contract_symbol": "AMZN 247.5 CALL exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.02074000000000001,
+        "gamma_diff": 0.00015999999999999868,
+        "theta_diff": 0.05806,
+        "price_diff": 0.10999999999999988,
+        "iv_diff": 0.1561,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "BABA",
+      "option": {
+        "delta": 0.16908,
+        "gamma": 0.01615,
+        "theta": -0.08792,
+        "price": 1.27,
+        "iv": 0.50755,
+        "volume": 593.0,
+        "open_interest": 6280.0,
+        "strike": 140.0,
+        "type": "call",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.878,
+      "contract_symbol": "BABA 140.0 CALL exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.01212000000000002,
+        "gamma_diff": 0.002040000000000002,
+        "theta_diff": 0.010440000000000005,
+        "price_diff": 0.25,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "AMD",
+      "option": {
+        "delta": 0.14946,
+        "gamma": 0.01196,
+        "theta": -0.13839,
+        "price": 1.65,
+        "iv": 0.5856,
+        "volume": 10.0,
+        "open_interest": 275.0,
+        "strike": 141.0,
+        "type": "put",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.877,
+      "contract_symbol": "AMD 141.0 PUT exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.007499999999999979,
+        "gamma_diff": 0.002149999999999999,
+        "theta_diff": 0.04003000000000001,
+        "price_diff": 0.1299999999999999,
+        "iv_diff": 0.35122,
+        "days_diff": 3
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "option": {
+        "delta": 0.16537,
+        "gamma": 0.01169,
+        "theta": -0.11018,
+        "price": 1.96,
+        "iv": 0.37097,
+        "volume": 618.0,
+        "open_interest": 21423.0,
+        "strike": 210.0,
+        "type": "put",
+        "expiration": "2025-08-15",
+        "days_to_expiry": 21
+      },
+      "similarity_score": 0.876,
+      "contract_symbol": "AMZN 210.0 PUT exp 2025-08-15",
+      "comparison": {
+        "delta_diff": 0.00841,
+        "gamma_diff": 0.0024199999999999985,
+        "theta_diff": 0.011819999999999997,
+        "price_diff": 0.43999999999999995,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 4
+      }
+    },
+    {
+      "symbol": "BA",
+      "option": {
+        "delta": 0.178,
+        "gamma": 0.01434,
+        "theta": -0.15265,
+        "price": 1.71,
+        "iv": 0.37097,
+        "volume": 32.0,
+        "open_interest": 11.0,
+        "strike": 252.5,
+        "type": "call",
+        "expiration": "2025-08-08",
+        "days_to_expiry": 14
+      },
+      "similarity_score": 0.876,
+      "contract_symbol": "BA 252.5 CALL exp 2025-08-08",
+      "comparison": {
+        "delta_diff": 0.021040000000000003,
+        "gamma_diff": 0.00023000000000000104,
+        "theta_diff": 0.054290000000000005,
+        "price_diff": 0.18999999999999995,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 3
+      }
+    }
+  ],
+  "summary": "Found 192 NET-like options from 30 symbols analyzed"
+}
