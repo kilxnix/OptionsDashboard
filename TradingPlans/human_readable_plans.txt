@@ -16720,3 +16720,21 @@ Delta: -0.37410 | Gamma: 0.58717 | Theta: -0.12158 | Score: 2.60
 
 ================================================================================
 
+📈 Trade Plan for CMCSA (Bullish Bias)
+
+🔹 Option: $$45.0 Call expiring 2026-06-18
+🔹 Entry Price: $0.77
+🔹 Stop Loss: $0.58
+🔹 Initial Target: $1.35
+🔹 Final Target: $2.70
+🔹 Position Size: 2 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.18752 | Gamma: 0.03731 | Theta: -0.00366 | Score: 4.46
+
+================================================================================
+
