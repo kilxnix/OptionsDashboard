@@ -409,10 +409,10 @@ class ExplosiveOptionsScanner:
 
         if scan_type == 'earnings':
             print(f"🎯 EARNINGS SCAN: Finding stocks reporting THIS WEEK...")
-            
+
             # Get ACTUAL pre-earnings stocks with strict timing
             earnings_this_week = self._get_critical_earnings_plays()
-            
+
             if earnings_this_week:
                 print(f"🔥 CRITICAL: Found {len(earnings_this_week)} stocks reporting in next 7 days!")
                 for symbol, days in earnings_this_week:
@@ -421,7 +421,7 @@ class ExplosiveOptionsScanner:
             else:
                 print(f"⚠️ No critical earnings found, expanding search...")
                 symbols = self._get_pre_earnings_stocks()
-                
+
             # Only add backups if we found very few real earnings plays
             if len(symbols) < 5:
                 print(f"🔄 Adding high-IV backup candidates...")
@@ -442,13 +442,13 @@ class ExplosiveOptionsScanner:
             # STEP 1: Get critical earnings (highest priority)
             critical_earnings = self._get_critical_earnings_plays()
             earnings_symbols = [s[0] for s in critical_earnings] if critical_earnings else []
-            
+
             # STEP 2: Get broader earnings
             all_earnings = self._get_pre_earnings_stocks()
-            
+
             # STEP 3: Get movers
             movers = self._get_top_movers()
-            
+
             # STEP 4: High volume backups
             high_volume = ['SPY', 'QQQ', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'AMD']
 
@@ -476,7 +476,7 @@ class ExplosiveOptionsScanner:
         print(f"📊 Final scan list: {len(filtered_symbols)} symbols")
         if scan_type == 'earnings':
             print(f"🎯 EARNINGS FOCUS: Prioritizing {min(20, len(filtered_symbols))} top candidates")
-            
+
         return filtered_symbols
 
     def _get_critical_earnings_plays(self) -> List[Tuple[str, int]]:
@@ -525,7 +525,7 @@ class ExplosiveOptionsScanner:
 
             # Sort by days to earnings (most urgent first)
             critical_earnings.sort(key=lambda x: x[1])
-            
+
             print(f"✅ Found {len(critical_earnings)} CRITICAL earnings plays")
             return critical_earnings
 
@@ -643,10 +643,54 @@ class ExplosiveOptionsScanner:
                     print(f"❌ API access issue: {data['Information']}")
                     continue
 
-                # Process successful response
-                parsed = process_alpha_vantage_bulk_response(data)
-                bulk_data.update(parsed)
-                print(f"✅ Successfully parsed {len(parsed)} symbols from chunk {i//100 + 1}")
+                # Debug actual response structure
+                print(f"🔍 Bulk API Response keys: {list(data.keys())}")
+                if 'data' in data:
+                    print(f"🔍 Data array length: {len(data['data'])}")
+
+                # Handle different Alpha Vantage bulk response formats
+                quotes_array = None
+                if 'data' in data:
+                    quotes_array = data['data']
+                elif 'quotes' in data:
+                    quotes_array = data['quotes']
+                elif 'Global Quotes' in data:
+                    quotes_array = data['Global Quotes']
+                else:
+                    # Sometimes the response is directly an array
+                    if isinstance(data, list):
+                        quotes_array = data
+
+                if quotes_array:
+                    for quote in quotes_array:
+                        symbol = quote.get('symbol') or quote.get('01. symbol') or quote.get('ticker')
+                        if symbol:
+                            # Extract realtime data with fallback field names
+                            close_price = (quote.get('close') or quote.get('05. price') or 
+                                         quote.get('price') or quote.get('last_price') or 0)
+                            high_price = (quote.get('high') or quote.get('03. high') or 
+                                        quote.get('day_high') or close_price)
+                            low_price = (quote.get('low') or quote.get('04. low') or 
+                                       quote.get('day_low') or close_price)
+                            volume = (quote.get('volume') or quote.get('06. volume') or 
+                                    quote.get('day_volume') or 0)
+                            change_pct = (quote.get('change_percent') or quote.get('10. change percent') or 
+                                        quote.get('percent_change') or '0%')
+
+                            # Clean percentage string
+                            if isinstance(change_pct, str):
+                                change_pct = change_pct.replace('%', '')
+
+                            market_data[symbol] = {
+                                'current_price': float(close_price),
+                                'high': float(high_price),
+                                'low': float(low_price),
+                                'volume': int(volume),
+                                'change_percent': float(change_pct),
+                                'timestamp': quote.get('timestamp') or quote.get('09. latest trading day'),
+                            }
+                else:
+                    print("⚠️ No valid quotes array found in the response.")
 
                 # Rate limiting - ensure we don't exceed 150 requests/minute with buffer
                 chunk_delay = 60 / 120  # Target 120 requests per minute to be very safe
@@ -711,7 +755,7 @@ class ExplosiveOptionsScanner:
                 time.sleep(60)
                 return None
 
-            if 'Error Message' in data:
+            if 'Error Message' indata:
                 print(f"Alpha Vantage error for {symbol}: {data['Error Message']}")
                 return None
 
@@ -1485,7 +1529,7 @@ Opportunities Found: {len(results['opportunities'])}
         }
 
         # 1. Entry Details
-        entry_price = option_data['mark']  # Use the mark price as the entry
+        entry_price = option_data['mark']  # Use the mark price as the previous content.
         plan['entry_details'] = {
             'entry_price': entry_price,
             'description': f"Enter position at mark price: ${entry_price:.2f}"
