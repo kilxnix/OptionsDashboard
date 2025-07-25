@@ -648,60 +648,18 @@ class ExplosiveOptionsScanner:
                 if 'data' in data:
                     print(f"🔍 Data array length: {len(data['data'])}")
 
-                # Handle different Alpha Vantage bulk response formats
-                quotes_array = None
-                if 'data' in data:
-                    quotes_array = data['data']
-                elif 'quotes' in data:
-                    quotes_array = data['quotes']
-                elif 'Global Quotes' in data:
-                    quotes_array = data['Global Quotes']
+                # Process the bulk response using the existing helper
+                chunk_data = process_alpha_vantage_bulk_response(data)
+
+                if chunk_data:
+                    bulk_data.update(chunk_data)
+                    print(f"✅ Processed {len(chunk_data)} symbols from chunk {i//100 + 1}")
                 else:
-                    # Sometimes the response is directly an array
-                    if isinstance(data, list):
-                        quotes_array = data
+                    print(f"⚠️ No data processed from chunk {i//100 + 1}")
 
-                if quotes_array:
-                    for quote in quotes_array:
-                        symbol = quote.get('symbol') or quote.get('01. symbol') or quote.get('ticker')
-                        if symbol:
-                            # Extract realtime data with fallback field names
-                            close_price = (quote.get('close') or quote.get('05. price') or 
-                                         quote.get('price') or quote.get('last_price') or 0)
-                            high_price = (quote.get('high') or quote.get('03. high') or 
-                                        quote.get('day_high') or close_price)
-                            low_price = (quote.get('low') or quote.get('04. low') or 
-                                       quote.get('day_low') or close_price)
-                            volume = (quote.get('volume') or quote.get('06. volume') or 
-                                    quote.get('day_volume') or 0)
-                            change_pct = (quote.get('change_percent') or quote.get('10. change percent') or 
-                                        quote.get('percent_change') or '0%')
-
-                            # Clean percentage string
-                            if isinstance(change_pct, str):
-                                change_pct = change_pct.replace('%', '')
-
-                            bulk_data[symbol] = {
-                                'current_price': float(close_price),
-                                'high': float(high_price),
-                                'low': float(low_price),
-                                'volume': int(volume),
-                                'change_percent': float(change_pct),
-                                'timestamp': quote.get('timestamp') or quote.get('09. latest trading day'),
-                            }
-                else:
-                    print("⚠️ No valid quotes array found in the response.")
-
-                # Rate limiting - ensure we don't exceed 150 requests/minute with buffer
-                chunk_delay = 60 / 120  # Target 120 requests per minute to be very safe
-                start_time = time.time()
-
-                # Rate limiting - ensure we don't exceed 150 requests/minute
-                elapsed = time.time() - start_time
-                if elapsed < chunk_delay and i + 100 < len(symbols):
-                    sleep_time = chunk_delay - elapsed
-                    print(f"⏱️ Rate limiting: sleeping {sleep_time:.2f}s")
-                    time.sleep(sleep_time)
+                # Rate limiting - wait between chunks
+                if i + 100 < len(symbols):
+                    time.sleep(0.5)  # Half second between chunks
 
             except Exception as e:
                 print(f"❌ Error fetching bulk data for chunk {i//100 + 1}: {e}")
@@ -812,7 +770,8 @@ class ExplosiveOptionsScanner:
                 return {'is_pre_earnings': False, 'days_to_earnings': None, 'earnings_multiplier': 1.0}
 
             headers = lines[0].split(',')
-            symbol_idx = headers.index('symbol') if 'symbol' in headers else 0
+            symbol_idx = headers```python
+.index('symbol') if 'symbol' in headers else 0
             date_idx = headers.index('reportDate') if 'reportDate' in headers else 1
 
             current_date = datetime.now().date()
@@ -1568,7 +1527,7 @@ Opportunities Found: {len(results['opportunities'])}
         plan['risk_analysis'] = {
             'risk_per_share': risk_per_share,
             'max_risk': max_risk,
-            'risk_description': f"Max risk per contract: ${risk_per_share:.2f}"
+'risk_description': f"Max risk per contract: ${risk_per_share:.2f}"
         }
 
         # 5. Position Sizing (Determine Contracts)
