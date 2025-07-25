@@ -190,7 +190,7 @@ class ExplosiveOptionsScanner:
             options_data = self._fetch_all_options(symbol)
             if options_data is None or (hasattr(options_data, 'empty') and options_data.empty):
                 return None
-            
+
             # Additional validation - ensure we have at least 5 contracts
             if len(options_data) < 5:
                 return None
@@ -616,7 +616,7 @@ class ExplosiveOptionsScanner:
     def _fetch_bulk_market_data(self, symbols: List[str]) -> Dict[str, Dict]:
         """Fetch market data efficiently using your upgraded Alpha Vantage plan"""
         bulk_data = {}
-        
+
         # If we detect rate limiting issues, fall back to Yahoo Finance
         if hasattr(self, '_av_rate_limited') and self._av_rate_limited:
             print(f"📊 Using Yahoo Finance for bulk data (AV rate limited)")
@@ -667,23 +667,23 @@ class ExplosiveOptionsScanner:
     def _fetch_bulk_data_yahoo(self, symbols: List[str]) -> Dict[str, Dict]:
         """Fallback bulk data fetching using Yahoo Finance"""
         bulk_data = {}
-        
+
         print(f"📊 Fetching bulk data via Yahoo Finance for {len(symbols)} symbols...")
-        
+
         for symbol in symbols[:100]:  # Limit to avoid overloading
             try:
                 import yfinance as yf
                 ticker = yf.Ticker(symbol)
                 hist = ticker.history(period="2d")
-                
+
                 if hist.empty:
                     continue
-                    
+
                 latest = hist.iloc[-1]
                 prev = hist.iloc[-2] if len(hist) > 1 else latest
-                
+
                 change_percent = ((latest['Close'] - prev['Close']) / prev['Close']) * 100
-                
+
                 bulk_data[symbol] = {
                     'current_price': float(latest['Close']),
                     'high': float(latest['High']),
@@ -691,10 +691,10 @@ class ExplosiveOptionsScanner:
                     'volume': int(latest['Volume']),
                     'change_percent': float(change_percent)
                 }
-                
+
             except Exception:
                 continue
-                
+
         print(f"✅ Yahoo Finance bulk data: {len(bulk_data)} symbols")
         return bulk_data
 
@@ -728,22 +728,22 @@ class ExplosiveOptionsScanner:
 
             # If we're hitting rate limits, use Yahoo Finance fallback
             print(f"📊 Using Yahoo Finance for {symbol} market data (avoiding AV rate limits)")
-            
+
             try:
                 import yfinance as yf
                 ticker = yf.Ticker(symbol)
                 info = ticker.info
                 hist = ticker.history(period="30d")
-                
+
                 if hist.empty:
                     return None
-                    
+
                 current_price = float(hist['Close'][-1])
-                
+
                 # Calculate volatility
                 returns = hist['Close'].pct_change().dropna()
                 volatility = returns.std() * np.sqrt(252) * 100 if len(returns) > 1 else 25.0
-                
+
                 return {
                     'symbol': symbol,
                     'current_price': current_price,
@@ -770,7 +770,7 @@ class ExplosiveOptionsScanner:
         # Use cached earnings data if available
         if hasattr(self, '_earnings_cache') and symbol in self._earnings_cache:
             return self._earnings_cache[symbol]
-        
+
         # Default earnings info if cache miss
         return {
             'is_pre_earnings': False, 
@@ -1074,7 +1074,7 @@ class ExplosiveOptionsScanner:
             # Fetch options data for limited expirations to avoid rate limits
             all_options = []
             valid_expirations = 0
-            
+
             for exp_date in expirations[:3]:  # Only first 3 expirations
                 try:
                     option_chain = ticker.option_chain(exp_date)
@@ -1098,7 +1098,7 @@ class ExplosiveOptionsScanner:
                         puts['expiration'] = exp_date
                         puts['symbol'] = symbol
                         all_options.append(puts)
-                    
+
                     valid_expirations += 1
 
                 except Exception:
@@ -1109,14 +1109,14 @@ class ExplosiveOptionsScanner:
 
             # Combine all options data
             df = pd.concat(all_options, ignore_index=True)
-            
+
             # Filter out options with no volume or very low volume
             if 'volume' in df.columns:
                 df = df[df['volume'] > 0]
-            
+
             if df.empty:
                 return None
-                
+
             print(f"✅ Yahoo Finance options found for {symbol}: {len(df)} contracts")
 
                 # Standardize Yahoo Finance columns to match Alpha Vantage format
@@ -1519,24 +1519,24 @@ Opportunities Found: {len(results['opportunities'])}
         """Pre-filter symbols that are unlikely to have active options"""
         if not symbol or len(symbol) < 1 or len(symbol) > 5:
             return False
-            
+
         # Skip symbols with numbers (often warrants/derivatives)
         if any(char.isdigit() for char in symbol):
             return False
-            
+
         # Skip symbols with special characters except common ones
         if any(char in symbol for char in ['+', '=', '/', '@', '#', '&']):
             return False
-            
+
         # Skip obvious penny stocks or OTC
         if symbol.endswith(('F', 'PK', 'OB')):
             return False
-            
+
         # Skip symbols that are too short or obviously problematic
         problematic_patterns = ['TEST', 'HALT', 'SUSP']
         if any(pattern in symbol.upper() for pattern in problematic_patterns):
             return False
-            
+
         return True
 
     def _generate_trade_plan(self, option_data: Dict, market_data: Dict, score: float) -> Dict:
@@ -1555,7 +1555,7 @@ Opportunities Found: {len(results['opportunities'])}
         }
 
         # 1. Entry Details
-        entry_price = option_data['mark']  # Use the mark price as the previous content.
+        entry price = option_data['mark']  # Use the mark price as the previous content.
         plan['entry_details'] = {
             'entry_price': entry_price,
             'description': f"Enter position at mark price: ${entry_price:.2f}"
