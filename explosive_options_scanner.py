@@ -770,8 +770,7 @@ class ExplosiveOptionsScanner:
                 return {'is_pre_earnings': False, 'days_to_earnings': None, 'earnings_multiplier': 1.0}
 
             headers = lines[0].split(',')
-            symbol_idx = headers```python
-.index('symbol') if 'symbol' in headers else 0
+            symbol_idx = headers.index('symbol') if 'symbol' in headers else 0
             date_idx = headers.index('reportDate') if 'reportDate' in headers else 1
 
             current_date = datetime.now().date()
