@@ -437,8 +437,8 @@ def filter_and_prioritize_symbols(symbols):
 
 class CompleteOptionsScanner:
 
-    def __init__(self, api_key, min_delta=0.2, max_delta=0.7):
-        self.api_key = api_key
+    def __init__(self, api_key=None, min_delta=0.2, max_delta=0.7):
+        self.api_key = api_key or os.getenv("ALPHA_VANTAGE_API_KEY")
         self.min_delta = min_delta
         self.max_delta = max_delta
         self.min_volume = 6
@@ -540,6 +540,10 @@ class CompleteOptionsScanner:
 
     def fetch_multi_timeframe_data(self, symbol):
         """Fetch price data for all timeframes using Alpha Vantage"""
+        if not self.api_key:
+            print("⚠️ Alpha Vantage API key missing - using yfinance fallback for all timeframes")
+            return {tf: self._fetch_yfinance_fallback(symbol, tf) for tf in TIMEFRAMES.keys()}
+
         timeframe_data = {}
 
         for tf in TIMEFRAMES.keys():
