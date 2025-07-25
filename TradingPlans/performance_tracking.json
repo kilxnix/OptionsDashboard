@@ -8158,5 +8158,29 @@
     "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
+  },
+  "RIOT_15.0_call_2025-07-25 00:00:00_2025-07-25": {
+    "symbol": "RIOT",
+    "prediction_date": "2025-07-25",
+    "option_details": {
+      "strike": 15.0,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.18,
+      "predicted_target": 0.32,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.17,
+      "delta": 0.31288,
+      "gamma": 0.59006,
+      "theta": -0.10685,
+      "implied_vol": "0.78071"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
   }
 }

@@ -16702,3 +16702,21 @@ Delta: 0.21432 | Gamma: 0.09140 | Theta: -0.00845 | Score: 4.90
 
 ================================================================================
 
+📈 Trade Plan for RIOT (Bearish Bias)
+
+🔹 Option: $$14.5 Put expiring 2025-07-25
+🔹 Entry Price: $0.18
+🔹 Stop Loss: $0.14
+🔹 Initial Target: $0.32
+🔹 Final Target: $0.63
+🔹 Position Size: 12 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.37410 | Gamma: 0.58717 | Theta: -0.12158 | Score: 2.60
+
+================================================================================
+
