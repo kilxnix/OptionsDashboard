@@ -1,0 +1,47 @@
+
+============================================================
+Symbol: RIOT - 15:50:52
+Confluence Score: 9.17/10
+Bias: Bearish
+
+Top Options Found: 29
+
+Option 1:
+  Strike: $15.0 Call
+  Expiration: 2025-07-25 00:00:00
+  Delta: 0.3129
+  Gamma: 0.5901
+  Theta: -0.1069
+  Volume: 12111
+  Score: 2.84
+  IV: 78.07%
+
+Option 2:
+  Strike: $14.5 Put
+  Expiration: 2025-07-25 00:00:00
+  Delta: -0.3741
+  Gamma: 0.5872
+  Theta: -0.1216
+  Volume: 2873
+  Score: 2.60
+  IV: 83.93%
+
+Option 3:
+  Strike: $12.0 Put
+  Expiration: 2025-08-22 00:00:00
+  Delta: -0.1527
+  Gamma: 0.0712
+  Theta: -0.0132
+  Volume: 3
+  Score: 2.59
+  IV: 80.02%
+
+Trade Plan:
+  Entry: $0.18
+  Stop: $0.14
+  Target: $0.32
+  Position Size: 12 contracts
+  Strike: $14.5 Put
+  Expiration: 2025-07-25
+  Max Hold: 4 hours
+============================================================
