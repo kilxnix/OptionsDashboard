@@ -45,3 +45,50 @@ Trade Plan:
   Expiration: 2025-07-25
   Max Hold: 4 hours
 ============================================================
+
+============================================================
+Symbol: CMCSA - 16:53:11
+Confluence Score: 8.82/10
+Bias: Bullish
+
+Top Options Found: 65
+
+Option 1:
+  Strike: $45.0 Call
+  Expiration: 2026-06-18 00:00:00
+  Delta: 0.1875
+  Gamma: 0.0373
+  Theta: -0.0037
+  Volume: 1
+  Score: 4.46
+  IV: 21.49%
+
+Option 2:
+  Strike: $50.0 Call
+  Expiration: 2027-01-15 00:00:00
+  Delta: 0.1714
+  Gamma: 0.0275
+  Theta: -0.0028
+  Volume: 10
+  Score: 4.46
+  IV: 21.49%
+
+Option 3:
+  Strike: $40.0 Call
+  Expiration: 2025-10-17 00:00:00
+  Delta: 0.1731
+  Gamma: 0.0640
+  Theta: -0.0067
+  Volume: 52
+  Score: 4.36
+  IV: 23.44%
+
+Trade Plan:
+  Entry: $0.77
+  Stop: $0.58
+  Target: $1.35
+  Position Size: 2 contracts
+  Strike: $45.0 Call
+  Expiration: 2026-06-18
+  Max Hold: 12 hours
+============================================================
