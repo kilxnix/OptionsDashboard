@@ -1555,7 +1555,7 @@ Opportunities Found: {len(results['opportunities'])}
         }
 
         # 1. Entry Details
-        entry price = option_data['mark']  # Use the mark price as the previous content.
+        entry_price = option_data['mark']  # Use the mark price as the previous content.
         plan['entry_details'] = {
             'entry_price': entry_price,
             'description': f"Enter position at mark price: ${entry_price:.2f}"
