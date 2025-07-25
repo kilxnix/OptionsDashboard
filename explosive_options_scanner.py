@@ -755,7 +755,7 @@ class ExplosiveOptionsScanner:
                 time.sleep(60)
                 return None
 
-            if 'Error Message' indata:
+            if 'Error Message' in data:
                 print(f"Alpha Vantage error for {symbol}: {data['Error Message']}")
                 return None
 
