@@ -177,6 +177,10 @@ class ExplosiveOptionsScanner:
         Scan a single symbol for explosive opportunities
         """
         try:
+            # Pre-filter symbols that are unlikely to have options
+            if not self._is_valid_options_symbol(symbol):
+                return None
+
             # Get market data
             market_data = self._fetch_enhanced_market_data(symbol)
             if not market_data:
@@ -185,6 +189,10 @@ class ExplosiveOptionsScanner:
             # Get options chains
             options_data = self._fetch_all_options(symbol)
             if options_data is None or (hasattr(options_data, 'empty') and options_data.empty):
+                return None
+            
+            # Additional validation - ensure we have at least 5 contracts
+            if len(options_data) < 5:
                 return None
 
             # Fix data types first
@@ -608,64 +616,86 @@ class ExplosiveOptionsScanner:
     def _fetch_bulk_market_data(self, symbols: List[str]) -> Dict[str, Dict]:
         """Fetch market data efficiently using your upgraded Alpha Vantage plan"""
         bulk_data = {}
+        
+        # If we detect rate limiting issues, fall back to Yahoo Finance
+        if hasattr(self, '_av_rate_limited') and self._av_rate_limited:
+            print(f"📊 Using Yahoo Finance for bulk data (AV rate limited)")
+            return self._fetch_bulk_data_yahoo(symbols)
 
         print(f"📊 Processing {len(symbols)} symbols using REALTIME_BULK_QUOTES API...")
-        print(f"🔑 Using API key: {self.av_key[:8]}...{self.av_key[-4:] if len(self.av_key) > 12 else 'INVALID'}")
-        print(f"⚡ Rate limit: 150 requests/minute (upgraded plan)")
 
-        # Process symbols in chunks of 100 (API limit) with optimized timing
-        chunk_delay = 0.4  # 150 requests/min = 1 request every 0.4 seconds
-
-        for i in range(0, len(symbols), 100):
-            chunk = symbols[i:i+100]
-            print(f"📊 Processing chunk {i//100 + 1}: symbols {i+1}-{min(i+100, len(symbols))}")
+        # Process in smaller chunks and with longer delays due to rate limiting
+        for i in range(0, len(symbols), 50):  # Smaller chunks
+            chunk = symbols[i:i+50]
+            print(f"📊 Processing chunk {i//50 + 1}: symbols {i+1}-{min(i+50, len(symbols))}")
             symbol_string = ','.join(chunk)
 
             try:
-                start_time = time.time()
-
                 url = f'https://www.alphavantage.co/query?function=REALTIME_BULK_QUOTES&symbol={symbol_string}&apikey={self.av_key}'
                 response = requests.get(url, timeout=30)
                 data = response.json()
 
-                print(f"📊 API Response Status: {response.status_code}")
-
-                if 'Information' in data and 'rate limit' in data['Information'].lower():
-                    print(f"⏳ Rate limit reached - waiting 60 seconds...")
-                    time.sleep(60)
-                    continue
+                # Check for rate limiting or API issues
+                if 'Information' in data:
+                    print(f"❌ Alpha Vantage API issue: {data['Information']}")
+                    print(f"🔄 Switching to Yahoo Finance fallback")
+                    self._av_rate_limited = True
+                    return self._fetch_bulk_data_yahoo(symbols)
 
                 if 'Error Message' in data:
                     print(f"❌ Bulk quotes error: {data['Error Message']}")
                     continue
 
-                if 'Information' in data and ('premium' in data.get('Information', '').lower() or 'upgrade' in data.get('Information', '').lower()):
-                    print(f"❌ API access issue: {data['Information']}")
-                    continue
-
-                # Debug actual response structure
-                print(f"🔍 Bulk API Response keys: {list(data.keys())}")
-                if 'data' in data:
-                    print(f"🔍 Data array length: {len(data['data'])}")
-
-                # Process the bulk response using the existing helper
+                # Process the bulk response
                 chunk_data = process_alpha_vantage_bulk_response(data)
 
                 if chunk_data:
                     bulk_data.update(chunk_data)
-                    print(f"✅ Processed {len(chunk_data)} symbols from chunk {i//100 + 1}")
-                else:
-                    print(f"⚠️ No data processed from chunk {i//100 + 1}")
+                    print(f"✅ Processed {len(chunk_data)} symbols from chunk {i//50 + 1}")
 
-                # Rate limiting - wait between chunks
-                if i + 100 < len(symbols):
-                    time.sleep(0.5)  # Half second between chunks
+                # Longer delay between chunks to avoid rate limits
+                if i + 50 < len(symbols):
+                    time.sleep(2)  # 2 second delay
 
             except Exception as e:
-                print(f"❌ Error fetching bulk data for chunk {i//100 + 1}: {e}")
+                print(f"❌ Error fetching bulk data for chunk {i//50 + 1}: {e}")
                 continue
 
         print(f"✅ Successfully fetched bulk data for {len(bulk_data)} symbols")
+        return bulk_data
+
+    def _fetch_bulk_data_yahoo(self, symbols: List[str]) -> Dict[str, Dict]:
+        """Fallback bulk data fetching using Yahoo Finance"""
+        bulk_data = {}
+        
+        print(f"📊 Fetching bulk data via Yahoo Finance for {len(symbols)} symbols...")
+        
+        for symbol in symbols[:100]:  # Limit to avoid overloading
+            try:
+                import yfinance as yf
+                ticker = yf.Ticker(symbol)
+                hist = ticker.history(period="2d")
+                
+                if hist.empty:
+                    continue
+                    
+                latest = hist.iloc[-1]
+                prev = hist.iloc[-2] if len(hist) > 1 else latest
+                
+                change_percent = ((latest['Close'] - prev['Close']) / prev['Close']) * 100
+                
+                bulk_data[symbol] = {
+                    'current_price': float(latest['Close']),
+                    'high': float(latest['High']),
+                    'low': float(latest['Low']),
+                    'volume': int(latest['Volume']),
+                    'change_percent': float(change_percent)
+                }
+                
+            except Exception:
+                continue
+                
+        print(f"✅ Yahoo Finance bulk data: {len(bulk_data)} symbols")
         return bulk_data
 
     def _fetch_enhanced_market_data(self, symbol: str) -> Optional[Dict]:
@@ -679,8 +709,8 @@ class ExplosiveOptionsScanner:
                 change_percent = abs(base_data.get('change_percent', 0))
                 volatility = max(change_percent * 10, 25.0)  # Estimate volatility
 
-                # Get earnings info
-                earnings_info = self._get_earnings_info(symbol)
+                # Get earnings info (but skip if rate limited)
+                earnings_info = self._get_earnings_info_cached(symbol)
 
                 return {
                     'symbol': symbol,
@@ -696,68 +726,58 @@ class ExplosiveOptionsScanner:
                     'low': base_data.get('low', 0)
                 }
 
-            # Fallback to individual API call if not in cache
-            print(f"⚠️ Using individual API call for {symbol} (not in bulk cache)")
-
-            # Fetch daily data from Alpha Vantage
-            url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=compact&apikey={self.av_key}'
-            response = requests.get(url, timeout=15)
-            data = response.json()
-
-            if 'Information' in data and 'premium@alphavantage.co' in data['Information']:
-                print(f"⏳ API quota exceeded for {symbol}")
+            # If we're hitting rate limits, use Yahoo Finance fallback
+            print(f"📊 Using Yahoo Finance for {symbol} market data (avoiding AV rate limits)")
+            
+            try:
+                import yfinance as yf
+                ticker = yf.Ticker(symbol)
+                info = ticker.info
+                hist = ticker.history(period="30d")
+                
+                if hist.empty:
+                    return None
+                    
+                current_price = float(hist['Close'][-1])
+                
+                # Calculate volatility
+                returns = hist['Close'].pct_change().dropna()
+                volatility = returns.std() * np.sqrt(252) * 100 if len(returns) > 1 else 25.0
+                
+                return {
+                    'symbol': symbol,
+                    'current_price': current_price,
+                    'volatility_30d': volatility,
+                    'market_cap': info.get('marketCap', 0),
+                    'sector': info.get('sector', 'Unknown'),
+                    'beta': info.get('beta', 1.0),
+                    'earnings_info': {'is_pre_earnings': False, 'days_to_earnings': None, 'earnings_multiplier': 1.0},
+                    'volume_avg': float(hist['Volume'].mean()) if not hist['Volume'].empty else 0,
+                    'change_percent': float(returns[-1] * 100) if len(returns) > 0 else 0,
+                    'high': float(hist['High'][-1]),
+                    'low': float(hist['Low'][-1])
+                }
+            except Exception as yf_error:
+                print(f"❌ Yahoo Finance fallback failed for {symbol}: {yf_error}")
                 return None
-
-            if 'Information' in data and 'rate limit' in data['Information'].lower():
-                print(f"⏳ Rate limit reached for {symbol} - waiting...")
-                time.sleep(60)
-                return None
-
-            if 'Error Message' in data:
-                print(f"Alpha Vantage error for {symbol}: {data['Error Message']}")
-                return None
-
-            if 'Time Series (Daily)' not in data:
-                return None
-
-            # Parse price data
-            price_data = data['Time Series (Daily)']
-            if not price_data:
-                return None
-
-            # Get recent prices
-            dates = sorted(price_data.keys(), reverse=True)
-            latest_data = price_data[dates[0]]
-            current_price = float(latest_data['4. close'])
-
-            # Calculate 30-day volatility
-            prices = []
-            for date in dates[:30]:  # Last 30 days
-                prices.append(float(price_data[date]['4. close']))
-
-            if len(prices) > 1:
-                returns = np.diff(prices) / prices[:-1]
-                volatility = np.std(returns) * np.sqrt(252) * 100
-            else:
-                volatility = 25.0  # Default volatility
-
-            # Get earnings info from Alpha Vantage earnings calendar
-            earnings_info = self._get_earnings_info(symbol)
-
-            return {
-                'symbol': symbol,
-                'current_price': current_price,
-                'volatility_30d': volatility,
-                'market_cap': 0,
-                'sector': 'Unknown',
-                'beta': 1.0,
-                'earnings_info': earnings_info,
-                'volume_avg': 0
-            }
 
         except Exception as e:
-            print(f"Error fetching market data for {symbol}: {e}")
+            print(f"❌ Error fetching market data for {symbol}: {e}")
             return None
+
+    def _get_earnings_info_cached(self, symbol: str) -> Dict:
+        """Get earnings info with caching to avoid rate limits"""
+        # Use cached earnings data if available
+        if hasattr(self, '_earnings_cache') and symbol in self._earnings_cache:
+            return self._earnings_cache[symbol]
+        
+        # Default earnings info if cache miss
+        return {
+            'is_pre_earnings': False, 
+            'days_to_earnings': None, 
+            'earnings_multiplier': 1.0,
+            'earnings_priority': 'NONE'
+        }
 
     def _get_earnings_info(self, symbol: str) -> Dict:
         """Get earnings information with CRITICAL timing priority"""
@@ -834,14 +854,25 @@ class ExplosiveOptionsScanner:
     def _fetch_all_options(self, symbol: str) -> Optional[pd.DataFrame]:
         """Fetch options data using Alpha Vantage historical + Yahoo Finance realtime"""
         try:
+            # Skip Alpha Vantage entirely if we're hitting rate limits - go straight to Yahoo
+            print(f"📊 Using Yahoo Finance for {symbol} options (avoiding AV rate limits)")
+            return self._fetch_yahoo_options(symbol)
+
+        except Exception as e:
+            print(f"❌ Error fetching options for {symbol}: {e}")
+            return None
+
+    def _fetch_all_options_av_first(self, symbol: str) -> Optional[pd.DataFrame]:
+        """Original method - keeping as backup"""
+        try:
             # FIRST: Try Alpha Vantage historical options (you have access)
             print(f"📊 Fetching Alpha Vantage historical options for {symbol}...")
             url = f"https://www.alphavantage.co/query?function=HISTORICAL_OPTIONS&symbol={symbol}&apikey={self.av_key}"
             response = requests.get(url, timeout=15)
             data = response.json()
 
-            if 'Information' in data and 'rate limit' in data['Information'].lower():
-                print(f"⏳ Alpha Vantage rate limit - falling back to Yahoo Finance for {symbol}")
+            if 'Information' in data:
+                print(f"⏳ Alpha Vantage rate limit/info - falling back to Yahoo Finance for {symbol}")
                 return self._fetch_yahoo_options(symbol)
 
             if 'Error Message' in data:
@@ -1030,49 +1061,62 @@ class ExplosiveOptionsScanner:
         try:
             import yfinance as yf
 
-            print(f"🌐 Fetching Yahoo Finance options for {symbol}...")
             ticker = yf.Ticker(symbol)
 
-            # Get available expiration dates
+            # Get available expiration dates with better error handling
             try:
                 expirations = ticker.options
-                if not expirations:
-                    print(f"❌ No options available for {symbol} on Yahoo Finance")
+                if not expirations or len(expirations) == 0:
                     return None
-            except Exception as e:
-                print(f"❌ Error getting expiration dates for {symbol}: {e}")
+            except Exception:
                 return None
 
-            # Fetch options data for all available expirations (limit to first 4 for performance)
+            # Fetch options data for limited expirations to avoid rate limits
             all_options = []
-            for exp_date in expirations[:4]:  # Limit to avoid too many calls
+            valid_expirations = 0
+            
+            for exp_date in expirations[:3]:  # Only first 3 expirations
                 try:
                     option_chain = ticker.option_chain(exp_date)
 
+                    # Validate we got actual data
+                    if option_chain.calls.empty and option_chain.puts.empty:
+                        continue
+
                     # Process calls
-                    calls = option_chain.calls.copy()
-                    calls['type'] = 'call'
-                    calls['expiration'] = exp_date
-                    calls['symbol'] = symbol
+                    if not option_chain.calls.empty:
+                        calls = option_chain.calls.copy()
+                        calls['type'] = 'call'
+                        calls['expiration'] = exp_date
+                        calls['symbol'] = symbol
+                        all_options.append(calls)
 
                     # Process puts  
-                    puts = option_chain.puts.copy()
-                    puts['type'] = 'put'
-                    puts['expiration'] = exp_date
-                    puts['symbol'] = symbol
+                    if not option_chain.puts.empty:
+                        puts = option_chain.puts.copy()
+                        puts['type'] = 'put'
+                        puts['expiration'] = exp_date
+                        puts['symbol'] = symbol
+                        all_options.append(puts)
+                    
+                    valid_expirations += 1
 
-                    all_options.extend([calls, puts])
-
-                except Exception as e:
-                    print(f"⚠️ Error fetching {exp_date} options for {symbol}: {e}")
+                except Exception:
                     continue
 
-            if not all_options:
-                print(f"❌ No valid options data found for {symbol}")
+            if not all_options or valid_expirations == 0:
                 return None
 
             # Combine all options data
             df = pd.concat(all_options, ignore_index=True)
+            
+            # Filter out options with no volume or very low volume
+            if 'volume' in df.columns:
+                df = df[df['volume'] > 0]
+            
+            if df.empty:
+                return None
+                
             print(f"✅ Yahoo Finance options found for {symbol}: {len(df)} contracts")
 
                 # Standardize Yahoo Finance columns to match Alpha Vantage format
@@ -1470,6 +1514,30 @@ Opportunities Found: {len(results['opportunities'])}
             return "⚠️ WEAK - Better opportunities exist"
         else:
             return "❌ AVOID - Poor risk/reward"
+
+    def _is_valid_options_symbol(self, symbol: str) -> bool:
+        """Pre-filter symbols that are unlikely to have active options"""
+        if not symbol or len(symbol) < 1 or len(symbol) > 5:
+            return False
+            
+        # Skip symbols with numbers (often warrants/derivatives)
+        if any(char.isdigit() for char in symbol):
+            return False
+            
+        # Skip symbols with special characters except common ones
+        if any(char in symbol for char in ['+', '=', '/', '@', '#', '&']):
+            return False
+            
+        # Skip obvious penny stocks or OTC
+        if symbol.endswith(('F', 'PK', 'OB')):
+            return False
+            
+        # Skip symbols that are too short or obviously problematic
+        problematic_patterns = ['TEST', 'HALT', 'SUSP']
+        if any(pattern in symbol.upper() for pattern in problematic_patterns):
+            return False
+            
+        return True
 
     def _generate_trade_plan(self, option_data: Dict, market_data: Dict, score: float) -> Dict:
         """
