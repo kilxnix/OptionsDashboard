@@ -681,7 +681,7 @@ class ExplosiveOptionsScanner:
                             if isinstance(change_pct, str):
                                 change_pct = change_pct.replace('%', '')
 
-                            market_data[symbol] = {
+                            bulk_data[symbol] = {
                                 'current_price': float(close_price),
                                 'high': float(high_price),
                                 'low': float(low_price),
