@@ -33,9 +33,12 @@ class ExplosiveOptionsScanner:
         # Load and adapt based on historical performance
         self._adapt_from_history()
 
-        # Scan configuration optimized for your API plan
+        # Scan configuration optimized for HIGH LIQUIDITY trading
         self.scan_config = {
-            'min_score': 35,  # Slightly higher to focus on best opportunities  
+            'min_score': 30,  # Lower threshold to catch more liquid opportunities
+            'min_volume': 100,  # Minimum volume requirement
+            'min_open_interest': 50,  # Minimum open interest requirement
+            'prefer_high_volume': True,  # Prioritize high volume options
             'max_positions': 10,  # Max concurrent positions
             'scan_frequency': 'continuous',  # or 'daily', 'hourly'
             'focus_list': [],  # Symbols to prioritize
@@ -687,33 +690,49 @@ class ExplosiveOptionsScanner:
         ]
 
     def _get_top_movers(self) -> List[str]:
-        """Get top gainers, losers, and most active"""
+        """Get top gainers, losers, and most active - PRIORITIZE HIGHEST VOLUME"""
         try:
             url = f'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey={self.av_key}'
             response = requests.get(url, timeout=30)
             data = response.json()
 
-            all_symbols = []
-            for category in ['top_gainers', 'top_losers', 'most_actively_traded']:
+            # PRIORITIZE most actively traded (highest volume) first
+            priority_symbols = []
+            if 'most_actively_traded' in data:
+                for item in data['most_actively_traded']:
+                    symbol = item['ticker']
+                    if (len(symbol) <= 4 and 
+                        symbol.isalpha() and 
+                        not symbol.endswith('F') and 
+                        not any(char in symbol for char in ['.', '-'])):
+                        priority_symbols.append(symbol)
+
+            # Then add gainers and losers
+            other_symbols = []
+            for category in ['top_gainers', 'top_losers']:
                 if category in data:
-                    symbols = [item['ticker'] for item in data[category]]
-                    all_symbols.extend(symbols)
+                    for item in data[category]:
+                        symbol = item['ticker']
+                        if (len(symbol) <= 4 and 
+                            symbol.isalpha() and 
+                            not symbol.endswith('F') and 
+                            not any(char in symbol for char in ['.', '-']) and
+                            symbol not in priority_symbols):
+                            other_symbols.append(symbol)
 
-            # Filter for quality US symbols only
-            filtered_symbols = []
-            for symbol in all_symbols:
-                # Skip foreign/OTC symbols (> 4 chars, contains dots/dashes, ends with F)
-                if (len(symbol) <= 4 and 
-                    symbol.isalpha() and 
-                    not symbol.endswith('F') and 
-                    not any(char in symbol for char in ['.', '-'])):
-                    filtered_symbols.append(symbol)
-
-            return list(set(filtered_symbols))
+            # Return most active first, then others
+            all_symbols = priority_symbols + other_symbols
+            return list(dict.fromkeys(all_symbols))  # Remove duplicates while preserving order
 
         except:
-            # Fallback to high-volume stocks
-            return ['SPY', 'QQQ', 'AAPL', 'TSLA', 'NVDA', 'AMD', 'META', 'AMZN']
+            # Enhanced fallback with known high-volume options stocks
+            return [
+                # Highest volume options
+                'SPY', 'QQQ', 'AAPL', 'TSLA', 'NVDA', 'AMD', 'META', 'AMZN', 'MSFT', 'GOOGL',
+                # Additional high-volume options stocks
+                'IWM', 'XLF', 'XLE', 'XLK', 'SOXL', 'TQQQ', 'SQQQ', 'GLD', 'SLV', 'USO',
+                'NFLX', 'CRM', 'JPM', 'BAC', 'WFC', 'XOM', 'CVX', 'PFE', 'JNJ', 'UNH'
+            ]
 
     def _get_unusual_activity_stocks(self) -> List[str]:
         """Get stocks with unusual options activity"""
@@ -1314,7 +1333,7 @@ class ExplosiveOptionsScanner:
             return None
 
     def _apply_filters(self, options_data: pd.DataFrame, filters: Dict) -> pd.DataFrame:
-        """Apply filters to options data using safe helpers"""
+        """Apply filters to options data with PRIORITY on high volume and liquidity"""
         if options_data is None or options_data.empty:
             return pd.DataFrame()
 
@@ -1322,14 +1341,41 @@ class ExplosiveOptionsScanner:
             # First fix the data types to handle dictionary values
             options_data = fix_options_dataframe(options_data)
 
-            # Then apply safe filters
+            # CRITICAL: Filter for HIGH VOLUME and LIQUIDITY first
+            if 'volume' in options_data.columns and 'open_interest' in options_data.columns:
+                # Only keep options with SIGNIFICANT volume and open interest
+                volume_threshold = max(100, filters.get('min_volume', 100))
+                oi_threshold = 50
+                
+                # Apply liquidity filters FIRST
+                liquid_options = options_data[
+                    (options_data['volume'] >= volume_threshold) & 
+                    (options_data['open_interest'] >= oi_threshold)
+                ]
+                
+                print(f"🔍 Liquidity filter: {len(options_data)} -> {len(liquid_options)} options (volume >={volume_threshold}, OI >={oi_threshold})")
+                
+                if liquid_options.empty:
+                    # If too restrictive, lower thresholds but still prioritize liquidity
+                    liquid_options = options_data[
+                        (options_data['volume'] >= 50) & 
+                        (options_data['open_interest'] >= 25)
+                    ]
+                    print(f"🔄 Relaxed liquidity filter: {len(liquid_options)} options (volume >=50, OI >=25)")
+                
+                if not liquid_options.empty:
+                    options_data = liquid_options
+                else:
+                    print(f"⚠️ No liquid options found - proceeding with all data")
+
+            # Then apply other filters with more permissive defaults
             return safe_apply_filters(
                 options_data,
                 min_price=filters.get('min_price', 0.01),
-                max_price=filters.get('max_price', 10.0),
-                min_delta=filters.get('min_delta', 0.0),
-                max_delta=filters.get('max_delta', 1.0),
-                min_volume=filters.get('min_volume', 0),
+                max_price=filters.get('max_price', 20.0),  # Increased max price
+                min_delta=filters.get('min_delta', 0.05),  # More permissive delta range
+                max_delta=filters.get('max_delta', 0.95),
+                min_volume=0,  # Already filtered above
                 min_days=filters.get('min_days', 0),
                 max_days=filters.get('max_days', 365),
             )
@@ -1554,18 +1600,34 @@ Opportunities Found: {len(results['opportunities'])}
         elif 0.15 <= implied_volatility < 0.20 or 0.50 < implied_volatility <= 0.60:
             volatility_score += 8
 
-        # Technical Score (Based on volume/open interest)
-        if volume > 100 and open_interest > 50:
-            technical_score += 10  # Good liquidity
+        # Technical Score (Based on volume/open interest) - HEAVILY WEIGHTED
+        if volume > 500 and open_interest > 200:
+            technical_score += 25  # Excellent liquidity - massive bonus
+        elif volume > 200 and open_interest > 100:
+            technical_score += 18  # Very good liquidity
+        elif volume > 100 and open_interest > 50:
+            technical_score += 12  # Good liquidity
         elif volume > 50 or open_interest > 25:
-            technical_score += 5
+            technical_score += 6   # Acceptable liquidity
+        else:
+            technical_score -= 10  # Penalize low liquidity
 
-        # Unusual Activity Score (Spikes in volume/OI)
+        # Unusual Activity Score (Spikes in volume/OI) - ENHANCED
         volume_oi_ratio = (volume / (open_interest + 1e-6))  # Avoid division by zero
-        if volume_oi_ratio > 5:
-            unusual_activity_score += 18 # Significant activity
+        
+        # High volume day bonus
+        if volume > 1000:
+            unusual_activity_score += 15  # Very high volume day
+        elif volume > 500:
+            unusual_activity_score += 10  # High volume day
+        
+        # Volume/OI ratio analysis
+        if volume_oi_ratio > 10:
+            unusual_activity_score += 20  # Massive unusual activity
+        elif volume_oi_ratio > 5:
+            unusual_activity_score += 15  # Significant activity
         elif volume_oi_ratio > 2:
-            unusual_activity_score += 10
+            unusual_activity_score += 8   # Moderate activity
 
         # IV Opportunity Score (High IV relative to historical)
         # This requires historical IV data - using a simple estimate for now
