@@ -150,21 +150,27 @@ class EnhancedOptionsGrader:
         volume = self._safe_float_extract(option_data.get('volume', 0), 0)
         oi = self._safe_float_extract(option_data.get('open_interest', option_data.get('openInterest', 0)), 0)
 
-        # 1. VOLUME SCORING (0-10 points) - More granular
-        if volume >= 2000:
+        # 1. VOLUME SCORING (0-10 points) - EARNINGS OPTIMIZED (very permissive)
+        if volume >= 1000:
             score += 10  # Excellent volume
-        elif volume >= 1000:
-            score += 8   # Good volume
         elif volume >= 500:
-            score += 6   # Decent volume
+            score += 9   # Very good volume
         elif volume >= 200:
-            score += 4   # Acceptable volume
+            score += 8   # Good volume
         elif volume >= 100:
-            score += 3   # Minimal acceptable volume
+            score += 7   # Decent volume
         elif volume >= 50:
-            score += 1   # Very low volume
+            score += 6   # Acceptable volume
+        elif volume >= 20:
+            score += 5   # Low but acceptable for earnings
+        elif volume >= 10:
+            score += 4   # Very low but still viable
+        elif volume >= 5:
+            score += 3   # Minimal volume
+        elif volume >= 1:
+            score += 2   # Any volume is better than none
         else:
-            return 0  # Reject if volume too low
+            score += 1   # Even zero volume gets some points for earnings
 
         # 2. OPEN INTEREST SCORING (0-6 points)
         if oi >= 10000:
@@ -242,9 +248,10 @@ class EnhancedOptionsGrader:
         # 5. MARKET HOURS PENALTY (if applicable)
         # Could add time-based adjustments here for after-hours trading
 
-        # 6. EARLY REJECTION FOR ILLIQUID OPTIONS
-        if volume < 50 or (oi < 100 and volume < 100):
-            return 0  # Hard rejection for illiquid options
+        # 6. VERY PERMISSIVE FOR EARNINGS PLAYS
+        if volume == 0 and oi == 0:
+            return 0  # Only reject if completely dead
+        # Otherwise allow even very low liquidity options through
 
         return min(score, 25)
 
@@ -300,19 +307,21 @@ class EnhancedOptionsGrader:
         except (ValueError, TypeError):
             mark = 1
 
-        # 1. DELTA SCORING (0-8 points) - More nuanced approach
-        if 0.20 <= delta <= 0.35:
-            score += 8  # Sweet spot for explosive moves with good leverage
-        elif 0.15 <= delta <= 0.40:
-            score += 6  # Still good range
+        # 1. DELTA SCORING (0-8 points) - EARNINGS OPTIMIZED for explosive potential
+        if 0.05 <= delta <= 0.15:
+            score += 8  # EXPLOSIVE potential - far OTM earnings plays
+        elif 0.03 <= delta <= 0.20:
+            score += 7  # Very high leverage for earnings
+        elif 0.15 <= delta <= 0.35:
+            score += 6  # Good balance of leverage and probability
         elif 0.35 <= delta <= 0.50:
-            score += 4  # Higher probability but less leverage
-        elif 0.10 <= delta <= 0.15:
-            score += 3  # Lottery ticket territory
+            score += 4  # Moderate leverage
         elif delta > 0.50:
-            score += 2  # Too expensive, low leverage
+            score += 3  # Lower leverage but higher probability
+        elif 0.01 <= delta <= 0.05:
+            score += 5  # Very speculative but massive potential
         else:
-            score += 1  # Too far OTM
+            score += 2  # Extremely far OTM
 
         # 2. GAMMA SCORING (0-8 points) - Explosive acceleration potential
         if gamma >= 0.03:

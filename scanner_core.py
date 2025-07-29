@@ -2028,11 +2028,11 @@ def discover_optionable_explosive_stocks(limit=50):
 
 
 def run_scanner(symbols=None,
-                min_delta=0.2,
-                max_delta=0.45,
-                min_price=None,
-                max_price=None,
-                time_to_expiry_range=(1, 30),
+                min_delta=0.03,  # Much lower for earnings plays
+                max_delta=0.95,  # Allow ITM options too
+                min_price=0.01,  # Allow very cheap options
+                max_price=50.0,  # Higher max
+                time_to_expiry_range=(1, 60),  # Longer range
                 iv_percentile_threshold=None):
     """Enhanced scanner with optionable stock aggregation"""
     scanner = CompleteOptionsScanner(ALPHA_VANTAGE_API_KEY,
@@ -2147,7 +2147,7 @@ def run_scanner(symbols=None,
                 # Just show a brief summary for lower scoring symbols
                 print(f"⚪ {symbol}: {confluence['score']:.1f}/10 {confluence['bias']} (below threshold)")
 
-            if confluence['score'] >= 7.5:  # Raised threshold for higher quality setups
+            if confluence['score'] >= 5.0:  # Much lower threshold for earnings plays
                 options_data = scanner.fetch_options_data(symbol)
                 oi_skew = scanner.analyze_oi_skew(options_data)
                 options_count = len(options_data) if (
