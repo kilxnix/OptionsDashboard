@@ -33,18 +33,24 @@ class ExplosiveOptionsScanner:
         # Load and adapt based on historical performance
         self._adapt_from_history()
 
-        # Scan configuration optimized for HIGH LIQUIDITY trading
+        # Scan configuration optimized for EXPLOSIVE EARNINGS PLAYS
         self.scan_config = {
-            'min_score': 30,  # Lower threshold to catch more liquid opportunities
-            'min_volume': 100,  # Minimum volume requirement
-            'min_open_interest': 50,  # Minimum open interest requirement
-            'prefer_high_volume': True,  # Prioritize high volume options
+            'min_score': 15,  # Much lower threshold for earnings plays
+            'min_volume': 10,   # Very low volume requirement for pre-earnings
+            'min_open_interest': 10,  # Very low OI requirement 
+            'prefer_high_volume': False,  # Don't prioritize volume for earnings
             'max_positions': 10,  # Max concurrent positions
             'scan_frequency': 'continuous',  # or 'daily', 'hourly'
             'focus_list': [],  # Symbols to prioritize
             'use_yahoo_fallback': True,  # Enable Yahoo Finance fallback
             'max_symbols_per_scan': 600,  # Optimize for your API limits
-            'historical_options_preferred': True  # Prefer Alpha Vantage historical
+            'historical_options_preferred': True,  # Prefer Alpha Vantage historical
+            'earnings_mode': True,  # Special earnings mode
+            'allow_otm_options': True,  # Allow far OTM options
+            'min_delta': 0.03,  # Very low delta for explosive potential
+            'max_delta': 0.95,  # Allow ITM options too
+            'min_price': 0.01,  # Allow very cheap options
+            'max_price': 50.0   # Higher max price
         }
 
         # Results cache
@@ -1333,7 +1339,7 @@ class ExplosiveOptionsScanner:
             return None
 
     def _apply_filters(self, options_data: pd.DataFrame, filters: Dict) -> pd.DataFrame:
-        """Apply filters to options data with PRIORITY on high volume and liquidity"""
+        """Apply filters optimized for EARNINGS PLAYS - much more permissive"""
         if options_data is None or options_data.empty:
             return pd.DataFrame()
 
@@ -1341,43 +1347,43 @@ class ExplosiveOptionsScanner:
             # First fix the data types to handle dictionary values
             options_data = fix_options_dataframe(options_data)
 
-            # CRITICAL: Filter for HIGH VOLUME and LIQUIDITY first
+            # For earnings plays, be MUCH more permissive with volume/OI
             if 'volume' in options_data.columns and 'open_interest' in options_data.columns:
-                # Only keep options with SIGNIFICANT volume and open interest
-                volume_threshold = max(100, filters.get('min_volume', 100))
-                oi_threshold = 50
+                # Much lower thresholds for earnings plays
+                volume_threshold = max(10, filters.get('min_volume', 10))
+                oi_threshold = max(10, filters.get('min_oi', 10))
                 
-                # Apply liquidity filters FIRST
+                # Apply very permissive liquidity filters
                 liquid_options = options_data[
-                    (options_data['volume'] >= volume_threshold) & 
-                    (options_data['open_interest'] >= oi_threshold)
+                    (options_data['volume'] >= volume_threshold) | 
+                    (options_data['open_interest'] >= oi_threshold)  # OR condition, not AND
                 ]
                 
-                print(f"🔍 Liquidity filter: {len(options_data)} -> {len(liquid_options)} options (volume >={volume_threshold}, OI >={oi_threshold})")
+                print(f"🎯 EARNINGS filter: {len(options_data)} -> {len(liquid_options)} options (volume >={volume_threshold} OR OI >={oi_threshold})")
                 
                 if liquid_options.empty:
-                    # If too restrictive, lower thresholds but still prioritize liquidity
+                    # If still empty, just require any volume or OI
                     liquid_options = options_data[
-                        (options_data['volume'] >= 50) & 
-                        (options_data['open_interest'] >= 25)
+                        (options_data['volume'] > 0) | 
+                        (options_data['open_interest'] > 0)
                     ]
-                    print(f"🔄 Relaxed liquidity filter: {len(liquid_options)} options (volume >=50, OI >=25)")
+                    print(f"🔄 Ultra-relaxed filter: {len(liquid_options)} options (any volume OR any OI)")
                 
                 if not liquid_options.empty:
                     options_data = liquid_options
                 else:
-                    print(f"⚠️ No liquid options found - proceeding with all data")
+                    print(f"⚠️ Using ALL options data for earnings scan")
 
-            # Then apply other filters with more permissive defaults
+            # Apply very permissive filters for earnings plays
             return safe_apply_filters(
                 options_data,
-                min_price=filters.get('min_price', 0.01),
-                max_price=filters.get('max_price', 20.0),  # Increased max price
-                min_delta=filters.get('min_delta', 0.05),  # More permissive delta range
-                max_delta=filters.get('max_delta', 0.95),
-                min_volume=0,  # Already filtered above
+                min_price=filters.get('min_price', 0.01),   # Allow penny options
+                max_price=filters.get('max_price', 50.0),   # Higher max price
+                min_delta=filters.get('min_delta', 0.03),   # Very low delta for explosive potential
+                max_delta=filters.get('max_delta', 0.95),   # Allow ITM options
+                min_volume=0,  # No volume requirement after pre-filter
                 min_days=filters.get('min_days', 0),
-                max_days=filters.get('max_days', 365),
+                max_days=filters.get('max_days', 60),       # Allow longer dated options
             )
         except Exception as e:
             print(f"⚠️ Filtering error: {e}")
