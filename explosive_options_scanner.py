@@ -33,24 +33,25 @@ class ExplosiveOptionsScanner:
         # Load and adapt based on historical performance
         self._adapt_from_history()
 
-        # Scan configuration optimized for EXPLOSIVE EARNINGS PLAYS
+        # Scan configuration - FOCUSED ON STOCK VOLUME FIRST
         self.scan_config = {
-            'min_score': 15,  # Much lower threshold for earnings plays
-            'min_volume': 10,   # Very low volume requirement for pre-earnings
-            'min_open_interest': 10,  # Very low OI requirement 
-            'prefer_high_volume': False,  # Don't prioritize volume for earnings
-            'max_positions': 10,  # Max concurrent positions
-            'scan_frequency': 'continuous',  # or 'daily', 'hourly'
+            'min_score': 35,  # Reasonable threshold
+            'stock_min_volume': 1000000,   # STOCK volume requirement (1M+)
+            'stock_min_dollar_volume': 50000000,  # STOCK dollar volume (50M+)
+            'options_min_volume': 50,   # Options volume (much lower)
+            'options_min_oi': 100,  # Options OI requirement
+            'max_positions': 20,  # Max concurrent positions
+            'scan_frequency': 'continuous',
             'focus_list': [],  # Symbols to prioritize
-            'use_yahoo_fallback': True,  # Enable Yahoo Finance fallback
-            'max_symbols_per_scan': 600,  # Optimize for your API limits
-            'historical_options_preferred': True,  # Prefer Alpha Vantage historical
-            'earnings_mode': True,  # Special earnings mode
-            'allow_otm_options': True,  # Allow far OTM options
-            'min_delta': 0.03,  # Very low delta for explosive potential
-            'max_delta': 0.95,  # Allow ITM options too
-            'min_price': 0.01,  # Allow very cheap options
-            'max_price': 50.0   # Higher max price
+            'use_yahoo_fallback': True,
+            'max_symbols_per_scan': 400,  # Reasonable limit
+            'historical_options_preferred': True,
+            'earnings_mode': True,
+            'allow_otm_options': True,
+            'min_delta': 0.10,  # Reasonable delta range
+            'max_delta': 0.75,  # Allow ITM options
+            'min_price': 0.05,  # Minimum option price
+            'max_price': 20.0   # Reasonable max price
         }
 
         # Results cache
@@ -420,99 +421,207 @@ class ExplosiveOptionsScanner:
 
     def _discover_symbols(self, scan_type: str) -> List[str]:
         """
-        Discover symbols efficiently with AGGRESSIVE earnings focus
+        Discover symbols with focus on STOCK volume and liquidity first
         """
         symbols = []
 
+        print(f"🎯 STOCK DISCOVERY: Finding stocks with high volume and liquidity...")
+        
+        # STEP 1: Get stocks with increasing/high volume using Alpha Vantage
+        high_volume_stocks = self._get_high_volume_liquid_stocks()
+        
         if scan_type == 'earnings':
-            print(f"🎯 EARNINGS SCAN: Finding stocks with upcoming earnings...")
-
-            # Get all earnings candidates (both critical and broader)
+            print(f"🎯 EARNINGS SCAN: Filtering high-volume stocks for upcoming earnings...")
+            
+            # Get earnings candidates
             critical_earnings = self._get_critical_earnings_plays()
             broader_earnings = self._get_pre_earnings_stocks()
-
-            # Combine and prioritize critical earnings first
+            
+            # Combine earnings symbols
             all_earnings_symbols = []
-            
             if critical_earnings:
-                print(f"🔥 CRITICAL: Found {len(critical_earnings)} earnings candidates!")
-                for symbol, days in critical_earnings:
-                    print(f"   📅 {symbol}: {days} days to earnings")
-                    all_earnings_symbols.append(symbol)
+                all_earnings_symbols = [s[0] for s in critical_earnings]
             
-            # Add broader earnings candidates
             for symbol in broader_earnings:
                 if symbol not in all_earnings_symbols:
                     all_earnings_symbols.append(symbol)
             
-            symbols = all_earnings_symbols
+            # PRIORITIZE: High volume stocks that ALSO have earnings
+            earnings_with_volume = []
+            for symbol in high_volume_stocks:
+                if symbol in all_earnings_symbols:
+                    earnings_with_volume.append(symbol)
             
-            print(f"📊 Total earnings candidates: {len(symbols)}")
+            # Add remaining high volume stocks
+            for symbol in high_volume_stocks:
+                if symbol not in earnings_with_volume:
+                    earnings_with_volume.append(symbol)
+                    if len(earnings_with_volume) >= 100:  # Reasonable limit
+                        break
             
-            # If still very few, add high-volatility backup candidates
-            if len(symbols) < 20:
-                print(f"🔄 Adding high-volatility backup candidates...")
-                high_vol_stocks = [
-                    'TSLA', 'NVDA', 'AMD', 'META', 'GOOGL', 'AMZN', 'NFLX', 'CRM',
-                    'COIN', 'HOOD', 'PLTR', 'GME', 'AMC', 'RIVN', 'LCID', 'SOFI',
-                    'MRNA', 'BNTX', 'SPCE', 'DKNG', 'ROKU', 'SQ', 'UBER', 'LYFT'
-                ]
-                for stock in high_vol_stocks:
-                    if stock not in symbols:
-                        symbols.append(stock)
-                        if len(symbols) >= 50:  # Cap at reasonable number
-                            break
+            symbols = earnings_with_volume
+            print(f"📊 High-volume earnings stocks: {len(symbols)}")
 
         elif scan_type == 'unusual_activity':
-            symbols = ['SPY', 'QQQ', 'AAPL', 'TSLA', 'NVDA', 'AMD', 'META', 'AMZN', 'MSFT', 'GOOGL',
-                      'GME', 'AMC', 'PLTR', 'COIN', 'SOXL', 'TQQQ', 'IWM', 'XLE', 'GLD', 'NFLX']
+            # Get stocks with unusual volume activity
+            unusual_volume_stocks = self._get_unusual_volume_stocks()
+            symbols = unusual_volume_stocks[:50]  # Top 50 by unusual volume
 
         elif scan_type == 'quick':
-            movers = self._get_top_movers()
-            symbols = movers[:100]
+            # Quick scan of most liquid high-volume stocks
+            symbols = high_volume_stocks[:100]
 
-        else:  # comprehensive - but PRIORITIZE earnings
-            print(f"📊 COMPREHENSIVE SCAN: Earnings first, then everything else...")
+        else:  # comprehensive
+            print(f"📊 COMPREHENSIVE SCAN: High volume stocks first...")
+            
+            # STEP 1: Start with high volume stocks
+            symbols = high_volume_stocks.copy()
+            
+            # STEP 2: Add earnings candidates if they're not already included
+            earnings_symbols = self._get_pre_earnings_stocks()
+            for symbol in earnings_symbols:
+                if symbol not in symbols:
+                    symbols.append(symbol)
+                    if len(symbols) >= 200:  # Reasonable limit
+                        break
+            
+            print(f"📊 Total high-volume + earnings stocks: {len(symbols)}")
 
-            # STEP 1: Get critical earnings (highest priority)
-            critical_earnings = self._get_critical_earnings_plays()
-            earnings_symbols = [s[0] for s in critical_earnings] if critical_earnings else []
-
-            # STEP 2: Get broader earnings
-            all_earnings = self._get_pre_earnings_stocks()
-
-            # STEP 3: Get movers
-            movers = self._get_top_movers()
-
-            # STEP 4: High volume backups
-            high_volume = ['SPY', 'QQQ', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'AMD']
-
-            print(f"🔥 Critical earnings (0-7 days): {len(earnings_symbols)}")
-            print(f"📈 All earnings (0-21 days): {len(all_earnings)}")
-            print(f"📊 Top movers: {len(movers)}")
-
-            # PRIORITIZE: Critical earnings first, then broader earnings, then movers
-            symbols = earnings_symbols.copy()
-            symbols.extend([s for s in all_earnings if s not in symbols])
-            symbols.extend([s for s in movers if s not in symbols])
-            symbols.extend([s for s in high_volume if s not in symbols])
-
-            # Limit but keep earnings bias
-            symbols = symbols[:300]  # Smaller focused list
-
-        # Filter for optionable stocks
+        # Final filtering for optionable stocks only
         filtered_symbols = []
         for symbol in symbols:
-            if (len(symbol) <= 5 and 
-                symbol.replace('-', '').replace('.', '').isalpha() and 
-                not symbol.endswith('F')):
+            if self._is_likely_optionable_stock(symbol):
                 filtered_symbols.append(symbol)
 
-        print(f"📊 Final scan list: {len(filtered_symbols)} symbols")
-        if scan_type == 'earnings':
-            print(f"🎯 EARNINGS FOCUS: Prioritizing {min(20, len(filtered_symbols))} top candidates")
-
+        print(f"📊 Final optionable high-volume stocks: {len(filtered_symbols)}")
         return filtered_symbols
+    
+    def _get_high_volume_liquid_stocks(self) -> List[str]:
+        """
+        Get stocks with high volume and liquidity using Alpha Vantage
+        """
+        high_volume_stocks = []
+        
+        try:
+            # Use Alpha Vantage TOP_GAINERS_LOSERS which includes volume data
+            url = f'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey={self.av_key}'
+            response = requests.get(url, timeout=30)
+            data = response.json()
+            
+            print(f"🔍 Analyzing Alpha Vantage data for high-volume stocks...")
+            
+            # Priority 1: Most actively traded (highest volume)
+            if 'most_actively_traded' in data:
+                for item in data['most_actively_traded']:
+                    symbol = item['ticker']
+                    volume = int(item.get('volume', 0))
+                    
+                    # Filter for high volume stocks (1M+ volume)
+                    if (volume >= 1000000 and 
+                        self._is_likely_optionable_stock(symbol)):
+                        high_volume_stocks.append(symbol)
+                        print(f"   📊 {symbol}: {volume:,} volume")
+            
+            # Priority 2: Top gainers with high volume
+            if 'top_gainers' in data:
+                for item in data['top_gainers']:
+                    symbol = item['ticker']
+                    volume = int(item.get('volume', 0))
+                    change_pct = float(item.get('change_percent', '0%').replace('%', ''))
+                    
+                    # High volume movers (500K+ volume, 2%+ move)
+                    if (volume >= 500000 and 
+                        change_pct >= 2.0 and
+                        symbol not in high_volume_stocks and
+                        self._is_likely_optionable_stock(symbol)):
+                        high_volume_stocks.append(symbol)
+                        print(f"   📈 {symbol}: {volume:,} volume, +{change_pct}%")
+            
+            # Priority 3: Top losers with high volume (potential reversal plays)
+            if 'top_losers' in data:
+                for item in data['top_losers']:
+                    symbol = item['ticker']
+                    volume = int(item.get('volume', 0))
+                    change_pct = abs(float(item.get('change_percent', '0%').replace('%', '')))
+                    
+                    # High volume sell-offs (500K+ volume, 3%+ drop)
+                    if (volume >= 500000 and 
+                        change_pct >= 3.0 and
+                        symbol not in high_volume_stocks and
+                        self._is_likely_optionable_stock(symbol)):
+                        high_volume_stocks.append(symbol)
+                        print(f"   📉 {symbol}: {volume:,} volume, -{change_pct}%")
+            
+            print(f"✅ Found {len(high_volume_stocks)} high-volume liquid stocks")
+            
+        except Exception as e:
+            print(f"⚠️ Error fetching high-volume stocks: {e}")
+            # Fallback to known high-volume optionable stocks
+            high_volume_stocks = [
+                'SPY', 'QQQ', 'AAPL', 'MSFT', 'NVDA', 'TSLA', 'AMD', 'META', 'AMZN', 'GOOGL',
+                'JPM', 'BAC', 'WFC', 'XOM', 'CVX', 'PFE', 'JNJ', 'KO', 'PEP', 'WMT'
+            ]
+        
+        # Add core high-volume ETFs and stocks if not already included
+        core_high_volume = [
+            'SPY', 'QQQ', 'IWM', 'AAPL', 'MSFT', 'NVDA', 'TSLA', 'AMD', 'META', 'AMZN'
+        ]
+        for symbol in core_high_volume:
+            if symbol not in high_volume_stocks:
+                high_volume_stocks.append(symbol)
+        
+        return high_volume_stocks
+    
+    def _get_unusual_volume_stocks(self) -> List[str]:
+        """
+        Get stocks with unusual volume spikes (for unusual_activity scan)
+        """
+        # This would ideally compare current volume to 20-day average
+        # For now, get the most actively traded from Alpha Vantage
+        try:
+            url = f'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey={self.av_key}'
+            response = requests.get(url, timeout=30)
+            data = response.json()
+            
+            unusual_stocks = []
+            if 'most_actively_traded' in data:
+                for item in data['most_actively_traded'][:50]:  # Top 50
+                    symbol = item['ticker']
+                    if self._is_likely_optionable_stock(symbol):
+                        unusual_stocks.append(symbol)
+            
+            return unusual_stocks
+            
+        except:
+            # Fallback to stocks known for unusual activity
+            return ['TSLA', 'NVDA', 'AMD', 'GME', 'AMC', 'PLTR', 'COIN', 'HOOD', 'SPY', 'QQQ']
+    
+    def _is_likely_optionable_stock(self, symbol: str) -> bool:
+        """
+        Check if a stock is likely to have options
+        """
+        if not symbol or len(symbol) < 1:
+            return False
+        
+        # Length check
+        if len(symbol) > 5:
+            return False
+        
+        # Must be alphabetic (with some exceptions for dashes)
+        if not symbol.replace('-', '').isalpha():
+            return False
+        
+        # Exclude obvious non-optionable patterns
+        exclude_endings = ['F', 'WS', 'WT', 'RT', 'UN']
+        for ending in exclude_endings:
+            if symbol.endswith(ending):
+                return False
+        
+        # Exclude if contains numbers (often warrants)
+        if any(char.isdigit() for char in symbol):
+            return False
+        
+        return True
 
     def _is_optionable(self, symbol: str) -> bool:
         """Check if a symbol has listed options via yfinance"""
