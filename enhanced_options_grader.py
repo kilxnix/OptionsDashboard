@@ -44,21 +44,49 @@ class EnhancedOptionsGrader:
         Safely extract float from potentially nested Alpha Vantage data structures
         """
         try:
-            if isinstance(value, dict):
-                # Try different keys that Alpha Vantage might use
-                for key in ['raw', 'fmt', 'value']:
-                    if key in value:
-                        return float(value[key])
-                # If no known keys, try to get first numeric value
-                for v in value.values():
-                    try:
-                        return float(v)
-                    except (ValueError, TypeError):
-                        continue
+            # Handle None or empty values first
+            if value is None or value == '' or value == 'N/A':
                 return default
-            else:
-                return float(value) if value is not None else default
-        except (ValueError, TypeError):
+                
+            # If it's already a number, convert directly
+            if isinstance(value, (int, float)):
+                return float(value)
+                
+            # If it's a string, try to convert directly
+            if isinstance(value, str):
+                # Clean common string issues
+                cleaned = value.strip().replace(',', '').replace('$', '').replace('%', '')
+                if cleaned == '' or cleaned == '-' or cleaned == 'N/A':
+                    return default
+                return float(cleaned)
+                
+            # If it's a dict, try multiple extraction methods
+            if isinstance(value, dict):
+                # Try common Alpha Vantage keys
+                for key in ['raw', 'fmt', 'value', 'price', 'amount', 'number']:
+                    if key in value:
+                        extracted = value[key]
+                        if extracted is not None and extracted != '':
+                            return self._safe_float_extract(extracted, default)  # Recursive call
+                
+                # Try to find any numeric value in the dict
+                for v in value.values():
+                    if v is not None and v != '':
+                        try:
+                            return self._safe_float_extract(v, default)  # Recursive call
+                        except (ValueError, TypeError):
+                            continue
+                            
+                return default
+                
+            # If it's a list, try the first element
+            if isinstance(value, (list, tuple)) and len(value) > 0:
+                return self._safe_float_extract(value[0], default)
+                
+            # Last resort: try to convert whatever it is
+            return float(value)
+            
+        except (ValueError, TypeError, AttributeError):
             return default
 
 
@@ -164,11 +192,21 @@ class EnhancedOptionsGrader:
         score = 15  # Start with a high base score
 
         try:
-            # Convert strings to numbers safely
+            # Convert strings to numbers safely with validation
             delta = abs(self._safe_float_extract(option_data.get('delta', 0.3), 0.3))
             gamma = self._safe_float_extract(option_data.get('gamma', 0.01), 0.01)
             theta = self._safe_float_extract(option_data.get('theta', -0.05), -0.05)
             mark = self._safe_float_extract(option_data.get('mark', 1), 1)
+            
+            # Validate all extracted values are actually numbers
+            if not isinstance(delta, (int, float)) or delta < 0:
+                delta = 0.3
+            if not isinstance(gamma, (int, float)) or gamma < 0:
+                gamma = 0.01
+            if not isinstance(theta, (int, float)):
+                theta = -0.05
+            if not isinstance(mark, (int, float)) or mark <= 0:
+                mark = 1
 
             # Give bonus points for any decent Greeks
             if delta > 0.05:  # Any meaningful delta
@@ -191,9 +229,15 @@ class EnhancedOptionsGrader:
         """
         score = 0
 
-        # Use safe extraction for all numeric values
+        # Use safe extraction for all numeric values with validation
         volume = self._safe_float_extract(option_data.get('volume', 0), 0)
         oi = self._safe_float_extract(option_data.get('open_interest', option_data.get('openInterest', 0)), 0)
+        
+        # Validate extracted values are actually numbers
+        if not isinstance(volume, (int, float)) or volume < 0:
+            volume = 0
+        if not isinstance(oi, (int, float)) or oi < 0:
+            oi = 0
 
         # 1. VOLUME ACTIVITY ANALYSIS - Much more generous
         if volume > 100:
@@ -233,9 +277,14 @@ class EnhancedOptionsGrader:
 
         # 4. DELTA-ADJUSTED ACTIVITY (0-4 points)
         # Weight activity by how likely the option is to be profitable
-        delta = abs(self._safe_float_extract(option_data.get('delta', 0.3), 0.3))
-        if delta > 0:
-            delta_weighted_volume = volume * delta
+        delta_val = abs(self._safe_float_extract(option_data.get('delta', 0.3), 0.3))
+        
+        # Validate delta is a number
+        if not isinstance(delta_val, (int, float)) or delta_val < 0:
+            delta_val = 0.3
+            
+        if delta_val > 0:
+            delta_weighted_volume = volume * delta_val
             if delta_weighted_volume >= 500:
                 score += 4   # High probability weighted volume
             elif delta_weighted_volume >= 200:
