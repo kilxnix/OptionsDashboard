@@ -747,54 +747,50 @@ class ExplosiveOptionsScanner:
         return ['TSLA', 'NVDA', 'AMD', 'SPY', 'QQQ', 'AAPL', 'GME', 'AMC']
 
     def _fetch_bulk_market_data(self, symbols: List[str]) -> Dict[str, Dict]:
-        """Fetch market data efficiently using your upgraded Alpha Vantage plan"""
+        """Fetch market data efficiently using Alpha Vantage REALTIME_BULK_QUOTES"""
         bulk_data = {}
 
-        # If we detect rate limiting issues, fall back to Yahoo Finance
-        if hasattr(self, '_av_rate_limited') and self._av_rate_limited:
-            print(f"📊 Using Yahoo Finance for bulk data (AV rate limited)")
-            return self._fetch_bulk_data_yahoo(symbols)
+        print(f"📊 Processing {len(symbols)} symbols using Alpha Vantage REALTIME_BULK_QUOTES API...")
 
-        print(f"📊 Processing {len(symbols)} symbols using REALTIME_BULK_QUOTES API...")
-
-        # Process in smaller chunks and with longer delays due to rate limiting
-        for i in range(0, len(symbols), 50):  # Smaller chunks
-            chunk = symbols[i:i+50]
-            print(f"📊 Processing chunk {i//50 + 1}: symbols {i+1}-{min(i+50, len(symbols))}")
+        # Process in chunks of 100 (Alpha Vantage bulk limit)
+        for i in range(0, len(symbols), 100):
+            chunk = symbols[i:i+100]
+            print(f"📊 Processing chunk {i//100 + 1}: symbols {i+1}-{min(i+100, len(symbols))}")
             symbol_string = ','.join(chunk)
 
             try:
+                self._track_api_call()
                 url = f'https://www.alphavantage.co/query?function=REALTIME_BULK_QUOTES&symbol={symbol_string}&apikey={self.av_key}'
                 response = requests.get(url, timeout=30)
                 data = response.json()
 
-                # Check for rate limiting or API issues
+                # Check for API issues
                 if 'Information' in data:
-                    print(f"❌ Alpha Vantage API issue: {data['Information']}")
-                    print(f"🔄 Switching to Yahoo Finance fallback")
-                    self._av_rate_limited = True
-                    return self._fetch_bulk_data_yahoo(symbols)
+                    print(f"⚠️ Alpha Vantage API info: {data['Information']}")
+                    # Don't fallback immediately, continue with other chunks
+                    continue
 
                 if 'Error Message' in data:
                     print(f"❌ Bulk quotes error: {data['Error Message']}")
                     continue
 
-                # Process the bulk response
+                # Process the bulk response using existing function
+                from immediate_fixes import process_alpha_vantage_bulk_response
                 chunk_data = process_alpha_vantage_bulk_response(data)
 
                 if chunk_data:
                     bulk_data.update(chunk_data)
-                    print(f"✅ Processed {len(chunk_data)} symbols from chunk {i//50 + 1}")
+                    print(f"✅ Processed {len(chunk_data)} symbols from chunk {i//100 + 1}")
 
-                # Longer delay between chunks to avoid rate limits
-                if i + 50 < len(symbols):
-                    time.sleep(2)  # 2 second delay
+                # Rate limiting delay between chunks
+                if i + 100 < len(symbols):
+                    time.sleep(1)  # 1 second delay
 
             except Exception as e:
-                print(f"❌ Error fetching bulk data for chunk {i//50 + 1}: {e}")
+                print(f"❌ Error fetching bulk data for chunk {i//100 + 1}: {e}")
                 continue
 
-        print(f"✅ Successfully fetched bulk data for {len(bulk_data)} symbols")
+        print(f"✅ Successfully fetched Alpha Vantage bulk data for {len(bulk_data)} symbols")
         return bulk_data
 
     def _fetch_bulk_data_yahoo(self, symbols: List[str]) -> Dict[str, Dict]:
@@ -832,7 +828,7 @@ class ExplosiveOptionsScanner:
         return bulk_data
 
     def _fetch_enhanced_market_data(self, symbol: str) -> Optional[Dict]:
-        """Fetch comprehensive market data for a symbol using cached bulk data or individual call"""
+        """Fetch comprehensive market data for a symbol using Alpha Vantage for stock quotes"""
         try:
             # Check if we have cached bulk data for this symbol
             if hasattr(self, '_bulk_market_cache') and symbol in self._bulk_market_cache:
@@ -859,8 +855,51 @@ class ExplosiveOptionsScanner:
                     'low': base_data.get('low', 0)
                 }
 
-            # If we're hitting rate limits, use Yahoo Finance fallback
-            print(f"📊 Using Yahoo Finance for {symbol} market data (avoiding AV rate limits)")
+            # Use Alpha Vantage for individual stock quotes (PHASE 2)
+            print(f"📊 Using Alpha Vantage for {symbol} stock quote (PHASE 2)")
+            
+            try:
+                self._track_api_call()
+                url = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={self.av_key}'
+                response = requests.get(url, timeout=15)
+                data = response.json()
+
+                if 'Global Quote' in data:
+                    quote = data['Global Quote']
+                    current_price = float(quote.get('05. price', 0))
+                    change_percent = float(quote.get('10. change percent', '0%').replace('%', ''))
+                    high = float(quote.get('03. high', 0))
+                    low = float(quote.get('04. low', 0))
+                    volume = int(quote.get('06. volume', 0))
+                    
+                    # Calculate volatility estimate
+                    price_range = high - low
+                    volatility = max((price_range / current_price) * 100 * 16, 25.0) if current_price > 0 else 25.0
+
+                    # Get earnings info
+                    earnings_info = self._get_earnings_info_cached(symbol)
+
+                    return {
+                        'symbol': symbol,
+                        'current_price': current_price,
+                        'volatility_30d': volatility,
+                        'market_cap': 0,  # Would need separate API call
+                        'sector': 'Unknown',  # Would need separate API call
+                        'beta': 1.0,  # Default
+                        'earnings_info': earnings_info,
+                        'volume_avg': volume,
+                        'change_percent': change_percent,
+                        'high': high,
+                        'low': low
+                    }
+                else:
+                    print(f"❌ Alpha Vantage quote failed for {symbol}: {data}")
+                    
+            except Exception as av_error:
+                print(f"❌ Alpha Vantage error for {symbol}: {av_error}")
+
+            # Only use Yahoo Finance as last resort fallback
+            print(f"📊 Yahoo Finance fallback for {symbol} (AV failed)")
 
             try:
                 import yfinance as yf
@@ -1001,10 +1040,9 @@ class ExplosiveOptionsScanner:
             }
 
     def _fetch_all_options(self, symbol: str) -> Optional[pd.DataFrame]:
-        """Fetch options data using Alpha Vantage historical + Yahoo Finance realtime"""
+        """Fetch options data using ONLY Yahoo Finance as requested"""
         try:
-            # Skip Alpha Vantage entirely if we're hitting rate limits - go straight to Yahoo
-            print(f"📊 Using Yahoo Finance for {symbol} options (avoiding AV rate limits)")
+            print(f"📊 Using Yahoo Finance for {symbol} options")
             return self._fetch_yahoo_options(symbol)
 
         except Exception as e:
@@ -1339,51 +1377,59 @@ class ExplosiveOptionsScanner:
             return None
 
     def _apply_filters(self, options_data: pd.DataFrame, filters: Dict) -> pd.DataFrame:
-        """Apply filters optimized for EARNINGS PLAYS - much more permissive"""
+        """Apply improved filters for better opportunity detection"""
         if options_data is None or options_data.empty:
             return pd.DataFrame()
 
         try:
             # First fix the data types to handle dictionary values
+            from immediate_fixes import fix_options_dataframe
             options_data = fix_options_dataframe(options_data)
 
-            # For earnings plays, be MUCH more permissive with volume/OI
+            # Apply smart volume/OI filtering
             if 'volume' in options_data.columns and 'open_interest' in options_data.columns:
-                # Much lower thresholds for earnings plays
-                volume_threshold = max(10, filters.get('min_volume', 10))
-                oi_threshold = max(10, filters.get('min_oi', 10))
+                # Minimum liquidity thresholds
+                min_volume = max(50, filters.get('min_volume', 50))
+                min_oi = max(100, filters.get('min_oi', 100))
                 
-                # Apply very permissive liquidity filters
+                # Filter for liquid options (both volume AND OI requirements)
                 liquid_options = options_data[
-                    (options_data['volume'] >= volume_threshold) | 
-                    (options_data['open_interest'] >= oi_threshold)  # OR condition, not AND
+                    (options_data['volume'] >= min_volume) & 
+                    (options_data['open_interest'] >= min_oi)
                 ]
                 
-                print(f"🎯 EARNINGS filter: {len(options_data)} -> {len(liquid_options)} options (volume >={volume_threshold} OR OI >={oi_threshold})")
+                print(f"🔍 Liquidity filter: {len(options_data)} -> {len(liquid_options)} options (volume >={min_volume} AND OI >={min_oi})")
                 
-                if liquid_options.empty:
-                    # If still empty, just require any volume or OI
+                # If too restrictive, relax to OR condition
+                if len(liquid_options) < 5:
                     liquid_options = options_data[
-                        (options_data['volume'] > 0) | 
-                        (options_data['open_interest'] > 0)
+                        (options_data['volume'] >= min_volume) | 
+                        (options_data['open_interest'] >= min_oi)
                     ]
-                    print(f"🔄 Ultra-relaxed filter: {len(liquid_options)} options (any volume OR any OI)")
+                    print(f"🔄 Relaxed filter: {len(liquid_options)} options (volume >={min_volume} OR OI >={min_oi})")
+                
+                # If still too few, use minimal requirements
+                if len(liquid_options) < 3:
+                    liquid_options = options_data[
+                        (options_data['volume'] > 10) | 
+                        (options_data['open_interest'] > 50)
+                    ]
+                    print(f"🔄 Minimal filter: {len(liquid_options)} options (any reasonable liquidity)")
                 
                 if not liquid_options.empty:
                     options_data = liquid_options
-                else:
-                    print(f"⚠️ Using ALL options data for earnings scan")
 
-            # EARNINGS MODE: Be extremely permissive to catch explosive moves
+            # Apply core filters with smart defaults
+            from immediate_fixes import safe_apply_filters
             return safe_apply_filters(
                 options_data,
-                min_price=filters.get('min_price', 0.05),   # Allow cheap options but not penny
-                max_price=filters.get('max_price', 100.0),  # Much higher max price for ITM options
-                min_delta=filters.get('min_delta', 0.01),   # Ultra low delta for lottery tickets
-                max_delta=filters.get('max_delta', 0.99),   # Allow deep ITM options
-                min_volume=0,  # No volume requirement after pre-filter
-                min_days=filters.get('min_days', 0),
-                max_days=filters.get('max_days', 45),       # Focus on shorter-dated for earnings
+                min_price=filters.get('min_price', 0.05),   # Minimum $0.05
+                max_price=filters.get('max_price', 5.00),   # Maximum $5.00
+                min_delta=filters.get('min_delta', 0.10),   # Minimum 0.10 delta
+                max_delta=filters.get('max_delta', 0.40),   # Maximum 0.40 delta for explosive potential
+                min_volume=0,  # Volume already filtered above
+                min_days=filters.get('min_days', 1),        # At least 1 day
+                max_days=filters.get('max_days', 30),       # Max 30 days
             )
         except Exception as e:
             print(f"⚠️ Filtering error: {e}")
