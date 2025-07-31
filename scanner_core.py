@@ -1488,7 +1488,7 @@ def print_analysis(symbol,
                      "Delta Exposure",
                      f"${trade_plan['risk_metrics']['delta_exposure']:.2f}"
                  ],
-                 [```text
+                 [
                      "Gamma/Theta",
                      f"{trade_plan['risk_metrics']['gamma_theta_ratio']}"
                  ],
