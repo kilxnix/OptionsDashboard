@@ -24028,3 +24028,111 @@ Delta: -0.18676 | Gamma: 0.17356 | Theta: -0.01116 | Score: 6.74
 
 ================================================================================
 
+📈 Trade Plan for BE (Bullish Bias)
+
+🔹 Option: $$50.0 Call expiring 2025-08-22
+🔹 Entry Price: $0.75
+🔹 Stop Loss: $0.56
+🔹 Initial Target: $1.31
+🔹 Final Target: $2.62
+🔹 Position Size: 2 contracts
+🔹 Max Hold Time: 10 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.14602 | Gamma: 0.02536 | Theta: -0.04554 | Score: 0.75
+
+================================================================================
+
+📈 Trade Plan for CMCSA (Bullish Bias)
+
+🔹 Option: $$47.5 Call expiring 2026-09-18
+🔹 Entry Price: $0.48
+🔹 Stop Loss: $0.36
+🔹 Initial Target: $0.84
+🔹 Final Target: $1.68
+🔹 Position Size: 4 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.11576 | Gamma: 0.02401 | Theta: -0.00231 | Score: 4.67
+
+================================================================================
+
+📈 Trade Plan for TROW (Bearish Bias)
+
+🔹 Option: $$95.0 Put expiring 2025-08-15
+🔹 Entry Price: $0.65
+🔹 Stop Loss: $0.49
+🔹 Initial Target: $1.14
+🔹 Final Target: $2.27
+🔹 Position Size: 3 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.12313 | Gamma: 0.02398 | Theta: -0.05249 | Score: 0.70
+
+================================================================================
+
+📈 Trade Plan for ENR (Bullish Bias)
+
+🔹 Option: $$30.0 Call expiring 2025-12-19
+🔹 Entry Price: $0.35
+🔹 Stop Loss: $0.26
+🔹 Initial Target: $0.61
+🔹 Final Target: $1.22
+🔹 Position Size: 5 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.13226 | Gamma: 0.04331 | Theta: -0.00404 | Score: 4.61
+
+================================================================================
+
+📈 Trade Plan for ALIT (Bearish Bias)
+
+🔹 Option: $$5.0 Put expiring 2026-02-20
+🔹 Entry Price: $0.60
+🔹 Stop Loss: $0.45
+🔹 Initial Target: $1.05
+🔹 Final Target: $2.10
+🔹 Position Size: 3 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.32321 | Gamma: 0.18974 | Theta: -0.00139 | Score: 55.20
+
+================================================================================
+
+📈 Trade Plan for CXW (Bearish Bias)
+
+🔹 Option: $$15.0 Put expiring 2026-01-16
+🔹 Entry Price: $0.50
+🔹 Stop Loss: $0.38
+🔹 Initial Target: $0.88
+🔹 Final Target: $1.75
+🔹 Position Size: 4 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.12251 | Gamma: 0.03497 | Theta: -0.00313 | Score: 4.78
+
+================================================================================
+
