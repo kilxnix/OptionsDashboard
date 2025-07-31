@@ -233,6 +233,7 @@ class EnhancedOptionsGrader:
 
         # 4. DELTA-ADJUSTED ACTIVITY (0-4 points)
         # Weight activity by how likely the option is to be profitable
+        delta = abs(self._safe_float_extract(option_data.get('delta', 0.3), 0.3))
         if delta > 0:
             delta_weighted_volume = volume * delta
             if delta_weighted_volume >= 500:
