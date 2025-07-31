@@ -1374,16 +1374,16 @@ class ExplosiveOptionsScanner:
                 else:
                     print(f"⚠️ Using ALL options data for earnings scan")
 
-            # Apply very permissive filters for earnings plays
+            # EARNINGS MODE: Be extremely permissive to catch explosive moves
             return safe_apply_filters(
                 options_data,
-                min_price=filters.get('min_price', 0.01),   # Allow penny options
-                max_price=filters.get('max_price', 50.0),   # Higher max price
-                min_delta=filters.get('min_delta', 0.03),   # Very low delta for explosive potential
-                max_delta=filters.get('max_delta', 0.95),   # Allow ITM options
+                min_price=filters.get('min_price', 0.05),   # Allow cheap options but not penny
+                max_price=filters.get('max_price', 100.0),  # Much higher max price for ITM options
+                min_delta=filters.get('min_delta', 0.01),   # Ultra low delta for lottery tickets
+                max_delta=filters.get('max_delta', 0.99),   # Allow deep ITM options
                 min_volume=0,  # No volume requirement after pre-filter
                 min_days=filters.get('min_days', 0),
-                max_days=filters.get('max_days', 60),       # Allow longer dated options
+                max_days=filters.get('max_days', 45),       # Focus on shorter-dated for earnings
             )
         except Exception as e:
             print(f"⚠️ Filtering error: {e}")

@@ -364,7 +364,7 @@ def is_likely_optionable(symbol):
         'SPY', 'QQQ', 'IWM', 'DIA', 'XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLP',
         'GME', 'AMC', 'BB', 'COIN', 'HOOD', 'RIVN', 'LCID', 'SOFI', 'NKLA'
     }
-    
+
     # If it's in our known good list, always allow it
     if symbol.upper() in known_optionable:
         return True
@@ -479,10 +479,10 @@ class CompleteOptionsScanner:
                 return None
 
             key_prefix = tf_config['key_prefix']
-            
+
             # Debug: Print what we actually received
             print(f"🔍 Debug {symbol} {timeframe}: Response keys = {list(data.keys())}")
-            
+
             if key_prefix not in data:
                 # Check for alternative key formats that Alpha Vantage might use
                 alt_keys = []
@@ -493,14 +493,14 @@ class CompleteOptionsScanner:
                 elif 'min' in tf_config.get('interval', ''):
                     interval = tf_config['interval']
                     alt_keys = [f'Time Series ({interval})', f'Time Series ({interval.replace("min", "m")})']
-                
+
                 # Try alternative keys
                 found_key = None
                 for alt_key in alt_keys:
                     if alt_key in data:
                         found_key = alt_key
                         break
-                
+
                 if found_key:
                     print(f"✅ Found data for {symbol} {timeframe} using key: {found_key}")
                     key_prefix = found_key
@@ -721,7 +721,7 @@ class CompleteOptionsScanner:
                 else:
                     print(f"Error fetching price data for {symbol}: {e}")
                     return None
-        
+
         print(f"Failed to fetch data for {symbol} after {max_retries} attempts")
         return None
 
@@ -743,12 +743,12 @@ class CompleteOptionsScanner:
     def _check_rate_limit(self):
         """Implement rate limiting with exponential backoff"""
         current_time = time.time()
-        
+
         # Check if we're in a new minute
         if current_time - self.last_request_time >= 60:
             self.request_count = 0
             self.last_request_time = current_time
-        
+
         # If we're approaching the limit, wait
         if self.request_count >= self.requests_per_minute - 10:  # Buffer of 10 requests
             sleep_time = 61 - (current_time - self.last_request_time)
@@ -757,7 +757,7 @@ class CompleteOptionsScanner:
                 time.sleep(sleep_time)
                 self.request_count = 0
                 self.last_request_time = time.time()
-        
+
         # Add small delay between requests to be respectful
         time.sleep(0.1)
         self.request_count += 1
@@ -1488,7 +1488,7 @@ def print_analysis(symbol,
                      "Delta Exposure",
                      f"${trade_plan['risk_metrics']['delta_exposure']:.2f}"
                  ],
-                 [
+                 [```text
                      "Gamma/Theta",
                      f"{trade_plan['risk_metrics']['gamma_theta_ratio']}"
                  ],
@@ -2070,14 +2070,14 @@ def run_scanner(symbols=None,
             if consecutive_failures >= max_consecutive_failures:
                 print(f"🛑 Circuit breaker activated: {consecutive_failures} consecutive failures. Stopping scan to prevent further rate limiting.")
                 break
-            
+
             # Quick pre-filter: try to fetch just daily data first
             daily_data = scanner.fetch_alpha_vantage_data(symbol, 'D')
             if daily_data is None or daily_data.empty:
                 print(f"⚠️  No daily data for {symbol}, skipping...")
                 consecutive_failures += 1
                 continue
-            
+
             # Reset failure counter on success
             consecutive_failures = 0
 
@@ -2187,11 +2187,11 @@ def run_scanner(symbols=None,
 
                         top_option = select_top_option_candidate(
                             candidates, confluence, symbol)
-                        
+
                         if top_option is None:
                             print(f"⏭️ Skipping {symbol} - no options align with {confluence['bias']} bias")
                             continue
-                            
+
                         trade_plan = generate_trade_plan(
                             top_option, symbol_context)
                         output_file = "./TradingPlans/human_readable_plans.txt"
@@ -2290,32 +2290,46 @@ def filter_options_by_bias(candidates_df, symbol_bias):
     return candidates_df
 
 
-def select_top_option_candidate(candidates_df, analysis_results, symbol):
+def select_top_option_candidate(candidates, confluence, symbol):
     """
-    Select the best option candidate matching the symbol bias.
-    Only returns options that align with the directional bias - no contradictory fallbacks.
+    Select the best option candidate that aligns with the technical bias
+    Enhanced for earnings plays to favor higher delta options
     """
-    bias = analysis_results.get("bias", "neutral").lower()
-
-    # First try to get options that match the bias
-    if "bullish" in bias:
-        matching_options = candidates_df[candidates_df["type"] == "call"]
-        option_type_wanted = "calls"
-    elif "bearish" in bias:
-        matching_options = candidates_df[candidates_df["type"] == "put"]
-        option_type_wanted = "puts"
-    else:
-        matching_options = candidates_df  # Neutral - consider all
-        option_type_wanted = "any"
-
-    if not matching_options.empty:
-        top_option = matching_options.sort_values(by="score", ascending=False).iloc[0]
-        print(f"✅ Selected {top_option['type'].upper()} for {symbol} ({bias} bias) - Score: {top_option['score']:.2f}")
-        return top_option
-    else:
-        # NO FALLBACK TO OPPOSITE DIRECTION - this would be contradictory
-        print(f"❌ No {option_type_wanted} found for {symbol} ({bias} bias). Skipping symbol - won't trade against the signal.")
+    if candidates.empty:
         return None
+
+    bias = confluence.get('bias', 'Unknown').lower()
+
+    # Filter candidates by type based on bias
+    if bias == 'bullish':
+        filtered = candidates[candidates['type'].str.lower() == 'call']
+    elif bias == 'bearish':
+        filtered = candidates[candidates['type'].str.lower() == 'put']
+    else:
+        # If bias is neutral/unknown, prefer calls in general market uptrend
+        filtered = candidates[candidates['type'].str.lower() == 'call']
+
+    if filtered.empty:
+        print(f"⏭️ No {bias} options found for {symbol}, using top overall candidate")
+        return candidates.iloc[0].to_dict()
+
+    # For earnings plays, prefer higher delta options (0.25-0.60 range)
+    earnings_candidates = filtered[
+        (filtered['delta'].abs() >= 0.20) & 
+        (filtered['delta'].abs() <= 0.70)
+    ]
+
+    if not earnings_candidates.empty:
+        # Sort by combination of delta and score for earnings
+        earnings_candidates = earnings_candidates.copy()
+        earnings_candidates['earnings_score'] = (
+            earnings_candidates['score'] * 0.7 + 
+            earnings_candidates['delta'].abs() * 30  # Boost for higher delta
+        )
+        return earnings_candidates.nlargest(1, 'earnings_score').iloc[0].to_dict()
+
+    # Return the highest scoring option of the correct type
+    return filtered.iloc[0].to_dict()
 
 
 def save_summary_report(results, filepath):
