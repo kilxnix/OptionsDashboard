@@ -288,11 +288,11 @@ class ExplosiveOptionsScanner:
                             'openInterest': 50.0, 'days_to_expiry': 30
                         }
 
-                        for field, default in numeric_defaults.items():
+                        for field, default_value in numeric_defaults.items():
                             if field in option_dict:
-                                option_dict[field] = safe_extract_numeric(option_dict[field], default)
+                                option_dict[field] = safe_extract_numeric(option_dict[field], default_value)
                             else:
-                                option_dict[field] = default
+                                option_dict[field] = default_value
 
                         # Ensure expiration is properly formatted as string
                         if 'expiration' in option_dict:
@@ -320,7 +320,12 @@ class ExplosiveOptionsScanner:
                                 except:
                                     option_dict['expiration'] = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
 
-                        score, analysis = self.grader.calculate_option_score(option_dict, market_data)
+                        try:
+                            score, analysis = self.grader.calculate_option_score(option_dict, market_data)
+                        except Exception as score_error:
+                            print(f"⚠️ Score calculation error for {symbol}: {score_error}")
+                            score = 0
+                            analysis = {'recommendation': 'Error in scoring'}
 
                         # Ensure score is a number, not a dict
                         if isinstance(score, dict):
