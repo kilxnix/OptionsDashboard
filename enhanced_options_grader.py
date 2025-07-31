@@ -163,19 +163,25 @@ class EnhancedOptionsGrader:
         """
         score = 15  # Start with a high base score
 
-        # Convert strings to numbers safely
-        delta = abs(self._safe_float_extract(option_data.get('delta', 0.3), 0.3))
-        gamma = self._safe_float_extract(option_data.get('gamma', 0.01), 0.01)
-        theta = self._safe_float_extract(option_data.get('theta', -0.05), -0.05)
-        mark = self._safe_float_extract(option_data.get('mark', 1), 1)
+        try:
+            # Convert strings to numbers safely
+            delta = abs(self._safe_float_extract(option_data.get('delta', 0.3), 0.3))
+            gamma = self._safe_float_extract(option_data.get('gamma', 0.01), 0.01)
+            theta = self._safe_float_extract(option_data.get('theta', -0.05), -0.05)
+            mark = self._safe_float_extract(option_data.get('mark', 1), 1)
 
-        # Give bonus points for any decent Greeks
-        if delta > 0.05:  # Any meaningful delta
-            score += 5
-        if gamma > 0.005:  # Any meaningful gamma
-            score += 3
-        if abs(theta) < 0.2:  # Not excessive decay
-            score += 2
+            # Give bonus points for any decent Greeks
+            if delta > 0.05:  # Any meaningful delta
+                score += 5
+            if gamma > 0.005:  # Any meaningful gamma
+                score += 3
+            if abs(theta) < 0.2:  # Not excessive decay
+                score += 2
+
+        except Exception as e:
+            print(f"Error in Greeks calculation: {e}")
+            # Return base score if there's an error
+            pass
 
         return min(score, 25)
 
