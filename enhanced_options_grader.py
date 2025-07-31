@@ -308,20 +308,22 @@ class EnhancedOptionsGrader:
             mark = 1
 
         # 1. DELTA SCORING (0-8 points) - EARNINGS OPTIMIZED for explosive potential
-        if 0.05 <= delta <= 0.15:
-            score += 8  # EXPLOSIVE potential - far OTM earnings plays
-        elif 0.03 <= delta <= 0.20:
-            score += 7  # Very high leverage for earnings
-        elif 0.15 <= delta <= 0.35:
-            score += 6  # Good balance of leverage and probability
-        elif 0.35 <= delta <= 0.50:
-            score += 4  # Moderate leverage
-        elif delta > 0.50:
-            score += 3  # Lower leverage but higher probability
+        if 0.30 <= delta <= 0.60:
+            score += 8  # OPTIMAL for earnings - high probability with good leverage
+        elif 0.20 <= delta <= 0.30:
+            score += 7  # Good balance for earnings moves
+        elif 0.60 <= delta <= 0.80:
+            score += 6  # Higher probability, still good gains
+        elif 0.15 <= delta <= 0.20:
+            score += 5  # Some leverage with decent probability
+        elif 0.05 <= delta <= 0.15:
+            score += 4  # Lottery ticket territory
+        elif delta > 0.80:
+            score += 3  # Deep ITM, safe but lower leverage
         elif 0.01 <= delta <= 0.05:
-            score += 5  # Very speculative but massive potential
+            score += 2  # Very speculative
         else:
-            score += 2  # Extremely far OTM
+            score += 1  # Extremely far OTM
 
         # 2. GAMMA SCORING (0-8 points) - Explosive acceleration potential
         if gamma >= 0.03:
