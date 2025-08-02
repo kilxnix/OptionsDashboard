@@ -516,15 +516,13 @@ class ExplosiveOptionsScanner:
             print(f"🔍 Analyzing Alpha Vantage data for high-volume stocks...")
             
             # Priority 1: Most actively traded (highest volume)
-            min_vol = self.scan_config.get('stock_min_volume', 1_000_000)
-
             if 'most_actively_traded' in data:
                 for item in data['most_actively_traded']:
                     symbol = item['ticker']
                     volume = int(item.get('volume', 0))
-
-                    # Filter for high volume stocks using configurable threshold
-                    if (volume >= min_vol and
+                    
+                    # Filter for high volume stocks (1M+ volume)
+                    if (volume >= 1000000 and 
                         self._is_likely_optionable_stock(symbol)):
                         high_volume_stocks.append(symbol)
                         print(f"   📊 {symbol}: {volume:,} volume")
@@ -535,8 +533,9 @@ class ExplosiveOptionsScanner:
                     symbol = item['ticker']
                     volume = int(item.get('volume', 0))
                     change_pct = float(item.get('change_percent', '0%').replace('%', ''))
-
-                    if (volume >= min_vol / 2 and
+                    
+                    # High volume movers (500K+ volume, 2%+ move)
+                    if (volume >= 500000 and 
                         change_pct >= 2.0 and
                         symbol not in high_volume_stocks and
                         self._is_likely_optionable_stock(symbol)):
@@ -549,8 +548,9 @@ class ExplosiveOptionsScanner:
                     symbol = item['ticker']
                     volume = int(item.get('volume', 0))
                     change_pct = abs(float(item.get('change_percent', '0%').replace('%', '')))
-
-                    if (volume >= min_vol / 2 and
+                    
+                    # High volume sell-offs (500K+ volume, 3%+ drop)
+                    if (volume >= 500000 and 
                         change_pct >= 3.0 and
                         symbol not in high_volume_stocks and
                         self._is_likely_optionable_stock(symbol)):
