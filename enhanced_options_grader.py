@@ -778,7 +778,7 @@ class EnhancedOptionsGrader:
             return None
 
     def _fetch_option_history(self, symbol: str, strike: float, option_type: str) -> Optional[Dict]:
-"""Fetch historical option data for comparison"""
+        """Fetch historical option data for comparison"""
         # This would integrate with Alpha Vantage options endpoint
         # For now, returning mock data structure
         return {
