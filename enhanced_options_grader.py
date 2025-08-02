@@ -191,9 +191,6 @@ class EnhancedOptionsGrader:
         """
         score = 0
 
-        # Extract delta for probability-weighted calculations
-        delta = abs(self._safe_float_extract(option_data.get('delta', 0), 0))
-
         # Use safe extraction for all numeric values
         volume = self._safe_float_extract(option_data.get('volume', 0), 0)
         oi = self._safe_float_extract(option_data.get('open_interest', option_data.get('openInterest', 0)), 0)
