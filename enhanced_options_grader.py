@@ -764,19 +764,6 @@ class EnhancedOptionsGrader:
 
             print(f"🔧 Adapted thresholds: Volume spike={self.thresholds['volume_spike']:.2f}, OI change={self.thresholds['oi_change']:.2f}")
 
-    def _generate_recommendation(self, score: float, confidence: float, risk_level: str) -> str:
-        """Generate trading recommendation based on score and confidence"""
-        if score >= 80 and confidence >= 80:
-            return "🔥 STRONG BUY - High explosion potential"
-        elif score >= 70 and confidence >= 70:
-            return "✅ BUY - Good opportunity"
-        elif score >= 60 and confidence >= 60:
-            return "⚠️ CAUTIOUS BUY - Monitor closely"
-        elif score >= 50:
-            return "🤔 NEUTRAL - Wait for better setup"
-        else:
-            return "❌ AVOID - Poor risk/reward"
-
     def _calculate_holding_period(self, option_data: Dict, score_components: Dict) -> Dict:
         """
         Determine optimal holding period based on Greeks
