@@ -47,11 +47,11 @@ class EnhancedOptionsGrader:
             # Handle None or empty values first
             if value is None or value == '' or value == 'N/A':
                 return default
-                
+
             # If it's already a number, convert directly
             if isinstance(value, (int, float)):
                 return float(value)
-                
+
             # If it's a string, try to convert directly
             if isinstance(value, str):
                 # Clean common string issues
@@ -59,7 +59,7 @@ class EnhancedOptionsGrader:
                 if cleaned == '' or cleaned == '-' or cleaned == 'N/A':
                     return default
                 return float(cleaned)
-                
+
             # If it's a dict, try multiple extraction methods
             if isinstance(value, dict):
                 # Try common Alpha Vantage keys
@@ -68,7 +68,7 @@ class EnhancedOptionsGrader:
                         extracted = value[key]
                         if extracted is not None and extracted != '':
                             return self._safe_float_extract(extracted, default)  # Recursive call
-                
+
                 # Try to find any numeric value in the dict
                 for v in value.values():
                     if v is not None and v != '':
@@ -76,16 +76,16 @@ class EnhancedOptionsGrader:
                             return self._safe_float_extract(v, default)  # Recursive call
                         except (ValueError, TypeError):
                             continue
-                            
+
                 return default
-                
+
             # If it's a list, try the first element
             if isinstance(value, (list, tuple)) and len(value) > 0:
                 return self._safe_float_extract(value[0], default)
-                
+
             # Last resort: try to convert whatever it is
             return float(value)
-            
+
         except (ValueError, TypeError, AttributeError):
             return default
 
@@ -197,7 +197,7 @@ class EnhancedOptionsGrader:
             gamma = self._safe_float_extract(option_data.get('gamma', 0.01), 0.01)
             theta = self._safe_float_extract(option_data.get('theta', -0.05), -0.05)
             mark = self._safe_float_extract(option_data.get('mark', 1), 1)
-            
+
             # Validate all extracted values are actually numbers
             if not isinstance(delta, (int, float)) or delta < 0:
                 delta = 0.3
@@ -232,7 +232,7 @@ class EnhancedOptionsGrader:
         # Use safe extraction for all numeric values with validation
         volume = self._safe_float_extract(option_data.get('volume', 0), 0)
         oi = self._safe_float_extract(option_data.get('open_interest', option_data.get('openInterest', 0)), 0)
-        
+
         # Validate extracted values are actually numbers
         if not isinstance(volume, (int, float)) or volume < 0:
             volume = 0
@@ -278,11 +278,11 @@ class EnhancedOptionsGrader:
         # 4. DELTA-ADJUSTED ACTIVITY (0-4 points)
         # Weight activity by how likely the option is to be profitable
         delta_val = abs(self._safe_float_extract(option_data.get('delta', 0.3), 0.3))
-        
+
         # Validate delta is a number
         if not isinstance(delta_val, (int, float)) or delta_val < 0:
             delta_val = 0.3
-            
+
         if delta_val > 0:
             delta_weighted_volume = volume * delta_val
             if delta_weighted_volume >= 500:
@@ -572,10 +572,23 @@ class EnhancedOptionsGrader:
         """
         Generate actionable recommendation based on enhanced score (max 115)
         """
-        # Must have minimum scores in key areas
-        liquidity_min = components['liquidity_score'] >= 12
-        greeks_min = components['greeks_score'] >= 10
-        activity_min = components['unusual_activity_score'] >= 8
+        # Ensure all component scores are numeric - more robust conversion
+        safe_components = {}
+        for key, value in components.items():
+            try:
+                if isinstance(value, dict):
+                    # Extract from nested dictionary
+                    numeric_val = self._safe_float_extract(value, 0)
+                else:
+                    numeric_val = float(value) if value is not None else 0
+                safe_components[key] = numeric_val
+            except (ValueError, TypeError):
+                safe_components[key] = 0
+
+        # Must have minimum scores in key areas - use safe_components
+        liquidity_min = safe_components.get('liquidity_score', 0) >= 12
+        greeks_min = safe_components.get('greeks_score', 0) >= 10
+        activity_min = safe_components.get('unusual_activity_score', 0) >= 8
 
         # Adjusted thresholds for 115-point scale
         if score >= 85 and liquidity_min and greeks_min and activity_min:
@@ -618,7 +631,17 @@ class EnhancedOptionsGrader:
         confidence = 0
         for component, weight in weights.items():
             if max_scores[component] > 0:
-                component_pct = min(scores[component] / max_scores[component], 1.0)
+                # Ensure component score is numeric - handle nested dicts
+                component_value = scores.get(component, 0)
+                try:
+                    if isinstance(component_value, dict):
+                        component_score = self._safe_float_extract(component_value, 0)
+                    else:
+                        component_score = float(component_value) if component_value is not None else 0
+                except (ValueError, TypeError):
+                    component_score = 0
+
+                component_pct = min(component_score / max_scores[component], 1.0)
                 confidence += component_pct * weight * 100
 
         # Bonus for well-rounded scores (all components contributing)
@@ -627,10 +650,304 @@ class EnhancedOptionsGrader:
             confidence += 5  # Bonus for diversified strength
 
         # Penalty for extreme imbalances
-        max_component_pct = max(scores[comp] / max_scores[comp] for comp in scores.keys())
-        if max_component_pct > 0.9 and confidence > 80:
-            # Very high single component might indicate outlier
-            confidence -= 10
+        try:
+            component_percentages = []
+            for comp in scores.keys():
+                if max_scores.get(comp, 0) > 0:
+                    comp_value = scores[comp]
+                    if isinstance(comp_value, dict):
+                        comp_numeric = self._safe_float_extract(comp_value, 0)
+                    else:
+                        comp_numeric = float(comp_value) if comp_value is not None else 0
+                    component_percentages.append(comp_numeric / max_scores[comp])
+
+            if component_percentages:
+                max_component_pct = max(component_percentages)
+                if max_component_pct > 0.9 and confidence > 80:
+                    # Very high single component might indicate outlier
+                    confidence -= 10
+        except (ValueError, TypeError, ZeroDivisionError):
+            pass  # Skip penalty calculation if there's an error
+
+        return min(100, max(0, int(confidence)))
+
+    def _assess_risk_level(self, option_data: Dict, scores: Dict) -> str:
+        """
+        Assess risk level of the trade
+        """
+        risk_score = 0
+
+        # Liquidity risk
+        if scores['liquidity_score'] < 10:
+            risk_score += 30
+
+        # Greeks risk
+        try:
+            delta = float(option_data.get('delta', 0))
+        except (ValueError, TypeError):
+            delta = 0
+        if abs(delta) < 0.10:
+            risk_score += 20  # Very low delta
+        try:
+            theta = float(option_data.get('theta', 0))
+        except (ValueError, TypeError):
+            theta = 0
+        if abs(theta) > 0.20:
+            risk_score += 20  # High decay
+
+        # Time risk
+        try:
+            expiration = option_data.get('expiration', '')
+            if isinstance(expiration, str) and expiration:
+                # Try different date formats
+                for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%d %H:%M:%S', '%m-%d-%Y']:
+                    try:
+                        exp_date = datetime.strptime(expiration, fmt)
+                        break
+                    except ValueError:
+                        continue
+                else:
+                    exp_date = datetime.now() + timedelta(days=30)
+            elif expiration and not isinstance(expiration, str):
+                try:
+                    exp_date = pd.to_datetime(expiration)
+                except:
+                    exp_date = datetime.now() + timedelta(days=30)
+            else:
+                exp_date = datetime.now() + timedelta(days=30)
+
+            days_to_expiry = max(1, (exp_date - datetime.now()).days)
+        except Exception as e:
+            print(f"Error parsing expiration in risk assessment '{expiration}': {e}")
+            days_to_expiry = 30
+
+        if risk_score >= 60:
+            return "HIGH"
+        elif risk_score >= 30:
+            return "MEDIUM"
+        else:
+            return "LOW"
+
+    # Alpha Vantage integration methods
+    def _fetch_rsi(self, symbol: str, interval: str = 'daily', time_period: int = 14) -> Optional[float]:
+        """Fetch RSI from Alpha Vantage"""
+        url = f'https://www.alphavantage.co/query?function=RSI&symbol={symbol}&interval={interval}&time_period={time_period}&series_type=close&apikey={self.av_key}'
+        try:
+            response = requests.get(url, timeout=10)
+            data = response.json()
+            if 'Technical Analysis: RSI' in data:
+                latest_date = list(data['Technical Analysis: RSI'].keys())[0]
+                return float(data['Technical Analysis: RSI'][latest_date]['RSI'])
+        except:
+            return None
+
+    def _fetch_macd(self, symbol: str) -> Optional[Dict]:
+        """Fetch MACD from Alpha Vantage"""
+        url = f'https://www.alphavantage.co/query?function=MACD&symbol={symbol}&interval=daily&series_type=close&apikey={self.av_key}'
+        try:
+            response = requests.get(url, timeout=10)
+            data = response.json()
+            if 'Technical Analysis: MACD' in data:
+                dates = list(data['Technical Analysis: MACD'].keys())
+                latest = data['Technical Analysis: MACD'][dates[0]]
+                prev = data['Technical Analysis: MACD'][dates[1]] if len(dates) > 1 else latest
+                return {
+                    'macd': float(latest['MACD']),
+                    'signal': float(latest['MACD_Signal']),
+                    'histogram': float(latest['MACD_Hist']),
+                    'histogram_prev': float(prev['MACD_Hist'])
+                }
+        except:
+            return None
+
+    def _fetch_bbands(self, symbol: str) -> Optional[Dict]:
+        """Fetch Bollinger Bands from Alpha Vantage"""
+        url = f'https://www.alphavantage.co/query?function=BBANDS&symbol={symbol}&interval=daily&time_period=20&series_type=close&apikey={self.av_key}'
+        try:
+            response = requests.get(url, timeout=10)
+            data = response.json()
+            if 'Technical Analysis: BBANDS' in data:
+                latest_date = list(data['Technical Analysis: BBANDS'].keys())[0]
+                latest = data['Technical Analysis: BBANDS'][latest_date]
+                return {
+                    'upper': float(latest['Real Upper Band']),
+                    'middle': float(latest['Real Middle Band']),
+                    'lower': float(latest['Real Lower Band'])
+                }
+        except:
+            return None
+
+    def _fetch_option_history(self, symbol: str, strike: float, option_type: str) -> Optional[Dict]:
+"""Fetch historical option data for comparison"""
+        # This would integrate with Alpha Vantage options endpoint
+        # For now, returning mock data structure
+        return {
+            'avg_volume': 100,
+            'avg_oi': 500,
+            'avg_spread': 0.10,
+            'large_trades': []
+        }
+
+    def _detect_smart_money(self, option_data: Dict, historical_data: Dict) -> bool:
+        """Detect potential smart money activity"""
+        # Look for large block trades, sweeps, etc.
+        volume = option_data.get('volume', 0)
+        avg_volume = historical_data.get('avg_volume', 100)
+
+        # Simple detection: unusually large volume in single strikes
+        if volume > avg_volume * 10 and volume > 1000:
+            return True
+
+        return False
+
+    def _update_market_regime(self):
+        """Update market volatility regime using VIX"""
+        try:
+            # Fetch VIX data
+            url = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=VIX&apikey={self.av_key}'
+            response = requests.get(url, timeout=10)
+            data = response.json()
+
+            if 'Global Quote' in data:
+                vix = float(data['Global Quote']['05. price'])
+                if vix < 15:
+                    self.volatility_regime = 'low_vol'
+                elif vix < 25:
+                    self.volatility_regime = 'normal_vol'
+                else:
+                    self.volatility_regime = 'high_vol'
+        except:
+            self.volatility_regime = 'normal_vol'
+
+    def adapt_thresholds(self, performance_data: Dict):
+        """
+        Adapt thresholds based on historical performance
+        Machine learning component that improves over time
+        """
+        if not performance_data:
+            return
+
+        # Analyze winning trades
+        winning_trades = [t for t in performance_data.values() if t.get('final_outcome') == 'TARGET_HIT']
+
+        if len(winning_trades) >= 10:
+            # Calculate optimal thresholds from winners
+            volume_spikes = []
+            oi_changes = []
+
+            for trade in winning_trades:
+                if 'unusual_activity' in trade:
+                    volume_spikes.append(trade['unusual_activity'].get('volume_spike', 2.0))
+                    oi_changes.append(trade['unusual_activity'].get('oi_change', 0.5))
+
+            if volume_spikes:
+                # Adjust thresholds to 25th percentile of winning trades
+                self.thresholds['volume_spike'] = np.percentile(volume_spikes, 25)
+            if oi_changes:
+                self.thresholds['oi_change'] = np.percentile(oi_changes, 25)
+
+            print(f"🔧 Adapted thresholds: Volume spike={self.thresholds['volume_spike']:.2f}, OI change={self.thresholds['oi_change']:.2f}")
+
+    def _generate_recommendation(self, score: float, components: Dict, option_data: Dict) -> str:
+        """
+        Generate actionable recommendation based on enhanced score (max 115)
+        """
+        # Ensure all component scores are numeric - more robust conversion
+        safe_components = {}
+        for key, value in components.items():
+            try:
+                if isinstance(value, dict):
+                    # Extract from nested dictionary
+                    numeric_val = self._safe_float_extract(value, 0)
+                else:
+                    numeric_val = float(value) if value is not None else 0
+                safe_components[key] = numeric_val
+            except (ValueError, TypeError):
+                safe_components[key] = 0
+
+        # Must have minimum scores in key areas - use safe_components
+        liquidity_min = safe_components.get('liquidity_score', 0) >= 12
+        greeks_min = safe_components.get('greeks_score', 0) >= 10
+        activity_min = safe_components.get('unusual_activity_score', 0) >= 8
+
+        # Adjusted thresholds for 115-point scale
+        if score >= 85 and liquidity_min and greeks_min and activity_min:
+            return "🔥 STRONG BUY - High explosion potential"
+        elif score >= 70 and liquidity_min and greeks_min:
+            return "✅ BUY - Good opportunity"
+        elif score >= 55 and liquidity_min:
+            return "⚡ CAUTIOUS BUY - Monitor closely"
+        elif score >= 40:
+            return "⚠️ WATCH - Needs confirmation"
+        elif score >= 25:
+            return "⚠️ WEAK - Better opportunities exist"
+        else:
+            return "❌ REJECT - Does not meet criteria"
+
+    def _calculate_confidence(self, scores: Dict) -> int:
+        """
+        Calculate confidence level (0-100%) for enhanced scoring system
+        """
+        # Updated weights for enhanced scoring
+        weights = {
+            'liquidity_score': 0.25,      # Increased importance
+            'greeks_score': 0.25,         # Increased importance  
+            'unusual_activity_score': 0.30,  # Highest weight
+            'technical_score': 0.10,      # Reduced
+            'iv_opportunity_score': 0.05,  # Reduced
+            'market_regime_score': 0.05   # Reduced
+        }
+
+        # Updated max scores for enhanced system
+        max_scores = {
+            'liquidity_score': 25,        # Updated
+            'greeks_score': 25,           # Updated
+            'unusual_activity_score': 30, # Updated
+            'technical_score': 15,        # Same
+            'iv_opportunity_score': 10,   # Same
+            'market_regime_score': 10     # Same
+        }
+
+        confidence = 0
+        for component, weight in weights.items():
+            if max_scores[component] > 0:
+                # Ensure component score is numeric - handle nested dicts
+                component_value = scores.get(component, 0)
+                try:
+                    if isinstance(component_value, dict):
+                        component_score = self._safe_float_extract(component_value, 0)
+                    else:
+                        component_score = float(component_value) if component_value is not None else 0
+                except (ValueError, TypeError):
+                    component_score = 0
+
+                component_pct = min(component_score / max_scores[component], 1.0)
+                confidence += component_pct * weight * 100
+
+        # Bonus for well-rounded scores (all components contributing)
+        non_zero_components = sum(1 for score in scores.values() if score > 0)
+        if non_zero_components >= 4:
+            confidence += 5  # Bonus for diversified strength
+
+        # Penalty for extreme imbalances
+        try:
+            component_percentages = []
+            for comp in scores.keys():
+                if max_scores.get(comp, 0) > 0:
+                    comp_value = scores[comp]
+                    if isinstance(comp_value, dict):
+                        comp_numeric = self._safe_float_extract(comp_value, 0)
+                    else:
+                        comp_numeric = float(comp_value) if comp_value is not None else 0
+                    component_percentages.append(comp_numeric / max_scores[comp])
+
+            if component_percentages:
+                max_component_pct = max(component_percentages)
+                if max_component_pct > 0.9 and confidence > 80:
+                    # Very high single component might indicate outlier
+                    confidence -= 10
+        except (ValueError, TypeError, ZeroDivisionError):
+            pass  # Skip penalty calculation if there's an error
 
         return min(100, max(0, int(confidence)))
 
@@ -811,7 +1128,7 @@ class EnhancedOptionsGrader:
 
             print(f"🔧 Adapted thresholds: Volume spike={self.thresholds['volume_spike']:.2f}, OI change={self.thresholds['oi_change']:.2f}")
 
-    def _generate_recommendation(self, score: float, confidence: float, risk_level: str) -> str:
+    def _generate_recommendation(self, score: float, components: Dict, option_data: Dict) -> str:
         """Generate trading recommendation based on score and confidence"""
         if score >= 80 and confidence >= 80:
             return "🔥 STRONG BUY - High explosion potential"
