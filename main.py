@@ -2096,49 +2096,41 @@ def explosive_earnings_combo():
                 explosive_data = explosive_results['opportunities'].get(
                     symbol, {})
 
+                # Safely handle nested dictionaries that might be None
+                confluence = scanner_data.get('confluence') or {}
+                timeframe_analysis = scanner_data.get('timeframe_analysis') or {}
+                volume_profile = scanner_data.get('volume_profile') or {}
+                earnings_info = (explosive_data.get('market_data') or {})\
+                    .get('earnings_info') or {}
+
                 # Combine both analyses
                 combined_opportunity = {
-                    'symbol':
-                    symbol,
+                    'symbol': symbol,
                     'explosive_score':
-                    explosive_data.get('best_opportunity',
-                                       {}).get('total_score', 0),
-                    'confluence_score':
-                    scanner_data.get('confluence', {}).get('score', 0),
-                    'confluence_bias':
-                    scanner_data.get('confluence', {}).get('bias', 'N/A'),
-                    'days_to_earnings':
-                    explosive_data.get('market_data',
-                                       {}).get('earnings_info',
-                                               {}).get('days_to_earnings',
-                                                       'N/A'),
-                    'earnings_priority':
-                    explosive_data.get('market_data',
-                                       {}).get('earnings_info',
-                                               {}).get('earnings_priority',
-                                                       'N/A'),
-                    'has_gaps':
-                    any([
+                    explosive_data.get('best_opportunity', {})
+                    .get('total_score', 0),
+                    'confluence_score': confluence.get('score', 0),
+                    'confluence_bias': confluence.get('bias', 'N/A'),
+                    'days_to_earnings': earnings_info.get('days_to_earnings',
+                                                         'N/A'),
+                    'earnings_priority': earnings_info.get('earnings_priority',
+                                                          'N/A'),
+                    'has_gaps': any(
                         tf_data.get('gap_percent', 0) != 0
-                        for tf_data in scanner_data.get(
-                            'timeframe_analysis', {}).values()
-                    ]),
-                    'volume_confluence':
-                    len(
-                        scanner_data.get('volume_profile',
-                                         {}).get('confluences', [])) > 0,
-                    'trade_plan':
-                    scanner_data.get('trade_plan', {}),
+                        for tf_data in timeframe_analysis.values()
+                    ),
+                    'volume_confluence': len(
+                        volume_profile.get('confluences', [])
+                    ) > 0,
+                    'trade_plan': scanner_data.get('trade_plan', {}),
                     'patterns_found': [
-                        f"{tf}:{','.join([k for k,v in tf_data.get('patterns', {}).items() if v])}"
-                        for tf, tf_data in scanner_data.get(
-                            'timeframe_analysis', {}).items()
+                        f"{tf}:{','.join([k for k, v in tf_data.get('patterns', {}).items() if v])}"
+                        for tf, tf_data in timeframe_analysis.items()
                         if any(tf_data.get('patterns', {}).values())
                     ],
                     'explosive_analysis':
                     explosive_data.get('best_opportunity', {}),
-                    'scanner_core_analysis':
-                    scanner_data
+                    'scanner_core_analysis': scanner_data
                 }
                 final_opportunities.append(combined_opportunity)
 
