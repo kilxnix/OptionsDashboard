@@ -79,6 +79,12 @@ def get_optionable_stocks_with_volume():
     # Phase 1: Get REAL active stocks from Alpha Vantage TOP_GAINERS_LOSERS
     print("📊 Fetching real-time market movers...")
     av_symbols = fetch_real_market_movers()
+    
+    if not av_symbols:
+        print("❌ CRITICAL: No market movers found from Alpha Vantage!")
+        print("🔄 This indicates an API issue - check your Alpha Vantage key and quota")
+        return []
+    
     all_symbols.extend(av_symbols)
     print(f"✅ Found {len(av_symbols)} real market movers")
     
@@ -96,17 +102,23 @@ def get_optionable_stocks_with_volume():
     all_symbols.extend(new_momentum_symbols)
     print(f"✅ Added {len(new_momentum_symbols)} momentum stocks")
     
+    if not all_symbols:
+        print("❌ CRITICAL: No symbols found from any dynamic source!")
+        print("🔄 Check your API keys and network connectivity")
+        return []
+    
     # Phase 4: Filter for optionable stocks only
     print("🔍 Validating options availability...")
     optionable_symbols = []
     for symbol in all_symbols:
-        if is_likely_optionable(symbol) and validate_has_options(symbol):
+        if is_likely_optionable(symbol):
             optionable_symbols.append(symbol)
-            if len(optionable_symbols) >= 100:  # Reasonable limit
-                break
+    
+    # Remove duplicates while preserving order
+    optionable_symbols = list(dict.fromkeys(optionable_symbols))
     
     print(f"✅ DYNAMIC DISCOVERY COMPLETE: {len(optionable_symbols)} truly active optionable stocks")
-    print(f"📋 Today's dynamic symbols: {optionable_symbols[:10]}...")
+    print(f"📋 Today's dynamic symbols: {optionable_symbols[:20]}...")
     
     return optionable_symbols
 
@@ -235,52 +247,62 @@ def fetch_real_market_movers():
     url = f'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey={api_key}'
 
     try:
+        print(f"🔍 Fetching fresh market data from Alpha Vantage...")
         response = requests.get(url, timeout=30)
         data = response.json()
 
-        if 'Error Message' in data or 'Information' in data:
-            print(f"⚠️ Alpha Vantage API issue: {data.get('Error Message', data.get('Information', 'Unknown'))}")
+        if 'Error Message' in data:
+            print(f"❌ Alpha Vantage API Error: {data['Error Message']}")
             return []
-
+            
+        if 'Information' in data:
+            print(f"⚠️ Alpha Vantage API Info: {data['Information']}")
+            # Still try to process any data we got
+            
         real_movers = []
         current_date = datetime.now().strftime('%Y-%m-%d')
         
+        print(f"📊 Processing live market data for {current_date}...")
+        
         # Get REAL most actively traded stocks
         if 'most_actively_traded' in data:
+            print(f"  📈 Processing {len(data['most_actively_traded'])} most active stocks...")
             for item in data['most_actively_traded']:
                 symbol = item['ticker']
                 volume = float(item.get('volume', 0))
                 price = float(item.get('price', 0))
                 
                 # Only include stocks with significant activity TODAY
-                if volume > 500000 and price > 1.0:  # Minimum thresholds for real activity
+                if volume > 100000 and price > 0.5:  # Lowered thresholds to get more stocks
                     real_movers.append(symbol)
-                    print(f"  📊 ACTIVE: {symbol} - {volume:,.0f} volume, ${price:.2f}")
+                    print(f"    📊 ACTIVE: {symbol} - {volume:,.0f} volume, ${price:.2f}")
 
         # Get REAL top gainers with momentum
         if 'top_gainers' in data:
-            for item in data['top_gainers'][:20]:  # Top 20 gainers
+            print(f"  📈 Processing {len(data['top_gainers'])} top gainers...")
+            for item in data['top_gainers']:
                 symbol = item['ticker']
                 change_pct = float(item.get('change_percent', '0%').replace('%', ''))
                 volume = float(item.get('volume', 0))
                 
-                if symbol not in real_movers and change_pct > 3.0 and volume > 200000:
+                if symbol not in real_movers and change_pct > 1.0 and volume > 50000:  # Lowered thresholds
                     real_movers.append(symbol)
-                    print(f"  📈 GAINER: {symbol} +{change_pct:.1f}% on {volume:,.0f} volume")
+                    print(f"    📈 GAINER: {symbol} +{change_pct:.1f}% on {volume:,.0f} volume")
 
         # Get REAL top losers (potential reversals)
         if 'top_losers' in data:
-            for item in data['top_losers'][:15]:  # Top 15 losers
+            print(f"  📉 Processing {len(data['top_losers'])} top losers...")
+            for item in data['top_losers']:
                 symbol = item['ticker']
                 change_pct = abs(float(item.get('change_percent', '0%').replace('%', '')))
                 volume = float(item.get('volume', 0))
                 
-                if symbol not in real_movers and change_pct > 4.0 and volume > 200000:
+                if symbol not in real_movers and change_pct > 2.0 and volume > 50000:  # Lowered thresholds
                     real_movers.append(symbol)
-                    print(f"  📉 LOSER: {symbol} -{change_pct:.1f}% on {volume:,.0f} volume")
+                    print(f"    📉 LOSER: {symbol} -{change_pct:.1f}% on {volume:,.0f} volume")
 
         print(f"✅ Found {len(real_movers)} REAL market movers for {current_date}")
-        return real_movers[:50]  # Limit to top 50
+        return real_movers
 
     except Exception as e:
         print(f"❌ Error fetching real market movers: {e}")
@@ -397,9 +419,9 @@ def validate_has_options(symbol):
 
 
 def get_sp500_components():
-    """Get S&P 500 components (all have options)"""
+    """Get S&P 500 components from Wikipedia - NO FALLBACK TO STATIC LISTS"""
     try:
-        # Wikipedia has reliable S&P 500 list
+        print("📊 Fetching live S&P 500 components from Wikipedia...")
         url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
         tables = pd.read_html(url)
         sp500_df = tables[0]
@@ -413,23 +435,13 @@ def get_sp500_components():
                 cleaned_symbol = symbol.replace('.', '-')
                 cleaned.append(cleaned_symbol)
 
-        print(f"   Successfully fetched {len(cleaned)} S&P 500 symbols from Wikipedia")
+        print(f"✅ Successfully fetched {len(cleaned)} live S&P 500 symbols from Wikipedia")
         return cleaned
 
     except Exception as e:
-        print(f"   S&P 500 Wikipedia fetch failed: {e}, using fallback list")
-        # Fallback to major S&P 500 components
-        sp500_fallback = [
-            'AAPL', 'MSFT', 'AMZN', 'NVDA', 'GOOGL', 'GOOG', 'TSLA', 'META', 'BRK-B', 'UNH',
-            'JNJ', 'JPM', 'V', 'PG', 'HD', 'MA', 'CVX', 'LLY', 'ABBV', 'AVGO',
-            'PFE', 'KO', 'MRK', 'PEP', 'TMO', 'COST', 'WMT', 'DIS', 'ABT', 'ADBE',
-            'CRM', 'VZ', 'NKE', 'NFLX', 'DHR', 'XOM', 'CMCSA', 'AMD', 'LIN', 'TXN',
-            'QCOM', 'HON', 'UPS', 'UNP', 'IBM', 'RTX', 'INTC', 'CAT', 'AMAT', 'SPGI',
-            'LOW', 'GS', 'BKNG', 'INTU', 'ISRG', 'TJX', 'AXP', 'MDT', 'BLK', 'DE',
-            'SBUX', 'C', 'ADP', 'AMT', 'GILD', 'CVS', 'SCHW', 'PYPL', 'TMUS', 'MO',
-            'SYK', 'ZTS', 'CCI', 'EQIX', 'TGT', 'MMM', 'MDLZ', 'CI', 'SO', 'DUK'
-        ]
-        return sp500_fallback
+        print(f"❌ S&P 500 Wikipedia fetch failed: {e}")
+        print("🚫 NO FALLBACK - returning empty list to force fresh discovery")
+        return []
 
 
 def get_nasdaq100_components():
@@ -2155,8 +2167,16 @@ def run_scanner(symbols=None,
 
     # Use the new multi-source approach if no symbols provided
     if symbols is None:
+        print("🚀 No symbols provided - forcing FRESH DYNAMIC DISCOVERY...")
         symbols = get_optionable_stocks_with_volume()
-        print(f"🎯 Using {len(symbols)} curated optionable stocks")
+        
+        if not symbols:
+            print("❌ CRITICAL: Dynamic discovery returned no symbols!")
+            print("🔧 Check your Alpha Vantage API key and quota")
+            return {}
+            
+        print(f"🎯 Using {len(symbols)} dynamically discovered optionable stocks")
+        print(f"📋 Fresh symbols: {symbols}")
     else:
         # Filter provided symbols
         filtered_symbols = []
@@ -2167,7 +2187,7 @@ def run_scanner(symbols=None,
                 print(f"⏭️  Skipping {symbol} (likely not optionable)")
 
         symbols = filtered_symbols  # Process all filtered symbols
-        print(f"🔍 Processing all {len(symbols)} filtered symbols...")
+        print(f"🔍 Processing {len(symbols)} provided symbols: {symbols}")
 
     print(
         f"\nAnalyzing {len(symbols)} symbols across {len(TIMEFRAMES)} timeframes..."
