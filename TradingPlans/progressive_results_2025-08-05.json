@@ -2751,15 +2751,41 @@
   "COMM": {
     "timeframe_analysis": {
       "1m": {
-        "gap_percent": 0.1367053998632917,
-        "gap_direction": "Up",
+        "gap_percent": -0.10182885345942294,
+        "gap_direction": "Down",
         "gap_mitigated": false,
-        "unmitigated_gap_price": 14.63,
+        "unmitigated_gap_price": 14.729999542236328,
         "patterns": {
           "falling_wedge": false,
           "rising_wedge": false,
-          "high_slope": 0.0016221182118211794,
-          "low_slope": 0.0013792283228322856
+          "high_slope": 0.002690724655976094,
+          "low_slope": 0.002661885542783602
+        },
+        "candles": {
+          "bullish": false,
+          "bearish": false,
+          "bullish_engulfing": false,
+          "bearish_engulfing": false,
+          "hammer": true,
+          "inverted_hammer": true,
+          "shooting_star": true,
+          "doji": true
+        },
+        "volume": {
+          "relative_volume": 0.0,
+          "unusual_volume": false
+        }
+      },
+      "5m": {
+        "gap_percent": 0.0,
+        "gap_direction": "Down",
+        "gap_mitigated": false,
+        "unmitigated_gap_price": NaN,
+        "patterns": {
+          "falling_wedge": false,
+          "rising_wedge": false,
+          "high_slope": 0.0009296450756065244,
+          "low_slope": 0.0009109590938701544
         },
         "candles": {
           "bullish": false,
@@ -2772,33 +2798,7 @@
           "doji": false
         },
         "volume": {
-          "relative_volume": 0.637517291152944,
-          "unusual_volume": false
-        }
-      },
-      "5m": {
-        "gap_percent": -0.27254098360656526,
-        "gap_direction": "Down",
-        "gap_mitigated": true,
-        "unmitigated_gap_price": NaN,
-        "patterns": {
-          "falling_wedge": false,
-          "rising_wedge": false,
-          "high_slope": 0.001204499849985002,
-          "low_slope": 0.0025305526552655204
-        },
-        "candles": {
-          "bullish": false,
-          "bearish": false,
-          "bullish_engulfing": true,
-          "bearish_engulfing": false,
-          "hammer": false,
-          "inverted_hammer": false,
-          "shooting_star": false,
-          "doji": false
-        },
-        "volume": {
-          "relative_volume": 0.050728949643453806,
+          "relative_volume": 0.45329015593057564,
           "unusual_volume": false
         }
       },
@@ -2934,10 +2934,10 @@
       }
     },
     "confluence": {
-      "score": 9.37,
+      "score": 7.62,
       "bias": "Bullish",
-      "bullish_signals": 11.12,
-      "bearish_signals": 0.75
+      "bullish_signals": 7.83,
+      "bearish_signals": 2.45
     },
     "volume_profile": {
       "volume_profiles": {
@@ -3347,48 +3347,7 @@
           ]
         }
       },
-      "confluences": [
-        {
-          "type": "gap_volume_confluence",
-          "gap_timeframe": "1m",
-          "volume_timeframe": "1min",
-          "gap_price": 14.63,
-          "volume_level": 14.58,
-          "volume_strength": 16.23
-        },
-        {
-          "type": "gap_volume_confluence",
-          "gap_timeframe": "1m",
-          "volume_timeframe": "5min",
-          "gap_price": 14.63,
-          "volume_level": 14.58,
-          "volume_strength": 16.8
-        },
-        {
-          "type": "gap_volume_confluence",
-          "gap_timeframe": "1m",
-          "volume_timeframe": "15min",
-          "gap_price": 14.63,
-          "volume_level": 14.58,
-          "volume_strength": 14.7
-        },
-        {
-          "type": "gap_volume_confluence",
-          "gap_timeframe": "1m",
-          "volume_timeframe": "30min",
-          "gap_price": 14.63,
-          "volume_level": 14.58,
-          "volume_strength": 14.99
-        },
-        {
-          "type": "gap_volume_confluence",
-          "gap_timeframe": "1m",
-          "volume_timeframe": "60min",
-          "gap_price": 14.63,
-          "volume_level": 14.58,
-          "volume_strength": 17.88
-        }
-      ]
+      "confluences": []
     },
     "options": [
       {
