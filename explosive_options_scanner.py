@@ -33,25 +33,15 @@ class ExplosiveOptionsScanner:
         # Load and adapt based on historical performance
         self._adapt_from_history()
 
-        # Scan configuration - FOCUSED ON STOCK VOLUME FIRST
+        # Scan configuration optimized for your API plan
         self.scan_config = {
-            'min_score': 35,  # Reasonable threshold
-            'stock_min_volume': 1000000,   # STOCK volume requirement (1M+)
-            'stock_min_dollar_volume': 50000000,  # STOCK dollar volume (50M+)
-            'options_min_volume': 50,   # Options volume (much lower)
-            'options_min_oi': 100,  # Options OI requirement
-            'max_positions': 20,  # Max concurrent positions
-            'scan_frequency': 'continuous',
+            'min_score': 35,  # Slightly higher to focus on best opportunities  
+            'max_positions': 10,  # Max concurrent positions
+            'scan_frequency': 'continuous',  # or 'daily', 'hourly'
             'focus_list': [],  # Symbols to prioritize
-            'use_yahoo_fallback': True,
-            'max_symbols_per_scan': 400,  # Reasonable limit
-            'historical_options_preferred': True,
-            'earnings_mode': True,
-            'allow_otm_options': True,
-            'min_delta': 0.10,  # Reasonable delta range
-            'max_delta': 0.75,  # Allow ITM options
-            'min_price': 0.05,  # Minimum option price
-            'max_price': 20.0   # Reasonable max price
+            'use_yahoo_fallback': True,  # Enable Yahoo Finance fallback
+            'max_symbols_per_scan': 600,  # Optimize for your API limits
+            'historical_options_preferred': True  # Prefer Alpha Vantage historical
         }
 
         # Results cache
@@ -187,10 +177,6 @@ class ExplosiveOptionsScanner:
         Scan a single symbol for explosive opportunities
         """
         try:
-            # Pre-filter symbols that are unlikely to have options
-            if not self._is_valid_options_symbol(symbol):
-                return None
-
             # Get market data
             market_data = self._fetch_enhanced_market_data(symbol)
             if not market_data:
@@ -199,10 +185,6 @@ class ExplosiveOptionsScanner:
             # Get options chains
             options_data = self._fetch_all_options(symbol)
             if options_data is None or (hasattr(options_data, 'empty') and options_data.empty):
-                return None
-
-            # Additional validation - ensure we have at least 5 contracts
-            if len(options_data) < 5:
                 return None
 
             # Fix data types first
@@ -288,11 +270,11 @@ class ExplosiveOptionsScanner:
                             'openInterest': 50.0, 'days_to_expiry': 30
                         }
 
-                        for field, default_value in numeric_defaults.items():
+                        for field, default in numeric_defaults.items():
                             if field in option_dict:
-                                option_dict[field] = safe_extract_numeric(option_dict[field], default_value)
+                                option_dict[field] = safe_extract_numeric(option_dict[field], default)
                             else:
-                                option_dict[field] = default_value
+                                option_dict[field] = default
 
                         # Ensure expiration is properly formatted as string
                         if 'expiration' in option_dict:
@@ -320,12 +302,7 @@ class ExplosiveOptionsScanner:
                                 except:
                                     option_dict['expiration'] = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
 
-                        try:
-                            score, analysis = self.grader.calculate_option_score(option_dict, market_data)
-                        except Exception as score_error:
-                            print(f"⚠️ Score calculation error for {symbol}: {score_error}")
-                            score = 0
-                            analysis = {'recommendation': 'Error in scoring'}
+                        score, analysis = self.grader.calculate_option_score(option_dict, market_data)
 
                         # Ensure score is a number, not a dict
                         if isinstance(score, dict):
@@ -426,312 +403,82 @@ class ExplosiveOptionsScanner:
 
     def _discover_symbols(self, scan_type: str) -> List[str]:
         """
-        Discover symbols with focus on STOCK volume and liquidity first
+        Discover symbols efficiently using your upgraded Alpha Vantage plan
         """
         symbols = []
 
-        print(f"🎯 STOCK DISCOVERY: Finding stocks with high volume and liquidity...")
-        
-        # STEP 1: Get stocks with increasing/high volume using Alpha Vantage
-        high_volume_stocks = self._get_high_volume_liquid_stocks()
-        
         if scan_type == 'earnings':
-            print(f"🎯 EARNINGS SCAN: Filtering high-volume stocks for upcoming earnings...")
-            
-            # Get earnings candidates
-            critical_earnings = self._get_critical_earnings_plays()
-            broader_earnings = self._get_pre_earnings_stocks()
-            
-            # Combine earnings symbols
-            all_earnings_symbols = []
-            if critical_earnings:
-                all_earnings_symbols = [s[0] for s in critical_earnings]
-            
-            for symbol in broader_earnings:
-                if symbol not in all_earnings_symbols:
-                    all_earnings_symbols.append(symbol)
-            
-            # PRIORITIZE: High volume stocks that ALSO have earnings
-            earnings_with_volume = []
-            for symbol in high_volume_stocks:
-                if symbol in all_earnings_symbols:
-                    earnings_with_volume.append(symbol)
-            
-            # Add remaining high volume stocks
-            for symbol in high_volume_stocks:
-                if symbol not in earnings_with_volume:
-                    earnings_with_volume.append(symbol)
-                    if len(earnings_with_volume) >= 100:  # Reasonable limit
-                        break
-            
-            symbols = earnings_with_volume
-            print(f"📊 High-volume earnings stocks: {len(symbols)}")
+            # Get pre-earnings stocks (1 API call)
+            symbols = self._get_pre_earnings_stocks()
+            # Add high-volume liquid stocks as backup
+            liquid_stocks = ['SPY', 'QQQ', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'AMD']
+            symbols.extend([s for s in liquid_stocks if s not in symbols])
 
         elif scan_type == 'unusual_activity':
-            # Get stocks with unusual volume activity
-            unusual_volume_stocks = self._get_unusual_volume_stocks()
-            symbols = unusual_volume_stocks[:50]  # Top 50 by unusual volume
+            # Focus on known active options symbols to save API calls
+            symbols = ['SPY', 'QQQ', 'AAPL', 'TSLA', 'NVDA', 'AMD', 'META', 'AMZN', 'MSFT', 'GOOGL',
+                      'GME', 'AMC', 'PLTR', 'COIN', 'SOXL', 'TQQQ', 'IWM', 'XLE', 'GLD', 'NFLX']
 
         elif scan_type == 'quick':
-            # Quick scan of most liquid high-volume stocks
-            symbols = high_volume_stocks[:100]
+            # Get top movers (1 API call) but limit to 100 to stay efficient
+            movers = self._get_top_movers()
+            symbols = movers[:100]  # Limit for efficiency
 
         else:  # comprehensive
-            print(f"📊 COMPREHENSIVE SCAN: High volume stocks first...")
-            
-            # STEP 1: Start with high volume stocks
-            symbols = high_volume_stocks.copy()
-            
-            # STEP 2: Add earnings candidates if they're not already included
-            earnings_symbols = self._get_pre_earnings_stocks()
-            for symbol in earnings_symbols:
-                if symbol not in symbols:
-                    symbols.append(symbol)
-                    if len(symbols) >= 200:  # Reasonable limit
-                        break
-            
-            print(f"📊 Total high-volume + earnings stocks: {len(symbols)}")
+            print(f"📊 Running comprehensive scan with API optimization...")
 
-        # Final filtering for optionable stocks only
+            # Get earnings (1 API call)
+            earnings = self._get_pre_earnings_stocks()
+            print(f"📈 Earnings symbols found: {len(earnings)}")
+
+            # Get top movers (1 API call) 
+            movers = self._get_top_movers()
+            print(f"📊 Top movers found: {len(movers)}")
+
+            # Add high-volume optionable stocks (no API call needed)
+            high_volume = ['SPY', 'QQQ', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'AMD', 
+                          'NFLX', 'COIN', 'PLTR', 'GME', 'AMC', 'SOXL', 'TQQQ', 'IWM', 'XLE', 'GLD',
+                          'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'V', 'MA', 'PYPL', 'SQ', 'CRM', 'ORCL',
+                          'DIS', 'UBER', 'LYFT', 'F', 'GM', 'BA', 'GE', 'XOM', 'CVX', 'KO', 'PEP']
+
+            print(f"🔥 High-volume optionable stocks: {len(high_volume)}")
+
+            # Combine and prioritize (earnings first, then movers, then high-volume)
+            all_symbols = earnings.copy()
+            all_symbols.extend([s for s in movers if s not in all_symbols])
+            all_symbols.extend([s for s in high_volume if s not in all_symbols])
+
+            # Limit total symbols to optimize API usage (bulk quotes can handle ~600-800 efficiently)
+            symbols = all_symbols[:600]  # Balance between coverage and efficiency
+
+        # Always include focus list first
+        if self.scan_config['focus_list']:
+            symbols = self.scan_config['focus_list'] + [s for s in symbols if s not in self.scan_config['focus_list']]
+
+        # Filter out likely non-optionable symbols
         filtered_symbols = []
         for symbol in symbols:
-            if self._is_likely_optionable_stock(symbol):
+            # Keep only likely optionable US stocks
+            if (len(symbol) <= 4 and 
+                symbol.isalpha() and 
+                not any(char in symbol for char in ['.', '-']) and
+                not symbol.endswith('F')):  # Avoid foreign stocks
                 filtered_symbols.append(symbol)
 
-        print(f"📊 Final optionable high-volume stocks: {len(filtered_symbols)}")
+        print(f"📊 Filtered from {len(symbols)} to {len(filtered_symbols)} quality optionable symbols")
+        print(f"🎯 Optimized for your API limits: 2 discovery calls + efficient bulk processing")
+
         return filtered_symbols
-    
-    def _get_high_volume_liquid_stocks(self) -> List[str]:
-        """
-        Get stocks with high volume and liquidity using Alpha Vantage
-        """
-        high_volume_stocks = []
-        
-        try:
-            # Use Alpha Vantage TOP_GAINERS_LOSERS which includes volume data
-            url = f'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey={self.av_key}'
-            response = requests.get(url, timeout=30)
-            data = response.json()
-            
-            print(f"🔍 Analyzing Alpha Vantage data for high-volume stocks...")
-            
-            # Priority 1: Most actively traded (highest volume)
-            min_vol = self.scan_config.get('stock_min_volume', 1_000_000)
-
-            if 'most_actively_traded' in data:
-                for item in data['most_actively_traded']:
-                    symbol = item['ticker']
-                    volume = int(item.get('volume', 0))
-
-                    # Filter for high volume stocks using configurable threshold
-                    if (volume >= min_vol and
-                        self._is_likely_optionable_stock(symbol)):
-                        high_volume_stocks.append(symbol)
-                        print(f"   📊 {symbol}: {volume:,} volume")
-            
-            # Priority 2: Top gainers with high volume
-            if 'top_gainers' in data:
-                for item in data['top_gainers']:
-                    symbol = item['ticker']
-                    volume = int(item.get('volume', 0))
-                    change_pct = float(item.get('change_percent', '0%').replace('%', ''))
-
-                    if (volume >= min_vol / 2 and
-                        change_pct >= 2.0 and
-                        symbol not in high_volume_stocks and
-                        self._is_likely_optionable_stock(symbol)):
-                        high_volume_stocks.append(symbol)
-                        print(f"   📈 {symbol}: {volume:,} volume, +{change_pct}%")
-            
-            # Priority 3: Top losers with high volume (potential reversal plays)
-            if 'top_losers' in data:
-                for item in data['top_losers']:
-                    symbol = item['ticker']
-                    volume = int(item.get('volume', 0))
-                    change_pct = abs(float(item.get('change_percent', '0%').replace('%', '')))
-
-                    if (volume >= min_vol / 2 and
-                        change_pct >= 3.0 and
-                        symbol not in high_volume_stocks and
-                        self._is_likely_optionable_stock(symbol)):
-                        high_volume_stocks.append(symbol)
-                        print(f"   📉 {symbol}: {volume:,} volume, -{change_pct}%")
-            
-            print(f"✅ Found {len(high_volume_stocks)} high-volume liquid stocks")
-            
-        except Exception as e:
-            print(f"⚠️ Error fetching high-volume stocks: {e}")
-            # Fallback to known high-volume optionable stocks
-            high_volume_stocks = [
-                'SPY', 'QQQ', 'AAPL', 'MSFT', 'NVDA', 'TSLA', 'AMD', 'META', 'AMZN', 'GOOGL',
-                'JPM', 'BAC', 'WFC', 'XOM', 'CVX', 'PFE', 'JNJ', 'KO', 'PEP', 'WMT'
-            ]
-        
-        # Add core high-volume ETFs and stocks if not already included
-        core_high_volume = [
-            'SPY', 'QQQ', 'IWM', 'AAPL', 'MSFT', 'NVDA', 'TSLA', 'AMD', 'META', 'AMZN'
-        ]
-        for symbol in core_high_volume:
-            if symbol not in high_volume_stocks:
-                high_volume_stocks.append(symbol)
-        
-        return high_volume_stocks
-    
-    def _get_unusual_volume_stocks(self) -> List[str]:
-        """
-        Get stocks with unusual volume spikes (for unusual_activity scan)
-        """
-        # This would ideally compare current volume to 20-day average
-        # For now, get the most actively traded from Alpha Vantage
-        try:
-            url = f'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey={self.av_key}'
-            response = requests.get(url, timeout=30)
-            data = response.json()
-            
-            unusual_stocks = []
-            if 'most_actively_traded' in data:
-                for item in data['most_actively_traded'][:50]:  # Top 50
-                    symbol = item['ticker']
-                    if self._is_likely_optionable_stock(symbol):
-                        unusual_stocks.append(symbol)
-            
-            return unusual_stocks
-            
-        except:
-            # Fallback to stocks known for unusual activity
-            return ['TSLA', 'NVDA', 'AMD', 'GME', 'AMC', 'PLTR', 'COIN', 'HOOD', 'SPY', 'QQQ']
-    
-    def _is_likely_optionable_stock(self, symbol: str) -> bool:
-        """
-        Check if a stock is likely to have options
-        """
-        if not symbol or len(symbol) < 1:
-            return False
-        
-        # Length check
-        if len(symbol) > 5:
-            return False
-        
-        # Must be alphabetic (with some exceptions for dashes)
-        if not symbol.replace('-', '').isalpha():
-            return False
-        
-        # Exclude obvious non-optionable patterns
-        exclude_endings = ['F', 'WS', 'WT', 'RT', 'UN']
-        for ending in exclude_endings:
-            if symbol.endswith(ending):
-                return False
-        
-        # Exclude if contains numbers (often warrants)
-        if any(char.isdigit() for char in symbol):
-            return False
-        
-        return True
-
-    def _is_optionable(self, symbol: str) -> bool:
-        """Check if a symbol has listed options via yfinance"""
-        try:
-            return bool(yf.Ticker(symbol).options)
-        except Exception:
-            return False
-
-    def _get_critical_earnings_plays(self) -> List[Tuple[str, int]]:
-        """Get stocks reporting earnings in next 0-7 days with exact timing"""
-        try:
-            print(f"🔍 Fetching CRITICAL earnings calendar (next 7 days)...")
-            url = f'https://www.alphavantage.co/query?function=EARNINGS_CALENDAR&horizon=3month&apikey={self.av_key}'
-            response = requests.get(url, timeout=30)
-
-            lines = response.text.strip().split('\n')
-            if len(lines) < 2:
-                print(f"❌ No earnings calendar data received, using fallback")
-                return self._get_fallback_earnings_candidates()
-
-            headers = lines[0].split(',')
-            symbol_idx = headers.index('symbol') if 'symbol' in headers else 0
-            date_idx = headers.index('reportDate') if 'reportDate' in headers else 1
-
-            current_date = datetime.now().date()
-            critical_earnings = []
-
-            print(f"📅 Current date: {current_date}")
-            print(f"🔍 Scanning earnings calendar for reports in next 21 days...")
-
-            # Parse ALL earnings data first
-            all_earnings = []
-            for line in lines[1:]:
-                try:
-                    fields = line.split(',')
-                    if len(fields) < max(symbol_idx + 1, date_idx + 1):
-                        continue
-                        
-                    symbol = fields[symbol_idx].strip().strip('"')
-                    earnings_date_str = fields[date_idx].strip().strip('"')
-
-                    if not symbol or not earnings_date_str:
-                        continue
-
-                    earnings_date = datetime.strptime(earnings_date_str, '%Y-%m-%d').date()
-                    days_to_earnings = (earnings_date - current_date).days
-
-                    # Include earnings up to 21 days out
-                    if 0 <= days_to_earnings <= 21:
-                        if (len(symbol) <= 5 and symbol.replace('-', '').replace('.', '').isalpha() 
-                            and not symbol.endswith('F') and symbol not in ['TEST', 'HALT']):
-                            all_earnings.append((symbol, days_to_earnings, earnings_date))
-                            
-                            if days_to_earnings <= 7:
-                                print(f"   🔥 CRITICAL: {symbol} reports in {days_to_earnings} days ({earnings_date})")
-                            elif days_to_earnings <= 14:
-                                print(f"   📈 HIGH: {symbol} reports in {days_to_earnings} days ({earnings_date})")
-
-                except Exception as e:
-                    continue
-
-            print(f"📊 Total earnings found in next 21 days: {len(all_earnings)}")
-
-            # Sort by urgency and select best candidates
-            all_earnings.sort(key=lambda x: x[1])  # Sort by days to earnings
-            
-            # Return tuples of (symbol, days_to_earnings)
-            critical_earnings = [(sym, days) for sym, days, _ in all_earnings]
-            
-            print(f"✅ Found {len(critical_earnings)} earnings candidates")
-            return critical_earnings
-
-        except Exception as e:
-            print(f"❌ Critical earnings fetch failed: {e}")
-            return self._get_fallback_earnings_candidates()
-
-    def _get_fallback_earnings_candidates(self) -> List[Tuple[str, int]]:
-        """Fallback earnings candidates when API fails"""
-        # Use common stocks that often have earnings and high options volume
-        fallback_stocks = [
-            'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'META', 'NVDA', 'AMD', 'NFLX', 'CRM',
-            'COIN', 'HOOD', 'PLTR', 'RIVN', 'LCID', 'SOFI', 'GME', 'AMC', 'BB',
-            'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'XOM', 'CVX', 'COP', 'HAL'
-        ]
-        
-        # Assign random days (1-14) to simulate upcoming earnings
-        import random
-        fallback_earnings = []
-        for symbol in fallback_stocks[:20]:  # Top 20
-            days = random.randint(1, 14)
-            fallback_earnings.append((symbol, days))
-            
-        print(f"🔄 Using {len(fallback_earnings)} fallback earnings candidates")
-        return fallback_earnings
 
     def _get_pre_earnings_stocks(self) -> List[str]:
-        """Get stocks with upcoming earnings (broader 21-day window)"""
+        """Get stocks with upcoming earnings"""
         try:
             url = f'https://www.alphavantage.co/query?function=EARNINGS_CALENDAR&horizon=3month&apikey={self.av_key}'
             response = requests.get(url, timeout=30)
 
             lines = response.text.strip().split('\n')
             if len(lines) < 2:
-                print(f"⚠️ No earnings calendar data, using comprehensive fallback")
-                return self._get_comprehensive_fallback_stocks()
+                return []
 
             headers = lines[0].split(',')
             symbol_idx = headers.index('symbol') if 'symbol' in headers else 0
@@ -740,14 +487,9 @@ class ExplosiveOptionsScanner:
             current_date = datetime.now().date()
             earnings_stocks = []
 
-            print(f"📋 Processing earnings calendar for broader search...")
-
             for line in lines[1:]:
                 try:
                     fields = line.split(',')
-                    if len(fields) < max(symbol_idx + 1, date_idx + 1):
-                        continue
-                        
                     symbol = fields[symbol_idx].strip().strip('"')
                     earnings_date_str = fields[date_idx].strip().strip('"')
 
@@ -756,103 +498,43 @@ class ExplosiveOptionsScanner:
                         days_to_earnings = (earnings_date - current_date).days
 
                         if 0 <= days_to_earnings <= 21:
-                            # More inclusive filtering
-                            if (len(symbol) <= 6 and 
-                                symbol.replace('-', '').replace('.', '').isalpha() and 
-                                not symbol.endswith(('F', 'WS', 'WT', 'RT'))):
-                                earnings_stocks.append(symbol)
+                            earnings_stocks.append(symbol)
                 except:
                     continue
 
-            # Remove duplicates
-            earnings_stocks = list(dict.fromkeys(earnings_stocks))
-            
-            print(f"📊 Found {len(earnings_stocks)} pre-earnings stocks")
-            
-            # If we found very few, add fallback stocks
-            if len(earnings_stocks) < 20:
-                fallback_stocks = self._get_comprehensive_fallback_stocks()
-                for stock in fallback_stocks:
-                    if stock not in earnings_stocks:
-                        earnings_stocks.append(stock)
-                        
-                print(f"🔄 Enhanced with fallback stocks, total: {len(earnings_stocks)}")
-
             return earnings_stocks
 
-        except Exception as e:
-            print(f"⚠️ Earnings discovery failed: {e}, using fallback")
-            return self._get_comprehensive_fallback_stocks()
-
-    def _get_comprehensive_fallback_stocks(self) -> List[str]:
-        """Comprehensive fallback for when earnings discovery fails"""
-        return [
-            # Tech mega caps (frequent earnings and high options volume)
-            'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'META', 'NVDA', 'AMD', 'NFLX', 'CRM',
-            'ADBE', 'ORCL', 'IBM', 'INTC', 'QCOM', 'TXN', 'AVGO', 'MU', 'AMAT',
-            
-            # Growth/Meme stocks (high volatility around earnings)
-            'COIN', 'HOOD', 'PLTR', 'RIVN', 'LCID', 'SOFI', 'GME', 'AMC', 'BB', 'NKLA',
-            'SPCE', 'DKNG', 'PINS', 'SNAP', 'TWTR', 'ROKU', 'SQ', 'PYPL', 'UBER', 'LYFT',
-            
-            # Finance (quarterly earnings cycles)
-            'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'USB', 'PNC', 'COF', 'AXP',
-            
-            # Energy (volatile earnings)
-            'XOM', 'CVX', 'COP', 'EOG', 'SLB', 'HAL', 'OXY', 'MPC', 'VLO', 'PSX',
-            
-            # Healthcare/Biotech (FDA approvals and earnings)
-            'JNJ', 'PFE', 'UNH', 'ABBV', 'LLY', 'MRK', 'TMO', 'ABT', 'DHR', 'BMY',
-            'MRNA', 'BNTX', 'GILD', 'BIIB', 'REGN', 'VRTX', 'ILMN',
-            
-            # Consumer stocks
-            'WMT', 'HD', 'COST', 'TGT', 'LOW', 'SBUX', 'NKE', 'MCD', 'DIS', 'KO'
-        ]
+        except:
+            return ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA']  # Fallback
 
     def _get_top_movers(self) -> List[str]:
-        """Get top gainers, losers, and most active - PRIORITIZE HIGHEST VOLUME"""
+        """Get top gainers, losers, and most active"""
         try:
             url = f'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey={self.av_key}'
             response = requests.get(url, timeout=30)
             data = response.json()
 
-            # PRIORITIZE most actively traded (highest volume) first
-            priority_symbols = []
-            if 'most_actively_traded' in data:
-                for item in data['most_actively_traded']:
-                    symbol = item['ticker']
-                    if (len(symbol) <= 4 and 
-                        symbol.isalpha() and 
-                        not symbol.endswith('F') and 
-                        not any(char in symbol for char in ['.', '-'])):
-                        priority_symbols.append(symbol)
-
-            # Then add gainers and losers
-            other_symbols = []
-            for category in ['top_gainers', 'top_losers']:
+            all_symbols = []
+            for category in ['top_gainers', 'top_losers', 'most_actively_traded']:
                 if category in data:
-                    for item in data[category]:
-                        symbol = item['ticker']
-                        if (len(symbol) <= 4 and 
-                            symbol.isalpha() and 
-                            not symbol.endswith('F') and 
-                            not any(char in symbol for char in ['.', '-']) and
-                            symbol not in priority_symbols):
-                            other_symbols.append(symbol)
+                    symbols = [item['ticker'] for item in data[category]]
+                    all_symbols.extend(symbols)
 
-            # Return most active first, then others
-            all_symbols = priority_symbols + other_symbols
-            return list(dict.fromkeys(all_symbols))  # Remove duplicates while preserving order
+            # Filter for quality US symbols only
+            filtered_symbols = []
+            for symbol in all_symbols:
+                # Skip foreign/OTC symbols (> 4 chars, contains dots/dashes, ends with F)
+                if (len(symbol) <= 4 and 
+                    symbol.isalpha() and 
+                    not symbol.endswith('F') and 
+                    not any(char in symbol for char in ['.', '-'])):
+                    filtered_symbols.append(symbol)
+
+            return list(set(filtered_symbols))
 
         except:
-            # Enhanced fallback with known high-volume options stocks
-            return [
-                # Highest volume options
-                'SPY', 'QQQ', 'AAPL', 'TSLA', 'NVDA', 'AMD', 'META', 'AMZN', 'MSFT', 'GOOGL',
-                # Additional high-volume options stocks
-                'IWM', 'XLF', 'XLE', 'XLK', 'SOXL', 'TQQQ', 'SQQQ', 'GLD', 'SLV', 'USO',
-                'NFLX', 'CRM', 'JPM', 'BAC', 'WFC', 'XOM', 'CVX', 'PFE', 'JNJ', 'UNH'
-            ]
+            # Fallback to high-volume stocks
+            return ['SPY', 'QQQ', 'AAPL', 'TSLA', 'NVDA', 'AMD', 'META', 'AMZN']
 
     def _get_unusual_activity_stocks(self) -> List[str]:
         """Get stocks with unusual options activity"""
@@ -861,88 +543,64 @@ class ExplosiveOptionsScanner:
         return ['TSLA', 'NVDA', 'AMD', 'SPY', 'QQQ', 'AAPL', 'GME', 'AMC']
 
     def _fetch_bulk_market_data(self, symbols: List[str]) -> Dict[str, Dict]:
-        """Fetch market data efficiently using Alpha Vantage REALTIME_BULK_QUOTES"""
+        """Fetch market data efficiently using your upgraded Alpha Vantage plan"""
         bulk_data = {}
 
-        print(f"📊 Processing {len(symbols)} symbols using Alpha Vantage REALTIME_BULK_QUOTES API...")
+        print(f"📊 Processing {len(symbols)} symbols using REALTIME_BULK_QUOTES API...")
+        print(f"🔑 Using API key: {self.av_key[:8]}...{self.av_key[-4:] if len(self.av_key) > 12 else 'INVALID'}")
+        print(f"⚡ Rate limit: 150 requests/minute (upgraded plan)")
 
-        # Process in chunks of 100 (Alpha Vantage bulk limit)
+        # Process symbols in chunks of 100 (API limit) with optimized timing
+        chunk_delay = 0.4  # 150 requests/min = 1 request every 0.4 seconds
+
         for i in range(0, len(symbols), 100):
             chunk = symbols[i:i+100]
             print(f"📊 Processing chunk {i//100 + 1}: symbols {i+1}-{min(i+100, len(symbols))}")
             symbol_string = ','.join(chunk)
 
             try:
-                self._track_api_call()
+                start_time = time.time()
+
                 url = f'https://www.alphavantage.co/query?function=REALTIME_BULK_QUOTES&symbol={symbol_string}&apikey={self.av_key}'
                 response = requests.get(url, timeout=30)
                 data = response.json()
 
-                # Check for API issues
-                if 'Information' in data:
-                    print(f"⚠️ Alpha Vantage API info: {data['Information']}")
-                    # Don't fallback immediately, continue with other chunks
+                print(f"📊 API Response Status: {response.status_code}")
+
+                if 'Information' in data and 'rate limit' in data['Information'].lower():
+                    print(f"⏳ Rate limit reached - waiting 60 seconds...")
+                    time.sleep(60)
                     continue
 
                 if 'Error Message' in data:
                     print(f"❌ Bulk quotes error: {data['Error Message']}")
                     continue
 
-                # Process the bulk response using existing function
-                from immediate_fixes import process_alpha_vantage_bulk_response
-                chunk_data = process_alpha_vantage_bulk_response(data)
+                if 'Information' in data and ('premium' in data.get('Information', '').lower() or 'upgrade' in data.get('Information', '').lower()):
+                    print(f"❌ API access issue: {data['Information']}")
+                    continue
 
-                if chunk_data:
-                    bulk_data.update(chunk_data)
-                    print(f"✅ Processed {len(chunk_data)} symbols from chunk {i//100 + 1}")
+                # Process successful response
+                parsed = process_alpha_vantage_bulk_response(data)
+                bulk_data.update(parsed)
+                print(f"✅ Successfully parsed {len(parsed)} symbols from chunk {i//100 + 1}")
 
-                # Rate limiting delay between chunks
-                if i + 100 < len(symbols):
-                    time.sleep(1)  # 1 second delay
+                # Rate limiting - ensure we don't exceed 150 requests/minute
+                elapsed = time.time() - start_time
+                if elapsed < chunk_delay and i + 100 < len(symbols):
+                    sleep_time = chunk_delay - elapsed
+                    print(f"⏱️ Rate limiting: sleeping {sleep_time:.2f}s")
+                    time.sleep(sleep_time)
 
             except Exception as e:
                 print(f"❌ Error fetching bulk data for chunk {i//100 + 1}: {e}")
                 continue
 
-        print(f"✅ Successfully fetched Alpha Vantage bulk data for {len(bulk_data)} symbols")
-        return bulk_data
-
-    def _fetch_bulk_data_yahoo(self, symbols: List[str]) -> Dict[str, Dict]:
-        """Fallback bulk data fetching using Yahoo Finance"""
-        bulk_data = {}
-
-        print(f"📊 Fetching bulk data via Yahoo Finance for {len(symbols)} symbols...")
-
-        for symbol in symbols[:100]:  # Limit to avoid overloading
-            try:
-                import yfinance as yf
-                ticker = yf.Ticker(symbol)
-                hist = ticker.history(period="2d")
-
-                if hist.empty:
-                    continue
-
-                latest = hist.iloc[-1]
-                prev = hist.iloc[-2] if len(hist) > 1 else latest
-
-                change_percent = ((latest['Close'] - prev['Close']) / prev['Close']) * 100
-
-                bulk_data[symbol] = {
-                    'current_price': float(latest['Close']),
-                    'high': float(latest['High']),
-                    'low': float(latest['Low']),
-                    'volume': int(latest['Volume']),
-                    'change_percent': float(change_percent)
-                }
-
-            except Exception:
-                continue
-
-        print(f"✅ Yahoo Finance bulk data: {len(bulk_data)} symbols")
+        print(f"✅ Successfully fetched bulk data for {len(bulk_data)} symbols")
         return bulk_data
 
     def _fetch_enhanced_market_data(self, symbol: str) -> Optional[Dict]:
-        """Fetch comprehensive market data for a symbol using Alpha Vantage for stock quotes"""
+        """Fetch comprehensive market data for a symbol using cached bulk data or individual call"""
         try:
             # Check if we have cached bulk data for this symbol
             if hasattr(self, '_bulk_market_cache') and symbol in self._bulk_market_cache:
@@ -952,8 +610,8 @@ class ExplosiveOptionsScanner:
                 change_percent = abs(base_data.get('change_percent', 0))
                 volatility = max(change_percent * 10, 25.0)  # Estimate volatility
 
-                # Get earnings info (but skip if rate limited)
-                earnings_info = self._get_earnings_info_cached(symbol)
+                # Get earnings info
+                earnings_info = self._get_earnings_info(symbol)
 
                 return {
                     'symbol': symbol,
@@ -969,127 +627,78 @@ class ExplosiveOptionsScanner:
                     'low': base_data.get('low', 0)
                 }
 
-            # Use Alpha Vantage for individual stock quotes (PHASE 2)
-            print(f"📊 Using Alpha Vantage for {symbol} stock quote (PHASE 2)")
-            
-            try:
-                self._track_api_call()
-                url = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={self.av_key}'
-                response = requests.get(url, timeout=15)
-                data = response.json()
+            # Fallback to individual API call if not in cache
+            print(f"⚠️ Using individual API call for {symbol} (not in bulk cache)")
 
-                if 'Global Quote' in data:
-                    quote = data['Global Quote']
-                    current_price = float(quote.get('05. price', 0))
-                    change_percent = float(quote.get('10. change percent', '0%').replace('%', ''))
-                    high = float(quote.get('03. high', 0))
-                    low = float(quote.get('04. low', 0))
-                    volume = int(quote.get('06. volume', 0))
-                    
-                    # Calculate volatility estimate
-                    price_range = high - low
-                    volatility = max((price_range / current_price) * 100 * 16, 25.0) if current_price > 0 else 25.0
+            # Fetch daily data from Alpha Vantage
+            url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=compact&apikey={self.av_key}'
+            response = requests.get(url, timeout=15)
+            data = response.json()
 
-                    # Get earnings info
-                    earnings_info = self._get_earnings_info_cached(symbol)
-
-                    return {
-                        'symbol': symbol,
-                        'current_price': current_price,
-                        'volatility_30d': volatility,
-                        'market_cap': 0,  # Would need separate API call
-                        'sector': 'Unknown',  # Would need separate API call
-                        'beta': 1.0,  # Default
-                        'earnings_info': earnings_info,
-                        'volume_avg': volume,
-                        'change_percent': change_percent,
-                        'high': high,
-                        'low': low
-                    }
-                else:
-                    print(f"❌ Alpha Vantage quote failed for {symbol}: {data}")
-                    
-            except Exception as av_error:
-                print(f"❌ Alpha Vantage error for {symbol}: {av_error}")
-
-            # Only use Yahoo Finance as last resort fallback
-            print(f"📊 Yahoo Finance fallback for {symbol} (AV failed)")
-
-            try:
-                import yfinance as yf
-                ticker = yf.Ticker(symbol)
-                info = ticker.info
-                hist = ticker.history(period="30d")
-
-                if hist.empty:
-                    return None
-
-                current_price = float(hist['Close'][-1])
-
-                # Calculate volatility
-                returns = hist['Close'].pct_change().dropna()
-                volatility = returns.std() * np.sqrt(252) * 100 if len(returns) > 1 else 25.0
-
-                return {
-                    'symbol': symbol,
-                    'current_price': current_price,
-                    'volatility_30d': volatility,
-                    'market_cap': info.get('marketCap', 0),
-                    'sector': info.get('sector', 'Unknown'),
-                    'beta': info.get('beta', 1.0),
-                    'earnings_info': {'is_pre_earnings': False, 'days_to_earnings': None, 'earnings_multiplier': 1.0},
-                    'volume_avg': float(hist['Volume'].mean()) if not hist['Volume'].empty else 0,
-                    'change_percent': float(returns[-1] * 100) if len(returns) > 0 else 0,
-                    'high': float(hist['High'][-1]),
-                    'low': float(hist['Low'][-1])
-                }
-            except Exception as yf_error:
-                print(f"❌ Yahoo Finance fallback failed for {symbol}: {yf_error}")
+            if 'Information' in data and 'premium@alphavantage.co' in data['Information']:
+                print(f"⏳ API quota exceeded for {symbol}")
                 return None
 
+            if 'Information' in data and 'rate limit' in data['Information'].lower():
+                print(f"⏳ Rate limit reached for {symbol} - waiting...")
+                time.sleep(60)
+                return None
+
+            if 'Error Message' in data:
+                print(f"Alpha Vantage error for {symbol}: {data['Error Message']}")
+                return None
+
+            if 'Time Series (Daily)' not in data:
+                return None
+
+            # Parse price data
+            price_data = data['Time Series (Daily)']
+            if not price_data:
+                return None
+
+            # Get recent prices
+            dates = sorted(price_data.keys(), reverse=True)
+            latest_data = price_data[dates[0]]
+            current_price = float(latest_data['4. close'])
+
+            # Calculate 30-day volatility
+            prices = []
+            for date in dates[:30]:  # Last 30 days
+                prices.append(float(price_data[date]['4. close']))
+
+            if len(prices) > 1:
+                returns = np.diff(prices) / prices[:-1]
+                volatility = np.std(returns) * np.sqrt(252) * 100
+            else:
+                volatility = 25.0  # Default volatility
+
+            # Get earnings info from Alpha Vantage earnings calendar
+            earnings_info = self._get_earnings_info(symbol)
+
+            return {
+                'symbol': symbol,
+                'current_price': current_price,
+                'volatility_30d': volatility,
+                'market_cap': 0,
+                'sector': 'Unknown',
+                'beta': 1.0,
+                'earnings_info': earnings_info,
+                'volume_avg': 0
+            }
+
         except Exception as e:
-            print(f"❌ Error fetching market data for {symbol}: {e}")
+            print(f"Error fetching market data for {symbol}: {e}")
             return None
 
-    def _get_earnings_info_cached(self, symbol: str) -> Dict:
-        """Get earnings info with caching to avoid rate limits"""
-        # Use cached earnings data if available
-        if hasattr(self, '_earnings_cache') and symbol in self._earnings_cache:
-            return self._earnings_cache[symbol]
-
-        # For earnings scans, assume many stocks are pre-earnings to allow through more candidates
-        # This is more permissive than the previous version
-        high_priority_stocks = [
-            'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'META', 'NVDA', 'AMD', 'NFLX', 'CRM',
-            'COIN', 'HOOD', 'PLTR', 'RIVN', 'LCID', 'SOFI', 'GME', 'AMC', 'MRNA', 'BNTX'
-        ]
-        
-        if symbol in high_priority_stocks:
-            # Assume these might have earnings soon with higher multiplier
-            return {
-                'is_pre_earnings': True, 
-                'days_to_earnings': 7,  # Assume within a week
-                'earnings_multiplier': 2.0,
-                'earnings_priority': 'HIGH'
-            }
-        
-        # Default for other stocks - still mark as potential pre-earnings
-        return {
-            'is_pre_earnings': True,  # More permissive 
-            'days_to_earnings': 14, 
-            'earnings_multiplier': 1.5,
-            'earnings_priority': 'MEDIUM'
-        }
-
     def _get_earnings_info(self, symbol: str) -> Dict:
-        """Get earnings information with CRITICAL timing priority"""
+        """Get earnings information from Alpha Vantage"""
         try:
             url = f'https://www.alphavantage.co/query?function=EARNINGS_CALENDAR&horizon=3month&apikey={self.av_key}'
             response = requests.get(url, timeout=30)
 
             lines = response.text.strip().split('\n')
             if len(lines) < 2:
-                return {'is_pre_earnings': False, 'days_to_earnings': None, 'earnings_multiplier': 1.0}
+                return {'is_pre_earnings': False, 'days_to_earnings': None}
 
             headers = lines[0].split(',')
             symbol_idx = headers.index('symbol') if 'symbol' in headers else 0
@@ -1107,64 +716,21 @@ class ExplosiveOptionsScanner:
                         earnings_date = datetime.strptime(earnings_date_str, '%Y-%m-%d').date()
                         days_to_earnings = (earnings_date - current_date).days
 
-                        # MASSIVE scoring bonuses for imminent earnings
-                        if days_to_earnings <= 1:
-                            earnings_multiplier = 3.0  # 300% bonus for tomorrow/today
-                            priority = 'NUCLEAR'
-                        elif days_to_earnings <= 3:
-                            earnings_multiplier = 2.5  # 250% bonus for this week
-                            priority = 'CRITICAL'
-                        elif days_to_earnings <= 7:
-                            earnings_multiplier = 2.0  # 200% bonus for next week
-                            priority = 'HIGH'
-                        elif days_to_earnings <= 14:
-                            earnings_multiplier = 1.5  # 150% bonus for 2 weeks
-                            priority = 'MEDIUM'
-                        elif days_to_earnings <= 21:
-                            earnings_multiplier = 1.2  # 120% bonus for 3 weeks
-                            priority = 'LOW'
-                        else:
-                            earnings_multiplier = 1.0
-                            priority = 'NONE'
-
                         return {
                             'is_pre_earnings': 0 <= days_to_earnings <= 21,
                             'days_to_earnings': days_to_earnings,
-                            'earnings_priority': priority,
-                            'earnings_multiplier': earnings_multiplier,
-                            'earnings_date': earnings_date.strftime('%Y-%m-%d'),
-                            'urgency_level': 'IMMEDIATE' if days_to_earnings <= 3 else 'HIGH' if days_to_earnings <= 7 else 'NORMAL'
+                            'earnings_priority': 'critical' if days_to_earnings <= 3 else 'high' if days_to_earnings <= 7 else 'medium'
                         }
                 except:
                     continue
 
-            return {
-                'is_pre_earnings': False, 
-                'days_to_earnings': None, 
-                'earnings_multiplier': 1.0,
-                'earnings_priority': 'NONE'
-            }
+            return {'is_pre_earnings': False, 'days_to_earnings': None}
 
         except:
-            return {
-                'is_pre_earnings': False, 
-                'days_to_earnings': None, 
-                'earnings_multiplier': 1.0,
-                'earnings_priority': 'NONE'
-            }
+            return {'is_pre_earnings': False, 'days_to_earnings': None}
 
     def _fetch_all_options(self, symbol: str) -> Optional[pd.DataFrame]:
-        """Fetch options data using ONLY Yahoo Finance as requested"""
-        try:
-            print(f"📊 Using Yahoo Finance for {symbol} options")
-            return self._fetch_yahoo_options(symbol)
-
-        except Exception as e:
-            print(f"❌ Error fetching options for {symbol}: {e}")
-            return None
-
-    def _fetch_all_options_av_first(self, symbol: str) -> Optional[pd.DataFrame]:
-        """Original method - keeping as backup"""
+        """Fetch options data using Alpha Vantage historical + Yahoo Finance realtime"""
         try:
             # FIRST: Try Alpha Vantage historical options (you have access)
             print(f"📊 Fetching Alpha Vantage historical options for {symbol}...")
@@ -1172,8 +738,8 @@ class ExplosiveOptionsScanner:
             response = requests.get(url, timeout=15)
             data = response.json()
 
-            if 'Information' in data:
-                print(f"⏳ Alpha Vantage rate limit/info - falling back to Yahoo Finance for {symbol}")
+            if 'Information' in data and 'rate limit' in data['Information'].lower():
+                print(f"⏳ Alpha Vantage rate limit - falling back to Yahoo Finance for {symbol}")
                 return self._fetch_yahoo_options(symbol)
 
             if 'Error Message' in data:
@@ -1362,62 +928,49 @@ class ExplosiveOptionsScanner:
         try:
             import yfinance as yf
 
+            print(f"🌐 Fetching Yahoo Finance options for {symbol}...")
             ticker = yf.Ticker(symbol)
 
-            # Get available expiration dates with better error handling
+            # Get available expiration dates
             try:
                 expirations = ticker.options
-                if not expirations or len(expirations) == 0:
+                if not expirations:
+                    print(f"❌ No options available for {symbol} on Yahoo Finance")
                     return None
-            except Exception:
+            except Exception as e:
+                print(f"❌ Error getting expiration dates for {symbol}: {e}")
                 return None
 
-            # Fetch options data for limited expirations to avoid rate limits
+            # Fetch options data for all available expirations (limit to first 4 for performance)
             all_options = []
-            valid_expirations = 0
-
-            for exp_date in expirations[:3]:  # Only first 3 expirations
+            for exp_date in expirations[:4]:  # Limit to avoid too many calls
                 try:
                     option_chain = ticker.option_chain(exp_date)
 
-                    # Validate we got actual data
-                    if option_chain.calls.empty and option_chain.puts.empty:
-                        continue
-
                     # Process calls
-                    if not option_chain.calls.empty:
-                        calls = option_chain.calls.copy()
-                        calls['type'] = 'call'
-                        calls['expiration'] = exp_date
-                        calls['symbol'] = symbol
-                        all_options.append(calls)
+                    calls = option_chain.calls.copy()
+                    calls['type'] = 'call'
+                    calls['expiration'] = exp_date
+                    calls['symbol'] = symbol
 
                     # Process puts  
-                    if not option_chain.puts.empty:
-                        puts = option_chain.puts.copy()
-                        puts['type'] = 'put'
-                        puts['expiration'] = exp_date
-                        puts['symbol'] = symbol
-                        all_options.append(puts)
+                    puts = option_chain.puts.copy()
+                    puts['type'] = 'put'
+                    puts['expiration'] = exp_date
+                    puts['symbol'] = symbol
 
-                    valid_expirations += 1
+                    all_options.extend([calls, puts])
 
-                except Exception:
+                except Exception as e:
+                    print(f"⚠️ Error fetching {exp_date} options for {symbol}: {e}")
                     continue
 
-            if not all_options or valid_expirations == 0:
+            if not all_options:
+                print(f"❌ No valid options data found for {symbol}")
                 return None
 
             # Combine all options data
             df = pd.concat(all_options, ignore_index=True)
-
-            # Filter out options with no volume or very low volume
-            if 'volume' in df.columns:
-                df = df[df['volume'] > 0]
-
-            if df.empty:
-                return None
-
             print(f"✅ Yahoo Finance options found for {symbol}: {len(df)} contracts")
 
                 # Standardize Yahoo Finance columns to match Alpha Vantage format
@@ -1491,59 +1044,24 @@ class ExplosiveOptionsScanner:
             return None
 
     def _apply_filters(self, options_data: pd.DataFrame, filters: Dict) -> pd.DataFrame:
-        """Apply improved filters for better opportunity detection"""
+        """Apply filters to options data using safe helpers"""
         if options_data is None or options_data.empty:
             return pd.DataFrame()
 
         try:
             # First fix the data types to handle dictionary values
-            from immediate_fixes import fix_options_dataframe
             options_data = fix_options_dataframe(options_data)
 
-            # Apply smart volume/OI filtering
-            if 'volume' in options_data.columns and 'open_interest' in options_data.columns:
-                # Minimum liquidity thresholds
-                min_volume = max(50, filters.get('min_volume', 50))
-                min_oi = max(100, filters.get('min_oi', 100))
-                
-                # Filter for liquid options (both volume AND OI requirements)
-                liquid_options = options_data[
-                    (options_data['volume'] >= min_volume) & 
-                    (options_data['open_interest'] >= min_oi)
-                ]
-                
-                print(f"🔍 Liquidity filter: {len(options_data)} -> {len(liquid_options)} options (volume >={min_volume} AND OI >={min_oi})")
-                
-                # If too restrictive, relax to OR condition
-                if len(liquid_options) < 5:
-                    liquid_options = options_data[
-                        (options_data['volume'] >= min_volume) | 
-                        (options_data['open_interest'] >= min_oi)
-                    ]
-                    print(f"🔄 Relaxed filter: {len(liquid_options)} options (volume >={min_volume} OR OI >={min_oi})")
-                
-                # If still too few, use minimal requirements
-                if len(liquid_options) < 3:
-                    liquid_options = options_data[
-                        (options_data['volume'] > 10) | 
-                        (options_data['open_interest'] > 50)
-                    ]
-                    print(f"🔄 Minimal filter: {len(liquid_options)} options (any reasonable liquidity)")
-                
-                if not liquid_options.empty:
-                    options_data = liquid_options
-
-            # Apply core filters with smart defaults
-            from immediate_fixes import safe_apply_filters
+            # Then apply safe filters
             return safe_apply_filters(
                 options_data,
-                min_price=filters.get('min_price', 0.05),   # Minimum $0.05
-                max_price=filters.get('max_price', 5.00),   # Maximum $5.00
-                min_delta=filters.get('min_delta', 0.10),   # Minimum 0.10 delta
-                max_delta=filters.get('max_delta', 0.40),   # Maximum 0.40 delta for explosive potential
-                min_volume=0,  # Volume already filtered above
-                min_days=filters.get('min_days', 1),        # At least 1 day
-                max_days=filters.get('max_days', 30),       # Max 30 days
+                min_price=filters.get('min_price', 0.01),
+                max_price=filters.get('max_price', 10.0),
+                min_delta=filters.get('min_delta', 0.0),
+                max_delta=filters.get('max_delta', 1.0),
+                min_volume=filters.get('min_volume', 0),
+                min_days=filters.get('min_days', 0),
+                max_days=filters.get('max_days', 365),
             )
         except Exception as e:
             print(f"⚠️ Filtering error: {e}")
@@ -1766,34 +1284,18 @@ Opportunities Found: {len(results['opportunities'])}
         elif 0.15 <= implied_volatility < 0.20 or 0.50 < implied_volatility <= 0.60:
             volatility_score += 8
 
-        # Technical Score (Based on volume/open interest) - HEAVILY WEIGHTED
-        if volume > 500 and open_interest > 200:
-            technical_score += 25  # Excellent liquidity - massive bonus
-        elif volume > 200 and open_interest > 100:
-            technical_score += 18  # Very good liquidity
-        elif volume > 100 and open_interest > 50:
-            technical_score += 12  # Good liquidity
+        # Technical Score (Based on volume/open interest)
+        if volume > 100 and open_interest > 50:
+            technical_score += 10  # Good liquidity
         elif volume > 50 or open_interest > 25:
-            technical_score += 6   # Acceptable liquidity
-        else:
-            technical_score -= 10  # Penalize low liquidity
+            technical_score += 5
 
-        # Unusual Activity Score (Spikes in volume/OI) - ENHANCED
+        # Unusual Activity Score (Spikes in volume/OI)
         volume_oi_ratio = (volume / (open_interest + 1e-6))  # Avoid division by zero
-        
-        # High volume day bonus
-        if volume > 1000:
-            unusual_activity_score += 15  # Very high volume day
-        elif volume > 500:
-            unusual_activity_score += 10  # High volume day
-        
-        # Volume/OI ratio analysis
-        if volume_oi_ratio > 10:
-            unusual_activity_score += 20  # Massive unusual activity
-        elif volume_oi_ratio > 5:
-            unusual_activity_score += 15  # Significant activity
+        if volume_oi_ratio > 5:
+            unusual_activity_score += 18 # Significant activity
         elif volume_oi_ratio > 2:
-            unusual_activity_score += 8   # Moderate activity
+            unusual_activity_score += 10
 
         # IV Opportunity Score (High IV relative to historical)
         # This requires historical IV data - using a simple estimate for now
@@ -1867,30 +1369,6 @@ Opportunities Found: {len(results['opportunities'])}
         else:
             return "❌ AVOID - Poor risk/reward"
 
-    def _is_valid_options_symbol(self, symbol: str) -> bool:
-        """Pre-filter symbols that are unlikely to have active options"""
-        if not symbol or len(symbol) < 1 or len(symbol) > 5:
-            return False
-
-        # Skip symbols with numbers (often warrants/derivatives)
-        if any(char.isdigit() for char in symbol):
-            return False
-
-        # Skip symbols with special characters except common ones
-        if any(char in symbol for char in ['+', '=', '/', '@', '#', '&']):
-            return False
-
-        # Skip obvious penny stocks or OTC
-        if symbol.endswith(('F', 'PK', 'OB')):
-            return False
-
-        # Skip symbols that are too short or obviously problematic
-        problematic_patterns = ['TEST', 'HALT', 'SUSP']
-        if any(pattern in symbol.upper() for pattern in problematic_patterns):
-            return False
-
-        return True
-
     def _generate_trade_plan(self, option_data: Dict, market_data: Dict, score: float) -> Dict:
         """
         Generate an intelligent trade plan based on option data, market data, and calculated score.
@@ -1907,7 +1385,7 @@ Opportunities Found: {len(results['opportunities'])}
         }
 
         # 1. Entry Details
-        entry_price = option_data['mark']  # Use the mark price as the previous content.
+        entry_price = option_data['mark']  # Use the mark price as the entry
         plan['entry_details'] = {
             'entry_price': entry_price,
             'description': f"Enter position at mark price: ${entry_price:.2f}"
@@ -1946,7 +1424,7 @@ Opportunities Found: {len(results['opportunities'])}
         plan['risk_analysis'] = {
             'risk_per_share': risk_per_share,
             'max_risk': max_risk,
-'risk_description': f"Max risk per contract: ${risk_per_share:.2f}"
+            'risk_description': f"Max risk per contract: ${risk_per_share:.2f}"
         }
 
         # 5. Position Sizing (Determine Contracts)

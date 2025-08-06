@@ -92,9 +92,14 @@ class PerformanceTracker:
                 # Get current option price
                 current_price = self.get_current_option_price(symbol, option_details)
 
-                if current_price is not None:
-                    entry_price = option_details['entry_price']
-                    target_price = option_details['predicted_target']
+                if current_price is not None and current_price > 0:
+                    entry_price = float(option_details.get('entry_price', 0))
+                    target_price = float(option_details.get('predicted_target', 0))
+                    
+                    # Skip if entry price is invalid
+                    if entry_price <= 0:
+                        continue
+                        
                     stop_price = entry_price * 0.75  # Assuming 25% stop loss
 
                     # Calculate P&L
@@ -115,7 +120,7 @@ class PerformanceTracker:
                         track_data['max_loss'] = pnl_percent
 
                     # Check if target or stop hit
-                    if current_price >= target_price and not track_data['hit_target']:
+                    if target_price > 0 and current_price >= target_price and not track_data['hit_target']:
                         track_data['hit_target'] = True
                         track_data['target_hit_date'] = today
                         track_data['final_outcome'] = 'TARGET_HIT'
@@ -129,6 +134,9 @@ class PerformanceTracker:
 
                     track_data['days_tracked'] += 1
                     updated_count += 1
+                else:
+                    # Unable to get current price, increment days tracked but skip price updates
+                    track_data['days_tracked'] += 1
 
             except Exception as e:
                 print(f"Error updating {track_id}: {e}")
@@ -144,28 +152,51 @@ class PerformanceTracker:
         Get current option price using yfinance
         """
         try:
+            # Validate inputs first
+            if not symbol or not option_details:
+                return None
+                
+            strike = option_details.get('strike')
+            option_type = option_details.get('type', '').lower()
+            expiration = option_details.get('expiration')
+            
+            if not all([strike, option_type, expiration]):
+                return None
+                
             ticker = yf.Ticker(symbol)
-            expiration_date = pd.to_datetime(option_details['expiration']).strftime('%Y-%m-%d')
+            expiration_date = pd.to_datetime(expiration).strftime('%Y-%m-%d')
 
             # Get option chain
             options = ticker.option_chain(expiration_date)
+            
+            if options is None:
+                return None
 
-            if option_details['type'].lower() == 'call':
+            if option_type == 'call':
                 chain = options.calls
             else:
                 chain = options.puts
 
+            if chain is None or chain.empty:
+                return None
+
             # Find matching strike
-            strike = float(option_details['strike'])
-            matching_options = chain[chain['strike'] == strike]
+            strike_float = float(strike)
+            matching_options = chain[chain['strike'] == strike_float]
 
             if not matching_options.empty:
-                return float(matching_options.iloc[0]['lastPrice'])
+                last_price = matching_options.iloc[0]['lastPrice']
+                # Handle case where lastPrice might be None or NaN
+                if last_price is not None and not pd.isna(last_price) and last_price != '':
+                    try:
+                        return float(last_price)
+                    except (ValueError, TypeError):
+                        return None
 
             return None
 
         except Exception as e:
-            print(f"Error fetching option price for {symbol}: {e}")
+            print(f"Error fetching option price for {symbol} {option_details.get('strike')} {option_details.get('type')}: {e}")
             return None
 
     def calculate_performance_metrics(self):

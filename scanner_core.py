@@ -69,58 +69,40 @@ TIMEFRAMES = {
 
 def get_optionable_stocks_with_volume():
     """
-    TRUE dynamic symbol discovery from real market data sources.
-    Fetches fresh symbols every scan based on actual market activity.
+    Intelligent optionable stock discovery with real-time validation.
+    Only returns stocks with confirmed options availability and high liquidity.
     """
-    print("🔍 REAL-TIME DYNAMIC SYMBOL DISCOVERY...")
+    print("🔍 Discovering high-volume optionable stocks with intelligent filtering...")
 
-    all_symbols = []
-    
-    # Phase 1: Get REAL active stocks from Alpha Vantage TOP_GAINERS_LOSERS
-    print("📊 Fetching real-time market movers...")
-    av_symbols = fetch_real_market_movers()
-    
-    if not av_symbols:
-        print("❌ CRITICAL: No market movers found from Alpha Vantage!")
-        print("🔄 This indicates an API issue - check your Alpha Vantage key and quota")
-        return []
-    
-    all_symbols.extend(av_symbols)
-    print(f"✅ Found {len(av_symbols)} real market movers")
-    
-    # Phase 2: Get unusual volume stocks from Yahoo screener
-    print("📈 Fetching unusual volume stocks...")
-    volume_symbols = fetch_unusual_volume_stocks()
-    new_volume_symbols = [s for s in volume_symbols if s not in all_symbols]
-    all_symbols.extend(new_volume_symbols)
-    print(f"✅ Added {len(new_volume_symbols)} unusual volume stocks")
-    
-    # Phase 3: Get momentum stocks from technical screeners  
-    print("⚡ Fetching momentum breakout stocks...")
-    momentum_symbols = fetch_momentum_stocks()
-    new_momentum_symbols = [s for s in momentum_symbols if s not in all_symbols]
-    all_symbols.extend(new_momentum_symbols)
-    print(f"✅ Added {len(new_momentum_symbols)} momentum stocks")
-    
-    if not all_symbols:
-        print("❌ CRITICAL: No symbols found from any dynamic source!")
-        print("🔄 Check your API keys and network connectivity")
-        return []
-    
-    # Phase 4: Filter for optionable stocks only
-    print("🔍 Validating options availability...")
-    optionable_symbols = []
-    for symbol in all_symbols:
-        if is_likely_optionable(symbol):
-            optionable_symbols.append(symbol)
-    
-    # Remove duplicates while preserving order
-    optionable_symbols = list(dict.fromkeys(optionable_symbols))
-    
-    print(f"✅ DYNAMIC DISCOVERY COMPLETE: {len(optionable_symbols)} truly active optionable stocks")
-    print(f"📋 Today's dynamic symbols: {optionable_symbols[:20]}...")
-    
-    return optionable_symbols
+    validated_symbols = []
+
+    # Phase 1: Get explosive/high-momentum candidates
+    explosive_candidates = discover_explosive_optionable_stocks()
+    print(f"📈 Found {len(explosive_candidates)} explosive candidates")
+
+    # Phase 2: Get high-volume liquid stocks
+    liquid_candidates = discover_liquid_optionable_stocks()
+    print(f"💧 Found {len(liquid_candidates)} liquid candidates")
+
+    # Phase 3: Get proven performers from performance tracking
+    proven_candidates = get_proven_optionable_performers()
+    print(f"🏆 Found {len(proven_candidates)} proven performers")
+
+    # Combine all candidates
+    all_candidates = explosive_candidates + liquid_candidates + proven_candidates
+
+    # Phase 4: Validate options availability and liquidity
+    print("🔍 Validating options availability and liquidity...")
+    validated_symbols = validate_options_availability(all_candidates)
+
+    # Phase 5: Add core reliable symbols as backup
+    core_symbols = get_core_optionable_symbols()
+    for symbol in core_symbols:
+        if symbol not in validated_symbols:
+            validated_symbols.append(symbol)
+
+    print(f"✅ Final validated list: {len(validated_symbols)} high-quality optionable stocks")
+    return validated_symbols
 
 
 def filter_and_prioritize_symbols_dynamic(symbols):
@@ -237,191 +219,73 @@ def discover_news_driven_stocks():
         return []
 
 
-def fetch_real_market_movers():
-    """Fetch REAL market movers from Alpha Vantage - truly dynamic"""
+def fetch_alphavantage_filtered():
+    """Enhanced Alpha Vantage filtering prioritizing momentum and unusual activity"""
     api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
     if not api_key:
-        print("❌ No Alpha Vantage API key - cannot fetch real movers")
         return []
 
     url = f'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey={api_key}'
 
     try:
-        print(f"🔍 Fetching fresh market data from Alpha Vantage...")
         response = requests.get(url, timeout=30)
         data = response.json()
 
-        if 'Error Message' in data:
-            print(f"❌ Alpha Vantage API Error: {data['Error Message']}")
+        if 'Error Message' in data or 'Information' in data:
+            print(f"   Alpha Vantage API issue: {data.get('Error Message', data.get('Information', 'Unknown'))}")
             return []
-            
-        if 'Information' in data:
-            print(f"⚠️ Alpha Vantage API Info: {data['Information']}")
-            # Still try to process any data we got
-            
-        real_movers = []
-        current_date = datetime.now().strftime('%Y-%m-%d')
-        
-        print(f"📊 Processing live market data for {current_date}...")
-        
-        # Get REAL most actively traded stocks
+
+        # Get ALL symbols from all categories to maximize variety
+        all_fresh_symbols = []
+
+        # 1. Most actively traded (all that meet basic criteria)
         if 'most_actively_traded' in data:
-            print(f"  📈 Processing {len(data['most_actively_traded'])} most active stocks...")
             for item in data['most_actively_traded']:
                 symbol = item['ticker']
-                volume = float(item.get('volume', 0))
-                price = float(item.get('price', 0))
-                
-                # Only include stocks with significant activity TODAY
-                if volume > 100000 and price > 0.5:  # Lowered thresholds to get more stocks
-                    real_movers.append(symbol)
-                    print(f"    📊 ACTIVE: {symbol} - {volume:,.0f} volume, ${price:.2f}")
+                if is_likely_optionable(symbol):
+                    volume = float(item.get('volume', 0))
+                    # Lower threshold to get more variety
+                    if volume > 100000:  # Reduced from 1M
+                        all_fresh_symbols.append(symbol)
 
-        # Get REAL top gainers with momentum
+        # 2. Top gainers (all with reasonable movement)
         if 'top_gainers' in data:
-            print(f"  📈 Processing {len(data['top_gainers'])} top gainers...")
             for item in data['top_gainers']:
                 symbol = item['ticker']
-                change_pct = float(item.get('change_percent', '0%').replace('%', ''))
-                volume = float(item.get('volume', 0))
-                
-                if symbol not in real_movers and change_pct > 1.0 and volume > 50000:  # Lowered thresholds
-                    real_movers.append(symbol)
-                    print(f"    📈 GAINER: {symbol} +{change_pct:.1f}% on {volume:,.0f} volume")
+                if is_likely_optionable(symbol) and symbol not in all_fresh_symbols:
+                    change_pct = float(item.get('change_percent', '0%').replace('%', ''))
+                    volume = float(item.get('volume', 0))
+                    # Lower thresholds for more variety
+                    if change_pct > 2.0 and volume > 100000:  # Reduced thresholds
+                        all_fresh_symbols.append(symbol)
 
-        # Get REAL top losers (potential reversals)
+        # 3. Top losers (potential reversal plays)
         if 'top_losers' in data:
-            print(f"  📉 Processing {len(data['top_losers'])} top losers...")
             for item in data['top_losers']:
                 symbol = item['ticker']
-                change_pct = abs(float(item.get('change_percent', '0%').replace('%', '')))
-                volume = float(item.get('volume', 0))
-                
-                if symbol not in real_movers and change_pct > 2.0 and volume > 50000:  # Lowered thresholds
-                    real_movers.append(symbol)
-                    print(f"    📉 LOSER: {symbol} -{change_pct:.1f}% on {volume:,.0f} volume")
+                if is_likely_optionable(symbol) and symbol not in all_fresh_symbols:
+                    change_pct = abs(float(item.get('change_percent', '0%').replace('%', '')))
+                    volume = float(item.get('volume', 0))
+                    # Lower thresholds for oversold plays
+                    if change_pct > 3.0 and volume > 100000:  # Reduced thresholds
+                        all_fresh_symbols.append(symbol)
 
-        print(f"✅ Found {len(real_movers)} REAL market movers for {current_date}")
-        return real_movers
+        # Shuffle to randomize selection order and avoid always picking the same symbols
+        import random
+        random.shuffle(all_fresh_symbols)
+
+        print(f"   Filtered {len(all_fresh_symbols)} high-momentum symbols from Alpha Vantage")
+        return all_fresh_symbols  # Return all discovered symbols
 
     except Exception as e:
-        print(f"❌ Error fetching real market movers: {e}")
+        print(f"Alpha Vantage error: {e}")
         return []
 
 
-def fetch_unusual_volume_stocks():
-    """Fetch stocks with unusual volume using Yahoo Finance screener API"""
-    unusual_stocks = []
-    
-    try:
-        # Yahoo Finance has a screener for unusual volume
-        # This is a simplified approach - you could enhance with actual Yahoo screener API
-        
-        import yfinance as yf
-        
-        # Get a base list of liquid stocks and check their volume
-        liquid_tickers = [
-            'SPY', 'QQQ', 'IWM', 'DIA', 'VTI', 'EFA', 'EEM',
-            'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'TSLA', 'META',
-            'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'XOM', 'CVX',
-            'PFE', 'JNJ', 'UNH', 'HD', 'WMT', 'KO', 'PEP'
-        ]
-        
-        for ticker in liquid_tickers:
-            try:
-                stock = yf.Ticker(ticker)
-                hist = stock.history(period="5d")
-                
-                if len(hist) >= 2:
-                    latest_volume = hist['Volume'].iloc[-1]
-                    avg_volume = hist['Volume'].iloc[:-1].mean()
-                    
-                    # Check for unusual volume (2x or more than average)
-                    if latest_volume > avg_volume * 2:
-                        unusual_stocks.append(ticker)
-                        volume_ratio = latest_volume / avg_volume
-                        print(f"  📊 UNUSUAL: {ticker} - {volume_ratio:.1f}x average volume")
-                        
-            except Exception:
-                continue
-                
-    except Exception as e:
-        print(f"⚠️ Could not fetch unusual volume stocks: {e}")
-    
-    return unusual_stocks
-
-
-def fetch_momentum_stocks():
-    """Fetch momentum breakout stocks"""
-    momentum_stocks = []
-    
-    try:
-        # Simple momentum detection using price action
-        import yfinance as yf
-        
-        # Scan popular momentum candidates
-        momentum_candidates = [
-            'ROKU', 'ZOOM', 'PELOTON', 'SNOWFLAKE', 'PALANTIR', 'COINBASE',
-            'RIVIAN', 'LUCID', 'SOFI', 'HOOD', 'UPSTART', 'AFFIRM',
-            'RBLX', 'DKNG', 'PINS', 'SNAP', 'TWTR', 'SQ', 'PYPL', 'UBER'
-        ]
-        
-        # Convert names to tickers where needed
-        ticker_map = {
-            'PELOTON': 'PTON', 'SNOWFLAKE': 'SNOW', 'PALANTIR': 'PLTR',
-            'COINBASE': 'COIN', 'RIVIAN': 'RIVN', 'LUCID': 'LCID',
-            'UPSTART': 'UPST', 'AFFIRM': 'AFRM'
-        }
-        
-        actual_tickers = []
-        for candidate in momentum_candidates:
-            ticker = ticker_map.get(candidate, candidate)
-            actual_tickers.append(ticker)
-        
-        for ticker in actual_tickers:
-            try:
-                stock = yf.Ticker(ticker)
-                hist = stock.history(period="20d")
-                
-                if len(hist) >= 10:
-                    # Simple momentum: price above 10-day MA and increasing
-                    current_price = hist['Close'].iloc[-1]
-                    ma_10 = hist['Close'].rolling(10).mean().iloc[-1]
-                    
-                    # Check if trending up
-                    recent_change = (current_price - hist['Close'].iloc[-5]) / hist['Close'].iloc[-5] * 100
-                    
-                    if current_price > ma_10 and recent_change > 2:  # Above MA and up 2%+ in 5 days
-                        momentum_stocks.append(ticker)
-                        print(f"  ⚡ MOMENTUM: {ticker} +{recent_change:.1f}% in 5 days, above 10-day MA")
-                        
-            except Exception:
-                continue
-                
-    except Exception as e:
-        print(f"⚠️ Could not fetch momentum stocks: {e}")
-    
-    return momentum_stocks
-
-
-def validate_has_options(symbol):
-    """Quickly validate a stock has options available"""
-    try:
-        import yfinance as yf
-        ticker = yf.Ticker(symbol)
-        
-        # Quick check - just see if options property exists and has data
-        options = ticker.options
-        return len(options) > 0
-        
-    except Exception:
-        return False  # If we can't validate, exclude it
-
-
 def get_sp500_components():
-    """Get S&P 500 components from Wikipedia - NO FALLBACK TO STATIC LISTS"""
+    """Get S&P 500 components (all have options)"""
     try:
-        print("📊 Fetching live S&P 500 components from Wikipedia...")
+        # Wikipedia has reliable S&P 500 list
         url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
         tables = pd.read_html(url)
         sp500_df = tables[0]
@@ -435,13 +299,23 @@ def get_sp500_components():
                 cleaned_symbol = symbol.replace('.', '-')
                 cleaned.append(cleaned_symbol)
 
-        print(f"✅ Successfully fetched {len(cleaned)} live S&P 500 symbols from Wikipedia")
+        print(f"   Successfully fetched {len(cleaned)} S&P 500 symbols from Wikipedia")
         return cleaned
 
     except Exception as e:
-        print(f"❌ S&P 500 Wikipedia fetch failed: {e}")
-        print("🚫 NO FALLBACK - returning empty list to force fresh discovery")
-        return []
+        print(f"   S&P 500 Wikipedia fetch failed: {e}, using fallback list")
+        # Fallback to major S&P 500 components
+        sp500_fallback = [
+            'AAPL', 'MSFT', 'AMZN', 'NVDA', 'GOOGL', 'GOOG', 'TSLA', 'META', 'BRK-B', 'UNH',
+            'JNJ', 'JPM', 'V', 'PG', 'HD', 'MA', 'CVX', 'LLY', 'ABBV', 'AVGO',
+            'PFE', 'KO', 'MRK', 'PEP', 'TMO', 'COST', 'WMT', 'DIS', 'ABT', 'ADBE',
+            'CRM', 'VZ', 'NKE', 'NFLX', 'DHR', 'XOM', 'CMCSA', 'AMD', 'LIN', 'TXN',
+            'QCOM', 'HON', 'UPS', 'UNP', 'IBM', 'RTX', 'INTC', 'CAT', 'AMAT', 'SPGI',
+            'LOW', 'GS', 'BKNG', 'INTU', 'ISRG', 'TJX', 'AXP', 'MDT', 'BLK', 'DE',
+            'SBUX', 'C', 'ADP', 'AMT', 'GILD', 'CVS', 'SCHW', 'PYPL', 'TMUS', 'MO',
+            'SYK', 'ZTS', 'CCI', 'EQIX', 'TGT', 'MMM', 'MDLZ', 'CI', 'SO', 'DUK'
+        ]
+        return sp500_fallback
 
 
 def get_nasdaq100_components():
@@ -481,37 +355,20 @@ def is_likely_optionable(symbol):
     if not symbol or len(symbol) < 1:
         return False
 
-    # Create a whitelist of known good stocks that were being incorrectly filtered
-    known_optionable = {
-        'LRCX', 'LUV', 'MARA', 'PLTR', 'UBER', 'LYFT', 'NFLX', 'MSFT', 'GOOGL', 
-        'AMZN', 'TSLA', 'META', 'NVDA', 'AAPL', 'AMD', 'INTC', 'CRM', 'ADBE',
-        'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'USB', 'PNC', 'COF', 'AXP',
-        'XOM', 'CVX', 'COP', 'EOG', 'SLB', 'HAL', 'OXY', 'MPC', 'VLO', 'PSX',
-        'SPY', 'QQQ', 'IWM', 'DIA', 'XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLP',
-        'GME', 'AMC', 'BB', 'COIN', 'HOOD', 'RIVN', 'LCID', 'SOFI', 'NKLA'
-    }
-
-    # If it's in our known good list, always allow it
-    if symbol.upper() in known_optionable:
-        return True
-
-    # More specific exclusion patterns that won't catch legitimate stocks
+    # Remove obvious warrants, rights, units
     exclusion_patterns = [
-        'WS', 'WT', 'WW', 'WI',  # Warrants (but not just 'W')
-        'UN',  # Units (but not just 'U')
-        'RT',  # Rights (but not just 'R')
-        '+', '=',  # Special characters (but not '-' which is in some ETFs)
+        'W', 'WS', 'WT', 'WW', 'WI',  # Warrants
+        'U', 'UN',  # Units
+        'R', 'RT',  # Rights  
+        '+', '=', '-',  # Special characters
         'TEST', 'HALT'  # Test/halted symbols
     ]
 
-    # Check for exact matches or as suffixes (more precise)
     for pattern in exclusion_patterns:
-        if (symbol.upper() == pattern or 
-            symbol.upper().endswith(pattern) or
-            pattern in symbol.upper()):
+        if pattern in symbol.upper():
             return False
 
-    # Skip if contains numbers (often warrants) but be more specific
+    # Skip if contains numbers (often warrants)
     if any(char.isdigit() for char in symbol):
         return False
 
@@ -561,10 +418,44 @@ def filter_and_prioritize_symbols(symbols):
     return prioritized[:75]  # Limit to 75 high-quality symbols
 
 
+class ProgressiveOptionsScanner:
+    """Progressive scanner that saves results as they're found"""
+    
+    def __init__(self):
+        self.scanner = CompleteOptionsScanner(ALPHA_VANTAGE_API_KEY)
+        self.base_dir = './TradingPlans'
+        
+    def run_scan(self, symbols=None, filters=None):
+        """Run progressive scan with immediate saving"""
+        if symbols is None:
+            symbols = get_optionable_stocks_with_volume()
+        
+        if filters is None:
+            filters = {
+                'min_price': 0.05,
+                'max_price': 5.00,
+                'min_delta': 0.15,
+                'max_delta': 0.40,
+                'min_days': 1,
+                'max_days': 30
+            }
+        
+        results = run_scanner(
+            symbols=symbols,
+            min_delta=filters.get('min_delta', 0.15),
+            max_delta=filters.get('max_delta', 0.40),
+            min_price=filters.get('min_price', 0.05),
+            max_price=filters.get('max_price', 5.00),
+            time_to_expiry_range=(filters.get('min_days', 1), filters.get('max_days', 30))
+        )
+        
+        return results
+
+
 class CompleteOptionsScanner:
 
-    def __init__(self, api_key=None, min_delta=0.2, max_delta=0.7):
-        self.api_key = api_key or os.getenv("ALPHA_VANTAGE_API_KEY")
+    def __init__(self, api_key, min_delta=0.2, max_delta=0.7):
+        self.api_key = api_key
         self.min_delta = min_delta
         self.max_delta = max_delta
         self.min_volume = 6
@@ -605,34 +496,10 @@ class CompleteOptionsScanner:
                 return None
 
             key_prefix = tf_config['key_prefix']
-
-            # Debug: Print what we actually received
-            print(f"🔍 Debug {symbol} {timeframe}: Response keys = {list(data.keys())}")
-
             if key_prefix not in data:
-                # Check for alternative key formats that Alpha Vantage might use
-                alt_keys = []
-                if timeframe == 'D':
-                    alt_keys = ['Time Series (Daily)', 'Daily Time Series', 'Time Series (Daily) - Adjusted']
-                elif timeframe == 'W':
-                    alt_keys = ['Weekly Time Series', 'Time Series (Weekly)']
-                elif 'min' in tf_config.get('interval', ''):
-                    interval = tf_config['interval']
-                    alt_keys = [f'Time Series ({interval})', f'Time Series ({interval.replace("min", "m")})']
-
-                # Try alternative keys
-                found_key = None
-                for alt_key in alt_keys:
-                    if alt_key in data:
-                        found_key = alt_key
-                        break
-
-                if found_key:
-                    print(f"✅ Found data for {symbol} {timeframe} using key: {found_key}")
-                    key_prefix = found_key
-                else:
-                    print(f"❌ No Alpha Vantage data for {symbol} {timeframe}. Available keys: {list(data.keys())}")
-                    return self._fetch_yfinance_fallback(symbol, timeframe)
+                print(
+                    f"No data available for {symbol} at {timeframe} timeframe")
+                return self._fetch_yfinance_fallback(symbol, timeframe)
 
             # Convert to DataFrame
             df = pd.DataFrame.from_dict(data[key_prefix], orient='index')
@@ -666,10 +533,6 @@ class CompleteOptionsScanner:
 
     def fetch_multi_timeframe_data(self, symbol):
         """Fetch price data for all timeframes using Alpha Vantage"""
-        if not self.api_key:
-            print("⚠️ Alpha Vantage API key missing - using yfinance fallback for all timeframes")
-            return {tf: self._fetch_yfinance_fallback(symbol, tf) for tf in TIMEFRAMES.keys()}
-
         timeframe_data = {}
 
         for tf in TIMEFRAMES.keys():
@@ -828,28 +691,18 @@ class CompleteOptionsScanner:
         }
 
     def fetch_price_data(self, symbol, period='1mo', interval='15m'):
-        """Fetch price data using yfinance with retry logic"""
-        max_retries = 3
-        for attempt in range(max_retries):
-            try:
-                stock = yf.Ticker(symbol)
-                df = stock.history(period=period, interval=interval, timeout=30)
-                if df.empty:
-                    print(f"No price data available for {symbol}")
-                    return None
-                df.index = pd.to_datetime(df.index)
-                return df
-            except Exception as e:
-                if "Too Many Requests" in str(e) or "rate limit" in str(e).lower():
-                    wait_time = 2 ** attempt  # Exponential backoff: 2, 4, 8 seconds
-                    print(f"Rate limited for {symbol}, waiting {wait_time}s (attempt {attempt + 1}/{max_retries})")
-                    time.sleep(wait_time)
-                else:
-                    print(f"Error fetching price data for {symbol}: {e}")
-                    return None
-
-        print(f"Failed to fetch data for {symbol} after {max_retries} attempts")
-        return None
+        """Fetch price data using yfinance"""
+        try:
+            stock = yf.Ticker(symbol)
+            df = stock.history(period=period, interval=interval)
+            if df.empty:
+                print(f"No price data available for {symbol}")
+                return None
+            df.index = pd.to_datetime(df.index)
+            return df
+        except Exception as e:
+            print(f"Error fetching price data for {symbol}: {e}")
+            return None
 
     def _fetch_yfinance_fallback(self, symbol, timeframe):
         """Fallback to yfinance when Alpha Vantage data is unavailable"""
@@ -867,25 +720,19 @@ class CompleteOptionsScanner:
         return self.fetch_price_data(symbol, period=period, interval=interval)
 
     def _check_rate_limit(self):
-        """Implement rate limiting with exponential backoff"""
+        """Implement rate limiting"""
         current_time = time.time()
-
-        # Check if we're in a new minute
-        if current_time - self.last_request_time >= 60:
+        if current_time - self.last_request_time < 60:  # Within the same minute
+            if self.request_count >= self.requests_per_minute:
+                sleep_time = 60 - (current_time - self.last_request_time)
+                if sleep_time > 0:
+                    time.sleep(sleep_time)
+                self.request_count = 0
+                self.last_request_time = time.time()
+        else:  # New minute
             self.request_count = 0
             self.last_request_time = current_time
 
-        # If we're approaching the limit, wait
-        if self.request_count >= self.requests_per_minute - 10:  # Buffer of 10 requests
-            sleep_time = 61 - (current_time - self.last_request_time)
-            if sleep_time > 0:
-                print(f"⏳ Rate limit protection: waiting {sleep_time:.1f}s")
-                time.sleep(sleep_time)
-                self.request_count = 0
-                self.last_request_time = time.time()
-
-        # Add small delay between requests to be respectful
-        time.sleep(0.1)
         self.request_count += 1
 
     def fetch_options_data(self, symbol):
@@ -2154,11 +2001,11 @@ def discover_optionable_explosive_stocks(limit=50):
 
 
 def run_scanner(symbols=None,
-                min_delta=0.03,  # Much lower for earnings plays
-                max_delta=0.95,  # Allow ITM options too
-                min_price=0.01,  # Allow very cheap options
-                max_price=50.0,  # Higher max
-                time_to_expiry_range=(1, 60),  # Longer range
+                min_delta=0.2,
+                max_delta=0.45,
+                min_price=None,
+                max_price=None,
+                time_to_expiry_range=(1, 30),
                 iv_percentile_threshold=None):
     """Enhanced scanner with optionable stock aggregation"""
     scanner = CompleteOptionsScanner(ALPHA_VANTAGE_API_KEY,
@@ -2167,16 +2014,8 @@ def run_scanner(symbols=None,
 
     # Use the new multi-source approach if no symbols provided
     if symbols is None:
-        print("🚀 No symbols provided - forcing FRESH DYNAMIC DISCOVERY...")
         symbols = get_optionable_stocks_with_volume()
-        
-        if not symbols:
-            print("❌ CRITICAL: Dynamic discovery returned no symbols!")
-            print("🔧 Check your Alpha Vantage API key and quota")
-            return {}
-            
-        print(f"🎯 Using {len(symbols)} dynamically discovered optionable stocks")
-        print(f"📋 Fresh symbols: {symbols}")
+        print(f"🎯 Using {len(symbols)} curated optionable stocks")
     else:
         # Filter provided symbols
         filtered_symbols = []
@@ -2187,7 +2026,7 @@ def run_scanner(symbols=None,
                 print(f"⏭️  Skipping {symbol} (likely not optionable)")
 
         symbols = filtered_symbols  # Process all filtered symbols
-        print(f"🔍 Processing {len(symbols)} provided symbols: {symbols}")
+        print(f"🔍 Processing all {len(symbols)} filtered symbols...")
 
     print(
         f"\nAnalyzing {len(symbols)} symbols across {len(TIMEFRAMES)} timeframes..."
@@ -2195,25 +2034,14 @@ def run_scanner(symbols=None,
     print(f"Looking for options expiring: {time_to_expiry_range}")
 
     results = {}
-    consecutive_failures = 0
-    max_consecutive_failures = 10  # Circuit breaker threshold
 
     for symbol in tqdm(symbols, desc="Scanning"):
         try:
-            # Circuit breaker: if too many consecutive failures, stop scanning
-            if consecutive_failures >= max_consecutive_failures:
-                print(f"🛑 Circuit breaker activated: {consecutive_failures} consecutive failures. Stopping scan to prevent further rate limiting.")
-                break
-
             # Quick pre-filter: try to fetch just daily data first
             daily_data = scanner.fetch_alpha_vantage_data(symbol, 'D')
             if daily_data is None or daily_data.empty:
                 print(f"⚠️  No daily data for {symbol}, skipping...")
-                consecutive_failures += 1
                 continue
-
-            # Reset failure counter on success
-            consecutive_failures = 0
 
             # If daily data exists, proceed with full analysis
             multi_tf_data = scanner.fetch_multi_timeframe_data(symbol)
@@ -2281,7 +2109,7 @@ def run_scanner(symbols=None,
                 # Just show a brief summary for lower scoring symbols
                 print(f"⚪ {symbol}: {confluence['score']:.1f}/10 {confluence['bias']} (below threshold)")
 
-            if confluence['score'] >= 5.0:  # Much lower threshold for earnings plays
+            if confluence['score'] >= 7.5:  # Raised threshold for higher quality setups
                 options_data = scanner.fetch_options_data(symbol)
                 oi_skew = scanner.analyze_oi_skew(options_data)
                 options_count = len(options_data) if (
@@ -2321,11 +2149,6 @@ def run_scanner(symbols=None,
 
                         top_option = select_top_option_candidate(
                             candidates, confluence, symbol)
-
-                        if top_option is None:
-                            print(f"⏭️ Skipping {symbol} - no options align with {confluence['bias']} bias")
-                            continue
-
                         trade_plan = generate_trade_plan(
                             top_option, symbol_context)
                         output_file = "./TradingPlans/human_readable_plans.txt"
@@ -2394,7 +2217,6 @@ def run_scanner(symbols=None,
 
         except Exception as e:
             print(f"Error analyzing {symbol}: {e}")
-            consecutive_failures += 1
             continue
 
     return results
@@ -2424,46 +2246,33 @@ def filter_options_by_bias(candidates_df, symbol_bias):
     return candidates_df
 
 
-def select_top_option_candidate(candidates, confluence, symbol):
+def select_top_option_candidate(candidates_df, analysis_results, symbol):
     """
-    Select the best option candidate that aligns with the technical bias
-    Enhanced for earnings plays to favor higher delta options
+    Select the best option candidate matching the symbol bias.
+    Prioritizes bias alignment over raw score.
     """
-    if candidates.empty:
-        return None
+    bias = analysis_results.get("bias", "neutral").lower()
 
-    bias = confluence.get('bias', 'Unknown').lower()
-
-    # Filter candidates by type based on bias
-    if bias == 'bullish':
-        filtered = candidates[candidates['type'].str.lower() == 'call']
-    elif bias == 'bearish':
-        filtered = candidates[candidates['type'].str.lower() == 'put']
+    # First try to get options that match the bias
+    if "bullish" in bias:
+        matching_options = candidates_df[candidates_df["type"] == "call"]
+        option_type_wanted = "calls"
+    elif "bearish" in bias:
+        matching_options = candidates_df[candidates_df["type"] == "put"]
+        option_type_wanted = "puts"
     else:
-        # If bias is neutral/unknown, prefer calls in general market uptrend
-        filtered = candidates[candidates['type'].str.lower() == 'call']
+        matching_options = candidates_df  # Neutral - consider all
+        option_type_wanted = "any"
 
-    if filtered.empty:
-        print(f"⏭️ No {bias} options found for {symbol}, using top overall candidate")
-        return candidates.iloc[0].to_dict()
+    if not matching_options.empty:
+        top_option = matching_options.sort_values(by="score", ascending=False).iloc[0]
+        print(f"✅ Selected {top_option['type'].upper()} for {symbol} ({bias} bias) - Score: {top_option['score']:.2f}")
+    else:
+        # Fallback to highest scoring option regardless of type
+        top_option = candidates_df.sort_values(by="score", ascending=False).iloc[0]
+        print(f"⚠️ No {option_type_wanted} found for {symbol} ({bias} bias). Using fallback {top_option['type'].upper()} with score {top_option['score']:.2f}")
 
-    # For earnings plays, prefer higher delta options (0.25-0.60 range)
-    earnings_candidates = filtered[
-        (filtered['delta'].abs() >= 0.20) & 
-        (filtered['delta'].abs() <= 0.70)
-    ]
-
-    if not earnings_candidates.empty:
-        # Sort by combination of delta and score for earnings
-        earnings_candidates = earnings_candidates.copy()
-        earnings_candidates['earnings_score'] = (
-            earnings_candidates['score'] * 0.7 + 
-            earnings_candidates['delta'].abs() * 30  # Boost for higher delta
-        )
-        return earnings_candidates.nlargest(1, 'earnings_score').iloc[0].to_dict()
-
-    # Return the highest scoring option of the correct type
-    return filtered.iloc[0].to_dict()
+    return top_option
 
 
 def save_summary_report(results, filepath):
