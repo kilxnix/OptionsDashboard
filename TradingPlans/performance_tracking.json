@@ -84,7 +84,7 @@
     "final_outcome": null,
     "max_profit": 0,
     "max_loss": -17.73049645390071,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -115,7 +115,7 @@
     "final_outcome": null,
     "max_profit": 0,
     "max_loss": -5.633802816901401,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -460,7 +460,7 @@
     "final_outcome": null,
     "max_profit": 30.19230769230768,
     "max_loss": 0,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -524,7 +524,7 @@
     "final_outcome": null,
     "max_profit": 0,
     "max_loss": -7.865168539325855,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -745,7 +745,7 @@
     "final_outcome": null,
     "max_profit": 0,
     "max_loss": -7.865168539325855,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -776,7 +776,7 @@
     "final_outcome": null,
     "max_profit": 0,
     "max_loss": -10.91703056768559,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -807,7 +807,7 @@
     "final_outcome": null,
     "max_profit": 0,
     "max_loss": -12.658227848101264,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -871,7 +871,7 @@
     "final_outcome": null,
     "max_profit": 0,
     "max_loss": -20.45454545454546,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1001,7 +1001,7 @@
     "final_outcome": null,
     "max_profit": 19.99999999999999,
     "max_loss": 0,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1098,7 +1098,7 @@
     "final_outcome": null,
     "max_profit": 69.04761904761905,
     "max_loss": 0,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1162,7 +1162,7 @@
     "final_outcome": null,
     "max_profit": 0,
     "max_loss": -8.219178082191776,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1226,7 +1226,7 @@
     "final_outcome": null,
     "max_profit": 0,
     "max_loss": -20.958083832335323,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1382,7 +1382,7 @@
     "final_outcome": null,
     "max_profit": 0,
     "max_loss": 0,
-    "days_tracked": 1,
+    "days_tracked": 3,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1512,7 +1512,7 @@
     "final_outcome": null,
     "max_profit": 45.74468085106382,
     "max_loss": 0,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1543,7 +1543,7 @@
     "final_outcome": null,
     "max_profit": 0,
     "max_loss": -7.563025210084022,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1673,7 +1673,7 @@
     "final_outcome": null,
     "max_profit": 0,
     "max_loss": -12.705882352941178,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1836,7 +1836,7 @@
     "final_outcome": null,
     "max_profit": 0,
     "max_loss": -22.222222222222214,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1900,7 +1900,7 @@
     "final_outcome": null,
     "max_profit": 3.714285714285711,
     "max_loss": 0,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1931,7 +1931,7 @@
     "final_outcome": null,
     "max_profit": 0,
     "max_loss": -20.000000000000004,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -2160,7 +2160,7 @@
     "final_outcome": null,
     "max_profit": 14.77272727272726,
     "max_loss": 0,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -2191,7 +2191,7 @@
     "final_outcome": null,
     "max_profit": 0,
     "max_loss": -2.978723404255331,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -2222,7 +2222,7 @@
     "final_outcome": null,
     "max_profit": 0.9803921568627592,
     "max_loss": 0,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
@@ -2319,7 +2319,7 @@
     "final_outcome": null,
     "max_profit": 45.83333333333332,
     "max_loss": 0,
-    "days_tracked": 2,
+    "days_tracked": 4,
     "hit_target": false,
     "hit_stop": false
   },
