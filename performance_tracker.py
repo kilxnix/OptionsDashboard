@@ -73,12 +73,9 @@ class PerformanceTracker:
         print(f"📊 Updating daily performance for {len(performance_data)} tracked options...")
 
         updated_count = 0
-        skipped_reasons = {'finalized': 0, 'expired': 0, 'no_price': 0, 'invalid_entry': 0, 'conversion_error': 0}
-        
         for track_id, track_data in performance_data.items():
             try:
                 if track_data.get('final_outcome') is not None:
-                    skipped_reasons['finalized'] += 1
                     continue  # Already finalized
 
                 symbol = track_data['symbol']
@@ -90,37 +87,14 @@ class PerformanceTracker:
                     if track_data.get('final_outcome') is None:
                         track_data['final_outcome'] = 'EXPIRED'
                         track_data['final_price'] = 0.0
-                    skipped_reasons['expired'] += 1
                     continue
 
                 # Get current option price
                 current_price = self.get_current_option_price(symbol, option_details)
 
-                if current_price is not None and current_price > 0:
-                    # Safely get and convert prices with validation
-                    entry_price_raw = option_details.get('entry_price')
-                    target_price_raw = option_details.get('predicted_target')
-                    
-                    # Skip if entry price is None or invalid
-                    if entry_price_raw is None or entry_price_raw == '' or entry_price_raw <= 0:
-                        skipped_reasons['invalid_entry'] += 1
-                        print(f"⚠️ Skipping {symbol} - invalid entry price: {entry_price_raw}")
-                        continue
-                        
-                    try:
-                        entry_price = float(entry_price_raw)
-                        target_price = float(target_price_raw) if target_price_raw is not None else 0
-                    except (ValueError, TypeError):
-                        skipped_reasons['conversion_error'] += 1
-                        print(f"⚠️ Skipping {symbol} - price conversion error")
-                        continue
-                    
-                    # Skip if entry price is invalid
-                    if entry_price <= 0:
-                        skipped_reasons['invalid_entry'] += 1
-                        print(f"⚠️ Skipping {symbol} - entry price <= 0: {entry_price}")
-                        continue
-                        
+                if current_price is not None:
+                    entry_price = option_details['entry_price']
+                    target_price = option_details['predicted_target']
                     stop_price = entry_price * 0.75  # Assuming 25% stop loss
 
                     # Calculate P&L
@@ -141,7 +115,7 @@ class PerformanceTracker:
                         track_data['max_loss'] = pnl_percent
 
                     # Check if target or stop hit
-                    if target_price > 0 and current_price >= target_price and not track_data['hit_target']:
+                    if current_price >= target_price and not track_data['hit_target']:
                         track_data['hit_target'] = True
                         track_data['target_hit_date'] = today
                         track_data['final_outcome'] = 'TARGET_HIT'
@@ -155,11 +129,6 @@ class PerformanceTracker:
 
                     track_data['days_tracked'] += 1
                     updated_count += 1
-                else:
-                    # Unable to get current price, increment days tracked but skip price updates
-                    track_data['days_tracked'] += 1
-                    skipped_reasons['no_price'] += 1
-                    print(f"⚠️ No price data for {symbol} {option_details.get('strike')} {option_details.get('type')}")
 
             except Exception as e:
                 print(f"Error updating {track_id}: {e}")
@@ -167,12 +136,6 @@ class PerformanceTracker:
 
         self.save_performance_data(performance_data)
         print(f"✅ Updated {updated_count} options")
-        print(f"📊 Skipped breakdown:")
-        print(f"  • Already finalized: {skipped_reasons['finalized']}")
-        print(f"  • Expired: {skipped_reasons['expired']}")
-        print(f"  • No current price: {skipped_reasons['no_price']}")
-        print(f"  • Invalid entry price: {skipped_reasons['invalid_entry']}")
-        print(f"  • Conversion errors: {skipped_reasons['conversion_error']}")
 
         return updated_count
 
@@ -181,51 +144,28 @@ class PerformanceTracker:
         Get current option price using yfinance
         """
         try:
-            # Validate inputs first
-            if not symbol or not option_details:
-                return None
-                
-            strike = option_details.get('strike')
-            option_type = option_details.get('type', '').lower()
-            expiration = option_details.get('expiration')
-            
-            if not all([strike, option_type, expiration]):
-                return None
-                
             ticker = yf.Ticker(symbol)
-            expiration_date = pd.to_datetime(expiration).strftime('%Y-%m-%d')
+            expiration_date = pd.to_datetime(option_details['expiration']).strftime('%Y-%m-%d')
 
             # Get option chain
             options = ticker.option_chain(expiration_date)
-            
-            if options is None:
-                return None
 
-            if option_type == 'call':
+            if option_details['type'].lower() == 'call':
                 chain = options.calls
             else:
                 chain = options.puts
 
-            if chain is None or chain.empty:
-                return None
-
             # Find matching strike
-            strike_float = float(strike)
-            matching_options = chain[chain['strike'] == strike_float]
+            strike = float(option_details['strike'])
+            matching_options = chain[chain['strike'] == strike]
 
             if not matching_options.empty:
-                last_price = matching_options.iloc[0]['lastPrice']
-                # Handle case where lastPrice might be None or NaN
-                if last_price is not None and not pd.isna(last_price) and last_price != '':
-                    try:
-                        return float(last_price)
-                    except (ValueError, TypeError):
-                        return None
+                return float(matching_options.iloc[0]['lastPrice'])
 
             return None
 
         except Exception as e:
-            print(f"Error fetching option price for {symbol} {option_details.get('strike')} {option_details.get('type')}: {e}")
+            print(f"Error fetching option price for {symbol}: {e}")
             return None
 
     def calculate_performance_metrics(self):
@@ -359,41 +299,6 @@ class PerformanceTracker:
         self.save_performance_data(performance_data)
         return track_id
     
-    def track_options(self, scan_results):
-        """Track multiple options from scan results"""
-        tracked_count = 0
-        prediction_date = datetime.now().strftime('%Y-%m-%d')
-        
-        # Handle different result formats
-        if isinstance(scan_results, dict):
-            if 'opportunities' in scan_results:
-                # Explosive scanner format
-                for symbol, data in scan_results['opportunities'].items():
-                    try:
-                        option_data = data['best_opportunity']
-                        trading_plan = data['trading_plan']
-                        
-                        # Extract relevant data for tracking
-                        trade_plan = {
-                            'entry_price': option_data.get('mark', 0),
-                            'initial_target': trading_plan.get('targets', {}).get('target_1', {}).get('price', 0),
-                            'bias': 'Unknown'
-                        }
-                        
-                        track_id = self.track_option_performance(symbol, option_data, trade_plan, prediction_date)
-                        print(f"📊 Tracked: {track_id}")
-                        tracked_count += 1
-                        
-                    except Exception as e:
-                        print(f"⚠️ Failed to track {symbol}: {e}")
-                        continue
-            else:
-                # Other format - try to extract options directly
-                print("⚠️ Unrecognized scan results format")
-        
-        print(f"✅ Successfully tracked {tracked_count} options for performance monitoring")
-        return tracked_count
-    
     def get_improvement_suggestions(self):
         """Generate specific improvement suggestions based on performance data"""
         metrics = self.calculate_performance_metrics()
@@ -487,109 +392,6 @@ class PerformanceTracker:
         except Exception as e:
             print(f"Error getting best performing symbols: {e}")
             return []
-
-    def get_tracking_summary(self):
-        """Get a summary of all tracked options by status"""
-        performance_data = self.load_performance_data()
-        
-        summary = {
-            'active_options': [],
-            'finalized_options': [],
-            'invalid_options': [],
-            'expired_options': []
-        }
-        
-        for track_id, data in performance_data.items():
-            option_info = {
-                'track_id': track_id,
-                'symbol': data.get('symbol'),
-                'strike': data.get('option_details', {}).get('strike'),
-                'type': data.get('option_details', {}).get('type'),
-                'expiration': data.get('option_details', {}).get('expiration'),
-                'entry_price': data.get('option_details', {}).get('entry_price'),
-                'final_outcome': data.get('final_outcome'),
-                'max_profit': data.get('max_profit', 0),
-                'prediction_date': data.get('prediction_date')
-            }
-            
-            # Check if expired
-            try:
-                exp_date = pd.to_datetime(option_info['expiration'])
-                if datetime.now() > exp_date:
-                    summary['expired_options'].append(option_info)
-                    continue
-            except:
-                pass
-            
-            # Check if invalid entry price
-            if option_info['entry_price'] is None or option_info['entry_price'] == '':
-                summary['invalid_options'].append(option_info)
-            elif option_info['final_outcome'] is not None:
-                summary['finalized_options'].append(option_info)
-            else:
-                summary['active_options'].append(option_info)
-        
-        return summary
-    
-    def cleanup_finalized_options(self, keep_days=30):
-        """Remove finalized options older than specified days"""
-        performance_data = self.load_performance_data()
-        cutoff_date = datetime.now() - timedelta(days=keep_days)
-        
-        original_count = len(performance_data)
-        cleaned_data = {}
-        removed_count = 0
-        
-        for track_id, data in performance_data.items():
-            # Keep if not finalized
-            if data.get('final_outcome') is None:
-                cleaned_data[track_id] = data
-                continue
-                
-            # Keep if recent
-            try:
-                prediction_date = pd.to_datetime(data.get('prediction_date'))
-                if prediction_date >= cutoff_date:
-                    cleaned_data[track_id] = data
-                    continue
-            except:
-                pass
-            
-            # Remove old finalized options
-            removed_count += 1
-            print(f"Removing finalized option: {data.get('symbol')} {data.get('option_details', {}).get('strike')} {data.get('option_details', {}).get('type')}")
-        
-        # Save cleaned data
-        self.save_performance_data(cleaned_data)
-        print(f"✅ Cleanup complete: Removed {removed_count} old finalized options")
-        print(f"📊 Total options: {original_count} → {len(cleaned_data)}")
-        
-        return removed_count
-    
-    def remove_invalid_options(self):
-        """Remove options with invalid entry prices"""
-        performance_data = self.load_performance_data()
-        
-        original_count = len(performance_data)
-        cleaned_data = {}
-        removed_count = 0
-        
-        for track_id, data in performance_data.items():
-            entry_price = data.get('option_details', {}).get('entry_price')
-            
-            # Keep if entry price is valid
-            if entry_price is not None and entry_price != '' and entry_price != 0:
-                cleaned_data[track_id] = data
-            else:
-                removed_count += 1
-                print(f"Removing invalid option: {data.get('symbol')} {data.get('option_details', {}).get('strike')} {data.get('option_details', {}).get('type')} (entry_price: {entry_price})")
-        
-        # Save cleaned data
-        self.save_performance_data(cleaned_data)
-        print(f"✅ Invalid options cleanup complete: Removed {removed_count} options with invalid entry prices")
-        print(f"📊 Total options: {original_count} → {len(cleaned_data)}")
-        
-        return removed_count
 
 def update_performance_tracking():
     """Standalone function to update performance tracking"""

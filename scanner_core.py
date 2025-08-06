@@ -355,20 +355,37 @@ def is_likely_optionable(symbol):
     if not symbol or len(symbol) < 1:
         return False
 
-    # Remove obvious warrants, rights, units
+    # Create a whitelist of known good stocks that were being incorrectly filtered
+    known_optionable = {
+        'LRCX', 'LUV', 'MARA', 'PLTR', 'UBER', 'LYFT', 'NFLX', 'MSFT', 'GOOGL', 
+        'AMZN', 'TSLA', 'META', 'NVDA', 'AAPL', 'AMD', 'INTC', 'CRM', 'ADBE',
+        'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'USB', 'PNC', 'COF', 'AXP',
+        'XOM', 'CVX', 'COP', 'EOG', 'SLB', 'HAL', 'OXY', 'MPC', 'VLO', 'PSX',
+        'SPY', 'QQQ', 'IWM', 'DIA', 'XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLP',
+        'GME', 'AMC', 'BB', 'COIN', 'HOOD', 'RIVN', 'LCID', 'SOFI', 'NKLA'
+    }
+    
+    # If it's in our known good list, always allow it
+    if symbol.upper() in known_optionable:
+        return True
+
+    # More specific exclusion patterns that won't catch legitimate stocks
     exclusion_patterns = [
-        'W', 'WS', 'WT', 'WW', 'WI',  # Warrants
-        'U', 'UN',  # Units
-        'R', 'RT',  # Rights  
-        '+', '=', '-',  # Special characters
+        'WS', 'WT', 'WW', 'WI',  # Warrants (but not just 'W')
+        'UN',  # Units (but not just 'U')
+        'RT',  # Rights (but not just 'R')
+        '+', '=',  # Special characters (but not '-' which is in some ETFs)
         'TEST', 'HALT'  # Test/halted symbols
     ]
 
+    # Check for exact matches or as suffixes (more precise)
     for pattern in exclusion_patterns:
-        if pattern in symbol.upper():
+        if (symbol.upper() == pattern or 
+            symbol.upper().endswith(pattern) or
+            pattern in symbol.upper()):
             return False
 
-    # Skip if contains numbers (often warrants)
+    # Skip if contains numbers (often warrants) but be more specific
     if any(char.isdigit() for char in symbol):
         return False
 
@@ -416,40 +433,6 @@ def filter_and_prioritize_symbols(symbols):
             used.add(symbol)
 
     return prioritized[:75]  # Limit to 75 high-quality symbols
-
-
-class ProgressiveOptionsScanner:
-    """Progressive scanner that saves results as they're found"""
-    
-    def __init__(self):
-        self.scanner = CompleteOptionsScanner(ALPHA_VANTAGE_API_KEY)
-        self.base_dir = './TradingPlans'
-        
-    def run_scan(self, symbols=None, filters=None):
-        """Run progressive scan with immediate saving"""
-        if symbols is None:
-            symbols = get_optionable_stocks_with_volume()
-        
-        if filters is None:
-            filters = {
-                'min_price': 0.05,
-                'max_price': 5.00,
-                'min_delta': 0.15,
-                'max_delta': 0.40,
-                'min_days': 1,
-                'max_days': 30
-            }
-        
-        results = run_scanner(
-            symbols=symbols,
-            min_delta=filters.get('min_delta', 0.15),
-            max_delta=filters.get('max_delta', 0.40),
-            min_price=filters.get('min_price', 0.05),
-            max_price=filters.get('max_price', 5.00),
-            time_to_expiry_range=(filters.get('min_days', 1), filters.get('max_days', 30))
-        )
-        
-        return results
 
 
 class CompleteOptionsScanner:
@@ -2149,6 +2132,11 @@ def run_scanner(symbols=None,
 
                         top_option = select_top_option_candidate(
                             candidates, confluence, symbol)
+                        
+                        if top_option is None:
+                            print(f"⏭️ Skipping {symbol} - no options align with {confluence['bias']} bias")
+                            continue
+                            
                         trade_plan = generate_trade_plan(
                             top_option, symbol_context)
                         output_file = "./TradingPlans/human_readable_plans.txt"
@@ -2249,7 +2237,7 @@ def filter_options_by_bias(candidates_df, symbol_bias):
 def select_top_option_candidate(candidates_df, analysis_results, symbol):
     """
     Select the best option candidate matching the symbol bias.
-    Prioritizes bias alignment over raw score.
+    Only returns options that align with the directional bias - no contradictory fallbacks.
     """
     bias = analysis_results.get("bias", "neutral").lower()
 
@@ -2267,12 +2255,11 @@ def select_top_option_candidate(candidates_df, analysis_results, symbol):
     if not matching_options.empty:
         top_option = matching_options.sort_values(by="score", ascending=False).iloc[0]
         print(f"✅ Selected {top_option['type'].upper()} for {symbol} ({bias} bias) - Score: {top_option['score']:.2f}")
+        return top_option
     else:
-        # Fallback to highest scoring option regardless of type
-        top_option = candidates_df.sort_values(by="score", ascending=False).iloc[0]
-        print(f"⚠️ No {option_type_wanted} found for {symbol} ({bias} bias). Using fallback {top_option['type'].upper()} with score {top_option['score']:.2f}")
-
-    return top_option
+        # NO FALLBACK TO OPPOSITE DIRECTION - this would be contradictory
+        print(f"❌ No {option_type_wanted} found for {symbol} ({bias} bias). Skipping symbol - won't trade against the signal.")
+        return None
 
 
 def save_summary_report(results, filepath):
