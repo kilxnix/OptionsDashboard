@@ -241,19 +241,12 @@ class IntelligentTradePlanner:
                 'priority': 'MEDIUM'
             })
 
-        # 4. Time-based triggers - adjusted for earnings
-        if market_data.get('earnings_info', {}).get('is_pre_earnings', False):
-            entry_triggers.append({
-                'type': 'EARNINGS_TIME_WINDOW',
-                'condition': "Enter 1-3 days before earnings (hold through announcement)",
-                'priority': 'HIGH'
-            })
-        else:
-            entry_triggers.append({
-                'type': 'TIME_WINDOW',
-                'condition': "Enter between 10:00 AM - 3:00 PM ET (avoid first/last hour)",
-                'priority': 'LOW'
-            })
+        # 4. Time-based triggers
+        entry_triggers.append({
+            'type': 'TIME_WINDOW',
+            'condition': "Enter between 10:00 AM - 3:00 PM ET (avoid first/last hour)",
+            'priority': 'LOW'
+        })
 
         # 5. Spread improvement trigger
         ask_price = option_data.get('ask', 0)
@@ -303,27 +296,15 @@ class IntelligentTradePlanner:
             'target_3': {}
         }
 
-        # EARNINGS TARGETS: Much more aggressive for explosive moves
-        earnings_info = market_data.get('earnings_info', {})
-        is_earnings = earnings_info.get('is_pre_earnings', False)
-        
-        if is_earnings and score_analysis['confidence'] >= 70:
-            # EARNINGS HIGH CONFIDENCE = VERY aggressive targets
-            base_multipliers = [2.0, 4.0, 8.0]  # 100%, 300%, 700% gains
-        elif is_earnings and score_analysis['confidence'] >= 50:
-            # EARNINGS MEDIUM CONFIDENCE = aggressive targets
-            base_multipliers = [1.75, 3.0, 6.0]  # 75%, 200%, 500% gains
-        elif is_earnings:
-            # EARNINGS LOW CONFIDENCE = still aggressive
-            base_multipliers = [1.5, 2.5, 4.0]  # 50%, 150%, 300% gains
-        elif score_analysis['confidence'] >= 80:
-            # Non-earnings high confidence
+        # Base targets on score confidence and Greeks
+        if score_analysis['confidence'] >= 80:
+            # High confidence = aggressive targets
             base_multipliers = [1.25, 1.60, 2.20]
         elif score_analysis['confidence'] >= 60:
-            # Non-earnings medium confidence
+            # Medium confidence = balanced targets  
             base_multipliers = [1.20, 1.45, 1.80]
         else:
-            # Non-earnings low confidence
+            # Lower confidence = conservative targets
             base_multipliers = [1.15, 1.35, 1.60]
 
         # Adjust for gamma (explosive potential)

@@ -142,48 +142,236 @@ class EnhancedOptionsGrader:
 
     def _calculate_liquidity_score(self, option_data: Dict) -> float:
         """
-        Much more permissive liquidity scoring - give high scores to anything tradeable
+        Advanced liquidity assessment (0-25 points)
         """
-        score = 15  # Start with high base score
+        score = 0
 
+        # Use safe extraction for all numeric values
         volume = self._safe_float_extract(option_data.get('volume', 0), 0)
         oi = self._safe_float_extract(option_data.get('open_interest', option_data.get('openInterest', 0)), 0)
 
-        # Give bonus for any volume or OI
-        if volume > 0:
-            score += 5
+        # 1. VOLUME SCORING (0-10 points) - More granular
+        if volume >= 2000:
+            score += 10  # Excellent volume
+        elif volume >= 1000:
+            score += 8   # Good volume
+        elif volume >= 500:
+            score += 6   # Decent volume
+        elif volume >= 200:
+            score += 4   # Acceptable volume
+        elif volume >= 100:
+            score += 3   # Minimal acceptable volume
+        elif volume >= 50:
+            score += 1   # Very low volume
+        else:
+            return 0  # Reject if volume too low
+
+        # 2. OPEN INTEREST SCORING (0-6 points)
+        if oi >= 10000:
+            score += 6   # Excellent OI
+        elif oi >= 5000:
+            score += 5   # Good OI
+        elif oi >= 2000:
+            score += 4   # Decent OI
+        elif oi >= 1000:
+            score += 3   # Acceptable OI
+        elif oi >= 500:
+            score += 2   # Low OI
+        elif oi >= 100:
+            score += 1   # Very low OI
+        else:
+            score *= 0.3  # Heavy penalty for extremely low OI
+
+        # 3. VOLUME/OI ACTIVITY RATIO (0-4 points)
         if oi > 0:
-            score += 5
+            vol_oi_ratio = volume / oi
+            if vol_oi_ratio >= 1.0:
+                score += 4  # Extremely active day
+            elif vol_oi_ratio >= 0.5:
+                score += 3  # Very active
+            elif vol_oi_ratio >= 0.3:
+                score += 2  # Active
+            elif vol_oi_ratio >= 0.1:
+                score += 1  # Some activity
+
+        # 4. BID-ASK SPREAD ANALYSIS (0-5 points)
+        try:
+            bid_val = option_data.get('bid', 0)
+            if isinstance(bid_val, dict):
+                bid = float(bid_val.get('raw', bid_val.get('fmt', 0)))
+            else:
+                bid = float(bid_val)
+
+            ask_val = option_data.get('ask', 0)
+            if isinstance(ask_val, dict):
+                ask = float(ask_val.get('raw', ask_val.get('fmt', 0)))
+            else:
+                ask = float(ask_val)
+
+            mark_val = option_data.get('mark', 0)
+            if isinstance(mark_val, dict):
+                mark = float(mark_val.get('raw', mark_val.get('fmt', 0)))
+            else:
+                mark = float(mark_val)
+        except (ValueError, TypeError):
+            bid = 0
+            ask = 0
+            mark = 0
+
+        if bid > 0 and ask > 0 and mark > 0:
+            spread_percentage = (ask - bid) / mark
+            
+            if spread_percentage <= 0.03:  # Spread < 3%
+                score += 5  # Excellent spread
+            elif spread_percentage <= 0.05:  # Spread < 5%
+                score += 4  # Good spread
+            elif spread_percentage <= 0.08:  # Spread < 8%
+                score += 3  # Acceptable spread
+            elif spread_percentage <= 0.12:  # Spread < 12%
+                score += 2  # Wide spread
+            elif spread_percentage <= 0.20:  # Spread < 20%
+                score += 1  # Very wide spread
+            else:  # Spread > 20%
+                score *= 0.4  # Heavy penalty for extremely wide spreads
+
+            # Bonus for tight bid-ask near natural price levels
+            mid_price = (bid + ask) / 2
+            if abs(mid_price - mark) / mark <= 0.02:  # Mark within 2% of mid
+                score += 1  # Bonus for fair pricing
+
+        # 5. MARKET HOURS PENALTY (if applicable)
+        # Could add time-based adjustments here for after-hours trading
+
+        # 6. EARLY REJECTION FOR ILLIQUID OPTIONS
+        if volume < 50 or (oi < 100 and volume < 100):
+            return 0  # Hard rejection for illiquid options
 
         return min(score, 25)
 
     def _calculate_greeks_score(self, option_data: Dict) -> float:
         """
-        Fixed Greeks evaluation - much more generous scoring for any valid option
+        Advanced Greeks evaluation for explosive potential (0-25 points)
         """
-        score = 15  # Start with a high base score
+        score = 0
+
+        # Convert strings to numbers safely, handling nested dicts from Alpha Vantage
+        try:
+            delta_val = option_data.get('delta', 0)
+            if isinstance(delta_val, dict):
+                delta = abs(float(delta_val.get('raw', delta_val.get('fmt', 0))))
+            else:
+                delta = abs(float(delta_val))
+        except (ValueError, TypeError):
+            delta = 0
 
         try:
-            # Convert strings to numbers safely
-            delta = abs(self._safe_float_extract(option_data.get('delta', 0.3), 0.3))
-            gamma = self._safe_float_extract(option_data.get('gamma', 0.01), 0.01)
-            theta = self._safe_float_extract(option_data.get('theta', -0.05), -0.05)
-            mark = self._safe_float_extract(option_data.get('mark', 1), 1)
+            gamma_val = option_data.get('gamma', 0)
+            if isinstance(gamma_val, dict):
+                gamma = float(gamma_val.get('raw', gamma_val.get('fmt', 0)))
+            else:
+                gamma = float(gamma_val)
+        except (ValueError, TypeError):
+            gamma = 0
 
-            # Give bonus points for any decent Greeks
-            if delta > 0.05:  # Any meaningful delta
+        try:
+            theta_val = option_data.get('theta', 0)
+            if isinstance(theta_val, dict):
+                theta = float(theta_val.get('raw', theta_val.get('fmt', 0)))
+            else:
+                theta = float(theta_val)
+        except (ValueError, TypeError):
+            theta = 0
+
+        try:
+            vega_val = option_data.get('vega', 0)
+            if isinstance(vega_val, dict):
+                vega = float(vega_val.get('raw', vega_val.get('fmt', 0)))
+            else:
+                vega = float(vega_val)
+        except (ValueError, TypeError):
+            vega = 0
+
+        try:
+            mark_val = option_data.get('mark', 1)
+            if isinstance(mark_val, dict):
+                mark = float(mark_val.get('raw', mark_val.get('fmt', 1)))
+            else:
+                mark = float(mark_val)
+        except (ValueError, TypeError):
+            mark = 1
+
+        # 1. DELTA SCORING (0-8 points) - More nuanced approach
+        if 0.20 <= delta <= 0.35:
+            score += 8  # Sweet spot for explosive moves with good leverage
+        elif 0.15 <= delta <= 0.40:
+            score += 6  # Still good range
+        elif 0.35 <= delta <= 0.50:
+            score += 4  # Higher probability but less leverage
+        elif 0.10 <= delta <= 0.15:
+            score += 3  # Lottery ticket territory
+        elif delta > 0.50:
+            score += 2  # Too expensive, low leverage
+        else:
+            score += 1  # Too far OTM
+
+        # 2. GAMMA SCORING (0-8 points) - Explosive acceleration potential
+        if gamma >= 0.03:
+            score += 8  # Extremely explosive potential
+        elif gamma >= 0.02:
+            score += 6  # High explosive potential
+        elif gamma >= 0.015:
+            score += 5  # Good acceleration
+        elif gamma >= 0.01:
+            score += 3  # Moderate acceleration
+        elif gamma >= 0.005:
+            score += 2  # Some acceleration
+        else:
+            score += 1  # Minimal acceleration
+
+        # 3. THETA SCORING (0-5 points) - Time decay penalty/bonus
+        theta_daily_decay = abs(theta)
+        if mark > 0:
+            theta_percentage = theta_daily_decay / mark
+            if theta_percentage <= 0.03:  # Less than 3% daily decay
                 score += 5
-            if gamma > 0.005:  # Any meaningful gamma
-                score += 3
-            if abs(theta) < 0.2:  # Not excessive decay
+            elif theta_percentage <= 0.05:  # Less than 5% daily decay
+                score += 4
+            elif theta_percentage <= 0.08:  # Less than 8% daily decay
                 score += 2
+            elif theta_percentage <= 0.12:  # Less than 12% daily decay
+                score += 1
+            else:  # More than 12% daily decay
+                score -= 2  # Penalty for excessive decay
 
-        except Exception as e:
-            print(f"Error in Greeks calculation: {e}")
-            # Return base score if there's an error
-            pass
+        # 4. VEGA SCORING (0-4 points) - IV expansion opportunity
+        vega_potential = vega / max(mark, 0.01)  # Vega per dollar of premium
+        if vega_potential >= 0.08:
+            score += 4  # High IV sensitivity
+        elif vega_potential >= 0.05:
+            score += 3
+        elif vega_potential >= 0.03:
+            score += 2
+        elif vega_potential >= 0.01:
+            score += 1
 
-        return min(score, 25)
+        # 5. GAMMA/THETA RATIO BONUS - Explosive potential vs time decay
+        if theta != 0:
+            gamma_theta_ratio = gamma / abs(theta)
+            if gamma_theta_ratio >= 1.0:
+                score += 3  # Gamma dominates theta - explosive potential
+            elif gamma_theta_ratio >= 0.5:
+                score += 2  # Good balance
+            elif gamma_theta_ratio >= 0.2:
+                score += 1  # Acceptable balance
+
+        # 6. DELTA-GAMMA LEVERAGE MULTIPLIER
+        leverage_factor = gamma * 100 / max(delta, 0.01)  # How much gamma per delta unit
+        if leverage_factor >= 5.0:
+            score += 2  # High leverage with good acceleration
+        elif leverage_factor >= 3.0:
+            score += 1  # Good leverage
+
+        return max(0, min(score, 25))
 
     def _calculate_unusual_activity_score(self, option_data: Dict, market_data: Dict) -> float:
         """
@@ -191,27 +379,37 @@ class EnhancedOptionsGrader:
         """
         score = 0
 
-        # Extract delta for probability-weighted calculations
-        delta = abs(self._safe_float_extract(option_data.get('delta', 0), 0))
-
         # Use safe extraction for all numeric values
         volume = self._safe_float_extract(option_data.get('volume', 0), 0)
         oi = self._safe_float_extract(option_data.get('open_interest', option_data.get('openInterest', 0)), 0)
 
-        # 1. VOLUME ACTIVITY ANALYSIS - Much more generous
-        if volume > 100:
-            score += 15  # Any decent volume gets high score
-        elif volume > 50:
-            score += 12
-        elif volume > 10:
-            score += 8
-        elif volume > 0:
-            score += 5  # Any volume gets points
+        # 1. VOLUME SPIKE ANALYSIS (0-12 points)
+        # Estimate typical volume based on open interest and option characteristics
+        delta = abs(self._safe_float_extract(option_data.get('delta', 0.2), 0.2))
+        
+        # Typical daily volume is usually 5-15% of OI for liquid options
+        estimated_avg_volume = max(oi * 0.08, 20)  # Conservative baseline
+        
+        if volume > 0 and estimated_avg_volume > 0:
+            volume_spike_ratio = volume / estimated_avg_volume
+            
+            if volume_spike_ratio >= 10.0:
+                score += 12  # Massive volume spike (1000%+)
+            elif volume_spike_ratio >= 5.0:
+                score += 10  # Very high volume spike (500%+)
+            elif volume_spike_ratio >= 3.0:
+                score += 8   # High volume spike (300%+)
+            elif volume_spike_ratio >= 2.0:
+                score += 6   # Significant volume spike (200%+)
+            elif volume_spike_ratio >= 1.5:
+                score += 4   # Moderate volume spike (150%+)
+            elif volume_spike_ratio >= 1.2:
+                score += 2   # Slight volume increase (120%+)
 
         # 2. VOLUME/OI RATIO ANALYSIS (0-8 points)
         if oi > 0:
             vol_oi_ratio = volume / oi
-
+            
             if vol_oi_ratio >= 2.0:
                 score += 8   # Extremely active (200%+ of OI traded)
             elif vol_oi_ratio >= 1.0:
@@ -261,10 +459,10 @@ class EnhancedOptionsGrader:
             if expiration:
                 from datetime import datetime
                 import pandas as pd
-
+                
                 exp_date = pd.to_datetime(expiration)
                 days_to_exp = (exp_date - datetime.now()).days
-
+                
                 if days_to_exp >= 30 and volume >= 500:
                     score += 2  # Unusual activity on longer-dated options
                 elif days_to_exp >= 7 and volume >= 200:
@@ -529,7 +727,7 @@ class EnhancedOptionsGrader:
         liquidity_min = components['liquidity_score'] >= 12
         greeks_min = components['greeks_score'] >= 10
         activity_min = components['unusual_activity_score'] >= 8
-
+        
         # Adjusted thresholds for 115-point scale
         if score >= 85 and liquidity_min and greeks_min and activity_min:
             return "🔥 STRONG BUY - High explosion potential"
@@ -763,6 +961,19 @@ class EnhancedOptionsGrader:
                 self.thresholds['oi_change'] = np.percentile(oi_changes, 25)
 
             print(f"🔧 Adapted thresholds: Volume spike={self.thresholds['volume_spike']:.2f}, OI change={self.thresholds['oi_change']:.2f}")
+
+    def _generate_recommendation(self, score: float, confidence: float, risk_level: str) -> str:
+        """Generate trading recommendation based on score and confidence"""
+        if score >= 80 and confidence >= 80:
+            return "🔥 STRONG BUY - High explosion potential"
+        elif score >= 70 and confidence >= 70:
+            return "✅ BUY - Good opportunity"
+        elif score >= 60 and confidence >= 60:
+            return "⚠️ CAUTIOUS BUY - Monitor closely"
+        elif score >= 50:
+            return "🤔 NEUTRAL - Wait for better setup"
+        else:
+            return "❌ AVOID - Poor risk/reward"
 
     def _calculate_holding_period(self, option_data: Dict, score_components: Dict) -> Dict:
         """
