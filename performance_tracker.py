@@ -359,6 +359,41 @@ class PerformanceTracker:
         self.save_performance_data(performance_data)
         return track_id
     
+    def track_options(self, scan_results):
+        """Track multiple options from scan results"""
+        tracked_count = 0
+        prediction_date = datetime.now().strftime('%Y-%m-%d')
+        
+        # Handle different result formats
+        if isinstance(scan_results, dict):
+            if 'opportunities' in scan_results:
+                # Explosive scanner format
+                for symbol, data in scan_results['opportunities'].items():
+                    try:
+                        option_data = data['best_opportunity']
+                        trading_plan = data['trading_plan']
+                        
+                        # Extract relevant data for tracking
+                        trade_plan = {
+                            'entry_price': option_data.get('mark', 0),
+                            'initial_target': trading_plan.get('targets', {}).get('target_1', {}).get('price', 0),
+                            'bias': 'Unknown'
+                        }
+                        
+                        track_id = self.track_option_performance(symbol, option_data, trade_plan, prediction_date)
+                        print(f"📊 Tracked: {track_id}")
+                        tracked_count += 1
+                        
+                    except Exception as e:
+                        print(f"⚠️ Failed to track {symbol}: {e}")
+                        continue
+            else:
+                # Other format - try to extract options directly
+                print("⚠️ Unrecognized scan results format")
+        
+        print(f"✅ Successfully tracked {tracked_count} options for performance monitoring")
+        return tracked_count
+    
     def get_improvement_suggestions(self):
         """Generate specific improvement suggestions based on performance data"""
         metrics = self.calculate_performance_metrics()
@@ -452,6 +487,109 @@ class PerformanceTracker:
         except Exception as e:
             print(f"Error getting best performing symbols: {e}")
             return []
+
+    def get_tracking_summary(self):
+        """Get a summary of all tracked options by status"""
+        performance_data = self.load_performance_data()
+        
+        summary = {
+            'active_options': [],
+            'finalized_options': [],
+            'invalid_options': [],
+            'expired_options': []
+        }
+        
+        for track_id, data in performance_data.items():
+            option_info = {
+                'track_id': track_id,
+                'symbol': data.get('symbol'),
+                'strike': data.get('option_details', {}).get('strike'),
+                'type': data.get('option_details', {}).get('type'),
+                'expiration': data.get('option_details', {}).get('expiration'),
+                'entry_price': data.get('option_details', {}).get('entry_price'),
+                'final_outcome': data.get('final_outcome'),
+                'max_profit': data.get('max_profit', 0),
+                'prediction_date': data.get('prediction_date')
+            }
+            
+            # Check if expired
+            try:
+                exp_date = pd.to_datetime(option_info['expiration'])
+                if datetime.now() > exp_date:
+                    summary['expired_options'].append(option_info)
+                    continue
+            except:
+                pass
+            
+            # Check if invalid entry price
+            if option_info['entry_price'] is None or option_info['entry_price'] == '':
+                summary['invalid_options'].append(option_info)
+            elif option_info['final_outcome'] is not None:
+                summary['finalized_options'].append(option_info)
+            else:
+                summary['active_options'].append(option_info)
+        
+        return summary
+    
+    def cleanup_finalized_options(self, keep_days=30):
+        """Remove finalized options older than specified days"""
+        performance_data = self.load_performance_data()
+        cutoff_date = datetime.now() - timedelta(days=keep_days)
+        
+        original_count = len(performance_data)
+        cleaned_data = {}
+        removed_count = 0
+        
+        for track_id, data in performance_data.items():
+            # Keep if not finalized
+            if data.get('final_outcome') is None:
+                cleaned_data[track_id] = data
+                continue
+                
+            # Keep if recent
+            try:
+                prediction_date = pd.to_datetime(data.get('prediction_date'))
+                if prediction_date >= cutoff_date:
+                    cleaned_data[track_id] = data
+                    continue
+            except:
+                pass
+            
+            # Remove old finalized options
+            removed_count += 1
+            print(f"Removing finalized option: {data.get('symbol')} {data.get('option_details', {}).get('strike')} {data.get('option_details', {}).get('type')}")
+        
+        # Save cleaned data
+        self.save_performance_data(cleaned_data)
+        print(f"✅ Cleanup complete: Removed {removed_count} old finalized options")
+        print(f"📊 Total options: {original_count} → {len(cleaned_data)}")
+        
+        return removed_count
+    
+    def remove_invalid_options(self):
+        """Remove options with invalid entry prices"""
+        performance_data = self.load_performance_data()
+        
+        original_count = len(performance_data)
+        cleaned_data = {}
+        removed_count = 0
+        
+        for track_id, data in performance_data.items():
+            entry_price = data.get('option_details', {}).get('entry_price')
+            
+            # Keep if entry price is valid
+            if entry_price is not None and entry_price != '' and entry_price != 0:
+                cleaned_data[track_id] = data
+            else:
+                removed_count += 1
+                print(f"Removing invalid option: {data.get('symbol')} {data.get('option_details', {}).get('strike')} {data.get('option_details', {}).get('type')} (entry_price: {entry_price})")
+        
+        # Save cleaned data
+        self.save_performance_data(cleaned_data)
+        print(f"✅ Invalid options cleanup complete: Removed {removed_count} options with invalid entry prices")
+        print(f"📊 Total options: {original_count} → {len(cleaned_data)}")
+        
+        return removed_count
 
 def update_performance_tracking():
     """Standalone function to update performance tracking"""
