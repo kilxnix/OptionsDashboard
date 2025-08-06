@@ -15,22 +15,13 @@
       "theta": -0.06153,
       "implied_vol": "0.15634"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.13,
-        "pnl_percent": -75.47169811320755,
-        "pnl_dollar": -0.4,
-        "days_held": 4
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -75.47169811320755,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.13
+    "hit_stop": false
   },
   "AA_31.5_call_2025-07-03 00:00:00_2025-07-06": {
     "symbol": "AA",
@@ -49,13 +40,12 @@
       "implied_vol": "0.27341"
     },
     "daily_tracking": {},
-    "final_outcome": "EXPIRED",
+    "final_outcome": null,
     "max_profit": 0,
     "max_loss": 0,
     "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": false,
-    "final_price": 0.0
+    "hit_stop": false
   },
   "ABBV_192.5_call_2025-07-18 00:00:00_2025-07-06": {
     "symbol": "ABBV",
@@ -73,18 +63,11 @@
       "theta": -0.07885,
       "implied_vol": "0.15634"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 1.16,
-        "pnl_percent": -17.73049645390071,
-        "pnl_dollar": -0.25,
-        "days_held": 4
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -17.73049645390071,
-    "days_tracked": 6,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -104,18 +87,11 @@
       "theta": -0.00095,
       "implied_vol": "0.48804"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 3.35,
-        "pnl_percent": -5.633802816901401,
-        "pnl_dollar": -0.19999999999999973,
-        "days_held": 4
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -5.633802816901401,
-    "days_tracked": 6,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -135,22 +111,13 @@
       "theta": -0.07859,
       "implied_vol": "0.13683"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.22,
-        "pnl_percent": -70.66666666666667,
-        "pnl_dollar": -0.53,
-        "days_held": 4
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -70.66666666666667,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.22
+    "hit_stop": false
   },
   "KO_72.0_call_2025-07-11 00:00:00_2025-07-06": {
     "symbol": "KO",
@@ -168,22 +135,13 @@
       "theta": -0.03629,
       "implied_vol": "0.13683"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.02,
-        "pnl_percent": -93.93939393939394,
-        "pnl_dollar": -0.31,
-        "days_held": 4
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -93.93939393939394,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.02
+    "hit_stop": false
   },
   "JPM_300.0_call_2025-07-11 00:00:00_2025-07-06": {
     "symbol": "JPM",
@@ -201,22 +159,13 @@
       "theta": -0.15899,
       "implied_vol": "0.15634"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.01,
-        "pnl_percent": -99.26470588235294,
-        "pnl_dollar": -1.35,
-        "days_held": 4
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -99.26470588235294,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.01
+    "hit_stop": false
   },
   "VZ_44.0_call_2025-07-11 00:00:00_2025-07-06": {
     "symbol": "VZ",
@@ -234,22 +183,13 @@
       "theta": -0.01793,
       "implied_vol": "0.11731"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.01,
-        "pnl_percent": -94.11764705882352,
-        "pnl_dollar": -0.16,
-        "days_held": 4
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -94.11764705882352,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.01
+    "hit_stop": false
   },
   "FI_177.5_call_2025-07-11 00:00:00_2025-07-06": {
     "symbol": "FI",
@@ -267,22 +207,13 @@
       "theta": -0.14083,
       "implied_vol": "0.21487"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.15,
-        "pnl_percent": -91.42857142857143,
-        "pnl_dollar": -1.6,
-        "days_held": 4
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -91.42857142857143,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.15
+    "hit_stop": false
   },
   "GE_245.0_put_2025-07-03 00:00:00_2025-07-06": {
     "symbol": "GE",
@@ -301,13 +232,12 @@
       "implied_vol": "0.11731"
     },
     "daily_tracking": {},
-    "final_outcome": "EXPIRED",
+    "final_outcome": null,
     "max_profit": 0,
     "max_loss": 0,
     "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": false,
-    "final_price": 0.0
+    "hit_stop": false
   },
   "PCG_13.0_put_2027-01-15 00:00:00_2025-07-06": {
     "symbol": "PCG",
@@ -325,22 +255,13 @@
       "theta": -0.00139,
       "implied_vol": "0.39048"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 1.85,
-        "pnl_percent": 1955.5555555555557,
-        "pnl_dollar": 1.76,
-        "days_held": 4
-      }
-    },
-    "final_outcome": "TARGET_HIT",
-    "max_profit": 1955.5555555555557,
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
     "max_loss": 0,
-    "days_tracked": 1,
-    "hit_target": true,
-    "hit_stop": false,
-    "target_hit_date": "2025-07-10",
-    "final_price": 1.85
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
   },
   "PM_177.5_put_2025-07-11 00:00:00_2025-07-06": {
     "symbol": "PM",
@@ -358,22 +279,13 @@
       "theta": -0.14073,
       "implied_vol": "0.23438"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 1.25,
-        "pnl_percent": -37.5,
-        "pnl_dollar": -0.75,
-        "days_held": 4
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -37.5,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 1.25
+    "hit_stop": false
   },
   "GM_53.0_call_2025-07-03 00:00:00_2025-07-06": {
     "symbol": "GM",
@@ -392,13 +304,12 @@
       "implied_vol": "0.07829"
     },
     "daily_tracking": {},
-    "final_outcome": "EXPIRED",
+    "final_outcome": null,
     "max_profit": 0,
     "max_loss": 0,
     "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": false,
-    "final_price": 0.0
+    "hit_stop": false
   },
   "QS_7.0_put_2027-01-15 00:00:00_2025-07-06": {
     "symbol": "QS",
@@ -416,22 +327,13 @@
       "theta": -0.00173,
       "implied_vol": "0.87827"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 2.3,
-        "pnl_percent": 149.99999999999997,
-        "pnl_dollar": 1.38,
-        "days_held": 4
-      }
-    },
-    "final_outcome": "TARGET_HIT",
-    "max_profit": 149.99999999999997,
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
     "max_loss": 0,
-    "days_tracked": 1,
-    "hit_target": true,
-    "hit_stop": false,
-    "target_hit_date": "2025-07-10",
-    "final_price": 2.3
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
   },
   "GEV_535.0_call_2025-07-11 00:00:00_2025-07-06": {
     "symbol": "GEV",
@@ -449,18 +351,11 @@
       "theta": -0.61617,
       "implied_vol": "0.37097"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 6.77,
-        "pnl_percent": 30.19230769230768,
-        "pnl_dollar": 1.5699999999999994,
-        "days_held": 4
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
-    "max_profit": 30.19230769230768,
+    "max_profit": 0,
     "max_loss": 0,
-    "days_tracked": 6,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -480,22 +375,13 @@
       "theta": -0.1591,
       "implied_vol": "0.23438"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.2,
-        "pnl_percent": -87.95180722891567,
-        "pnl_dollar": -1.46,
-        "days_held": 4
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -87.95180722891567,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.2
+    "hit_stop": false
   },
   "HAL_23.0_put_2027-01-15 00:00:00_2025-07-06": {
     "symbol": "HAL",
@@ -513,18 +399,11 @@
       "theta": -0.00223,
       "implied_vol": "0.40999"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 4.1,
-        "pnl_percent": -7.865168539325855,
-        "pnl_dollar": -0.35000000000000053,
-        "days_held": 4
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -7.865168539325855,
-    "days_tracked": 6,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -544,22 +423,13 @@
       "theta": -0.01873,
       "implied_vol": "0.25390"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 2.7,
-        "pnl_percent": -54.23728813559322,
-        "pnl_dollar": -3.2,
-        "days_held": 4
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -54.23728813559322,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 2.7
+    "hit_stop": false
   },
   "AAL_13.0_put_2027-12-17 00:00:00_2025-07-07": {
     "symbol": "AAL",
@@ -577,22 +447,13 @@
       "theta": -0.00095,
       "implied_vol": "0.48804"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 3.35,
-        "pnl_percent": 520.3703703703703,
-        "pnl_dollar": 2.81,
-        "days_held": 3
-      }
-    },
-    "final_outcome": "TARGET_HIT",
-    "max_profit": 520.3703703703703,
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
     "max_loss": 0,
-    "days_tracked": 1,
-    "hit_target": true,
-    "hit_stop": false,
-    "target_hit_date": "2025-07-10",
-    "final_price": 3.35
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
   },
   "GE_245.0_put_2025-07-03 00:00:00_2025-07-07": {
     "symbol": "GE",
@@ -611,13 +472,12 @@
       "implied_vol": "0.11731"
     },
     "daily_tracking": {},
-    "final_outcome": "EXPIRED",
+    "final_outcome": null,
     "max_profit": 0,
     "max_loss": 0,
     "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": false,
-    "final_price": 0.0
+    "hit_stop": false
   },
   "QS_7.0_put_2027-01-15 00:00:00_2025-07-07": {
     "symbol": "QS",
@@ -635,22 +495,13 @@
       "theta": -0.00173,
       "implied_vol": "0.87827"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 2.3,
-        "pnl_percent": 149.99999999999997,
-        "pnl_dollar": 1.38,
-        "days_held": 3
-      }
-    },
-    "final_outcome": "TARGET_HIT",
-    "max_profit": 149.99999999999997,
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
     "max_loss": 0,
-    "days_tracked": 1,
-    "hit_target": true,
-    "hit_stop": false,
-    "target_hit_date": "2025-07-10",
-    "final_price": 2.3
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
   },
   "KO_72.0_call_2025-07-11 00:00:00_2025-07-07": {
     "symbol": "KO",
@@ -668,22 +519,13 @@
       "theta": -0.03629,
       "implied_vol": "0.13683"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.02,
-        "pnl_percent": -93.93939393939394,
-        "pnl_dollar": -0.31,
-        "days_held": 3
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -93.93939393939394,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.02
+    "hit_stop": false
   },
   "JPM_300.0_call_2025-07-11 00:00:00_2025-07-07": {
     "symbol": "JPM",
@@ -701,22 +543,13 @@
       "theta": -0.15899,
       "implied_vol": "0.15634"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.01,
-        "pnl_percent": -99.40119760479041,
-        "pnl_dollar": -1.66,
-        "days_held": 3
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -99.40119760479041,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.01
+    "hit_stop": false
   },
   "HAL_23.0_put_2027-01-15 00:00:00_2025-07-07": {
     "symbol": "HAL",
@@ -734,18 +567,11 @@
       "theta": -0.00223,
       "implied_vol": "0.40999"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 4.1,
-        "pnl_percent": -7.865168539325855,
-        "pnl_dollar": -0.35000000000000053,
-        "days_held": 3
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -7.865168539325855,
-    "days_tracked": 6,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -765,18 +591,11 @@
       "theta": -0.20987,
       "implied_vol": "0.21487"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 2.04,
-        "pnl_percent": -10.91703056768559,
-        "pnl_dollar": -0.25,
-        "days_held": 3
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -10.91703056768559,
-    "days_tracked": 6,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -796,18 +615,11 @@
       "theta": -0.00426,
       "implied_vol": "0.33194"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 3.45,
-        "pnl_percent": -12.658227848101264,
-        "pnl_dollar": -0.5,
-        "days_held": 3
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -12.658227848101264,
-    "days_tracked": 6,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -827,22 +639,13 @@
       "theta": -0.00199,
       "implied_vol": "0.89778"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 4.25,
-        "pnl_percent": 3441.6666666666665,
-        "pnl_dollar": 4.13,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "TARGET_HIT",
-    "max_profit": 3441.6666666666665,
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
     "max_loss": 0,
-    "days_tracked": 1,
-    "hit_target": true,
-    "hit_stop": false,
-    "target_hit_date": "2025-07-10",
-    "final_price": 4.25
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
   },
   "TSLL_8.5_put_2025-08-22 00:00:00_2025-07-08": {
     "symbol": "TSLL",
@@ -860,18 +663,11 @@
       "theta": -0.01145,
       "implied_vol": "0.95632"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.7,
-        "pnl_percent": -20.45454545454546,
-        "pnl_dollar": -0.18000000000000005,
-        "days_held": 2
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -20.45454545454546,
-    "days_tracked": 6,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -891,22 +687,13 @@
       "theta": -0.00042,
       "implied_vol": "1.01485"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.06,
-        "pnl_percent": -33.33333333333333,
-        "pnl_dollar": -0.03,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -33.33333333333333,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.06
+    "hit_stop": false
   },
   "NVDA_155.0_put_2025-07-18 00:00:00_2025-07-08": {
     "symbol": "NVDA",
@@ -924,22 +711,13 @@
       "theta": -0.15538,
       "implied_vol": "0.35146"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.84,
-        "pnl_percent": -63.94849785407726,
-        "pnl_dollar": -1.4900000000000002,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -63.94849785407726,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.84
+    "hit_stop": false
   },
   "TSLA_287.5_put_2025-07-11 00:00:00_2025-07-08": {
     "symbol": "TSLA",
@@ -957,22 +735,13 @@
       "theta": -0.84821,
       "implied_vol": "0.60511"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 1.44,
-        "pnl_percent": -68.69565217391305,
-        "pnl_dollar": -3.1599999999999997,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -68.69565217391305,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 1.44
+    "hit_stop": false
   },
   "DNN_1.5_put_2025-10-17 00:00:00_2025-07-08": {
     "symbol": "DNN",
@@ -990,18 +759,11 @@
       "theta": -0.00074,
       "implied_vol": "0.58560"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.12,
-        "pnl_percent": 19.99999999999999,
-        "pnl_dollar": 0.01999999999999999,
-        "days_held": 2
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
-    "max_profit": 19.99999999999999,
+    "max_profit": 0,
     "max_loss": 0,
-    "days_tracked": 6,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1021,22 +783,13 @@
       "theta": -0.0013,
       "implied_vol": "1.17095"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.1,
-        "pnl_percent": -50.0,
-        "pnl_dollar": -0.1,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -50.0,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.1
+    "hit_stop": false
   },
   "SOXL_48.0_call_2026-01-16 00:00:00_2025-07-08": {
     "symbol": "SOXL",
@@ -1054,22 +807,13 @@
       "theta": -0.0097,
       "implied_vol": "0.74169"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 1.5,
-        "pnl_percent": -70.0,
-        "pnl_dollar": -3.5,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -70.0,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 1.5
+    "hit_stop": false
   },
   "SQQQ_18.5_put_2025-08-08 00:00:00_2025-07-08": {
     "symbol": "SQQQ",
@@ -1087,18 +831,11 @@
       "theta": -0.01126,
       "implied_vol": "0.39048"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.71,
-        "pnl_percent": 69.04761904761905,
-        "pnl_dollar": 0.29,
-        "days_held": 2
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
-    "max_profit": 69.04761904761905,
+    "max_profit": 0,
     "max_loss": 0,
-    "days_tracked": 6,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1118,22 +855,13 @@
       "theta": -0.18219,
       "implied_vol": "0.68315"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 1.76,
-        "pnl_percent": -28.163265306122454,
-        "pnl_dollar": -0.6900000000000002,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -28.163265306122454,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 1.76
+    "hit_stop": false
   },
   "SOFI_17.0_put_2027-01-15 00:00:00_2025-07-08": {
     "symbol": "SOFI",
@@ -1151,18 +879,11 @@
       "theta": -0.0032,
       "implied_vol": "0.60511"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 3.35,
-        "pnl_percent": -8.219178082191776,
-        "pnl_dollar": -0.2999999999999998,
-        "days_held": 2
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -8.219178082191776,
-    "days_tracked": 6,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1182,22 +903,13 @@
       "theta": -0.15139,
       "implied_vol": "0.40999"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.79,
-        "pnl_percent": -62.91079812206573,
-        "pnl_dollar": -1.3399999999999999,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -62.91079812206573,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.79
+    "hit_stop": false
   },
   "GOOGL_172.5_put_2025-07-18 00:00:00_2025-07-08": {
     "symbol": "GOOGL",
@@ -1215,18 +927,11 @@
       "theta": -0.13492,
       "implied_vol": "0.29292"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 1.32,
-        "pnl_percent": -20.958083832335323,
-        "pnl_dollar": -0.34999999999999987,
-        "days_held": 2
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -20.958083832335323,
-    "days_tracked": 6,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1246,22 +951,13 @@
       "theta": -0.147,
       "implied_vol": "0.27341"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 2.0,
-        "pnl_percent": -35.483870967741936,
-        "pnl_dollar": -1.1,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -35.483870967741936,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 2.0
+    "hit_stop": false
   },
   "NFLX_1317.5_call_2025-07-11 00:00:00_2025-07-08": {
     "symbol": "NFLX",
@@ -1279,22 +975,13 @@
       "theta": -1.45972,
       "implied_vol": "0.27341"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 1.59,
-        "pnl_percent": -67.21649484536083,
-        "pnl_dollar": -3.26,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -67.21649484536083,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 1.59
+    "hit_stop": false
   },
   "NET_200.0_call_2025-07-18 00:00:00_2025-07-08": {
     "symbol": "NET",
@@ -1312,22 +999,13 @@
       "theta": -0.27106,
       "implied_vol": "0.46853"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 2.55,
-        "pnl_percent": -35.44303797468355,
-        "pnl_dollar": -1.4000000000000004,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -35.44303797468355,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 2.55
+    "hit_stop": false
   },
   "OKTA_95.0_put_2025-07-25 00:00:00_2025-07-08": {
     "symbol": "OKTA",
@@ -1345,22 +1023,13 @@
       "theta": -0.06915,
       "implied_vol": "0.33194"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.94,
-        "pnl_percent": -48.913043478260875,
-        "pnl_dollar": -0.9000000000000001,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -48.913043478260875,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.94
+    "hit_stop": false
   },
   "XLF_52.0_put_2026-06-30 00:00:00_2025-07-08": {
     "symbol": "XLF",
@@ -1382,7 +1051,7 @@
     "final_outcome": null,
     "max_profit": 0,
     "max_loss": 0,
-    "days_tracked": 5,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1402,22 +1071,13 @@
       "theta": -0.27735,
       "implied_vol": "0.19536"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.03,
-        "pnl_percent": -99.38144329896906,
-        "pnl_dollar": -4.819999999999999,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -99.38144329896906,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.03
+    "hit_stop": false
   },
   "JNJ_170.0_call_2026-03-20 00:00:00_2025-07-08": {
     "symbol": "JNJ",
@@ -1435,22 +1095,13 @@
       "theta": -0.0179,
       "implied_vol": "0.13683"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 3.55,
-        "pnl_percent": 106.3953488372093,
-        "pnl_dollar": 1.8299999999999998,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "TARGET_HIT",
-    "max_profit": 106.3953488372093,
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
     "max_loss": 0,
-    "days_tracked": 1,
-    "hit_target": true,
-    "hit_stop": false,
-    "target_hit_date": "2025-07-10",
-    "final_price": 3.55
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
   },
   "PG_165.0_call_2025-07-25 00:00:00_2025-07-08": {
     "symbol": "PG",
@@ -1468,22 +1119,13 @@
       "theta": -0.0423,
       "implied_vol": "0.13683"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.19,
-        "pnl_percent": -68.85245901639344,
-        "pnl_dollar": -0.42,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -68.85245901639344,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.19
+    "hit_stop": false
   },
   "LLY_787.5_call_2025-07-11 00:00:00_2025-07-08": {
     "symbol": "LLY",
@@ -1501,18 +1143,11 @@
       "theta": -1.11446,
       "implied_vol": "0.31243"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 6.85,
-        "pnl_percent": 45.74468085106382,
-        "pnl_dollar": 2.1499999999999995,
-        "days_held": 2
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
-    "max_profit": 45.74468085106382,
+    "max_profit": 0,
     "max_loss": 0,
-    "days_tracked": 6,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1532,18 +1167,11 @@
       "theta": -0.00187,
       "implied_vol": "0.13683"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 1.1,
-        "pnl_percent": -7.563025210084022,
-        "pnl_dollar": -0.08999999999999986,
-        "days_held": 2
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -7.563025210084022,
-    "days_tracked": 6,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1563,22 +1191,13 @@
       "theta": -1.11191,
       "implied_vol": "0.23438"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 1.6,
-        "pnl_percent": -68.0,
-        "pnl_dollar": -3.4,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -68.0,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 1.6
+    "hit_stop": false
   },
   "VZ_43.5_call_2025-07-18 00:00:00_2025-07-08": {
     "symbol": "VZ",
@@ -1596,22 +1215,13 @@
       "theta": -0.01336,
       "implied_vol": "0.11731"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.07,
-        "pnl_percent": -50.0,
-        "pnl_dollar": -0.07,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -50.0,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.07
+    "hit_stop": false
   },
   "NKE_82.5_call_2025-09-19 00:00:00_2025-07-08": {
     "symbol": "NKE",
@@ -1629,22 +1239,13 @@
       "theta": -0.02532,
       "implied_vol": "0.27341"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.98,
-        "pnl_percent": -50.0,
-        "pnl_dollar": -0.98,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -50.0,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.98
+    "hit_stop": false
   },
   "INTC_20.0_put_2027-12-17 00:00:00_2025-07-08": {
     "symbol": "INTC",
@@ -1662,18 +1263,11 @@
       "theta": -0.00188,
       "implied_vol": "0.48804"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 3.71,
-        "pnl_percent": -12.705882352941178,
-        "pnl_dollar": -0.54,
-        "days_held": 2
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -12.705882352941178,
-    "days_tracked": 6,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1693,22 +1287,13 @@
       "theta": -0.13606,
       "implied_vol": "0.31243"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 1.1,
-        "pnl_percent": -46.60194174757281,
-        "pnl_dollar": -0.96,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -46.60194174757281,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 1.1
+    "hit_stop": false
   },
   "TQQQ_85.0_call_2025-07-11 00:00:00_2025-07-08": {
     "symbol": "TQQQ",
@@ -1726,22 +1311,13 @@
       "theta": -0.19401,
       "implied_vol": "0.48804"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.87,
-        "pnl_percent": -64.91935483870968,
-        "pnl_dollar": -1.6099999999999999,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -64.91935483870968,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.87
+    "hit_stop": false
   },
   "TLT_85.5_put_2025-07-14 00:00:00_2025-07-08": {
     "symbol": "TLT",
@@ -1759,22 +1335,13 @@
       "theta": -0.03175,
       "implied_vol": "0.11731"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.06,
-        "pnl_percent": -80.0,
-        "pnl_dollar": -0.24,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -80.0,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.06
+    "hit_stop": false
   },
   "GME_21.0_put_2025-08-08 00:00:00_2025-07-08": {
     "symbol": "GME",
@@ -1792,22 +1359,13 @@
       "theta": -0.01524,
       "implied_vol": "0.46853"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.45,
-        "pnl_percent": -43.75,
-        "pnl_dollar": -0.35000000000000003,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -43.75,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.45
+    "hit_stop": false
   },
   "AMC_2.5_put_2025-08-15 00:00:00_2025-07-08": {
     "symbol": "AMC",
@@ -1825,18 +1383,11 @@
       "theta": -0.00213,
       "implied_vol": "0.62462"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.07,
-        "pnl_percent": -22.222222222222214,
-        "pnl_dollar": -0.01999999999999999,
-        "days_held": 2
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -22.222222222222214,
-    "days_tracked": 6,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1856,22 +1407,13 @@
       "theta": -0.1174,
       "implied_vol": "0.33194"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.97,
-        "pnl_percent": -51.5,
-        "pnl_dollar": -1.03,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -51.5,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.97
+    "hit_stop": false
   },
   "DAL_65.0_call_2026-06-18 00:00:00_2025-07-08": {
     "symbol": "DAL",
@@ -1889,18 +1431,11 @@
       "theta": -0.01107,
       "implied_vol": "0.37097"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 3.63,
-        "pnl_percent": 3.714285714285711,
-        "pnl_dollar": 0.1299999999999999,
-        "days_held": 2
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
-    "max_profit": 3.714285714285711,
+    "max_profit": 0,
     "max_loss": 0,
-    "days_tracked": 6,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1920,18 +1455,11 @@
       "theta": -0.0381,
       "implied_vol": "0.31243"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 4.8,
-        "pnl_percent": -20.000000000000004,
-        "pnl_dollar": -1.2000000000000002,
-        "days_held": 2
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -20.000000000000004,
-    "days_tracked": 6,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -1951,22 +1479,13 @@
       "theta": -0.25152,
       "implied_vol": "0.23438"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.25,
-        "pnl_percent": -97.28260869565217,
-        "pnl_dollar": -8.95,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -97.28260869565217,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.25
+    "hit_stop": false
   },
   "ANET_105.0_call_2025-07-25 00:00:00_2025-07-08": {
     "symbol": "ANET",
@@ -1984,22 +1503,13 @@
       "theta": -0.10724,
       "implied_vol": "0.42950"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 4.55,
-        "pnl_percent": 250.0,
-        "pnl_dollar": 3.25,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "TARGET_HIT",
-    "max_profit": 250.0,
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
     "max_loss": 0,
-    "days_tracked": 1,
-    "hit_target": true,
-    "hit_stop": false,
-    "target_hit_date": "2025-07-10",
-    "final_price": 4.55
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
   },
   "DXCM_85.0_call_2025-07-18 00:00:00_2025-07-08": {
     "symbol": "DXCM",
@@ -2017,22 +1527,13 @@
       "theta": -0.09527,
       "implied_vol": "0.37097"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 1.85,
-        "pnl_percent": 76.19047619047619,
-        "pnl_dollar": 0.8,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "TARGET_HIT",
-    "max_profit": 76.19047619047619,
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
     "max_loss": 0,
-    "days_tracked": 1,
-    "hit_target": true,
-    "hit_stop": false,
-    "target_hit_date": "2025-07-10",
-    "final_price": 1.85
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
   },
   "MCD_290.0_put_2025-08-01 00:00:00_2025-07-08": {
     "symbol": "MCD",
@@ -2050,22 +1551,13 @@
       "theta": -0.10025,
       "implied_vol": "0.19536"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 3.0,
-        "pnl_percent": -33.33333333333333,
-        "pnl_dollar": -1.5,
-        "days_held": 2
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -33.33333333333333,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 3.0
+    "hit_stop": false
   },
   "AEP_120.0_call_2026-06-18 00:00:00_2025-07-09": {
     "symbol": "AEP",
@@ -2083,22 +1575,13 @@
       "theta": -0.00899,
       "implied_vol": "0.13683"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 1.95,
-        "pnl_percent": -40.90909090909091,
-        "pnl_dollar": -1.3499999999999999,
-        "days_held": 1
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -40.90909090909091,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 1.95
+    "hit_stop": false
   },
   "CVNA_342.5_put_2025-07-11 00:00:00_2025-07-09": {
     "symbol": "CVNA",
@@ -2116,22 +1599,13 @@
       "theta": -0.92687,
       "implied_vol": "0.46853"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 1.66,
-        "pnl_percent": -62.69662921348315,
-        "pnl_dollar": -2.79,
-        "days_held": 1
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -62.69662921348315,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 1.66
+    "hit_stop": false
   },
   "LVS_42.5_put_2027-01-15 00:00:00_2025-07-09": {
     "symbol": "LVS",
@@ -2149,18 +1623,11 @@
       "theta": -0.00379,
       "implied_vol": "0.33194"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 5.05,
-        "pnl_percent": 14.77272727272726,
-        "pnl_dollar": 0.6499999999999995,
-        "days_held": 1
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
-    "max_profit": 14.77272727272726,
+    "max_profit": 0,
     "max_loss": 0,
-    "days_tracked": 6,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -2180,18 +1647,11 @@
       "theta": -0.00321,
       "implied_vol": "0.35146"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 4.56,
-        "pnl_percent": -2.978723404255331,
-        "pnl_dollar": -0.14000000000000057,
-        "days_held": 1
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -2.978723404255331,
-    "days_tracked": 6,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -2211,18 +1671,11 @@
       "theta": -0.00423,
       "implied_vol": "0.31243"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 5.15,
-        "pnl_percent": 0.9803921568627592,
-        "pnl_dollar": 0.05000000000000071,
-        "days_held": 1
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
-    "max_profit": 0.9803921568627592,
+    "max_profit": 0,
     "max_loss": 0,
-    "days_tracked": 6,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   },
@@ -2242,22 +1695,13 @@
       "theta": -1.21688,
       "implied_vol": "0.62462"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 0.62,
-        "pnl_percent": -86.94736842105263,
-        "pnl_dollar": -4.13,
-        "days_held": 1
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -86.94736842105263,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 0.62
+    "hit_stop": false
   },
   "META_715.0_put_2025-07-11 00:00:00_2025-07-09": {
     "symbol": "META",
@@ -2275,22 +1719,13 @@
       "theta": -1.08722,
       "implied_vol": "0.27341"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 1.06,
-        "pnl_percent": -78.14432989690722,
-        "pnl_dollar": -3.7899999999999996,
-        "days_held": 1
-      }
-    },
-    "final_outcome": "STOP_HIT",
+    "daily_tracking": {},
+    "final_outcome": null,
     "max_profit": 0,
-    "max_loss": -78.14432989690722,
-    "days_tracked": 1,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
-    "hit_stop": true,
-    "stop_hit_date": "2025-07-10",
-    "final_price": 1.06
+    "hit_stop": false
   },
   "CVNA_355.0_call_2025-07-11 00:00:00_2025-07-09": {
     "symbol": "CVNA",
@@ -2308,18 +1743,4715 @@
       "theta": -0.78944,
       "implied_vol": "0.44901"
     },
-    "daily_tracking": {
-      "2025-07-10": {
-        "price": 3.15,
-        "pnl_percent": 45.83333333333332,
-        "pnl_dollar": 0.9899999999999998,
-        "days_held": 1
-      }
-    },
+    "daily_tracking": {},
     "final_outcome": null,
-    "max_profit": 45.83333333333332,
+    "max_profit": 0,
     "max_loss": 0,
-    "days_tracked": 6,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAL_11.0_put_2025-07-11_2025-07-09": {
+    "symbol": "AAL",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 11.0,
+      "type": "put",
+      "expiration": "2025-07-11",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AMZN_210.0_put_2025-07-11_2025-07-09": {
+    "symbol": "AMZN",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 210.0,
+      "type": "put",
+      "expiration": "2025-07-11",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AUR_4.0_put_2025-07-25_2025-07-09": {
+    "symbol": "AUR",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 4.0,
+      "type": "put",
+      "expiration": "2025-07-25",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "BA_200.0_put_2025-07-11_2025-07-09": {
+    "symbol": "BA",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 200.0,
+      "type": "put",
+      "expiration": "2025-07-11",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "BAC_46.0_put_2025-07-11_2025-07-09": {
+    "symbol": "BAC",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 46.0,
+      "type": "put",
+      "expiration": "2025-07-11",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "BSX_106.0_call_2025-07-11_2025-07-09": {
+    "symbol": "BSX",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 106.0,
+      "type": "call",
+      "expiration": "2025-07-11",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "BUD_77.5_call_2025-07-18_2025-07-09": {
+    "symbol": "BUD",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 77.5,
+      "type": "call",
+      "expiration": "2025-07-18",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "BTU_28.0_call_2025-07-18_2025-07-09": {
+    "symbol": "BTU",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 28.0,
+      "type": "call",
+      "expiration": "2025-07-18",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "CNC_25.0_put_2025-07-18_2025-07-09": {
+    "symbol": "CNC",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 25.0,
+      "type": "put",
+      "expiration": "2025-07-18",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAL_12.5_call_2025-07-25_2025-07-09": {
+    "symbol": "AAL",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 12.5,
+      "type": "call",
+      "expiration": "2025-07-25",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.31392,
+      "gamma": 0.22724,
+      "theta": -0.01668,
+      "implied_vol": 0.62462
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "APA_20.5_call_2025-07-11_2025-07-09": {
+    "symbol": "APA",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 20.5,
+      "type": "call",
+      "expiration": "2025-07-11",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AR_45.0_put_2025-07-18_2025-07-09": {
+    "symbol": "AR",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 45.0,
+      "type": "put",
+      "expiration": "2025-07-18",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ANET_105.0_call_2025-07-11_2025-07-09": {
+    "symbol": "ANET",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 105.0,
+      "type": "call",
+      "expiration": "2025-07-11",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ARVN_7.5_call_2025-07-18_2025-07-09": {
+    "symbol": "ARVN",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 7.5,
+      "type": "call",
+      "expiration": "2025-07-18",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ASML_790.0_put_2025-07-11_2025-07-09": {
+    "symbol": "ASML",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 790.0,
+      "type": "put",
+      "expiration": "2025-07-11",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AXP_325.0_call_2025-07-11_2025-07-09": {
+    "symbol": "AXP",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 325.0,
+      "type": "call",
+      "expiration": "2025-07-11",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AZZ_90.0_put_2025-07-18_2025-07-09": {
+    "symbol": "AZZ",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 90.0,
+      "type": "put",
+      "expiration": "2025-07-18",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ARM_149.0_call_2025-07-11_2025-07-09": {
+    "symbol": "ARM",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 149.0,
+      "type": "call",
+      "expiration": "2025-07-11",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AMZN_205.0_put_2025-07-18_2025-07-09": {
+    "symbol": "AMZN",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 205.0,
+      "type": "put",
+      "expiration": "2025-07-18",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "BFH_55.0_put_2025-07-18_2025-07-09": {
+    "symbol": "BFH",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 55.0,
+      "type": "put",
+      "expiration": "2025-07-18",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "BE_27.0_call_2025-07-11_2025-07-09": {
+    "symbol": "BE",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 27.0,
+      "type": "call",
+      "expiration": "2025-07-11",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "BK_92.5_call_2025-07-18_2025-07-09": {
+    "symbol": "BK",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 92.5,
+      "type": "call",
+      "expiration": "2025-07-18",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "BA_210.0_put_2025-07-18_2025-07-09": {
+    "symbol": "BA",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 210.0,
+      "type": "put",
+      "expiration": "2025-07-18",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "CAG_20.5_call_2025-07-11_2025-07-09": {
+    "symbol": "CAG",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 20.5,
+      "type": "call",
+      "expiration": "2025-07-11",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "BAC_47.5_call_2025-07-18_2025-07-09": {
+    "symbol": "BAC",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 47.5,
+      "type": "call",
+      "expiration": "2025-07-18",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "CC_13.0_call_2025-07-18_2025-07-09": {
+    "symbol": "CC",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 13.0,
+      "type": "call",
+      "expiration": "2025-07-18",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "CG_55.0_call_2025-07-18_2025-07-09": {
+    "symbol": "CG",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 55.0,
+      "type": "call",
+      "expiration": "2025-07-18",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "C_88.0_put_2025-07-11_2025-07-09": {
+    "symbol": "C",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 88.0,
+      "type": "put",
+      "expiration": "2025-07-11",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "CMA_62.5_put_2025-07-18_2025-07-09": {
+    "symbol": "CMA",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 62.5,
+      "type": "put",
+      "expiration": "2025-07-18",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "CNC_33.5_call_2025-07-18_2025-07-09": {
+    "symbol": "CNC",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 33.5,
+      "type": "call",
+      "expiration": "2025-07-18",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "CMG_57.0_call_2025-07-25_2025-07-09": {
+    "symbol": "CMG",
+    "prediction_date": "2025-07-09",
+    "option_details": {
+      "strike": 57.0,
+      "type": "call",
+      "expiration": "2025-07-25",
+      "entry_price": null,
+      "predicted_target": null,
+      "predicted_bias": null,
+      "confluence_score": 0,
+      "delta": 0.3,
+      "gamma": 0.01,
+      "theta": -0.05,
+      "implied_vol": null
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "COIN_385.0_put_2025-07-11 00:00:00_2025-07-11": {
+    "symbol": "COIN",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 385.0,
+      "type": "put",
+      "expiration": "2025-07-11 00:00:00",
+      "entry_price": 3.2,
+      "predicted_target": 5.6,
+      "predicted_bias": "Bullish",
+      "confluence_score": 10.0,
+      "delta": -0.37624,
+      "gamma": 0.02809,
+      "theta": -2.54655,
+      "implied_vol": "0.66364"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "IBM_290.0_call_2025-07-18 00:00:00_2025-07-11": {
+    "symbol": "IBM",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 290.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 2.64,
+      "predicted_target": 4.62,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.87,
+      "delta": 0.39724,
+      "gamma": 0.04639,
+      "theta": -0.21364,
+      "implied_vol": "0.19536"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "TFC_55.0_call_2026-09-18 00:00:00_2025-07-11": {
+    "symbol": "TFC",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 55.0,
+      "type": "call",
+      "expiration": "2026-09-18 00:00:00",
+      "entry_price": 3.95,
+      "predicted_target": 6.91,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.22,
+      "delta": 0.25449,
+      "gamma": 0.03696,
+      "theta": -0.00441,
+      "implied_vol": "0.17585"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ABT_140.0_call_2025-09-19 00:00:00_2025-07-11": {
+    "symbol": "ABT",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 140.0,
+      "type": "call",
+      "expiration": "2025-09-19 00:00:00",
+      "entry_price": 4.45,
+      "predicted_target": 7.79,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.38,
+      "delta": 0.34376,
+      "gamma": 0.03196,
+      "theta": -0.03498,
+      "implied_vol": "0.19536"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "INTC_22.0_put_2026-09-18 00:00:00_2025-07-11": {
+    "symbol": "INTC",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 22.0,
+      "type": "put",
+      "expiration": "2026-09-18 00:00:00",
+      "entry_price": 0.14,
+      "predicted_target": 0.25,
+      "predicted_bias": "Bullish",
+      "confluence_score": 10.0,
+      "delta": -0.29938,
+      "gamma": 0.03601,
+      "theta": -0.00273,
+      "implied_vol": "0.37097"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "CVNA_355.0_call_2025-07-18 00:00:00_2025-07-11": {
+    "symbol": "CVNA",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 355.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 5.0,
+      "predicted_target": 8.75,
+      "predicted_bias": "Bullish",
+      "confluence_score": 10.0,
+      "delta": 0.34512,
+      "gamma": 0.01757,
+      "theta": -0.49663,
+      "implied_vol": "0.40999"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "LMND_41.5_call_2025-07-25 00:00:00_2025-07-11": {
+    "symbol": "LMND",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 41.5,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 1.2,
+      "predicted_target": 2.1,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.47,
+      "delta": 0.36501,
+      "gamma": 0.09186,
+      "theta": -0.05288,
+      "implied_vol": "0.50755"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "SNAP_9.0_put_2025-07-18 00:00:00_2025-07-11": {
+    "symbol": "SNAP",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 9.0,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.08,
+      "predicted_target": 0.14,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.41,
+      "delta": -0.27248,
+      "gamma": 0.53498,
+      "theta": -0.01257,
+      "implied_vol": "0.44901"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "HOOD_103.0_call_2025-07-25 00:00:00_2025-07-11": {
+    "symbol": "HOOD",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 103.0,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 3.5,
+      "predicted_target": 6.12,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.57,
+      "delta": 0.39766,
+      "gamma": 0.03086,
+      "theta": -0.16496,
+      "implied_vol": "0.62462"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "XYZ_70.0_call_2025-07-18 00:00:00_2025-07-11": {
+    "symbol": "XYZ",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 70.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 1.81,
+      "predicted_target": 3.17,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.81,
+      "delta": 0.38947,
+      "gamma": 0.10156,
+      "theta": -0.09358,
+      "implied_vol": "0.37097"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "TSLA_312.5_call_2025-07-11 00:00:00_2025-07-11": {
+    "symbol": "TSLA",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 312.5,
+      "type": "call",
+      "expiration": "2025-07-11 00:00:00",
+      "entry_price": 2.24,
+      "predicted_target": 3.92,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.42,
+      "delta": 0.3909,
+      "gamma": 0.04331,
+      "theta": -1.71586,
+      "implied_vol": "0.54657"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "NET_187.5_call_2025-07-25 00:00:00_2025-07-11": {
+    "symbol": "NET",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 187.5,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 2.98,
+      "predicted_target": 5.21,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.53,
+      "delta": 0.38189,
+      "gamma": 0.02522,
+      "theta": -0.19997,
+      "implied_vol": "0.40999"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "NFLX_1260.0_call_2025-07-11 00:00:00_2025-07-11": {
+    "symbol": "NFLX",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 1260.0,
+      "type": "call",
+      "expiration": "2025-07-11 00:00:00",
+      "entry_price": 4.45,
+      "predicted_target": 7.79,
+      "predicted_bias": "Bearish",
+      "confluence_score": 10.0,
+      "delta": 0.3289,
+      "gamma": 0.01768,
+      "theta": -3.74652,
+      "implied_vol": "0.31243"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ABBV_197.5_call_2025-07-18 00:00:00_2025-07-11": {
+    "symbol": "ABBV",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 197.5,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 3.1,
+      "predicted_target": 5.42,
+      "predicted_bias": "Bearish",
+      "confluence_score": 7.85,
+      "delta": 0.30931,
+      "gamma": 0.07809,
+      "theta": -0.10647,
+      "implied_vol": "0.15634"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAPL_210.0_put_2025-07-25 00:00:00_2025-07-11": {
+    "symbol": "AAPL",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 210.0,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 2.75,
+      "predicted_target": 4.81,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.45,
+      "delta": -0.38157,
+      "gamma": 0.03777,
+      "theta": -0.11831,
+      "implied_vol": "0.23438"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "GS_712.5_call_2025-07-11 00:00:00_2025-07-11": {
+    "symbol": "GS",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 712.5,
+      "type": "call",
+      "expiration": "2025-07-11 00:00:00",
+      "entry_price": 1.94,
+      "predicted_target": 3.4,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.57,
+      "delta": 0.35502,
+      "gamma": 0.04279,
+      "theta": -1.64906,
+      "implied_vol": "0.23438"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "CMG_55.0_put_2025-07-18 00:00:00_2025-07-11": {
+    "symbol": "CMG",
+    "prediction_date": "2025-07-11",
+    "option_details": {
+      "strike": 55.0,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.39,
+      "predicted_target": 0.68,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.71,
+      "delta": -0.25173,
+      "gamma": 0.13968,
+      "theta": -0.04379,
+      "implied_vol": "0.27341"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAPL_215.0_call_2025-07-25 00:00:00_2025-07-12": {
+    "symbol": "AAPL",
+    "prediction_date": "2025-07-12",
+    "option_details": {
+      "strike": 215.0,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 2.2,
+      "predicted_target": 3.85,
+      "predicted_bias": "Bearish",
+      "confluence_score": 10.0,
+      "delta": 0.35653,
+      "gamma": 0.04196,
+      "theta": -0.12701,
+      "implied_vol": "0.21487"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "GE_262.5_call_2025-07-18 00:00:00_2025-07-12": {
+    "symbol": "GE",
+    "prediction_date": "2025-07-12",
+    "option_details": {
+      "strike": 262.5,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 5.05,
+      "predicted_target": 8.84,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.57,
+      "delta": 0.36616,
+      "gamma": 0.02096,
+      "theta": -0.4931,
+      "implied_vol": "0.50755"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "MS_150.0_call_2025-09-19 00:00:00_2025-07-12": {
+    "symbol": "MS",
+    "prediction_date": "2025-07-12",
+    "option_details": {
+      "strike": 150.0,
+      "type": "call",
+      "expiration": "2025-09-19 00:00:00",
+      "entry_price": 3.9,
+      "predicted_target": 6.83,
+      "predicted_bias": "Bearish",
+      "confluence_score": 10.0,
+      "delta": 0.33497,
+      "gamma": 0.02721,
+      "theta": -0.04016,
+      "implied_vol": "0.21487"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "MSFT_500.0_put_2025-07-25 00:00:00_2025-07-12": {
+    "symbol": "MSFT",
+    "prediction_date": "2025-07-12",
+    "option_details": {
+      "strike": 500.0,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 2.35,
+      "predicted_target": 4.11,
+      "predicted_bias": "Bullish",
+      "confluence_score": 10.0,
+      "delta": -0.38755,
+      "gamma": 0.02485,
+      "theta": -0.18714,
+      "implied_vol": "0.15634"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ABBV_195.0_call_2025-07-18 00:00:00_2025-07-12": {
+    "symbol": "ABBV",
+    "prediction_date": "2025-07-12",
+    "option_details": {
+      "strike": 195.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 2.91,
+      "predicted_target": 5.09,
+      "predicted_bias": "Bearish",
+      "confluence_score": 10.0,
+      "delta": 0.26064,
+      "gamma": 0.08906,
+      "theta": -0.09048,
+      "implied_vol": "0.13683"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "XOM_117.0_call_2025-07-25 00:00:00_2025-07-12": {
+    "symbol": "XOM",
+    "prediction_date": "2025-07-12",
+    "option_details": {
+      "strike": 117.0,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 1.18,
+      "predicted_target": 2.06,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.39,
+      "delta": 0.3719,
+      "gamma": 0.09513,
+      "theta": -0.05867,
+      "implied_vol": "0.17585"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ABBV_195.0_call_2025-07-18 00:00:00_2025-07-13": {
+    "symbol": "ABBV",
+    "prediction_date": "2025-07-13",
+    "option_details": {
+      "strike": 195.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 2.91,
+      "predicted_target": 5.09,
+      "predicted_bias": "Bearish",
+      "confluence_score": 10.0,
+      "delta": 0.26064,
+      "gamma": 0.08906,
+      "theta": -0.09048,
+      "implied_vol": "0.13683"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAPL_215.0_call_2025-07-25 00:00:00_2025-07-13": {
+    "symbol": "AAPL",
+    "prediction_date": "2025-07-13",
+    "option_details": {
+      "strike": 215.0,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 2.2,
+      "predicted_target": 3.85,
+      "predicted_bias": "Bearish",
+      "confluence_score": 10.0,
+      "delta": 0.35653,
+      "gamma": 0.04196,
+      "theta": -0.12701,
+      "implied_vol": "0.21487"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "LMND_37.0_put_2025-07-25 00:00:00_2025-07-13": {
+    "symbol": "LMND",
+    "prediction_date": "2025-07-13",
+    "option_details": {
+      "strike": 37.0,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 1.35,
+      "predicted_target": 2.36,
+      "predicted_bias": "Bearish",
+      "confluence_score": 7.91,
+      "delta": -0.37018,
+      "gamma": 0.08085,
+      "theta": -0.06116,
+      "implied_vol": "0.62462"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "MSFT_500.0_put_2025-07-25 00:00:00_2025-07-13": {
+    "symbol": "MSFT",
+    "prediction_date": "2025-07-13",
+    "option_details": {
+      "strike": 500.0,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 2.35,
+      "predicted_target": 4.11,
+      "predicted_bias": "Bullish",
+      "confluence_score": 10.0,
+      "delta": -0.38755,
+      "gamma": 0.02485,
+      "theta": -0.18714,
+      "implied_vol": "0.15634"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "QS_6.0_put_2026-01-16 00:00:00_2025-07-13": {
+    "symbol": "QS",
+    "prediction_date": "2025-07-13",
+    "option_details": {
+      "strike": 6.0,
+      "type": "put",
+      "expiration": "2026-01-16 00:00:00",
+      "entry_price": 0.59,
+      "predicted_target": 1.03,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.38,
+      "delta": -0.14634,
+      "gamma": 0.04114,
+      "theta": -0.00315,
+      "implied_vol": "0.83925"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "MSFT_517.5_call_2025-07-18 00:00:00_2025-07-14": {
+    "symbol": "MSFT",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 517.5,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.47,
+      "predicted_target": 0.82,
+      "predicted_bias": "Bullish",
+      "confluence_score": 10.0,
+      "delta": 0.10858,
+      "gamma": 0.0171,
+      "theta": -0.15142,
+      "implied_vol": "0.15634"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AMZN_215.0_put_2025-07-18 00:00:00_2025-07-14": {
+    "symbol": "AMZN",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 215.0,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.43,
+      "predicted_target": 0.75,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.65,
+      "delta": -0.10676,
+      "gamma": 0.0216,
+      "theta": -0.1091,
+      "implied_vol": "0.27341"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "CSCO_67.0_put_2025-07-25 00:00:00_2025-07-14": {
+    "symbol": "CSCO",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 67.0,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.46,
+      "predicted_target": 0.81,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.29,
+      "delta": -0.29827,
+      "gamma": 0.16668,
+      "theta": -0.02332,
+      "implied_vol": "0.15634"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "TFC_47.0_call_2025-08-01 00:00:00_2025-07-14": {
+    "symbol": "TFC",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 47.0,
+      "type": "call",
+      "expiration": "2025-08-01 00:00:00",
+      "entry_price": 0.69,
+      "predicted_target": 1.21,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.71,
+      "delta": 0.27924,
+      "gamma": 0.14358,
+      "theta": -0.0202,
+      "implied_vol": "0.21487"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "XOM_118.0_call_2025-07-18 00:00:00_2025-07-14": {
+    "symbol": "XOM",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 118.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.38,
+      "predicted_target": 0.67,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.55,
+      "delta": 0.22074,
+      "gamma": 0.095,
+      "theta": -0.06915,
+      "implied_vol": "0.19536"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "CVX_150.0_put_2025-07-18 00:00:00_2025-07-14": {
+    "symbol": "CVX",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 150.0,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.63,
+      "predicted_target": 1.1,
+      "predicted_bias": "Bearish",
+      "confluence_score": 7.59,
+      "delta": -0.16862,
+      "gamma": 0.04281,
+      "theta": -0.10256,
+      "implied_vol": "0.27341"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "QQQ_557.0_call_2025-07-14 00:00:00_2025-07-14": {
+    "symbol": "QQQ",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 557.0,
+      "type": "call",
+      "expiration": "2025-07-14 00:00:00",
+      "entry_price": 0.58,
+      "predicted_target": 1.01,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.23,
+      "delta": 0.25581,
+      "gamma": 0.08177,
+      "theta": -0.22761,
+      "implied_vol": "0.07829"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "XLF_54.5_call_2025-08-08 00:00:00_2025-07-14": {
+    "symbol": "XLF",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 54.5,
+      "type": "call",
+      "expiration": "2025-08-08 00:00:00",
+      "entry_price": 0.59,
+      "predicted_target": 1.03,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.26,
+      "delta": 0.14653,
+      "gamma": 0.11612,
+      "theta": -0.00899,
+      "implied_vol": "0.13683"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "XLE_87.5_put_2025-07-18 00:00:00_2025-07-14": {
+    "symbol": "XLE",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 87.5,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.39,
+      "predicted_target": 0.68,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.68,
+      "delta": -0.18361,
+      "gamma": 0.13768,
+      "theta": -0.03466,
+      "implied_vol": "0.15634"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "XLK_255.0_put_2025-07-11 00:00:00_2025-07-14": {
+    "symbol": "XLK",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 255.0,
+      "type": "put",
+      "expiration": "2025-07-11 00:00:00",
+      "entry_price": 0.2,
+      "predicted_target": 0.35,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.04,
+      "delta": -0.1996,
+      "gamma": 0.2667,
+      "theta": -0.14051,
+      "implied_vol": "0.07829"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AMC_3.0_put_2026-01-16 00:00:00_2025-07-14": {
+    "symbol": "AMC",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 3.0,
+      "type": "put",
+      "expiration": "2026-01-16 00:00:00",
+      "entry_price": 0.25,
+      "predicted_target": 0.44,
+      "predicted_bias": "Bullish",
+      "confluence_score": 7.6,
+      "delta": -0.3072,
+      "gamma": 0.20306,
+      "theta": -0.00143,
+      "implied_vol": "0.72218"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "SOFI_20.5_put_2025-07-25 00:00:00_2025-07-14": {
+    "symbol": "SOFI",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 20.5,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.62,
+      "predicted_target": 1.08,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.67,
+      "delta": -0.35447,
+      "gamma": 0.15831,
+      "theta": -0.03027,
+      "implied_vol": "0.56608"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "MSFT_512.5_call_2025-07-18 00:00:00_2025-07-14": {
+    "symbol": "MSFT",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 512.5,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 1.05,
+      "predicted_target": 1.84,
+      "predicted_bias": "Bullish",
+      "confluence_score": 10.0,
+      "delta": 0.1839,
+      "gamma": 0.02789,
+      "theta": -0.19204,
+      "implied_vol": "0.13683"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AMZN_230.0_call_2025-07-18 00:00:00_2025-07-14": {
+    "symbol": "AMZN",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 230.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 1.15,
+      "predicted_target": 2.01,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.65,
+      "delta": 0.2635,
+      "gamma": 0.04472,
+      "theta": -0.17729,
+      "implied_vol": "0.23438"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "BAC_49.0_call_2025-09-19 00:00:00_2025-07-14": {
+    "symbol": "BAC",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 49.0,
+      "type": "call",
+      "expiration": "2025-09-19 00:00:00",
+      "entry_price": 1.1,
+      "predicted_target": 1.93,
+      "predicted_bias": "Bearish",
+      "confluence_score": 10.0,
+      "delta": 0.35614,
+      "gamma": 0.08476,
+      "theta": -0.01356,
+      "implied_vol": "0.21487"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "MS_160.0_call_2025-09-19 00:00:00_2025-07-14": {
+    "symbol": "MS",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 160.0,
+      "type": "call",
+      "expiration": "2025-09-19 00:00:00",
+      "entry_price": 1.06,
+      "predicted_target": 1.85,
+      "predicted_bias": "Bearish",
+      "confluence_score": 10.0,
+      "delta": 0.13305,
+      "gamma": 0.01606,
+      "theta": -0.0227,
+      "implied_vol": "0.21487"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "MCD_305.0_call_2025-07-18 00:00:00_2025-07-14": {
+    "symbol": "MCD",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 305.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 1.11,
+      "predicted_target": 1.94,
+      "predicted_bias": "Bearish",
+      "confluence_score": 7.72,
+      "delta": 0.25953,
+      "gamma": 0.04437,
+      "theta": -0.17816,
+      "implied_vol": "0.17585"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "XOM_117.0_call_2025-07-25 00:00:00_2025-07-14": {
+    "symbol": "XOM",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 117.0,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 1.18,
+      "predicted_target": 2.06,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.55,
+      "delta": 0.3719,
+      "gamma": 0.09513,
+      "theta": -0.05867,
+      "implied_vol": "0.17585"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "CVX_152.5_put_2025-07-18 00:00:00_2025-07-14": {
+    "symbol": "CVX",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 152.5,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 1.18,
+      "predicted_target": 2.06,
+      "predicted_bias": "Bearish",
+      "confluence_score": 7.59,
+      "delta": -0.30046,
+      "gamma": 0.05917,
+      "theta": -0.14047,
+      "implied_vol": "0.27341"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "VLO_150.0_put_2025-07-18 00:00:00_2025-07-14": {
+    "symbol": "VLO",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 150.0,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 1.19,
+      "predicted_target": 2.08,
+      "predicted_bias": "Bearish",
+      "confluence_score": 7.63,
+      "delta": -0.29564,
+      "gamma": 0.05563,
+      "theta": -0.14765,
+      "implied_vol": "0.29292"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "QQQ_556.0_call_2025-07-14 00:00:00_2025-07-14": {
+    "symbol": "QQQ",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 556.0,
+      "type": "call",
+      "expiration": "2025-07-14 00:00:00",
+      "entry_price": 1.19,
+      "predicted_target": 2.08,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.23,
+      "delta": 0.34341,
+      "gamma": 0.0935,
+      "theta": -0.2636,
+      "implied_vol": "0.07829"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "XLE_87.5_put_2025-08-29 00:00:00_2025-07-14": {
+    "symbol": "XLE",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 87.5,
+      "type": "put",
+      "expiration": "2025-08-29 00:00:00",
+      "entry_price": 1.94,
+      "predicted_target": 3.4,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.68,
+      "delta": -0.30531,
+      "gamma": 0.07843,
+      "theta": -0.01264,
+      "implied_vol": "0.13683"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "NKLA_1.0_put_2027-01-15 00:00:00_2025-07-14": {
+    "symbol": "NKLA",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 1.0,
+      "type": "put",
+      "expiration": "2027-01-15 00:00:00",
+      "entry_price": 0.91,
+      "predicted_target": 1.59,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.24,
+      "delta": -0.13818,
+      "gamma": 0.37784,
+      "theta": 1e-05,
+      "implied_vol": "2.32214"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAPL_215.0_call_2025-07-18 00:00:00_2025-07-14": {
+    "symbol": "AAPL",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 215.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 1.23,
+      "predicted_target": 2.15,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.83,
+      "delta": 0.28677,
+      "gamma": 0.05419,
+      "theta": -0.15987,
+      "implied_vol": "0.21487"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "MSFT_497.5_put_2025-07-18 00:00:00_2025-07-14": {
+    "symbol": "MSFT",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 497.5,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 1.59,
+      "predicted_target": 2.78,
+      "predicted_bias": "Bullish",
+      "confluence_score": 10.0,
+      "delta": -0.27881,
+      "gamma": 0.03083,
+      "theta": -0.2446,
+      "implied_vol": "0.15634"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "CMG_57.0_call_2025-07-18 00:00:00_2025-07-14": {
+    "symbol": "CMG",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 57.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.43,
+      "predicted_target": 0.75,
+      "predicted_bias": "Bearish",
+      "confluence_score": 10.0,
+      "delta": 0.32197,
+      "gamma": 0.18209,
+      "theta": -0.05252,
+      "implied_vol": "0.25390"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AG_7.0_put_2026-12-18 00:00:00_2025-07-14": {
+    "symbol": "AG",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 7.0,
+      "type": "put",
+      "expiration": "2026-12-18 00:00:00",
+      "entry_price": 1.21,
+      "predicted_target": 2.12,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.51,
+      "delta": -0.19908,
+      "gamma": 0.04436,
+      "theta": -0.00133,
+      "implied_vol": "0.56608"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "GE_272.5_call_2025-07-18 00:00:00_2025-07-14": {
+    "symbol": "GE",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 272.5,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 2.16,
+      "predicted_target": 3.78,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.45,
+      "delta": 0.20075,
+      "gamma": 0.01505,
+      "theta": -0.37949,
+      "implied_vol": "0.52706"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "QCOM_160.0_call_2025-07-18 00:00:00_2025-07-14": {
+    "symbol": "QCOM",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 160.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 1.36,
+      "predicted_target": 2.38,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.82,
+      "delta": 0.35131,
+      "gamma": 0.06221,
+      "theta": -0.16435,
+      "implied_vol": "0.27341"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "QS_9.0_put_2026-01-16 00:00:00_2025-07-14": {
+    "symbol": "QS",
+    "prediction_date": "2025-07-14",
+    "option_details": {
+      "strike": 9.0,
+      "type": "put",
+      "expiration": "2026-01-16 00:00:00",
+      "entry_price": 2.04,
+      "predicted_target": 3.57,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.02,
+      "delta": -0.34971,
+      "gamma": 0.06492,
+      "theta": -0.00497,
+      "implied_vol": "0.85876"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAOI_32.0_call_2025-07-25 00:00:00_2025-07-15": {
+    "symbol": "AAOI",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 32.0,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 1.6,
+      "predicted_target": 2.8,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.86,
+      "delta": 0.36795,
+      "gamma": 0.06857,
+      "theta": -0.09529,
+      "implied_vol": "1.07339"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAL_12.0_put_2026-12-18 00:00:00_2025-07-15": {
+    "symbol": "AAL",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 12.0,
+      "type": "put",
+      "expiration": "2026-12-18 00:00:00",
+      "entry_price": 2.11,
+      "predicted_target": 3.69,
+      "predicted_bias": "Bearish",
+      "confluence_score": 10.0,
+      "delta": -0.33067,
+      "gamma": 0.057,
+      "theta": -0.0015,
+      "implied_vol": "0.42950"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAPL_212.5_call_2025-07-25 00:00:00_2025-07-15": {
+    "symbol": "AAPL",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 212.5,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 1.99,
+      "predicted_target": 3.48,
+      "predicted_bias": "Bearish",
+      "confluence_score": 10.0,
+      "delta": 0.3444,
+      "gamma": 0.04338,
+      "theta": -0.15037,
+      "implied_vol": "0.23438"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "CFLT_23.0_put_2025-07-18 00:00:00_2025-07-15": {
+    "symbol": "CFLT",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 23.0,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.25,
+      "predicted_target": 0.44,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.93,
+      "delta": -0.21626,
+      "gamma": 0.22168,
+      "theta": -0.04783,
+      "implied_vol": "0.52706"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "GOOG_185.0_call_2025-07-18 00:00:00_2025-07-15": {
+    "symbol": "GOOG",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 185.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 1.33,
+      "predicted_target": 2.33,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.45,
+      "delta": 0.36034,
+      "gamma": 0.06676,
+      "theta": -0.26989,
+      "implied_vol": "0.29292"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAPL_215.0_call_2025-07-25 00:00:00_2025-07-15": {
+    "symbol": "AAPL",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 215.0,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 1.34,
+      "predicted_target": 2.35,
+      "predicted_bias": "Bearish",
+      "confluence_score": 10.0,
+      "delta": 0.24575,
+      "gamma": 0.03709,
+      "theta": -0.12743,
+      "implied_vol": "0.23438"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAL_12.0_put_2026-03-20 00:00:00_2025-07-15": {
+    "symbol": "AAL",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 12.0,
+      "type": "put",
+      "expiration": "2026-03-20 00:00:00",
+      "entry_price": 1.53,
+      "predicted_target": 2.68,
+      "predicted_bias": "Bearish",
+      "confluence_score": 10.0,
+      "delta": -0.36303,
+      "gamma": 0.07831,
+      "theta": -0.0029,
+      "implied_vol": "0.46853"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "BP_40.0_call_2026-12-18 00:00:00_2025-07-15": {
+    "symbol": "BP",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 40.0,
+      "type": "call",
+      "expiration": "2026-12-18 00:00:00",
+      "entry_price": 0.42,
+      "predicted_target": 0.73,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.21,
+      "delta": 0.25893,
+      "gamma": 0.04795,
+      "theta": -0.00297,
+      "implied_vol": "0.17585"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ENPH_43.0_call_2025-07-18 00:00:00_2025-07-15": {
+    "symbol": "ENPH",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 43.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.79,
+      "predicted_target": 1.38,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.81,
+      "delta": 0.38465,
+      "gamma": 0.12729,
+      "theta": -0.14524,
+      "implied_vol": "0.68315"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "JNJ_165.0_call_2025-09-19 00:00:00_2025-07-15": {
+    "symbol": "JNJ",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 165.0,
+      "type": "call",
+      "expiration": "2025-09-19 00:00:00",
+      "entry_price": 1.99,
+      "predicted_target": 3.48,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.09,
+      "delta": 0.24119,
+      "gamma": 0.03391,
+      "theta": -0.02572,
+      "implied_vol": "0.13683"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "KMI_30.0_call_2025-08-22 00:00:00_2025-07-15": {
+    "symbol": "KMI",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 30.0,
+      "type": "call",
+      "expiration": "2025-08-22 00:00:00",
+      "entry_price": 0.65,
+      "predicted_target": 1.14,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.03,
+      "delta": 0.18584,
+      "gamma": 0.16443,
+      "theta": -0.00619,
+      "implied_vol": "0.17585"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "KHC_35.0_call_2027-01-15 00:00:00_2025-07-15": {
+    "symbol": "KHC",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 35.0,
+      "type": "call",
+      "expiration": "2027-01-15 00:00:00",
+      "entry_price": 1.01,
+      "predicted_target": 1.77,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.78,
+      "delta": 0.25567,
+      "gamma": 0.05358,
+      "theta": -0.0025,
+      "implied_vol": "0.17585"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "SAVA_3.0_call_2025-11-21 00:00:00_2025-07-15": {
+    "symbol": "SAVA",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 3.0,
+      "type": "call",
+      "expiration": "2025-11-21 00:00:00",
+      "entry_price": 0.28,
+      "predicted_target": 0.49,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.29,
+      "delta": 0.3047,
+      "gamma": 0.3761,
+      "theta": -0.00131,
+      "implied_vol": "0.72218"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "VFC_22.5_call_2027-01-15 00:00:00_2025-07-15": {
+    "symbol": "VFC",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 22.5,
+      "type": "call",
+      "expiration": "2027-01-15 00:00:00",
+      "entry_price": 0.4,
+      "predicted_target": 0.7,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.0,
+      "delta": 0.28787,
+      "gamma": 0.04469,
+      "theta": -0.00266,
+      "implied_vol": "0.50755"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "CG_70.0_call_2025-12-19 00:00:00_2025-07-15": {
+    "symbol": "CG",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 70.0,
+      "type": "call",
+      "expiration": "2025-12-19 00:00:00",
+      "entry_price": 2.15,
+      "predicted_target": 3.76,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.7,
+      "delta": 0.27756,
+      "gamma": 0.02603,
+      "theta": -0.01537,
+      "implied_vol": "0.33194"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "GE_280.0_call_2025-07-18 00:00:00_2025-07-15": {
+    "symbol": "GE",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 280.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 2.0,
+      "predicted_target": 3.5,
+      "predicted_bias": "Bullish",
+      "confluence_score": 7.98,
+      "delta": 0.19254,
+      "gamma": 0.01458,
+      "theta": -0.64737,
+      "implied_vol": "0.68315"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "QCOM_157.5_call_2025-07-25 00:00:00_2025-07-15": {
+    "symbol": "QCOM",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 157.5,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 1.26,
+      "predicted_target": 2.21,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.82,
+      "delta": 0.36173,
+      "gamma": 0.04776,
+      "theta": -0.14004,
+      "implied_vol": "0.29292"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "QS_9.0_put_2026-01-16 00:00:00_2025-07-15": {
+    "symbol": "QS",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 9.0,
+      "type": "put",
+      "expiration": "2026-01-16 00:00:00",
+      "entry_price": 1.75,
+      "predicted_target": 3.06,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.46,
+      "delta": -0.30066,
+      "gamma": 0.05649,
+      "theta": -0.0052,
+      "implied_vol": "0.85876"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "PYPL_73.0_put_2025-07-25 00:00:00_2025-07-15": {
+    "symbol": "PYPL",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 73.0,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.81,
+      "predicted_target": 1.42,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.63,
+      "delta": -0.39181,
+      "gamma": 0.09586,
+      "theta": -0.06641,
+      "implied_vol": "0.31243"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "BE_25.0_put_2025-07-25 00:00:00_2025-07-15": {
+    "symbol": "BE",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 25.0,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 2.9,
+      "predicted_target": 5.08,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.19,
+      "delta": -0.35175,
+      "gamma": 0.11718,
+      "theta": -0.05223,
+      "implied_vol": "0.70267"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ETSY_59.0_call_2025-07-25 00:00:00_2025-07-15": {
+    "symbol": "ETSY",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 59.0,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.93,
+      "predicted_target": 1.63,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.42,
+      "delta": 0.39871,
+      "gamma": 0.09398,
+      "theta": -0.07467,
+      "implied_vol": "0.40999"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "KHC_27.5_put_2026-12-18 00:00:00_2025-07-15": {
+    "symbol": "KHC",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 27.5,
+      "type": "put",
+      "expiration": "2026-12-18 00:00:00",
+      "entry_price": 1.01,
+      "predicted_target": 1.77,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.78,
+      "delta": -0.34973,
+      "gamma": 0.04074,
+      "theta": -0.00176,
+      "implied_vol": "0.27341"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "KO_65.0_put_2026-09-18 00:00:00_2025-07-15": {
+    "symbol": "KO",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 65.0,
+      "type": "put",
+      "expiration": "2026-09-18 00:00:00",
+      "entry_price": 3.45,
+      "predicted_target": 6.04,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.2,
+      "delta": -0.25454,
+      "gamma": 0.02175,
+      "theta": -0.00309,
+      "implied_vol": "0.19536"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "SPOT_750.0_call_2025-07-18 00:00:00_2025-07-15": {
+    "symbol": "SPOT",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 750.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 2.54,
+      "predicted_target": 4.45,
+      "predicted_bias": "Bearish",
+      "confluence_score": 7.92,
+      "delta": 0.17041,
+      "gamma": 0.00786,
+      "theta": -1.03617,
+      "implied_vol": "0.42950"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ZETA_13.5_put_2025-07-18 00:00:00_2025-07-15": {
+    "symbol": "ZETA",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 13.5,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.9,
+      "predicted_target": 1.57,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.18,
+      "delta": -0.20633,
+      "gamma": 0.34037,
+      "theta": -0.02952,
+      "implied_vol": "0.56608"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "XYZ_67.0_put_2025-08-01 00:00:00_2025-07-15": {
+    "symbol": "XYZ",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 67.0,
+      "type": "put",
+      "expiration": "2025-08-01 00:00:00",
+      "entry_price": 1.69,
+      "predicted_target": 2.96,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.55,
+      "delta": -0.3708,
+      "gamma": 0.05768,
+      "theta": -0.06552,
+      "implied_vol": "0.42950"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "LCID_4.5_put_2027-12-17 00:00:00_2025-07-15": {
+    "symbol": "LCID",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 4.5,
+      "type": "put",
+      "expiration": "2027-12-17 00:00:00",
+      "entry_price": 0.35,
+      "predicted_target": 0.61,
+      "predicted_bias": "Bullish",
+      "confluence_score": 7.78,
+      "delta": -0.36959,
+      "gamma": 0.11392,
+      "theta": -0.00029,
+      "implied_vol": "0.93681"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "LNG_245.0_call_2025-07-18 00:00:00_2025-07-15": {
+    "symbol": "LNG",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 245.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 2.6,
+      "predicted_target": 4.55,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.25,
+      "delta": 0.37565,
+      "gamma": 0.03843,
+      "theta": -0.4787,
+      "implied_vol": "0.39048"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "PFE_26.0_call_2025-08-01 00:00:00_2025-07-15": {
+    "symbol": "PFE",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 26.0,
+      "type": "call",
+      "expiration": "2025-08-01 00:00:00",
+      "entry_price": 2.33,
+      "predicted_target": 4.08,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.93,
+      "delta": 0.25772,
+      "gamma": 0.36688,
+      "theta": -0.00865,
+      "implied_vol": "0.15634"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "PG_155.0_call_2025-07-25 00:00:00_2025-07-15": {
+    "symbol": "PG",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 155.0,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.91,
+      "predicted_target": 1.59,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.45,
+      "delta": 0.39306,
+      "gamma": 0.10528,
+      "theta": -0.07089,
+      "implied_vol": "0.13683"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "SYM_49.0_call_2025-07-18 00:00:00_2025-07-15": {
+    "symbol": "SYM",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 49.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 1.2,
+      "predicted_target": 2.1,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.9,
+      "delta": 0.38734,
+      "gamma": 0.0896,
+      "theta": -0.20662,
+      "implied_vol": "0.85876"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "BMY_67.5_call_2027-12-17 00:00:00_2025-07-15": {
+    "symbol": "BMY",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 67.5,
+      "type": "call",
+      "expiration": "2027-12-17 00:00:00",
+      "entry_price": 2.25,
+      "predicted_target": 3.94,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.54,
+      "delta": 0.25204,
+      "gamma": 0.02215,
+      "theta": -0.00379,
+      "implied_vol": "0.19536"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "SHOP_115.0_put_2025-07-18 00:00:00_2025-07-15": {
+    "symbol": "SHOP",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 115.0,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 1.83,
+      "predicted_target": 3.2,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.26,
+      "delta": -0.36679,
+      "gamma": 0.06575,
+      "theta": -0.26421,
+      "implied_vol": "0.46853"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "FCX_44.0_put_2025-09-19 00:00:00_2025-07-15": {
+    "symbol": "FCX",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 44.0,
+      "type": "put",
+      "expiration": "2025-09-19 00:00:00",
+      "entry_price": 2.02,
+      "predicted_target": 3.54,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.66,
+      "delta": -0.36004,
+      "gamma": 0.05159,
+      "theta": -0.01807,
+      "implied_vol": "0.37097"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "SHOP_120.0_call_2025-07-25 00:00:00_2025-07-15": {
+    "symbol": "SHOP",
+    "prediction_date": "2025-07-15",
+    "option_details": {
+      "strike": 120.0,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 2.15,
+      "predicted_target": 3.76,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.26,
+      "delta": 0.37653,
+      "gamma": 0.04362,
+      "theta": -0.15518,
+      "implied_vol": "0.42950"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ABNB_138.0_call_2025-07-18 00:00:00_2025-07-16": {
+    "symbol": "ABNB",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 138.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 1.02,
+      "predicted_target": 1.79,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.05,
+      "delta": 0.36363,
+      "gamma": 0.09707,
+      "theta": -0.24775,
+      "implied_vol": "0.31243"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAPL_212.5_call_2025-07-18 00:00:00_2025-07-16": {
+    "symbol": "AAPL",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 212.5,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.82,
+      "predicted_target": 1.43,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.41,
+      "delta": 0.26696,
+      "gamma": 0.06343,
+      "theta": -0.29054,
+      "implied_vol": "0.27341"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAL_17.0_call_2026-12-18 00:00:00_2025-07-16": {
+    "symbol": "AAL",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 17.0,
+      "type": "call",
+      "expiration": "2026-12-18 00:00:00",
+      "entry_price": 1.14,
+      "predicted_target": 1.99,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.43,
+      "delta": 0.3629,
+      "gamma": 0.06608,
+      "theta": -0.00244,
+      "implied_vol": "0.39048"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "BMY_70.0_call_2026-12-18 00:00:00_2025-07-16": {
+    "symbol": "BMY",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 70.0,
+      "type": "call",
+      "expiration": "2026-12-18 00:00:00",
+      "entry_price": 0.98,
+      "predicted_target": 1.71,
+      "predicted_bias": "Bullish",
+      "confluence_score": 7.56,
+      "delta": 0.10933,
+      "gamma": 0.01571,
+      "theta": -0.00268,
+      "implied_vol": "0.21487"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ETSY_57.0_call_2025-07-25 00:00:00_2025-07-16": {
+    "symbol": "ETSY",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 57.0,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 1.03,
+      "predicted_target": 1.8,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.57,
+      "delta": 0.38545,
+      "gamma": 0.10118,
+      "theta": -0.07469,
+      "implied_vol": "0.40999"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "FCX_40.0_put_2025-08-22 00:00:00_2025-07-16": {
+    "symbol": "FCX",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 40.0,
+      "type": "put",
+      "expiration": "2025-08-22 00:00:00",
+      "entry_price": 0.66,
+      "predicted_target": 1.16,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.29,
+      "delta": -0.16829,
+      "gamma": 0.05025,
+      "theta": -0.01561,
+      "implied_vol": "0.35146"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "LCID_7.0_call_2027-12-17 00:00:00_2025-07-16": {
+    "symbol": "LCID",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 7.0,
+      "type": "call",
+      "expiration": "2027-12-17 00:00:00",
+      "entry_price": 0.4,
+      "predicted_target": 0.7,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.36,
+      "delta": 0.31186,
+      "gamma": 0.15135,
+      "theta": -0.00052,
+      "implied_vol": "0.64413"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "LMND_37.5_put_2025-07-25 00:00:00_2025-07-16": {
+    "symbol": "LMND",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 37.5,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 1.15,
+      "predicted_target": 2.01,
+      "predicted_bias": "Bullish",
+      "confluence_score": 7.69,
+      "delta": -0.34067,
+      "gamma": 0.08839,
+      "theta": -0.07437,
+      "implied_vol": "0.64413"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "OXY_60.0_call_2026-09-18 00:00:00_2025-07-16": {
+    "symbol": "OXY",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 60.0,
+      "type": "call",
+      "expiration": "2026-09-18 00:00:00",
+      "entry_price": 0.89,
+      "predicted_target": 1.56,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.64,
+      "delta": 0.18082,
+      "gamma": 0.02237,
+      "theta": -0.00439,
+      "implied_vol": "0.25390"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "SOFI_20.5_put_2025-07-25 00:00:00_2025-07-16": {
+    "symbol": "SOFI",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 20.5,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.54,
+      "predicted_target": 0.95,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.0,
+      "delta": -0.3807,
+      "gamma": 0.20091,
+      "theta": -0.03511,
+      "implied_vol": "0.54657"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAL_25.0_call_2027-01-15 00:00:00_2025-07-16": {
+    "symbol": "AAL",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 25.0,
+      "type": "call",
+      "expiration": "2027-01-15 00:00:00",
+      "entry_price": 0.76,
+      "predicted_target": 1.33,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.43,
+      "delta": 0.14668,
+      "gamma": 0.03754,
+      "theta": -0.00145,
+      "implied_vol": "0.40999"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "MBLY_15.5_put_2025-07-18 00:00:00_2025-07-16": {
+    "symbol": "MBLY",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 15.5,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.81,
+      "predicted_target": 1.42,
+      "predicted_bias": "Bullish",
+      "confluence_score": 7.98,
+      "delta": -0.22697,
+      "gamma": 0.34082,
+      "theta": -0.04397,
+      "implied_vol": "0.60511"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "MDLZ_77.5_call_2026-03-20 00:00:00_2025-07-16": {
+    "symbol": "MDLZ",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 77.5,
+      "type": "call",
+      "expiration": "2026-03-20 00:00:00",
+      "entry_price": 0.6,
+      "predicted_target": 1.05,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.13,
+      "delta": 0.19293,
+      "gamma": 0.03185,
+      "theta": -0.00617,
+      "implied_vol": "0.15634"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "MCD_295.0_put_2025-07-18 00:00:00_2025-07-16": {
+    "symbol": "MCD",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 295.0,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.7,
+      "predicted_target": 1.22,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.76,
+      "delta": -0.20448,
+      "gamma": 0.04861,
+      "theta": -0.26863,
+      "implied_vol": "0.21487"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "QCOM_157.5_call_2025-07-18 00:00:00_2025-07-16": {
+    "symbol": "QCOM",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 157.5,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.47,
+      "predicted_target": 0.82,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.36,
+      "delta": 0.25616,
+      "gamma": 0.06932,
+      "theta": -0.25371,
+      "implied_vol": "0.33194"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "PYPL_75.0_call_2025-07-25 00:00:00_2025-07-16": {
+    "symbol": "PYPL",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 75.0,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.68,
+      "predicted_target": 1.19,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.31,
+      "delta": 0.30151,
+      "gamma": 0.09851,
+      "theta": -0.06417,
+      "implied_vol": "0.29292"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "GOOG_187.5_call_2025-07-18 00:00:00_2025-07-16": {
+    "symbol": "GOOG",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 187.5,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.29,
+      "predicted_target": 0.51,
+      "predicted_bias": "Bearish",
+      "confluence_score": 7.78,
+      "delta": 0.17586,
+      "gamma": 0.05697,
+      "theta": -0.19936,
+      "implied_vol": "0.27341"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "FTNT_106.0_call_2025-07-18 00:00:00_2025-07-16": {
+    "symbol": "FTNT",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 106.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.91,
+      "predicted_target": 1.59,
+      "predicted_bias": "Bullish",
+      "confluence_score": 7.64,
+      "delta": 0.38541,
+      "gamma": 0.11437,
+      "theta": -0.21776,
+      "implied_vol": "0.35146"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "TOST_43.5_put_2025-07-25 00:00:00_2025-07-16": {
+    "symbol": "TOST",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 43.5,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.73,
+      "predicted_target": 1.28,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.96,
+      "delta": -0.3781,
+      "gamma": 0.11536,
+      "theta": -0.06054,
+      "implied_vol": "0.44901"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "LRCX_103.0_call_2025-07-18 00:00:00_2025-07-16": {
+    "symbol": "LRCX",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 103.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.91,
+      "predicted_target": 1.59,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.36,
+      "delta": 0.33157,
+      "gamma": 0.08819,
+      "theta": -0.25267,
+      "implied_vol": "0.44901"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "MARA_17.5_put_2025-07-25 00:00:00_2025-07-16": {
+    "symbol": "MARA",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 17.5,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.83,
+      "predicted_target": 1.45,
+      "predicted_bias": "Bullish",
+      "confluence_score": 7.78,
+      "delta": -0.25266,
+      "gamma": 0.14646,
+      "theta": -0.03426,
+      "implied_vol": "0.70267"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "PLTR_143.0_put_2025-07-18 00:00:00_2025-07-16": {
+    "symbol": "PLTR",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 143.0,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.64,
+      "predicted_target": 1.12,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.76,
+      "delta": -0.20258,
+      "gamma": 0.03974,
+      "theta": -0.33016,
+      "implied_vol": "0.52706"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAL_12.0_put_2026-02-20 00:00:00_2025-07-16": {
+    "symbol": "AAL",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 12.0,
+      "type": "put",
+      "expiration": "2026-02-20 00:00:00",
+      "entry_price": 1.52,
+      "predicted_target": 2.66,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.43,
+      "delta": -0.38503,
+      "gamma": 0.08635,
+      "theta": -0.00311,
+      "implied_vol": "0.46853"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAPL_207.5_put_2025-07-18 00:00:00_2025-07-16": {
+    "symbol": "AAPL",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 207.5,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 1.28,
+      "predicted_target": 2.24,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.41,
+      "delta": -0.36747,
+      "gamma": 0.07268,
+      "theta": -0.31616,
+      "implied_vol": "0.27341"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "OSCR_14.5_put_2025-08-01 00:00:00_2025-07-16": {
+    "symbol": "OSCR",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 14.5,
+      "type": "put",
+      "expiration": "2025-08-01 00:00:00",
+      "entry_price": 0.9,
+      "predicted_target": 1.57,
+      "predicted_bias": "Bearish",
+      "confluence_score": 10.0,
+      "delta": -0.39835,
+      "gamma": 0.13957,
+      "theta": -0.03058,
+      "implied_vol": "0.85876"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "TER_95.0_call_2025-07-18 00:00:00_2025-07-16": {
+    "symbol": "TER",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 95.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 1.1,
+      "predicted_target": 1.93,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.23,
+      "delta": 0.34193,
+      "gamma": 0.08261,
+      "theta": -0.27571,
+      "implied_vol": "0.52706"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAL_25.0_call_2026-12-18 00:00:00_2025-07-16": {
+    "symbol": "AAL",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 25.0,
+      "type": "call",
+      "expiration": "2026-12-18 00:00:00",
+      "entry_price": 0.4,
+      "predicted_target": 0.7,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.74,
+      "delta": 0.13597,
+      "gamma": 0.0366,
+      "theta": -0.0014,
+      "implied_vol": "0.40999"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "MS_134.0_put_2025-07-18 00:00:00_2025-07-16": {
+    "symbol": "MS",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 134.0,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.35,
+      "predicted_target": 0.61,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.7,
+      "delta": -0.1097,
+      "gamma": 0.02881,
+      "theta": -0.2019,
+      "implied_vol": "0.50755"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "RIVN_12.5_put_2025-07-18 00:00:00_2025-07-16": {
+    "symbol": "RIVN",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 12.5,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.16,
+      "predicted_target": 0.28,
+      "predicted_bias": "Bearish",
+      "confluence_score": 7.56,
+      "delta": -0.39235,
+      "gamma": 0.7164,
+      "theta": -0.03376,
+      "implied_vol": "0.46853"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "RIOT_11.5_put_2025-07-25 00:00:00_2025-07-16": {
+    "symbol": "RIOT",
+    "prediction_date": "2025-07-16",
+    "option_details": {
+      "strike": 11.5,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.32,
+      "predicted_target": 0.56,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.15,
+      "delta": -0.30656,
+      "gamma": 0.24946,
+      "theta": -0.02423,
+      "implied_vol": "0.70267"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ACHR_7.0_put_2026-01-16 00:00:00_2025-07-17": {
+    "symbol": "ACHR",
+    "prediction_date": "2025-07-17",
+    "option_details": {
+      "strike": 7.0,
+      "type": "put",
+      "expiration": "2026-01-16 00:00:00",
+      "entry_price": 0.48,
+      "predicted_target": 0.84,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.31,
+      "delta": -0.1025,
+      "gamma": 0.02539,
+      "theta": -0.00322,
+      "implied_vol": "0.81974"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "SMR_54.0_call_2025-07-25 00:00:00_2025-07-17": {
+    "symbol": "SMR",
+    "prediction_date": "2025-07-17",
+    "option_details": {
+      "strike": 54.0,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.55,
+      "predicted_target": 0.96,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.17,
+      "delta": 0.15965,
+      "gamma": 0.03584,
+      "theta": -0.09233,
+      "implied_vol": "0.93681"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "SNAP_9.0_put_2025-08-01 00:00:00_2025-07-17": {
+    "symbol": "SNAP",
+    "prediction_date": "2025-07-17",
+    "option_details": {
+      "strike": 9.0,
+      "type": "put",
+      "expiration": "2025-08-01 00:00:00",
+      "entry_price": 0.16,
+      "predicted_target": 0.28,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.06,
+      "delta": -0.21481,
+      "gamma": 0.30819,
+      "theta": -0.00839,
+      "implied_vol": "0.46853"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "XOM_110.0_put_2025-07-25 00:00:00_2025-07-17": {
+    "symbol": "XOM",
+    "prediction_date": "2025-07-17",
+    "option_details": {
+      "strike": 110.0,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.65,
+      "predicted_target": 1.14,
+      "predicted_bias": "Bearish",
+      "confluence_score": 7.62,
+      "delta": -0.26,
+      "gamma": 0.08566,
+      "theta": -0.06471,
+      "implied_vol": "0.21487"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ACHR_11.0_put_2025-07-25 00:00:00_2025-07-17": {
+    "symbol": "ACHR",
+    "prediction_date": "2025-07-17",
+    "option_details": {
+      "strike": 11.0,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.22,
+      "predicted_target": 0.39,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.68,
+      "delta": -0.21449,
+      "gamma": 0.18314,
+      "theta": -0.0255,
+      "implied_vol": "0.83925"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "EOSE_4.5_put_2025-08-01 00:00:00_2025-07-17": {
+    "symbol": "EOSE",
+    "prediction_date": "2025-07-17",
+    "option_details": {
+      "strike": 4.5,
+      "type": "put",
+      "expiration": "2025-08-01 00:00:00",
+      "entry_price": 0.17,
+      "predicted_target": 0.3,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.41,
+      "delta": -0.24033,
+      "gamma": 0.30647,
+      "theta": -0.00971,
+      "implied_vol": "0.95632"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ACHR_8.0_put_2026-01-16 00:00:00_2025-07-17": {
+    "symbol": "ACHR",
+    "prediction_date": "2025-07-17",
+    "option_details": {
+      "strike": 8.0,
+      "type": "put",
+      "expiration": "2026-01-16 00:00:00",
+      "entry_price": 0.74,
+      "predicted_target": 1.29,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.31,
+      "delta": -0.14963,
+      "gamma": 0.03308,
+      "theta": -0.00415,
+      "implied_vol": "0.81974"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "OXY_42.0_put_2025-07-25 00:00:00_2025-07-17": {
+    "symbol": "OXY",
+    "prediction_date": "2025-07-17",
+    "option_details": {
+      "strike": 42.0,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.58,
+      "predicted_target": 1.01,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.72,
+      "delta": -0.36988,
+      "gamma": 0.1699,
+      "theta": -0.04467,
+      "implied_vol": "0.33194"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "SMR_44.0_put_2025-07-18 00:00:00_2025-07-17": {
+    "symbol": "SMR",
+    "prediction_date": "2025-07-17",
+    "option_details": {
+      "strike": 44.0,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.75,
+      "predicted_target": 1.31,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.17,
+      "delta": -0.27764,
+      "gamma": 0.08534,
+      "theta": -0.32764,
+      "implied_vol": "1.15144"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ABNB_141.0_call_2025-07-25 00:00:00_2025-07-18": {
+    "symbol": "ABNB",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 141.0,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 1.67,
+      "predicted_target": 2.92,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.33,
+      "delta": 0.39898,
+      "gamma": 0.06847,
+      "theta": -0.14246,
+      "implied_vol": "0.27341"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAL_12.0_put_2027-01-15 00:00:00_2025-07-18": {
+    "symbol": "AAL",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 12.0,
+      "type": "put",
+      "expiration": "2027-01-15 00:00:00",
+      "entry_price": 0.62,
+      "predicted_target": 1.08,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.76,
+      "delta": -0.32129,
+      "gamma": 0.05016,
+      "theta": -0.00161,
+      "implied_vol": "0.46853"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "IBM_280.0_put_2025-07-18 00:00:00_2025-07-18": {
+    "symbol": "IBM",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 280.0,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.44,
+      "predicted_target": 0.77,
+      "predicted_bias": "Bullish",
+      "confluence_score": 7.84,
+      "delta": -0.25817,
+      "gamma": 0.1019,
+      "theta": -0.50381,
+      "implied_vol": "0.21487"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ZETA_12.5_put_2027-01-15 00:00:00_2025-07-18": {
+    "symbol": "ZETA",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 12.5,
+      "type": "put",
+      "expiration": "2027-01-15 00:00:00",
+      "entry_price": 0.45,
+      "predicted_target": 0.79,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.03,
+      "delta": -0.2172,
+      "gamma": 0.02344,
+      "theta": -0.00267,
+      "implied_vol": "0.64413"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "XYZ_69.0_put_2025-07-25 00:00:00_2025-07-18": {
+    "symbol": "XYZ",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 69.0,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 1.66,
+      "predicted_target": 2.9,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.15,
+      "delta": -0.31008,
+      "gamma": 0.09083,
+      "theta": -0.08296,
+      "implied_vol": "0.37097"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ALAB_97.0_put_2025-07-18 00:00:00_2025-07-18": {
+    "symbol": "ALAB",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 97.0,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.8,
+      "predicted_target": 1.4,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.81,
+      "delta": -0.38979,
+      "gamma": 0.10361,
+      "theta": -0.70554,
+      "implied_vol": "0.72218"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAL_12.0_put_2026-03-20 00:00:00_2025-07-18": {
+    "symbol": "AAL",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 12.0,
+      "type": "put",
+      "expiration": "2026-03-20 00:00:00",
+      "entry_price": 0.62,
+      "predicted_target": 1.08,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.76,
+      "delta": -0.35797,
+      "gamma": 0.07797,
+      "theta": -0.00293,
+      "implied_vol": "0.46853"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ALLY_50.0_call_2026-01-16 00:00:00_2025-07-18": {
+    "symbol": "ALLY",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 50.0,
+      "type": "call",
+      "expiration": "2026-01-16 00:00:00",
+      "entry_price": 0.65,
+      "predicted_target": 1.14,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.57,
+      "delta": 0.15931,
+      "gamma": 0.03354,
+      "theta": -0.00549,
+      "implied_vol": "0.25390"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "CNC_32.0_call_2025-08-22 00:00:00_2025-07-18": {
+    "symbol": "CNC",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 32.0,
+      "type": "call",
+      "expiration": "2025-08-22 00:00:00",
+      "entry_price": 0.7,
+      "predicted_target": 1.22,
+      "predicted_bias": "Bearish",
+      "confluence_score": 10.0,
+      "delta": 0.27593,
+      "gamma": 0.08503,
+      "theta": -0.01913,
+      "implied_vol": "0.42950"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "LLY_782.5_call_2025-07-18 00:00:00_2025-07-18": {
+    "symbol": "LLY",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 782.5,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 1.5,
+      "predicted_target": 2.62,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.13,
+      "delta": 0.14743,
+      "gamma": 0.01185,
+      "theta": -2.25487,
+      "implied_vol": "0.48804"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "LRCX_103.0_call_2025-07-25 00:00:00_2025-07-18": {
+    "symbol": "LRCX",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 103.0,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 1.05,
+      "predicted_target": 1.84,
+      "predicted_bias": "Bearish",
+      "confluence_score": 9.06,
+      "delta": 0.32398,
+      "gamma": 0.08224,
+      "theta": -0.10196,
+      "implied_vol": "0.29292"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "LUMN_4.0_put_2027-12-17 00:00:00_2025-07-18": {
+    "symbol": "LUMN",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 4.0,
+      "type": "put",
+      "expiration": "2027-12-17 00:00:00",
+      "entry_price": 0.1,
+      "predicted_target": 0.18,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.22,
+      "delta": -0.25938,
+      "gamma": 0.09348,
+      "theta": -0.0004,
+      "implied_vol": "0.50755"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "LVS_48.5_put_2025-07-18 00:00:00_2025-07-18": {
+    "symbol": "LVS",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 48.5,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.16,
+      "predicted_target": 0.28,
+      "predicted_bias": "Bearish",
+      "confluence_score": 10.0,
+      "delta": -0.28938,
+      "gamma": 0.42736,
+      "theta": -0.13512,
+      "implied_vol": "0.31243"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "LUV_45.0_call_2026-01-16 00:00:00_2025-07-18": {
+    "symbol": "LUV",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 45.0,
+      "type": "call",
+      "expiration": "2026-01-16 00:00:00",
+      "entry_price": 1.62,
+      "predicted_target": 2.83,
+      "predicted_bias": "Bearish",
+      "confluence_score": 10.0,
+      "delta": 0.24689,
+      "gamma": 0.03683,
+      "theta": -0.00833,
+      "implied_vol": "0.33194"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "VST_180.0_put_2025-07-18 00:00:00_2025-07-18": {
+    "symbol": "VST",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 180.0,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.94,
+      "predicted_target": 1.65,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.46,
+      "delta": -0.33226,
+      "gamma": 0.0751,
+      "theta": -0.87059,
+      "implied_vol": "0.50755"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAL_30.0_call_2027-12-17 00:00:00_2025-07-18": {
+    "symbol": "AAL",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 30.0,
+      "type": "call",
+      "expiration": "2027-12-17 00:00:00",
+      "entry_price": 0.62,
+      "predicted_target": 1.08,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.76,
+      "delta": 0.16554,
+      "gamma": 0.0329,
+      "theta": -0.00125,
+      "implied_vol": "0.39048"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "BMY_47.5_put_2025-07-25 00:00:00_2025-07-18": {
+    "symbol": "BMY",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 47.5,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.16,
+      "predicted_target": 0.28,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.64,
+      "delta": -0.36948,
+      "gamma": 0.194,
+      "theta": -0.04372,
+      "implied_vol": "0.27341"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ENPH_38.0_put_2025-07-18 00:00:00_2025-07-18": {
+    "symbol": "ENPH",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 38.0,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.25,
+      "predicted_target": 0.44,
+      "predicted_bias": "Bullish",
+      "confluence_score": 7.88,
+      "delta": -0.27097,
+      "gamma": 0.26152,
+      "theta": -0.2085,
+      "implied_vol": "0.62462"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "IONQ_45.5_call_2025-07-18 00:00:00_2025-07-18": {
+    "symbol": "IONQ",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 45.5,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.48,
+      "predicted_target": 0.84,
+      "predicted_bias": "Bearish",
+      "confluence_score": 10.0,
+      "delta": 0.39056,
+      "gamma": 0.17829,
+      "theta": -0.41519,
+      "implied_vol": "0.91729"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "INTC_22.5_put_2025-07-18 00:00:00_2025-07-18": {
+    "symbol": "INTC",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 22.5,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.09,
+      "predicted_target": 0.16,
+      "predicted_bias": "Bearish",
+      "confluence_score": 10.0,
+      "delta": -0.26321,
+      "gamma": 0.66713,
+      "theta": -0.07913,
+      "implied_vol": "0.40999"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "NEE_85.0_call_2025-09-19 00:00:00_2025-07-18": {
+    "symbol": "NEE",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 85.0,
+      "type": "call",
+      "expiration": "2025-09-19 00:00:00",
+      "entry_price": 0.5,
+      "predicted_target": 0.88,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.05,
+      "delta": 0.13042,
+      "gamma": 0.02873,
+      "theta": -0.01333,
+      "implied_vol": "0.23438"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ROKU_90.0_put_2025-07-18 00:00:00_2025-07-18": {
+    "symbol": "ROKU",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 90.0,
+      "type": "put",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.6,
+      "predicted_target": 1.05,
+      "predicted_bias": "Bullish",
+      "confluence_score": 10.0,
+      "delta": -0.33888,
+      "gamma": 0.13105,
+      "theta": -0.50719,
+      "implied_vol": "0.58560"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "KVUE_21.5_put_2025-08-01 00:00:00_2025-07-18": {
+    "symbol": "KVUE",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 21.5,
+      "type": "put",
+      "expiration": "2025-08-01 00:00:00",
+      "entry_price": 0.5,
+      "predicted_target": 0.88,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.51,
+      "delta": -0.35419,
+      "gamma": 0.33077,
+      "theta": -0.01299,
+      "implied_vol": "0.25390"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "PCT_16.0_put_2025-07-25 00:00:00_2025-07-18": {
+    "symbol": "PCT",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 16.0,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.25,
+      "predicted_target": 0.44,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.08,
+      "delta": -0.36057,
+      "gamma": 0.21808,
+      "theta": -0.0394,
+      "implied_vol": "0.70267"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "SOFI_21.5_put_2025-07-25 00:00:00_2025-07-18": {
+    "symbol": "SOFI",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 21.5,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.39,
+      "predicted_target": 0.68,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.47,
+      "delta": -0.34527,
+      "gamma": 0.21381,
+      "theta": -0.03875,
+      "implied_vol": "0.52706"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "XYZ_68.0_put_2025-07-25 00:00:00_2025-07-18": {
+    "symbol": "XYZ",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 68.0,
+      "type": "put",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.59,
+      "predicted_target": 1.03,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.21,
+      "delta": -0.23385,
+      "gamma": 0.07495,
+      "theta": -0.07629,
+      "implied_vol": "0.39048"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ABNB_140.0_call_2025-07-18 00:00:00_2025-07-18": {
+    "symbol": "ABNB",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 140.0,
+      "type": "call",
+      "expiration": "2025-07-18 00:00:00",
+      "entry_price": 0.65,
+      "predicted_target": 1.14,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.73,
+      "delta": 0.38549,
+      "gamma": 0.16786,
+      "theta": -0.44185,
+      "implied_vol": "0.31243"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "NVAX_7.5_call_2025-07-25 00:00:00_2025-07-18": {
+    "symbol": "NVAX",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 7.5,
+      "type": "call",
+      "expiration": "2025-07-25 00:00:00",
+      "entry_price": 0.09,
+      "predicted_target": 0.16,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.46,
+      "delta": 0.22919,
+      "gamma": 0.49937,
+      "theta": -0.01168,
+      "implied_vol": "0.58560"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "VZ_55.0_call_2027-01-15 00:00:00_2025-07-18": {
+    "symbol": "VZ",
+    "prediction_date": "2025-07-18",
+    "option_details": {
+      "strike": 55.0,
+      "type": "call",
+      "expiration": "2027-01-15 00:00:00",
+      "entry_price": 0.55,
+      "predicted_target": 0.96,
+      "predicted_bias": "Bullish",
+      "confluence_score": 7.71,
+      "delta": 0.13425,
+      "gamma": 0.0276,
+      "theta": -0.00214,
+      "implied_vol": "0.15634"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ACVA_12.5_put_2025-09-19 00:00:00_2025-07-20": {
+    "symbol": "ACVA",
+    "prediction_date": "2025-07-20",
+    "option_details": {
+      "strike": 12.5,
+      "type": "put",
+      "expiration": "2025-09-19 00:00:00",
+      "entry_price": 0.45,
+      "predicted_target": 0.79,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.77,
+      "delta": -0.17642,
+      "gamma": 0.07053,
+      "theta": -0.00719,
+      "implied_vol": "0.58560"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "AAL_22.0_call_2026-12-18 00:00:00_2025-07-20": {
+    "symbol": "AAL",
+    "prediction_date": "2025-07-20",
+    "option_details": {
+      "strike": 22.0,
+      "type": "call",
+      "expiration": "2026-12-18 00:00:00",
+      "entry_price": 0.71,
+      "predicted_target": 1.24,
+      "predicted_bias": "Bullish",
+      "confluence_score": 8.77,
+      "delta": 0.19798,
+      "gamma": 0.04782,
+      "theta": -0.00179,
+      "implied_vol": "0.39048"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "ACHR_8.0_put_2026-01-16 00:00:00_2025-07-20": {
+    "symbol": "ACHR",
+    "prediction_date": "2025-07-20",
+    "option_details": {
+      "strike": 8.0,
+      "type": "put",
+      "expiration": "2026-01-16 00:00:00",
+      "entry_price": 0.59,
+      "predicted_target": 1.03,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.31,
+      "delta": -0.11437,
+      "gamma": 0.02513,
+      "theta": -0.00384,
+      "implied_vol": "0.81974"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "INTC_19.0_put_2025-10-17 00:00:00_2025-07-20": {
+    "symbol": "INTC",
+    "prediction_date": "2025-07-20",
+    "option_details": {
+      "strike": 19.0,
+      "type": "put",
+      "expiration": "2025-10-17 00:00:00",
+      "entry_price": 0.61,
+      "predicted_target": 1.07,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.43,
+      "delta": -0.15906,
+      "gamma": 0.04485,
+      "theta": -0.0067,
+      "implied_vol": "0.46853"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
   }
