@@ -1,0 +1,329 @@
+
+============================================================
+Symbol: RIOT - 15:50:52
+Confluence Score: 9.17/10
+Bias: Bearish
+
+Top Options Found: 29
+
+Option 1:
+  Strike: $15.0 Call
+  Expiration: 2025-07-25 00:00:00
+  Delta: 0.3129
+  Gamma: 0.5901
+  Theta: -0.1069
+  Volume: 12111
+  Score: 2.84
+  IV: 78.07%
+
+Option 2:
+  Strike: $14.5 Put
+  Expiration: 2025-07-25 00:00:00
+  Delta: -0.3741
+  Gamma: 0.5872
+  Theta: -0.1216
+  Volume: 2873
+  Score: 2.60
+  IV: 83.93%
+
+Option 3:
+  Strike: $12.0 Put
+  Expiration: 2025-08-22 00:00:00
+  Delta: -0.1527
+  Gamma: 0.0712
+  Theta: -0.0132
+  Volume: 3
+  Score: 2.59
+  IV: 80.02%
+
+Trade Plan:
+  Entry: $0.18
+  Stop: $0.14
+  Target: $0.32
+  Position Size: 12 contracts
+  Strike: $14.5 Put
+  Expiration: 2025-07-25
+  Max Hold: 4 hours
+============================================================
+
+============================================================
+Symbol: CMCSA - 16:53:11
+Confluence Score: 8.82/10
+Bias: Bullish
+
+Top Options Found: 65
+
+Option 1:
+  Strike: $45.0 Call
+  Expiration: 2026-06-18 00:00:00
+  Delta: 0.1875
+  Gamma: 0.0373
+  Theta: -0.0037
+  Volume: 1
+  Score: 4.46
+  IV: 21.49%
+
+Option 2:
+  Strike: $50.0 Call
+  Expiration: 2027-01-15 00:00:00
+  Delta: 0.1714
+  Gamma: 0.0275
+  Theta: -0.0028
+  Volume: 10
+  Score: 4.46
+  IV: 21.49%
+
+Option 3:
+  Strike: $40.0 Call
+  Expiration: 2025-10-17 00:00:00
+  Delta: 0.1731
+  Gamma: 0.0640
+  Theta: -0.0067
+  Volume: 52
+  Score: 4.36
+  IV: 23.44%
+
+Trade Plan:
+  Entry: $0.77
+  Stop: $0.58
+  Target: $1.35
+  Position Size: 2 contracts
+  Strike: $45.0 Call
+  Expiration: 2026-06-18
+  Max Hold: 12 hours
+============================================================
+
+============================================================
+Symbol: SBUX - 17:03:10
+Confluence Score: 8.57/10
+Bias: Bearish
+
+Top Options Found: 33
+
+Option 1:
+  Strike: $93.0 Put
+  Expiration: 2025-07-25 00:00:00
+  Delta: -0.3070
+  Gamma: 0.2445
+  Theta: -0.2489
+  Volume: 369
+  Score: 1.02
+  IV: 29.29%
+
+Option 2:
+  Strike: $95.0 Call
+  Expiration: 2025-07-25 00:00:00
+  Delta: 0.2041
+  Gamma: 0.1849
+  Theta: -0.2193
+  Volume: 616
+  Score: 0.90
+  IV: 31.24%
+
+Option 3:
+  Strike: $110.0 Call
+  Expiration: 2025-09-19 00:00:00
+  Delta: 0.1185
+  Gamma: 0.0171
+  Theta: -0.0214
+  Volume: 31
+  Score: 0.83
+  IV: 31.24%
+
+Trade Plan:
+  Entry: $0.31
+  Stop: $0.23
+  Target: $0.54
+  Position Size: 6 contracts
+  Strike: $93.0 Put
+  Expiration: 2025-07-25
+  Max Hold: 4 hours
+============================================================
+
+============================================================
+Symbol: TDOC - 17:03:21
+Confluence Score: 8.77/10
+Bias: Bullish
+
+Top Options Found: 63
+
+Option 1:
+  Strike: $7.5 Put
+  Expiration: 2025-10-17 00:00:00
+  Delta: -0.3219
+  Gamma: 0.1289
+  Theta: -0.0055
+  Volume: 51
+  Score: 10.06
+  IV: 70.27%
+
+Option 2:
+  Strike: $7.0 Put
+  Expiration: 2025-08-22 00:00:00
+  Delta: -0.1900
+  Gamma: 0.1583
+  Theta: -0.0078
+  Volume: 6
+  Score: 8.66
+  IV: 74.17%
+
+Option 3:
+  Strike: $7.5 Put
+  Expiration: 2025-09-19 00:00:00
+  Delta: -0.3194
+  Gamma: 0.1449
+  Theta: -0.0073
+  Volume: 49
+  Score: 8.52
+  IV: 76.12%
+
+Trade Plan:
+  Entry: $0.92
+  Stop: $0.69
+  Target: $1.61
+  Position Size: 2 contracts
+  Strike: $25.0 Call
+  Expiration: 2027-01-15
+  Max Hold: 12 hours
+============================================================
+
+============================================================
+Symbol: RIOT - 17:03:40
+Confluence Score: 9.17/10
+Bias: Bearish
+
+Top Options Found: 101
+
+Option 1:
+  Strike: $10.0 Put
+  Expiration: 2026-01-16 00:00:00
+  Delta: -0.1512
+  Gamma: 0.0302
+  Theta: -0.0048
+  Volume: 20
+  Score: 3.04
+  IV: 76.12%
+
+Option 2:
+  Strike: $11.0 Put
+  Expiration: 2025-11-21 00:00:00
+  Delta: -0.1805
+  Gamma: 0.0410
+  Theta: -0.0066
+  Volume: 6
+  Score: 3.03
+  IV: 76.12%
+
+Option 3:
+  Strike: $12.0 Put
+  Expiration: 2025-09-19 00:00:00
+  Delta: -0.1990
+  Gamma: 0.0632
+  Theta: -0.0104
+  Volume: 66
+  Score: 2.99
+  IV: 76.12%
+
+Trade Plan:
+  Entry: $0.81
+  Stop: $0.61
+  Target: $1.42
+  Position Size: 2 contracts
+  Strike: $10.0 Put
+  Expiration: 2026-01-16
+  Max Hold: 12 hours
+============================================================
+
+============================================================
+Symbol: CVS - 17:03:52
+Confluence Score: 8.89/10
+Bias: Bearish
+
+Top Options Found: 35
+
+Option 1:
+  Strike: $70.0 Call
+  Expiration: 2025-10-17 00:00:00
+  Delta: 0.1179
+  Gamma: 0.0255
+  Theta: -0.0098
+  Volume: 9
+  Score: 1.55
+  IV: 27.34%
+
+Option 2:
+  Strike: $72.5 Call
+  Expiration: 2025-11-21 00:00:00
+  Delta: 0.1575
+  Gamma: 0.0229
+  Theta: -0.0116
+  Volume: 12
+  Score: 1.33
+  IV: 31.24%
+
+Option 3:
+  Strike: $77.5 Call
+  Expiration: 2026-01-16 00:00:00
+  Delta: 0.1419
+  Gamma: 0.0176
+  Theta: -0.0090
+  Volume: 75
+  Score: 1.31
+  IV: 31.24%
+
+Trade Plan:
+  Entry: $1.04
+  Stop: $0.78
+  Target: $1.82
+  Position Size: 1 contracts
+  Strike: $50.0 Put
+  Expiration: 2025-10-17
+  Max Hold: 12 hours
+============================================================
+
+============================================================
+Symbol: CMCSA - 17:04:04
+Confluence Score: 8.82/10
+Bias: Bullish
+
+Top Options Found: 65
+
+Option 1:
+  Strike: $45.0 Call
+  Expiration: 2026-06-18 00:00:00
+  Delta: 0.1875
+  Gamma: 0.0373
+  Theta: -0.0037
+  Volume: 1
+  Score: 4.46
+  IV: 21.49%
+
+Option 2:
+  Strike: $50.0 Call
+  Expiration: 2027-01-15 00:00:00
+  Delta: 0.1714
+  Gamma: 0.0275
+  Theta: -0.0028
+  Volume: 10
+  Score: 4.46
+  IV: 21.49%
+
+Option 3:
+  Strike: $40.0 Call
+  Expiration: 2025-10-17 00:00:00
+  Delta: 0.1731
+  Gamma: 0.0640
+  Theta: -0.0067
+  Volume: 52
+  Score: 4.36
+  IV: 23.44%
+
+Trade Plan:
+  Entry: $0.77
+  Stop: $0.58
+  Target: $1.35
+  Position Size: 2 contracts
+  Strike: $45.0 Call
+  Expiration: 2026-06-18
+  Max Hold: 12 hours
+============================================================
