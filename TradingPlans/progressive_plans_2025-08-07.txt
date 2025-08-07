@@ -1,0 +1,658 @@
+
+============================================================
+Symbol: AEO - 14:12:34
+Confluence Score: 8.18/10
+Bias: Bullish
+
+Top Options Found: 110
+
+Option 1:
+  Strike: $10.0 Put
+  Expiration: 2026-02-20 00:00:00
+  Delta: -0.2117
+  Gamma: 0.0462
+  Theta: -0.0041
+  Volume: 27
+  Score: 5.03
+  IV: 66.36%
+
+Option 2:
+  Strike: $8.0 Put
+  Expiration: 2026-02-20 00:00:00
+  Delta: -0.1043
+  Gamma: 0.0289
+  Theta: -0.0027
+  Volume: 26
+  Score: 4.85
+  IV: 66.36%
+
+Option 3:
+  Strike: $35.0 Call
+  Expiration: 2027-01-15 00:00:00
+  Delta: 0.1895
+  Gamma: 0.0282
+  Theta: -0.0027
+  Volume: 26
+  Score: 4.77
+  IV: 62.46%
+
+Trade Plan:
+  Entry: $0.85
+  Stop: $0.64
+  Target: $1.49
+  Position Size: 2 contracts
+  Strike: $35.0 Call
+  Expiration: 2027-01-15
+  Max Hold: 12 hours
+============================================================
+
+============================================================
+Symbol: AFRM - 14:12:44
+Confluence Score: 8.7/10
+Bias: Bullish
+
+Top Options Found: 22
+
+Option 1:
+  Strike: $76.0 Put
+  Expiration: 2025-08-08 00:00:00
+  Delta: -0.3523
+  Gamma: 0.1008
+  Theta: -0.3387
+  Volume: 442
+  Score: 0.77
+  IV: 64.41%
+
+Option 2:
+  Strike: $79.0 Call
+  Expiration: 2025-08-08 00:00:00
+  Delta: 0.3377
+  Gamma: 0.0963
+  Theta: -0.3499
+  Volume: 408
+  Score: 0.75
+  IV: 66.36%
+
+Option 3:
+  Strike: $75.0 Put
+  Expiration: 2025-08-08 00:00:00
+  Delta: -0.2556
+  Gamma: 0.0873
+  Theta: -0.2938
+  Volume: 670
+  Score: 0.71
+  IV: 64.41%
+
+Trade Plan:
+  Entry: $0.88
+  Stop: $0.66
+  Target: $1.54
+  Position Size: 2 contracts
+  Strike: $79.0 Call
+  Expiration: 2025-08-08
+  Max Hold: 4 hours
+============================================================
+
+============================================================
+Symbol: ACHR - 14:12:53
+Confluence Score: 8.7/10
+Bias: Bearish
+
+Top Options Found: 101
+
+Option 1:
+  Strike: $8.0 Put
+  Expiration: 2026-01-16 00:00:00
+  Delta: -0.2430
+  Gamma: 0.0609
+  Theta: -0.0045
+  Volume: 64
+  Score: 5.96
+  IV: 78.07%
+
+Option 2:
+  Strike: $9.0 Put
+  Expiration: 2025-10-17 00:00:00
+  Delta: -0.3234
+  Gamma: 0.1052
+  Theta: -0.0080
+  Volume: 176
+  Score: 5.87
+  IV: 78.07%
+
+Option 3:
+  Strike: $5.0 Put
+  Expiration: 2027-01-15 00:00:00
+  Delta: -0.1055
+  Gamma: 0.0193
+  Theta: -0.0014
+  Volume: 4
+  Score: 5.86
+  IV: 80.02%
+
+Trade Plan:
+  Entry: $1.01
+  Stop: $0.76
+  Target: $1.77
+  Position Size: 2 contracts
+  Strike: $8.0 Put
+  Expiration: 2026-01-16
+  Max Hold: 12 hours
+============================================================
+
+============================================================
+Symbol: FUBO - 14:13:03
+Confluence Score: 8.21/10
+Bias: Bearish
+
+Top Options Found: 79
+
+Option 1:
+  Strike: $3.0 Put
+  Expiration: 2027-01-15 00:00:00
+  Delta: -0.2204
+  Gamma: 0.0845
+  Theta: -0.0008
+  Volume: 31
+  Score: 42.82
+  IV: 78.07%
+
+Option 2:
+  Strike: $2.0 Put
+  Expiration: 2027-01-15 00:00:00
+  Delta: -0.1131
+  Gamma: 0.0561
+  Theta: -0.0005
+  Volume: 0
+  Score: 41.85
+  IV: 76.12%
+
+Option 3:
+  Strike: $2.5 Put
+  Expiration: 2027-01-15 00:00:00
+  Delta: -0.1673
+  Gamma: 0.0714
+  Theta: -0.0007
+  Volume: 0
+  Score: 41.13
+  IV: 78.07%
+
+Trade Plan:
+  Entry: $0.83
+  Stop: $0.62
+  Target: $1.45
+  Position Size: 2 contracts
+  Strike: $3.0 Put
+  Expiration: 2027-01-15
+  Max Hold: 12 hours
+============================================================
+
+============================================================
+Symbol: MRVL - 14:19:09
+Confluence Score: 8.89/10
+Bias: Bearish
+
+Top Options Found: 15
+
+Option 1:
+  Strike: $77.0 Call
+  Expiration: 2025-08-08 00:00:00
+  Delta: 0.3086
+  Gamma: 0.1116
+  Theta: -0.2805
+  Volume: 2441
+  Score: 0.78
+  IV: 56.61%
+
+Option 2:
+  Strike: $73.0 Put
+  Expiration: 2025-08-08 00:00:00
+  Delta: -0.2270
+  Gamma: 0.0923
+  Theta: -0.2439
+  Volume: 976
+  Score: 0.73
+  IV: 58.56%
+
+Option 3:
+  Strike: $78.0 Call
+  Expiration: 2025-08-08 00:00:00
+  Delta: 0.2179
+  Gamma: 0.0902
+  Theta: -0.2422
+  Volume: 1614
+  Score: 0.72
+  IV: 58.56%
+
+Trade Plan:
+  Entry: $0.47
+  Stop: $0.35
+  Target: $0.82
+  Position Size: 4 contracts
+  Strike: $73.0 Put
+  Expiration: 2025-08-08
+  Max Hold: 4 hours
+============================================================
+
+============================================================
+Symbol: PCT - 14:26:15
+Confluence Score: 8.73/10
+Bias: Bullish
+
+Top Options Found: 66
+
+Option 1:
+  Strike: $25.0 Call
+  Expiration: 2026-02-20 00:00:00
+  Delta: 0.1892
+  Gamma: 0.0381
+  Theta: -0.0051
+  Volume: 0
+  Score: 3.35
+  IV: 74.17%
+
+Option 2:
+  Strike: $25.0 Call
+  Expiration: 2026-01-16 00:00:00
+  Delta: 0.1603
+  Gamma: 0.0368
+  Theta: -0.0051
+  Volume: 2
+  Score: 3.27
+  IV: 76.12%
+
+Option 3:
+  Strike: $26.0 Call
+  Expiration: 2026-01-16 00:00:00
+  Delta: 0.1514
+  Gamma: 0.0346
+  Theta: -0.0051
+  Volume: 9
+  Score: 3.26
+  IV: 78.07%
+
+Trade Plan:
+  Entry: $0.75
+  Stop: $0.56
+  Target: $1.31
+  Position Size: 2 contracts
+  Strike: $25.0 Call
+  Expiration: 2026-02-20
+  Max Hold: 12 hours
+============================================================
+
+============================================================
+Symbol: WBD - 14:26:42
+Confluence Score: 9.35/10
+Bias: Bullish
+
+Top Options Found: 73
+
+Option 1:
+  Strike: $25.0 Call
+  Expiration: 2027-01-15 00:00:00
+  Delta: 0.1444
+  Gamma: 0.0379
+  Theta: -0.0015
+  Volume: 64
+  Score: 10.83
+  IV: 39.05%
+
+Option 2:
+  Strike: $17.5 Call
+  Expiration: 2026-01-16 00:00:00
+  Delta: 0.1744
+  Gamma: 0.0734
+  Theta: -0.0030
+  Volume: 161
+  Score: 10.33
+  IV: 41.00%
+
+Option 3:
+  Strike: $18.0 Call
+  Expiration: 2025-12-19 00:00:00
+  Delta: 0.1187
+  Gamma: 0.0622
+  Theta: -0.0025
+  Volume: 0
+  Score: 10.27
+  IV: 41.00%
+
+Trade Plan:
+  Entry: $0.42
+  Stop: $0.32
+  Target: $0.73
+  Position Size: 5 contracts
+  Strike: $25.0 Call
+  Expiration: 2027-01-15
+  Max Hold: 12 hours
+============================================================
+
+============================================================
+Symbol: AMC - 14:27:07
+Confluence Score: 10.0/10
+Bias: Bullish
+
+Top Options Found: 58
+
+Option 1:
+  Strike: $2.0 Put
+  Expiration: 2025-12-19 00:00:00
+  Delta: -0.1494
+  Gamma: 0.2014
+  Theta: -0.0009
+  Volume: 21
+  Score: 87.13
+  IV: 68.31%
+
+Option 2:
+  Strike: $2.5 Put
+  Expiration: 2025-09-19 00:00:00
+  Delta: -0.2782
+  Gamma: 0.5089
+  Theta: -0.0024
+  Volume: 73
+  Score: 85.07
+  IV: 68.31%
+
+Option 3:
+  Strike: $2.5 Put
+  Expiration: 2025-08-29 00:00:00
+  Delta: -0.2356
+  Gamma: 0.6454
+  Theta: -0.0031
+  Volume: 10
+  Score: 83.86
+  IV: 68.31%
+
+Trade Plan:
+  Entry: $0.35
+  Stop: $0.26
+  Target: $0.61
+  Position Size: 5 contracts
+  Strike: $4.0 Call
+  Expiration: 2026-01-16
+  Max Hold: 10 hours
+============================================================
+
+============================================================
+Symbol: BBAI - 14:27:26
+Confluence Score: 8.22/10
+Bias: Bearish
+
+Top Options Found: 82
+
+Option 1:
+  Strike: $4.0 Put
+  Expiration: 2026-01-16 00:00:00
+  Delta: -0.1337
+  Gamma: 0.0447
+  Theta: -0.0030
+  Volume: 4
+  Score: 6.36
+  IV: 107.34%
+
+Option 2:
+  Strike: $4.5 Put
+  Expiration: 2025-12-19 00:00:00
+  Delta: -0.1686
+  Gamma: 0.0563
+  Theta: -0.0040
+  Volume: 106
+  Score: 6.23
+  IV: 109.29%
+
+Option 3:
+  Strike: $6.0 Put
+  Expiration: 2025-09-19 00:00:00
+  Delta: -0.3078
+  Gamma: 0.1379
+  Theta: -0.0099
+  Volume: 2352
+  Score: 6.21
+  IV: 109.29%
+
+Trade Plan:
+  Entry: $0.50
+  Stop: $0.38
+  Target: $0.88
+  Position Size: 4 contracts
+  Strike: $4.0 Put
+  Expiration: 2026-01-16
+  Max Hold: 10 hours
+============================================================
+
+============================================================
+Symbol: FUBO - 14:27:38
+Confluence Score: 8.21/10
+Bias: Bearish
+
+Top Options Found: 77
+
+Option 1:
+  Strike: $2.0 Put
+  Expiration: 2027-01-15 00:00:00
+  Delta: -0.1131
+  Gamma: 0.0561
+  Theta: -0.0005
+  Volume: 0
+  Score: 41.85
+  IV: 76.12%
+
+Option 2:
+  Strike: $2.5 Put
+  Expiration: 2027-01-15 00:00:00
+  Delta: -0.1673
+  Gamma: 0.0714
+  Theta: -0.0007
+  Volume: 0
+  Score: 41.13
+  IV: 78.07%
+
+Option 3:
+  Strike: $3.0 Put
+  Expiration: 2026-02-20 00:00:00
+  Delta: -0.2383
+  Gamma: 0.1440
+  Theta: -0.0015
+  Volume: 0
+  Score: 38.03
+  IV: 78.07%
+
+Trade Plan:
+  Entry: $0.31
+  Stop: $0.23
+  Target: $0.54
+  Position Size: 6 contracts
+  Strike: $2.0 Put
+  Expiration: 2027-01-15
+  Max Hold: 12 hours
+============================================================
+
+============================================================
+Symbol: ACHR - 14:28:07
+Confluence Score: 8.7/10
+Bias: Bearish
+
+Top Options Found: 88
+
+Option 1:
+  Strike: $7.0 Put
+  Expiration: 2026-01-16 00:00:00
+  Delta: -0.1704
+  Gamma: 0.0493
+  Theta: -0.0037
+  Volume: 4
+  Score: 5.78
+  IV: 78.07%
+
+Option 2:
+  Strike: $6.0 Put
+  Expiration: 2026-01-16 00:00:00
+  Delta: -0.1060
+  Gamma: 0.0356
+  Theta: -0.0027
+  Volume: 6
+  Score: 5.74
+  IV: 78.07%
+
+Option 3:
+  Strike: $8.0 Put
+  Expiration: 2025-10-17 00:00:00
+  Delta: -0.2124
+  Gamma: 0.0850
+  Theta: -0.0066
+  Volume: 79
+  Score: 5.73
+  IV: 78.07%
+
+Trade Plan:
+  Entry: $0.62
+  Stop: $0.46
+  Target: $1.08
+  Position Size: 3 contracts
+  Strike: $7.0 Put
+  Expiration: 2026-01-16
+  Max Hold: 12 hours
+============================================================
+
+============================================================
+Symbol: CELH - 14:28:33
+Confluence Score: 7.88/10
+Bias: Bearish
+
+Top Options Found: 22
+
+Option 1:
+  Strike: $36.0 Put
+  Expiration: 2025-09-05 00:00:00
+  Delta: -0.1428
+  Gamma: 0.0295
+  Theta: -0.0280
+  Volume: 18
+  Score: 0.95
+  IV: 62.46%
+
+Option 2:
+  Strike: $34.0 Put
+  Expiration: 2025-09-05 00:00:00
+  Delta: -0.1049
+  Gamma: 0.0211
+  Theta: -0.0255
+  Volume: 43
+  Score: 0.83
+  IV: 70.27%
+
+Option 3:
+  Strike: $55.0 Call
+  Expiration: 2025-08-29 00:00:00
+  Delta: 0.1200
+  Gamma: 0.0239
+  Theta: -0.0370
+  Volume: 11
+  Score: 0.77
+  IV: 78.07%
+
+Trade Plan:
+  Entry: $0.93
+  Stop: $0.70
+  Target: $1.63
+  Position Size: 2 contracts
+  Strike: $36.0 Put
+  Expiration: 2025-09-05
+  Max Hold: 12 hours
+============================================================
+
+============================================================
+Symbol: LPSN - 14:28:51
+Confluence Score: 9.22/10
+Bias: Bullish
+
+Top Options Found: 11
+
+Option 1:
+  Strike: $1.0 Put
+  Expiration: 2027-01-15 00:00:00
+  Delta: -0.1810
+  Gamma: 0.1464
+  Theta: -0.0004
+  Volume: 20
+  Score: 158.80
+  IV: 126.85%
+
+Option 2:
+  Strike: $2.0 Call
+  Expiration: 2026-01-16 00:00:00
+  Delta: 0.3913
+  Gamma: 0.4230
+  Theta: -0.0011
+  Volume: 913
+  Score: 154.49
+  IV: 115.14%
+
+Option 3:
+  Strike: $1.0 Put
+  Expiration: 2026-01-16 00:00:00
+  Delta: -0.2572
+  Gamma: 0.3083
+  Theta: -0.0010
+  Volume: 134
+  Score: 127.72
+  IV: 132.70%
+
+Trade Plan:
+  Entry: $0.25
+  Stop: $0.19
+  Target: $0.44
+  Position Size: 8 contracts
+  Strike: $2.0 Call
+  Expiration: 2026-01-16
+  Max Hold: 10 hours
+============================================================
+
+============================================================
+Symbol: NEXT - 14:29:02
+Confluence Score: 7.58/10
+Bias: Bullish
+
+Top Options Found: 22
+
+Option 1:
+  Strike: $15.0 Call
+  Expiration: 2026-01-16 00:00:00
+  Delta: 0.2689
+  Gamma: 0.0822
+  Theta: -0.0043
+  Volume: 12
+  Score: 8.16
+  IV: 54.66%
+
+Option 2:
+  Strike: $10.0 Put
+  Expiration: 2025-10-17 00:00:00
+  Delta: -0.2995
+  Gamma: 0.1216
+  Theta: -0.0064
+  Volume: 0
+  Score: 7.98
+  IV: 58.56%
+
+Option 3:
+  Strike: $12.0 Call
+  Expiration: 2025-09-19 00:00:00
+  Delta: 0.3735
+  Gamma: 0.1753
+  Theta: -0.0097
+  Volume: 2
+  Score: 7.75
+  IV: 56.61%
+
+Trade Plan:
+  Entry: $0.70
+  Stop: $0.52
+  Target: $1.22
+  Position Size: 2 contracts
+  Strike: $15.0 Call
+  Expiration: 2026-01-16
+  Max Hold: 12 hours
+============================================================
