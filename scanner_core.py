@@ -437,8 +437,8 @@ def filter_and_prioritize_symbols(symbols):
 
 class CompleteOptionsScanner:
 
-    def __init__(self, api_key, min_delta=0.2, max_delta=0.7):
-        self.api_key = api_key
+    def __init__(self, api_key=None, min_delta=0.2, max_delta=0.7):
+        self.api_key = api_key or os.getenv("ALPHA_VANTAGE_API_KEY")
         self.min_delta = min_delta
         self.max_delta = max_delta
         self.min_volume = 6
@@ -479,10 +479,34 @@ class CompleteOptionsScanner:
                 return None
 
             key_prefix = tf_config['key_prefix']
+            
+            # Debug: Print what we actually received
+            print(f"🔍 Debug {symbol} {timeframe}: Response keys = {list(data.keys())}")
+            
             if key_prefix not in data:
-                print(
-                    f"No data available for {symbol} at {timeframe} timeframe")
-                return self._fetch_yfinance_fallback(symbol, timeframe)
+                # Check for alternative key formats that Alpha Vantage might use
+                alt_keys = []
+                if timeframe == 'D':
+                    alt_keys = ['Time Series (Daily)', 'Daily Time Series', 'Time Series (Daily) - Adjusted']
+                elif timeframe == 'W':
+                    alt_keys = ['Weekly Time Series', 'Time Series (Weekly)']
+                elif 'min' in tf_config.get('interval', ''):
+                    interval = tf_config['interval']
+                    alt_keys = [f'Time Series ({interval})', f'Time Series ({interval.replace("min", "m")})']
+                
+                # Try alternative keys
+                found_key = None
+                for alt_key in alt_keys:
+                    if alt_key in data:
+                        found_key = alt_key
+                        break
+                
+                if found_key:
+                    print(f"✅ Found data for {symbol} {timeframe} using key: {found_key}")
+                    key_prefix = found_key
+                else:
+                    print(f"❌ No Alpha Vantage data for {symbol} {timeframe}. Available keys: {list(data.keys())}")
+                    return self._fetch_yfinance_fallback(symbol, timeframe)
 
             # Convert to DataFrame
             df = pd.DataFrame.from_dict(data[key_prefix], orient='index')
@@ -516,6 +540,10 @@ class CompleteOptionsScanner:
 
     def fetch_multi_timeframe_data(self, symbol):
         """Fetch price data for all timeframes using Alpha Vantage"""
+        if not self.api_key:
+            print("⚠️ Alpha Vantage API key missing - using yfinance fallback for all timeframes")
+            return {tf: self._fetch_yfinance_fallback(symbol, tf) for tf in TIMEFRAMES.keys()}
+
         timeframe_data = {}
 
         for tf in TIMEFRAMES.keys():

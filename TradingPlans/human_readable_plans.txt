@@ -16702,3 +16702,129 @@ Delta: 0.21432 | Gamma: 0.09140 | Theta: -0.00845 | Score: 4.90
 
 ================================================================================
 
+📈 Trade Plan for RIOT (Bearish Bias)
+
+🔹 Option: $$14.5 Put expiring 2025-07-25
+🔹 Entry Price: $0.18
+🔹 Stop Loss: $0.14
+🔹 Initial Target: $0.32
+🔹 Final Target: $0.63
+🔹 Position Size: 12 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.37410 | Gamma: 0.58717 | Theta: -0.12158 | Score: 2.60
+
+================================================================================
+
+📈 Trade Plan for CMCSA (Bullish Bias)
+
+🔹 Option: $$45.0 Call expiring 2026-06-18
+🔹 Entry Price: $0.77
+🔹 Stop Loss: $0.58
+🔹 Initial Target: $1.35
+🔹 Final Target: $2.70
+🔹 Position Size: 2 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.18752 | Gamma: 0.03731 | Theta: -0.00366 | Score: 4.46
+
+================================================================================
+
+📈 Trade Plan for SBUX (Bearish Bias)
+
+🔹 Option: $$93.0 Put expiring 2025-07-25
+🔹 Entry Price: $0.31
+🔹 Stop Loss: $0.23
+🔹 Initial Target: $0.54
+🔹 Final Target: $1.08
+🔹 Position Size: 6 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.30696 | Gamma: 0.24451 | Theta: -0.24888 | Score: 1.02
+
+================================================================================
+
+📈 Trade Plan for TDOC (Bullish Bias)
+
+🔹 Option: $$25.0 Call expiring 2027-01-15
+🔹 Entry Price: $0.92
+🔹 Stop Loss: $0.69
+🔹 Initial Target: $1.61
+🔹 Final Target: $3.22
+🔹 Position Size: 2 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.23774 | Gamma: 0.04181 | Theta: -0.00227 | Score: 7.95
+
+================================================================================
+
+📈 Trade Plan for RIOT (Bearish Bias)
+
+🔹 Option: $$10.0 Put expiring 2026-01-16
+🔹 Entry Price: $0.81
+🔹 Stop Loss: $0.61
+🔹 Initial Target: $1.42
+🔹 Final Target: $2.83
+🔹 Position Size: 2 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.15118 | Gamma: 0.03019 | Theta: -0.00481 | Score: 3.04
+
+================================================================================
+
+📈 Trade Plan for CVS (Bearish Bias)
+
+🔹 Option: $$50.0 Put expiring 2025-10-17
+🔹 Entry Price: $1.04
+🔹 Stop Loss: $0.78
+🔹 Initial Target: $1.82
+🔹 Final Target: $3.64
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.13673 | Gamma: 0.02198 | Theta: -0.01180 | Score: 1.27
+
+================================================================================
+
+📈 Trade Plan for CMCSA (Bullish Bias)
+
+🔹 Option: $$45.0 Call expiring 2026-06-18
+🔹 Entry Price: $0.77
+🔹 Stop Loss: $0.58
+🔹 Initial Target: $1.35
+🔹 Final Target: $2.70
+🔹 Position Size: 2 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.18752 | Gamma: 0.03731 | Theta: -0.00366 | Score: 4.46
+
+================================================================================
+
