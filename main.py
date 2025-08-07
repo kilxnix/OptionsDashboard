@@ -1961,243 +1961,218 @@ def calculate_net_similarity(option_dict, net_reference):
 
 @app.route("/explosive-earnings-combo", methods=["GET", "POST"])
 def explosive_earnings_combo():
-    """Combined explosive scan that finds earnings candidates AND runs full scanner_core analysis"""
+    """
+    Enhanced endpoint that ACTUALLY finds earnings plays with volume surges
+    and applies separate criteria for stock discovery vs option selection
+    """
     try:
+        # Import the enhanced scanner
+        from enhanced_explosive_earnings_scanner import (
+            EnhancedEarningsScanner,
+            EnhancedOptionsEvaluator,
+            enhanced_explosive_earnings_combo
+        )
+        
         # Get parameters
         if request.method == 'POST' and request.is_json:
-            data = request.get_json()
-            scan_type = data.get('scan_type', 'earnings')
-            min_explosive_score = data.get('min_explosive_score', 35)
-            
-            # Handle entry_price parameter in POST data
-            entry_price = data.get('entry_price')
-            filters = data.get('filters', {})
-            if entry_price and 'max_price' not in filters:
-                filters['max_price'] = float(entry_price)
+            request_data = request.get_json()
         else:
-            scan_type = request.args.get('scan_type', 'earnings')
-            min_explosive_score = float(
-                request.args.get('min_explosive_score', 35))
-            
-            # Handle entry_price parameter
-            entry_price = request.args.get('entry_price')
-            if entry_price:
-                max_price_limit = float(entry_price)
-            else:
-                max_price_limit = float(request.args.get('max_price', 5.00))
-            
-            filters = {
+            # Build request data from query parameters
+            request_data = {
+                'scan_type': request.args.get('scan_type', 'earnings'),
+                'days_ahead': int(request.args.get('days_ahead', 21)),
+                'min_volume_surge': float(request.args.get('min_volume_surge', 1.5)),
+                'min_avg_volume': int(request.args.get('min_avg_volume', 1000000)),
+                
+                # Option filters (completely separate from stock selection)
+                'min_delta': float(request.args.get('min_delta', 0.15)),
+                'max_delta': float(request.args.get('max_delta', 0.45)),
                 'min_price': float(request.args.get('min_price', 0.05)),
-                'max_price': max_price_limit,  # Use entry_price if provided
-                'min_delta': float(request.args.get('min_delta', 0.10)),
-                'max_delta': float(request.args.get('max_delta', 0.40)),
+                'max_price': float(request.args.get('max_price', 5.00)),
                 'min_days': int(request.args.get('min_days', 1)),
                 'max_days': int(request.args.get('max_days', 30))
             }
-
-        print("🚀 EXPLOSIVE EARNINGS COMBO SCAN - PHASE 1 + 2")
-        print("=" * 60)
-        print(f"🎯 Scan Type: {scan_type}")
-        print(f"🔥 Min Explosive Score: {min_explosive_score}")
-        print(f"📊 PHASE 1: Find explosive earnings candidates")
-        print(f"🔬 PHASE 2: Run full scanner_core analysis on best candidates")
-
-        from explosive_options_scanner import ExplosiveOptionsScanner
-
-        # PHASE 1: Run explosive discovery to find earnings candidates
-        print("\n📊 PHASE 1: Running explosive earnings discovery...")
-        explosive_scanner = ExplosiveOptionsScanner(
-            os.getenv('ALPHA_VANTAGE_API_KEY'))
-
-        explosive_results = explosive_scanner.run_explosive_scan(
-            symbols=None,  # Auto-discover with earnings focus
-            scan_type=scan_type,
-            filters=filters)
-
-        # Extract high-scoring earnings candidates for Phase 2
-        earnings_candidates = []
-        for symbol, data in explosive_results['opportunities'].items():
-            best_score = data['best_opportunity']['total_score']
-
-            if (best_score >= min_explosive_score and data['market_data'].get(
-                    'earnings_info', {}).get('is_pre_earnings')):
-                earnings_candidates.append(symbol)
-
-        print(
-            f"✅ PHASE 1 COMPLETE: Found {len(earnings_candidates)} high-scoring earnings candidates"
-        )
-        print(f"🎯 Earnings candidates: {earnings_candidates[:10]}...")
-
-        # PHASE 2: Run full scanner_core analysis on earnings candidates
-        print(
-            f"\n🔬 PHASE 2: Running full scanner_core analysis on {len(earnings_candidates)} candidates..."
-        )
-
-        scanner_core_results = {}
-        if earnings_candidates:
-            from scanner_core import run_scanner
-            print(
-                f"🔄 Running scanner_core on {len(earnings_candidates)} symbols..."
-            )
-            scanner_core_results = run_scanner(
-                symbols=earnings_candidates,
-                min_delta=filters.get('min_delta', 0.10),
-                max_delta=filters.get('max_delta', 0.40),
-                min_price=filters.get('min_price', 0.05),
-                max_price=filters.get('max_price', 5.00),
-                time_to_expiry_range=(filters.get('min_days', 1),
-                                      filters.get('max_days', 30)))
-
-            if scanner_core_results:
-                print(
-                    f"✅ PHASE 2 COMPLETE: Full analysis completed on {len(scanner_core_results)} symbols"
-                )
-            else:
-                print("⚠️ PHASE 2: No results from scanner_core analysis")
-
-        # Combine results from both phases
-        combined_results = {
-            "status": "success",
-            "scan_metadata": {
-                "timestamp":
-                datetime.now().isoformat(),
-                "scan_type":
-                f"explosive-earnings-combo-2phase ({scan_type})",
-                "phase_1_symbols_scanned":
-                explosive_results['scan_metadata']['symbols_scanned'],
-                "phase_1_opportunities":
-                len(explosive_results['opportunities']),
-                "earnings_candidates_found":
-                len(earnings_candidates),
-                "phase_2_analyzed":
-                len(scanner_core_results) if scanner_core_results else 0,
-                "min_explosive_score":
-                min_explosive_score,
-                "filters":
-                filters,
-                "methodology":
-                "Phase 1: Explosive discovery → Phase 2: Full scanner_core analysis"
-            },
-            "phase_1_explosive_results": {
-                "opportunities": explosive_results['opportunities'],
-                "top_picks": explosive_results['top_picks'][:10],
-                "by_category": explosive_results['by_category']
-            },
-            "phase_2_scanner_core_results": scanner_core_results or {},
-            "earnings_candidates": earnings_candidates,
-            "final_opportunities": []
+            
+            # Handle entry_price parameter (overrides max_price)
+            entry_price = request.args.get('entry_price')
+            if entry_price:
+                request_data['max_price'] = float(entry_price)
+                request_data['entry_price'] = float(entry_price)
+        
+        print("🚀 EXPLOSIVE EARNINGS COMBO - ENHANCED VERSION")
+        print("=" * 70)
+        print(f"📊 Stock Discovery Criteria:")
+        print(f"   • Earnings within: {request_data['days_ahead']} days")
+        print(f"   • Volume surge minimum: {request_data['min_volume_surge']}x average")
+        print(f"   • Minimum average volume: {request_data['min_avg_volume']:,}")
+        print(f"⚡ Option Selection Criteria:")
+        print(f"   • Delta range: {request_data['min_delta']:.2f} - {request_data['max_delta']:.2f}")
+        print(f"   • Price range: ${request_data['min_price']:.2f} - ${request_data['max_price']:.2f}")
+        print(f"   • Days to expiry: {request_data['min_days']} - {request_data['max_days']}")
+        print("=" * 70)
+        
+        # Run the enhanced scanner
+        results = enhanced_explosive_earnings_combo(request_data)
+        
+        # Track performance if opportunities found
+        if results.get('status') == 'success' and results.get('top_opportunities'):
+            try:
+                from performance_tracker import PerformanceTracker
+                tracker = PerformanceTracker()
+                
+                tracked_count = 0
+                for opportunity in results['top_opportunities'][:10]:  # Track top 10
+                    try:
+                        option_data = opportunity['option']
+                        trade_plan = opportunity['trade_plan']
+                        
+                        # Add score to option data for tracking
+                        option_data['score'] = option_data.get('explosion_score', 0)
+                        
+                        track_id = tracker.track_option_performance(
+                            opportunity['symbol'],
+                            option_data,
+                            trade_plan,
+                            datetime.now().strftime('%Y-%m-%d')
+                        )
+                        tracked_count += 1
+                        
+                    except Exception as e:
+                        print(f"⚠️ Failed to track {opportunity['symbol']}: {e}")
+                
+                results['performance_tracking'] = f"Tracking {tracked_count} opportunities"
+                
+            except Exception as e:
+                print(f"⚠️ Performance tracking failed: {e}")
+        
+        # Format response
+        response_data = {
+            "status": results.get('status', 'error'),
+            "scan_metadata": results.get('scan_metadata', {}),
+            "message": results.get('message', ''),
+            "opportunities_found": len(results.get('top_opportunities', [])),
+            "top_opportunities": results.get('top_opportunities', [])[:10],  # Top 10
+            "explosive_stocks": results.get('explosive_stocks', [])[:10],    # Top 10 stocks
+            "performance_tracking": results.get('performance_tracking', 'Not tracked'),
+            "summary": results.get('summary', 'No summary available')
         }
-
-        # Create final combined opportunities list
-        final_opportunities = []
-        if scanner_core_results:
-            for symbol, scanner_data in scanner_core_results.items():
-                # Get corresponding explosive data
-                explosive_data = explosive_results['opportunities'].get(
-                    symbol, {})
-
-                # Combine both analyses
-                combined_opportunity = {
-                    'symbol':
-                    symbol,
-                    'explosive_score':
-                    explosive_data.get('best_opportunity',
-                                       {}).get('total_score', 0),
-                    'confluence_score':
-                    scanner_data.get('confluence', {}).get('score', 0),
-                    'confluence_bias':
-                    scanner_data.get('confluence', {}).get('bias', 'N/A'),
-                    'days_to_earnings':
-                    explosive_data.get('market_data',
-                                       {}).get('earnings_info',
-                                               {}).get('days_to_earnings',
-                                                       'N/A'),
-                    'earnings_priority':
-                    explosive_data.get('market_data',
-                                       {}).get('earnings_info',
-                                               {}).get('earnings_priority',
-                                                       'N/A'),
-                    'has_gaps':
-                    any([
-                        tf_data.get('gap_percent', 0) != 0
-                        for tf_data in scanner_data.get(
-                            'timeframe_analysis', {}).values()
-                    ]),
-                    'volume_confluence':
-                    len(
-                        scanner_data.get('volume_profile',
-                                         {}).get('confluences', [])) > 0,
-                    'trade_plan':
-                    scanner_data.get('trade_plan', {}),
-                    'patterns_found': [
-                        f"{tf}:{','.join([k for k,v in tf_data.get('patterns', {}).items() if v])}"
-                        for tf, tf_data in scanner_data.get(
-                            'timeframe_analysis', {}).items()
-                        if any(tf_data.get('patterns', {}).values())
-                    ],
-                    'explosive_analysis':
-                    explosive_data.get('best_opportunity', {}),
-                    'scanner_core_analysis':
-                    scanner_data
-                }
-                final_opportunities.append(combined_opportunity)
-
-        # Sort by combined score (explosive + confluence)
-        final_opportunities.sort(
-            key=lambda x: (x['explosive_score'] + x['confluence_score']),
-            reverse=True)
-
-        combined_results['final_opportunities'] = final_opportunities
-
-        # Generate comprehensive summary
-        top_opportunity = final_opportunities[0] if final_opportunities else None
         
-        # Safe access to top opportunity data
-        top_symbol = top_opportunity['symbol'] if top_opportunity else 'None'
-        top_explosive_score = f"{top_opportunity['explosive_score']:.1f}/100" if top_opportunity else 'N/A'
-        top_confluence_score = f"{top_opportunity['confluence_score']:.1f}/10" if top_opportunity else 'N/A'
-        top_bias = top_opportunity['confluence_bias'] if top_opportunity else 'N/A'
-        top_earnings_days = top_opportunity['days_to_earnings'] if top_opportunity else 'N/A'
+        # Add execution tips
+        if response_data['opportunities_found'] > 0:
+            response_data['execution_tips'] = [
+                "🎯 Top 3 opportunities have highest conviction",
+                "⏰ Earnings plays are time-sensitive - act quickly",
+                "📊 Volume surges confirm institutional interest",
+                "💰 Use position sizing recommendations in trade plans",
+                "🛑 Always set stop losses before entries fill"
+            ]
         
-        combined_results['summary'] = f"""
-🎯 EXPLOSIVE EARNINGS COMBO SCAN - 2 PHASE ANALYSIS COMPLETE
-{'='*70}
-📊 PHASE 1 - Explosive Discovery:
-   • Symbols Scanned: {explosive_results['scan_metadata']['symbols_scanned']}
-   • Explosive Opportunities: {len(explosive_results['opportunities'])}
-   • Earnings Candidates: {len(earnings_candidates)}
-
-🔬 PHASE 2 - Full Scanner Core Analysis:
-   • Candidates Analyzed: {len(scanner_core_results) if scanner_core_results else 0}
-   • Multi-timeframe Analysis: ✅
-   • Volume Profile Analysis: ✅
-   • Pattern Detection: ✅
-   • Confluence Scoring: ✅
-
-🏆 TOP COMBINED OPPORTUNITY:
-   • Symbol: {top_symbol}
-   • Explosive Score: {top_explosive_score}
-   • Confluence Score: {top_confluence_score}
-   • Bias: {top_bias}
-   • Days to Earnings: {top_earnings_days}
-
-💡 METHODOLOGY: Two-phase analysis combining explosive discovery with comprehensive technical analysis
-        """.strip()
-
-        safe_results = make_json_safe(combined_results)
-        return jsonify(safe_results)
-
+        return jsonify(make_json_safe(response_data))
+        
     except Exception as e:
         print(f"❌ Error in explosive-earnings-combo: {e}")
         import traceback
         traceback.print_exc()
+        
         return jsonify({
             "status": "error",
-            "message": str(e),
+            "message": f"Explosive earnings scan failed: {str(e)}",
             "traceback": traceback.format_exc()
         }), 500
 
 
+# Additional helper endpoint to test earnings discovery
+@app.route("/test-earnings-discovery", methods=["GET"])
+def test_earnings_discovery():
+    """Test endpoint to verify earnings discovery is working"""
+    try:
+        from enhanced_explosive_earnings_scanner import EnhancedEarningsScanner
+        
+        days_ahead = int(request.args.get('days_ahead', 21))
+        
+        scanner = EnhancedEarningsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
+        
+        # Test earnings calendar fetch
+        earnings_stocks = scanner._fetch_real_earnings_calendar(days_ahead)
+        
+        # Test volume surge detection
+        volume_surges = scanner._detect_volume_surges(min_surge_ratio=1.5)
+        
+        # Get intraday movers
+        movers = scanner._get_intraday_movers()
+        
+        return jsonify({
+            "status": "success",
+            "earnings_found": len(earnings_stocks),
+            "earnings_sample": list(earnings_stocks.items())[:10],
+            "volume_surges_found": len(volume_surges),
+            "volume_surges_sample": list(volume_surges.items())[:10],
+            "intraday_movers": len(movers),
+            "movers_sample": list(movers.items())[:10],
+            "test_timestamp": datetime.now().isoformat()
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Earnings discovery test failed: {str(e)}"
+        }), 500
+
+
+# Additional endpoint for pure volume surge discovery
+@app.route("/volume-surge-scan", methods=["GET"])
+def volume_surge_scan():
+    """Find stocks with significant volume surges regardless of earnings"""
+    try:
+        from enhanced_explosive_earnings_scanner import EnhancedEarningsScanner
+        
+        min_surge = float(request.args.get('min_surge', 2.0))
+        min_volume = int(request.args.get('min_volume', 1000000))
+        
+        scanner = EnhancedEarningsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
+        
+        # Get volume surge stocks
+        surge_stocks = scanner._detect_volume_surges(min_surge_ratio=min_surge)
+        
+        # Filter by minimum volume
+        filtered_surges = {
+            symbol: data for symbol, data in surge_stocks.items()
+            if data.get('current_volume', 0) >= min_volume
+        }
+        
+        # Sort by surge ratio
+        sorted_surges = sorted(
+            filtered_surges.items(),
+            key=lambda x: x[1]['surge_ratio'],
+            reverse=True
+        )
+        
+        # Format response
+        surge_list = []
+        for symbol, data in sorted_surges[:20]:  # Top 20
+            surge_list.append({
+                'symbol': symbol,
+                'surge_ratio': data['surge_ratio'],
+                'current_volume': data['current_volume'],
+                'avg_volume': data['avg_volume'],
+                'change_percent': data.get('change_percent', 0),
+                'price': data.get('price', 0)
+            })
+        
+        return jsonify({
+            "status": "success",
+            "surge_count": len(filtered_surges),
+            "min_surge_filter": min_surge,
+            "min_volume_filter": min_volume,
+            "top_surges": surge_list,
+            "scan_time": datetime.now().isoformat()
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Volume surge scan failed: {str(e)}"
+        }), 500
 @app.route("/pre-earnings-scan", methods=["GET", "POST"])
 def run_pre_earnings_scan():
     """Run specialized scan focused on pre-earnings opportunities"""
