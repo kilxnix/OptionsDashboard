@@ -674,18 +674,28 @@ class CompleteOptionsScanner:
         }
 
     def fetch_price_data(self, symbol, period='1mo', interval='15m'):
-        """Fetch price data using yfinance"""
-        try:
-            stock = yf.Ticker(symbol)
-            df = stock.history(period=period, interval=interval)
-            if df.empty:
-                print(f"No price data available for {symbol}")
-                return None
-            df.index = pd.to_datetime(df.index)
-            return df
-        except Exception as e:
-            print(f"Error fetching price data for {symbol}: {e}")
-            return None
+        """Fetch price data using yfinance with retry logic"""
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                stock = yf.Ticker(symbol)
+                df = stock.history(period=period, interval=interval, timeout=30)
+                if df.empty:
+                    print(f"No price data available for {symbol}")
+                    return None
+                df.index = pd.to_datetime(df.index)
+                return df
+            except Exception as e:
+                if "Too Many Requests" in str(e) or "rate limit" in str(e).lower():
+                    wait_time = 2 ** attempt  # Exponential backoff: 2, 4, 8 seconds
+                    print(f"Rate limited for {symbol}, waiting {wait_time}s (attempt {attempt + 1}/{max_retries})")
+                    time.sleep(wait_time)
+                else:
+                    print(f"Error fetching price data for {symbol}: {e}")
+                    return None
+        
+        print(f"Failed to fetch data for {symbol} after {max_retries} attempts")
+        return None
 
     def _fetch_yfinance_fallback(self, symbol, timeframe):
         """Fallback to yfinance when Alpha Vantage data is unavailable"""
@@ -703,19 +713,25 @@ class CompleteOptionsScanner:
         return self.fetch_price_data(symbol, period=period, interval=interval)
 
     def _check_rate_limit(self):
-        """Implement rate limiting"""
+        """Implement rate limiting with exponential backoff"""
         current_time = time.time()
-        if current_time - self.last_request_time < 60:  # Within the same minute
-            if self.request_count >= self.requests_per_minute:
-                sleep_time = 60 - (current_time - self.last_request_time)
-                if sleep_time > 0:
-                    time.sleep(sleep_time)
-                self.request_count = 0
-                self.last_request_time = time.time()
-        else:  # New minute
+        
+        # Check if we're in a new minute
+        if current_time - self.last_request_time >= 60:
             self.request_count = 0
             self.last_request_time = current_time
-
+        
+        # If we're approaching the limit, wait
+        if self.request_count >= self.requests_per_minute - 10:  # Buffer of 10 requests
+            sleep_time = 61 - (current_time - self.last_request_time)
+            if sleep_time > 0:
+                print(f"⏳ Rate limit protection: waiting {sleep_time:.1f}s")
+                time.sleep(sleep_time)
+                self.request_count = 0
+                self.last_request_time = time.time()
+        
+        # Add small delay between requests to be respectful
+        time.sleep(0.1)
         self.request_count += 1
 
     def fetch_options_data(self, symbol):
@@ -2017,14 +2033,25 @@ def run_scanner(symbols=None,
     print(f"Looking for options expiring: {time_to_expiry_range}")
 
     results = {}
+    consecutive_failures = 0
+    max_consecutive_failures = 10  # Circuit breaker threshold
 
     for symbol in tqdm(symbols, desc="Scanning"):
         try:
+            # Circuit breaker: if too many consecutive failures, stop scanning
+            if consecutive_failures >= max_consecutive_failures:
+                print(f"🛑 Circuit breaker activated: {consecutive_failures} consecutive failures. Stopping scan to prevent further rate limiting.")
+                break
+            
             # Quick pre-filter: try to fetch just daily data first
             daily_data = scanner.fetch_alpha_vantage_data(symbol, 'D')
             if daily_data is None or daily_data.empty:
                 print(f"⚠️  No daily data for {symbol}, skipping...")
+                consecutive_failures += 1
                 continue
+            
+            # Reset failure counter on success
+            consecutive_failures = 0
 
             # If daily data exists, proceed with full analysis
             multi_tf_data = scanner.fetch_multi_timeframe_data(symbol)
@@ -2205,6 +2232,7 @@ def run_scanner(symbols=None,
 
         except Exception as e:
             print(f"Error analyzing {symbol}: {e}")
+            consecutive_failures += 1
             continue
 
     return results

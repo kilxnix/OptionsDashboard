@@ -585,6 +585,10 @@ class ExplosiveOptionsScanner:
                 bulk_data.update(parsed)
                 print(f"✅ Successfully parsed {len(parsed)} symbols from chunk {i//100 + 1}")
 
+                # Rate limiting - ensure we don't exceed 150 requests/minute with buffer
+                chunk_delay = 60 / 120  # Target 120 requests per minute to be very safe
+                start_time = time.time()
+
                 # Rate limiting - ensure we don't exceed 150 requests/minute
                 elapsed = time.time() - start_time
                 if elapsed < chunk_delay and i + 100 < len(symbols):
