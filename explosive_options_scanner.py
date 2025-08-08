@@ -269,7 +269,7 @@ class ExplosiveOptionsScanner:
                             'lastPrice': 0.5, 'change': 0.0, 'percentChange': 0.0,
                             'openInterest': 50.0, 'days_to_expiry': 30
                         }
-
+                        
                         for field, default in numeric_defaults.items():
                             if field in option_dict:
                                 option_dict[field] = safe_extract_numeric(option_dict[field], default)
@@ -307,16 +307,16 @@ class ExplosiveOptionsScanner:
                         # Ensure score is a number, not a dict
                         if isinstance(score, dict):
                             score = score.get('total_score', 0) if 'total_score' in score else 0
-
+                        
                         try:
                             score = float(score)
                         except (ValueError, TypeError):
                             score = 0
-
+                        
                         if score >= self.scan_config['min_score']:
                             option_dict['score_analysis'] = analysis
                             option_dict['total_score'] = score
-
+                            
                             # Ensure recommendation exists in analysis
                             if 'recommendation' not in analysis:
                                 if score >= 70:
@@ -329,7 +329,7 @@ class ExplosiveOptionsScanner:
                                     analysis['recommendation'] = "⚠️ WEAK - Better opportunities exist"
                                 else:
                                     analysis['recommendation'] = "❌ REJECT - Does not meet criteria"
-
+                            
                             scored_options.append(option_dict)
                     except Exception as e:
                         # Check if it's the specific dictionary comparison error
@@ -1051,7 +1051,7 @@ class ExplosiveOptionsScanner:
         try:
             # First fix the data types to handle dictionary values
             options_data = fix_options_dataframe(options_data)
-
+            
             # Then apply safe filters
             return safe_apply_filters(
                 options_data,
@@ -1229,7 +1229,7 @@ Opportunities Found: {len(results['opportunities'])}
 
         with open(filename, 'w') as f:
             json.dump(results, f, indent=2, default=str)
-
+    
     def _calculate_score_analysis(self, option_data: Dict, market_data: Dict) -> Dict:
         """
         Calculate a comprehensive score analysis based on various factors.
@@ -1342,7 +1342,7 @@ Opportunities Found: {len(results['opportunities'])}
             'confidence': round(confidence, 1),
             'recommendation': recommendation
         }
-
+    
     def _generate_recommendation_from_score(self, score: float) -> str:
         """Generate recommendation based on score.
 
@@ -1450,18 +1450,18 @@ Opportunities Found: {len(results['opportunities'])}
         plan['formatted_text'] = f"""
         --- INTELLIGENT TRADE PLAN ---
         Entry: {plan['entry_details']['description']}
-
+        
         Targets:
         - Target 1: ${plan['targets']['target_1']['price']:.2f} (+{plan['targets']['target_1']['percent'] * 100:.1f}%) - {plan['targets']['target_1']['action']}
         - Target 2: ${plan['targets']['target_2']['price']:.2f} (+{plan['targets']['target_2']['percent'] * 100:.1f}%) - {plan['targets']['target_2']['action']}
         - Target 3: ${plan['targets']['target_3']['price']:.2f} (+{plan['targets']['target_3']['percent'] * 100:.1f}%) - {plan['targets']['target_3']['action']}
-
+        
         Stop Loss: ${plan['stop_loss']['stop_price']:.2f} (-{plan['stop_loss']['percent'] * 100:.1f}%) - {plan['stop_loss']['action']}
-
+        
         Risk: {plan['risk_analysis']['risk_description']}
-
+        
         Position Sizing: {plan['position_sizing']['sizing_description']}
-
+        
         Contingency: {plan['contingency_plan']['scenario']} - {plan['contingency_plan']['action']}
         """
 

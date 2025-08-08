@@ -72,7 +72,7 @@ class RealtimeExplosiveScanner:
             
             try:
                 # Use REALTIME_BULK_QUOTES endpoint
-                url = f'https://www.alphavantage.co/query?function=REALTIME_BULK_QUOTES&symbols={",".join(chunk)}&entitlement=realtime&apikey={self.av_key}'
+                url = f'https://www.alphavantage.co/query?function=REALTIME_BULK_QUOTES&symbols={",".join(chunk)}&apikey={self.av_key}'
                 
                 response = requests.get(url, timeout=30)
                 response.raise_for_status()
@@ -562,7 +562,7 @@ class RealtimeExplosiveScanner:
         try:
             # Try Alpha Vantage historical first
             self._check_rate_limit()
-            url = f'https://www.alphavantage.co/query?function=HISTORICAL_OPTIONS&symbol={symbol}&entitlement=realtime&apikey={self.av_key}'
+            url = f'https://www.alphavantage.co/query?function=HISTORICAL_OPTIONS&symbol={symbol}&apikey={self.av_key}'
             
             response = requests.get(url, timeout=10)
             self.request_count += 1
