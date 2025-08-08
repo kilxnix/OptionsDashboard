@@ -4,6 +4,7 @@ import os
 import json
 import glob
 import pandas as pd
+import numpy as np
 import requests
 import time
 from run_autonomous_scan import run_autonomous_scan
@@ -12,6 +13,45 @@ app = Flask(__name__)
 
 # Alpha Vantage API integration - no rate limiting needed with subscription
 
+
+def make_json_safe(obj):
+    """Recursively convert pandas and numpy objects to JSON-serializable forms."""
+    # Handle numpy arrays first to avoid truth value ambiguity
+    if isinstance(obj, np.ndarray):
+        return obj.tolist()
+
+    # Handle pandas NA and None values
+    if obj is pd.NA or obj is None:
+        return None
+
+    # Check for pandas NA values safely (only for scalar values)
+    try:
+        if hasattr(obj, '__len__') and len(obj) > 1:
+            # This is an array-like object, don't use pd.isna
+            pass
+        elif pd.isna(obj):
+            return None
+    except (ValueError, TypeError):
+        # pd.isna failed, continue with other checks
+        pass
+
+    if isinstance(obj, pd.DataFrame):
+        return obj.to_dict(orient="records")
+    if isinstance(obj, pd.Series):
+        return obj.to_dict()
+    if isinstance(obj, (pd.Timestamp, datetime)):
+        return obj.isoformat()
+    if isinstance(obj, (np.int_, np.intc, np.intp, np.int8, np.int16, np.int32, np.int64, np.uint8, np.uint16, np.uint32, np.uint64)):
+        return int(obj)
+    if isinstance(obj, (np.float16, np.float32, np.float64)):
+        return float(obj)
+    if isinstance(obj, np.bool_):
+        return bool(obj)
+    if isinstance(obj, dict):
+        return {k: make_json_safe(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [make_json_safe(v) for v in obj]
+    return obj
 
 @app.route("/")
 def index():
@@ -687,11 +727,30 @@ def enhanced_scan():
             sector_filter = data.get('sector', None)
             min_score = data.get('min_score', 65)
             scan_date = data.get('date', datetime.now().strftime('%Y-%m-%d'))
+            max_symbols = data.get('max_symbols', 400)
         else:
             symbols = request.args.getlist('symbols')
             sector_filter = request.args.get('sector', None)
             min_score = float(request.args.get('min_score', 65))
             scan_date = request.args.get('date', datetime.now().strftime('%Y-%m-%d'))
+            max_symbols = int(request.args.get('max_symbols', 400))
+
+        # Use proper auto-discovery like explosive scan
+        if not symbols:
+            # Get symbols from Alpha Vantage screeners (same as explosive scan)
+            try:
+                data = fetch_alphavantage_top_symbols()
+                symbols = data['all_symbols']
+                print(f"🔍 Auto-discovered {len(symbols)} symbols from Alpha Vantage screeners")
+            except Exception as e:
+                print(f"⚠️ Auto-discovery failed, using fallback: {e}")
+                # Fallback to scanner_core method
+                from scanner_core import get_optionable_stocks_with_volume
+                symbols = get_optionable_stocks_with_volume()
+
+            if max_symbols and len(symbols) > max_symbols:
+                symbols = symbols[:max_symbols]
+                print(f"🎯 Limited to {max_symbols} symbols for enhanced scan")
 
         # Run enhanced scan
         scanner = EnhancedOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
@@ -701,19 +760,40 @@ def enhanced_scan():
             min_score=min_score
         )
 
+        # Track performance for enhanced scan results
+        tracked_count = 0
+        if results and results.get('opportunities'):
+            from performance_tracker import PerformanceTracker
+            tracker = PerformanceTracker()
+
+            for opportunity in results.get('opportunities', []):
+                try:
+                    if 'symbol' in opportunity and 'best_option' in opportunity:
+                        track_id = tracker.track_option_performance(
+                            opportunity['symbol'],
+                            opportunity['best_option'],
+                            opportunity.get('trading_plan', {}),
+                            scan_date
+                        )
+                        tracked_count += 1
+                        print(f"📊 Started tracking {opportunity['symbol']}: {track_id}")
+                except Exception as e:
+                    print(f"⚠️ Failed to track {opportunity.get('symbol', 'unknown')}: {e}")
+
         return jsonify({
             "status": "success",
             "scan_date": scan_date,
             "opportunities_found": len(results.get('opportunities', [])),
             "top_picks": results.get('top_picks', [])[:10],
-            "market_regime": results.get('market_regime', {})
+            "market_regime": results.get('market_regime', {}),
+            "performance_tracking": f"Now tracking {tracked_count} options"
         })
 
     except Exception as e:
         return jsonify({
             "status": "error", 
             "message": f"Enhanced scan failed: {str(e)}"
-        }), 500
+                }), 500
 
 
 @app.route("/explosive-scan", methods=["GET", "POST"])
@@ -760,6 +840,29 @@ def run_explosive_scan():
             market_data=market_data if request.method == 'POST' and request.is_json else None
         )
 
+        # Track performance for all opportunities found
+        tracked_count = 0
+        if results and results.get('opportunities'):
+            from performance_tracker import PerformanceTracker
+            tracker = PerformanceTracker()
+
+            for symbol, opportunity_data in results['opportunities'].items():
+                try:
+                    best_option = opportunity_data.get('best_opportunity', {})
+                    trading_plan = opportunity_data.get('trading_plan', {})
+
+                    if best_option and trading_plan:
+                        track_id = tracker.track_option_performance(
+                            symbol, 
+                            best_option, 
+                            trading_plan, 
+                            datetime.now().strftime('%Y-%m-%d')
+                        )
+                        tracked_count += 1
+                        print(f"📊 Started tracking {symbol}: {track_id}")
+                except Exception as e:
+                    print(f"⚠️ Failed to track {symbol}: {e}")
+
         return jsonify({
             "status": "success",
             "scan_type": scan_type,
@@ -769,6 +872,7 @@ def run_explosive_scan():
             "top_picks": results['top_picks'][:10],
             "earnings_opportunities": len(results['by_category']['earnings_plays']),
             "api_calls_saved": "Using bulk quotes + historical options",
+            "performance_tracking": f"Now tracking {tracked_count} options",
             "summary": results['summary']
         })
 
@@ -798,20 +902,192 @@ def monitor_positions():
 
     except Exception as e:
         return jsonify({
-```python
             "status": "error",
-            "message": f"Monitoring failed: {str(e)}"
+            "message": f"Monitoring encountered an error: {str(e)}"
         }), 500
 
 
 @app.route("/market-regime", methods=["GET"])
 def get_market_regime():
-    """Get current market regime and trading adjustments"""
+    """Retrieve the current market regime and associated trading adjustments"""
     try:
         from adaptive_market_monitor import AdaptiveMarketMonitor
 
         monitor = AdaptiveMarketMonitor(os.getenv('ALPHA_VANTAGE_API_KEY'))
         regime_update = monitor.update_market_regime()
+
+        return jsonify({
+            "status": "success",
+            "current_regime": regime_update['current_regime'],
+            "changes": regime_update['changes'],
+            "trading_adjustments": regime_update['trading_adjustments'],
+            "timestamp": regime_update['timestamp']
+        })
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Market regime analysis failed: {str(e)}"
+        }), 500
+
+
+@app.route("/performance/live", methods=["GET"])
+def get_live_performance():
+    """Get real-time performance of all tracked options"""
+    try:
+        from performance_tracker import PerformanceTracker
+
+        tracker = PerformanceTracker()
+        performance_data = tracker.load_performance_data()
+
+        # Get current performance for active positions
+        active_positions = []
+        expired_positions = []
+        profitable_positions = []
+        losing_positions = []
+
+        for track_id, data in performance_data.items():
+            position_info = {
+                'track_id': track_id,
+                'symbol': data['symbol'],
+                'prediction_date': data['prediction_date'],
+                'option_type': data['option_details'].get('type', 'N/A'),
+                'strike': data['option_details'].get('strike', 'N/A'),
+                'expiration': data['option_details'].get('expiration', 'N/A'),
+                'entry_price': data['option_details'].get('entry_price', 0),
+                'confluence_score': data['option_details'].get('confluence_score', 0),
+                'max_profit': data.get('max_profit', 0),
+                'max_loss': data.get('max_loss', 0),
+                'final_outcome': data.get('final_outcome'),
+                'days_tracked': data.get('days_tracked', 0)
+            }
+
+            if data.get('final_outcome') is None:
+                active_positions.append(position_info)
+            elif data.get('final_outcome') == 'EXPIRED':
+                expired_positions.append(position_info)
+            elif data.get('max_profit', 0) > 0:
+                profitable_positions.append(position_info)
+            else:
+                losing_positions.append(position_info)
+
+        # Sort by max profit/loss
+        profitable_positions.sort(key=lambda x: x['max_profit'], reverse=True)
+        losing_positions.sort(key=lambda x: x['max_loss'])
+
+        return jsonify({
+            "status": "success",
+            "summary": {
+                "total_tracked": len(performance_data),
+                "active_positions": len(active_positions),
+                "expired_positions": len(expired_positions),
+                "profitable_count": len(profitable_positions),
+                "losing_count": len(losing_positions)
+            },
+            "active_positions": active_positions[:20],  # Top 20
+            "top_performers": profitable_positions[:10],
+            "worst_performers": losing_positions[:10],
+            "recently_expired": expired_positions[-10:]  # Last 10 expired
+        })
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Error getting live performance: {str(e)}"
+        }), 500
+
+
+@app.route("/performance/update-now", methods=["POST", "GET"])
+def update_performance_now():
+    """Manually trigger performance update for all tracked options"""
+    try:
+        from performance_tracker import PerformanceTracker
+
+        tracker = PerformanceTracker()
+        updated_count = tracker.update_daily_performance()
+
+        # Get quick stats after update
+        metrics = tracker.calculate_performance_metrics()
+
+        return jsonify({
+            "status": "success",
+            "message": f"Performance updated for {updated_count} options",
+            "updated_count": updated_count,
+            "quick_stats": {
+                "total_predictions": metrics.get('total_predictions', 0),
+                "win_rate": f"{metrics.get('win_rate', 0):.1f}%",
+                "targets_hit": metrics.get('targets_hit', 0),
+                "stops_hit": metrics.get('stops_hit', 0),
+                "still_active": metrics.get('still_active', 0)
+            },
+            "timestamp": datetime.now().isoformat()
+        })
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Error updating performance: {str(e)}"
+        }), 500
+
+
+@app.route("/performance/position/<track_id>", methods=["GET"])
+def get_position_details(track_id):
+    """Get detailed tracking information for a specific position"""
+    try:
+        from performance_tracker import PerformanceTracker
+
+        tracker = PerformanceTracker()
+        performance_data = tracker.load_performance_data()
+
+        if track_id not in performance_data:
+            return jsonify({
+                "status": "error",
+                "message": f"Position {track_id} not found"
+            }), 404
+
+        position_data = performance_data[track_id]
+
+        # Calculate additional metrics
+        daily_tracking = position_data.get('daily_tracking', {})
+        if daily_tracking:
+            dates = sorted(daily_tracking.keys())
+            price_history = [daily_tracking[date]['price'] for date in dates]
+            pnl_history = [daily_tracking[date]['pnl_percent'] for date in dates]
+        else:
+            dates = []
+            price_history = []
+            pnl_history = []
+
+        return jsonify({
+            "status": "success",
+            "position_details": position_data,
+            "price_history": {
+                "dates": dates,
+                "prices": price_history,
+                "pnl_percentages": pnl_history
+            },
+            "current_status": {
+                "is_active": position_data.get('final_outcome') is None,
+                "days_held": len(daily_tracking),
+                "best_day": max(pnl_history) if pnl_history else 0,
+                "worst_day": min(pnl_history) if pnl_history else 0
+            }
+        })
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Error getting position details: {str(e)}"
+        }), 500
+
+
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Error getting live performance: {str(e)}"
+        }), 500
+
 
         return jsonify({
             "status": "success",
@@ -1103,12 +1379,10 @@ def explosive_earnings_combo():
 
         scanner_core_results = {}
         if earnings_candidates:
-            # Run the full scanner_core workflow
-            scanner_core_results = run_autonomous_scan(
-                dry_run=False,
-                auto_refresh_symbols=False,  # Don't refresh, use our candidates
-                symbol_limit=0,  # No limit, process all candidates
-                symbols_override=earnings_candidates,  # Use our earnings candidates
+            from scanner_core import run_scanner
+            print(f"🔄 Running scanner_core on {len(earnings_candidates)} symbols...")
+            scanner_core_results = run_scanner(
+                symbols=earnings_candidates,
                 min_delta=filters.get('min_delta', 0.10),
                 max_delta=filters.get('max_delta', 0.40),
                 min_price=filters.get('min_price', 0.05),
@@ -1116,8 +1390,8 @@ def explosive_earnings_combo():
                 time_to_expiry_range=(filters.get('min_days', 1), filters.get('max_days', 30))
             )
 
-            if scanner_core_results and scanner_core_results.get('results'):
-                print(f"✅ PHASE 2 COMPLETE: Full analysis completed on {len(scanner_core_results['results'])} symbols")
+            if scanner_core_results:
+                print(f"✅ PHASE 2 COMPLETE: Full analysis completed on {len(scanner_core_results)} symbols")
             else:
                 print("⚠️ PHASE 2: No results from scanner_core analysis")
 
@@ -1130,7 +1404,7 @@ def explosive_earnings_combo():
                 "phase_1_symbols_scanned": explosive_results['scan_metadata']['symbols_scanned'],
                 "phase_1_opportunities": len(explosive_results['opportunities']),
                 "earnings_candidates_found": len(earnings_candidates),
-                "phase_2_analyzed": len(scanner_core_results.get('results', {})) if scanner_core_results else 0,
+                "phase_2_analyzed": len(scanner_core_results) if scanner_core_results else 0,
                 "min_explosive_score": min_explosive_score,
                 "filters": filters,
                 "methodology": "Phase 1: Explosive discovery → Phase 2: Full scanner_core analysis"
@@ -1140,15 +1414,15 @@ def explosive_earnings_combo():
                 "top_picks": explosive_results['top_picks'][:10],
                 "by_category": explosive_results['by_category']
             },
-            "phase_2_scanner_core_results": scanner_core_results.get('results', {}) if scanner_core_results else {},
+            "phase_2_scanner_core_results": scanner_core_results or {},
             "earnings_candidates": earnings_candidates,
             "final_opportunities": []
         }
 
         # Create final combined opportunities list
         final_opportunities = []
-        if scanner_core_results and scanner_core_results.get('results'):
-            for symbol, scanner_data in scanner_core_results['results'].items():
+        if scanner_core_results:
+            for symbol, scanner_data in scanner_core_results.items():
                 # Get corresponding explosive data
                 explosive_data = explosive_results['opportunities'].get(symbol, {})
 
@@ -1195,7 +1469,7 @@ def explosive_earnings_combo():
    • Earnings Candidates: {len(earnings_candidates)}
 
 🔬 PHASE 2 - Full Scanner Core Analysis:
-   • Candidates Analyzed: {len(scanner_core_results.get('results', {})) if scanner_core_results else 0}
+   • Candidates Analyzed: {len(scanner_core_results) if scanner_core_results else 0}
    • Multi-timeframe Analysis: ✅
    • Volume Profile Analysis: ✅
    • Pattern Detection: ✅
@@ -1203,15 +1477,16 @@ def explosive_earnings_combo():
 
 🏆 TOP COMBINED OPPORTUNITY:
    • Symbol: {top_opportunity['symbol'] if top_opportunity else 'None'}
-   • Explosive Score: {top_opportunity['explosive_score']:.1f}/100" if top_opportunity else 'N/A'}
-   • Confluence Score: {top_opportunity['confluence_score']:.1f}/10" if top_opportunity else 'N/A'}
+   • Explosive Score: {top_opportunity['explosive_score']:.1f}/100 {'' if top_opportunity else 'N/A'}
+   • Confluence Score: {top_opportunity['confluence_score']:.1f}/10 {'' if top_opportunity else 'N/A'}
    • Bias: {top_opportunity['confluence_bias'] if top_opportunity else 'N/A'}
    • Days to Earnings: {top_opportunity['days_to_earnings'] if top_opportunity else 'N/A'}
 
 💡 METHODOLOGY: Two-phase analysis combining explosive discovery with comprehensive technical analysis
         """.strip()
 
-        return jsonify(combined_results)
+        safe_results = make_json_safe(combined_results)
+        return jsonify(safe_results)
 
     except Exception as e:
         print(f"❌ Error in explosive-earnings-combo: {e}")
@@ -1295,7 +1570,7 @@ def run_pre_earnings_scan():
             "status": "completed",
             "scan_type": "pre_earnings",
             "message": f"Pre-earnings scan completed successfully",
-            "candidates_scanned": len(pre_earnings_stocks),
+            "candidates_scanned": len(pre_earningsstocks),
             "opportunities_found": len(results),
             "priority_filter": priority_only,
             "earnings_breakdown": {
@@ -1387,6 +1662,82 @@ def get_formatted_plans():
         return f"Error retrieving formatted plans: {str(e)}", 500
 
 
+@app.route("/enhanced-scan", methods=["GET", "POST"])
+def run_enhanced_scan():
+    """Run enhanced options scan with comprehensive analysis"""
+    try:
+        from enhanced_scanner import run_enhanced_scanner
+
+        # Get parameters
+        if request.method == 'POST' and request.is_json:
+            data = request.get_json()
+            symbols = data.get('symbols', None)
+            min_delta = float(data.get('min_delta', 0.25))
+            max_delta = float(data.get('max_delta', 0.68))
+        else:
+            symbols = request.args.getlist('symbols') or None
+            min_delta = float(request.args.get('min_delta', 0.25))
+            max_delta = float(request.args.get('max_delta', 0.68))
+
+        # Run enhanced scanner
+        results = run_enhanced_scanner(
+            symbols=symbols,
+            min_delta=min_delta,
+            max_delta=max_delta
+        )
+
+        if not results:
+            return jsonify({
+                "status": "no-results",
+                "message": "Enhanced scan completed but found no high-quality opportunities"
+            })
+
+        # Track performance for all results
+        tracked_count = 0
+        from performance_tracker import PerformanceTracker
+        tracker = PerformanceTracker()
+
+        for symbol, data in results.items():
+            try:
+                if ('options' in data and not isinstance(data['options'], bool) 
+                    and not data['options'].empty and 'trade_plan' in data 
+                    and data['trade_plan']):
+
+                    top_option = data['options'].iloc[0].to_dict()
+                    trade_plan = data['trade_plan']
+
+                    track_id = tracker.track_option_performance(
+                        symbol, top_option, trade_plan, 
+                        datetime.now().strftime('%Y-%m-%d')
+                    )
+                    tracked_count += 1
+            except Exception as e:
+                print(f"⚠️ Failed to track {symbol}: {e}")
+
+        return jsonify({
+            "status": "success",
+            "scan_type": "enhanced_comprehensive",
+            "opportunities_found": len(results),
+            "top_opportunities": [
+                {
+                    "symbol": symbol,
+                    "confluence_score": data.get('confluence', {}).get('score', 0),
+                    "bias": data.get('confluence', {}).get('bias', 'N/A'),
+                    "validation_score": data.get('trade_plan', {}).get('validation_score', 0)
+                }
+                for symbol, data in list(results.items())[:10]
+            ],
+            "performance_tracking": f"Now tracking {tracked_count} options",
+            "timestamp": datetime.now().isoformat()
+        })
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Enhanced scan failed: {str(e)}"
+        }), 500
+
+
 @app.route("/enhanced-scan/progress", methods=["GET"])
 def get_enhanced_scan_progress():
     """Check progress of enhanced scan"""
@@ -1456,6 +1807,282 @@ def resume_enhanced_scan():
         return jsonify({
             "status": "error",
             "message": f"Failed to resume scan: {str(e)}"
+        }), 500
+
+@app.route("/mega-discovery-scan", methods=["GET", "POST"])
+def mega_discovery_scan():
+    """Ultimate auto-discovery scan combining ALL methods with full analysis"""
+    try:
+        # Get parameters
+        if request.method == 'POST' and request.is_json:
+            data = request.get_json()
+            max_symbols = int(data.get('max_symbols', 200))
+            run_analysis = data.get('run_analysis', True)
+            filters = data.get('filters', {})
+        else:
+            max_symbols = int(request.args.get('max_symbols', 200))
+            run_analysis = request.args.get('run_analysis', 'true').lower() == 'true'
+            filters = {
+                'min_price': float(request.args.get('min_price', 0.05)),
+                'max_price': float(request.args.get('max_price', 5.00)),
+                'min_delta': float(request.args.get('min_delta', 0.15)),
+                'max_delta': float(request.args.get('max_delta', 0.35)),
+                'min_days': int(request.args.get('min_days', 1)),
+                'max_days': int(request.args.get('max_days', 21))
+            }
+
+        print("🚀 MEGA DISCOVERY SCAN - COMBINING ALL AUTO-DISCOVERY METHODS")
+        print("="*70)
+
+        all_discovered_symbols = []
+        discovery_sources = {}
+
+        # Method 1: Alpha Vantage Screeners
+        try:
+            print("📊 Method 1: Alpha Vantage Screeners...")
+            av_data = fetch_alphavantage_top_symbols()
+            av_symbols = av_data['all_symbols']
+            all_discovered_symbols.extend(av_symbols)
+            discovery_sources['alpha_vantage'] = {
+                'count': len(av_symbols),
+                'symbols': av_symbols[:20],  # Sample
+                'categories': {
+                    'top_gainers': len(av_data['top_gainers']),
+                    'top_losers': len(av_data['top_losers']),
+                    'most_active': len(av_data['most_active'])
+                }
+            }
+            print(f"✅ Alpha Vantage: {len(av_symbols)} symbols")
+        except Exception as e:
+            print(f"⚠️ Alpha Vantage failed: {e}")
+            discovery_sources['alpha_vantage'] = {'error': str(e)}
+
+        # Method 2: Database symbols  
+        try:
+            print("💾 Method 2: Database symbols...")
+            from db_client import fetch_tickers_from_db
+            db_symbols = fetch_tickers_from_db()
+            all_discovered_symbols.extend(db_symbols)
+            discovery_sources['database'] = {
+                'count': len(db_symbols),
+                'symbols': db_symbols[:20]
+            }
+            print(f"✅ Database: {len(db_symbols)} symbols")
+        except Exception as e:
+            print(f"⚠️ Database failed: {e}")
+            discovery_sources['database'] = {'error': str(e)}
+
+        # Method 3: High-volume optionable stocks
+        try:
+            print("📈 Method 3: High-volume optionable stocks...")
+            from scanner_core import get_optionable_stocks_with_volume
+            volume_symbols = get_optionable_stocks_with_volume()
+            all_discovered_symbols.extend(volume_symbols)
+            discovery_sources['high_volume'] = {
+                'count': len(volume_symbols),
+                'symbols': volume_symbols[:20]
+            }
+            print(f"✅ High Volume: {len(volume_symbols)} symbols")
+        except Exception as e:
+            print(f"⚠️ High volume method failed: {e}")
+            discovery_sources['high_volume'] = {'error': str(e)}
+
+        # Method 4: Earnings candidates
+        try:
+            print("📅 Method 4: Earnings candidates...")
+            from enhanced_scanner import discover_pre_earnings_stocks
+            earnings_symbols = discover_pre_earnings_stocks(verbose=False)
+            all_discovered_symbols.extend(earnings_symbols)
+            discovery_sources['earnings'] = {
+                'count': len(earnings_symbols),
+                'symbols': earnings_symbols[:20]
+            }
+            print(f"✅ Earnings: {len(earnings_symbols)} symbols")
+        except Exception as e:
+            print(f"⚠️ Earnings discovery failed: {e}")
+            discovery_sources['earnings'] = {'error': str(e)}
+
+        # Remove duplicates while preserving order
+        unique_symbols = list(dict.fromkeys(all_discovered_symbols))
+        print(f"🎯 DISCOVERY COMPLETE: {len(unique_symbols)} unique symbols from {len(all_discovered_symbols)} total")
+
+        # Limit symbols for performance
+        if len(unique_symbols) > max_symbols:
+            unique_symbols = unique_symbols[:max_symbols]
+            print(f"⚡ Limited to {max_symbols} symbols for performance")
+
+        mega_results = {
+            "status": "success",
+            "scan_type": "mega_discovery_combined",
+            "discovery_summary": {
+                "total_discovered": len(all_discovered_symbols),
+                "unique_symbols": len(unique_symbols),
+                "symbols_analyzed": len(unique_symbols) if run_analysis else 0,
+                "discovery_sources": discovery_sources,
+                "limited_to": max_symbols
+            },
+            "symbols": unique_symbols
+        }
+
+        # Run full scanner_core analysis if requested
+        if run_analysis and unique_symbols:
+            print(f"🔬 Running full scanner_core analysis on {len(unique_symbols)} symbols...")
+            try:
+                from scanner_core import run_scanner
+                analysis_results = run_scanner(
+                    symbols=unique_symbols,
+                    min_delta=filters.get('min_delta', 0.15),
+                    max_delta=filters.get('max_delta', 0.35),
+                    min_price=filters.get('min_price', 0.05),
+                    max_price=filters.get('max_price', 5.00),
+                    time_to_expiry_range=(filters.get('min_days', 1), filters.get('max_days', 21))
+                )
+
+                if analysis_results:
+                    # Track performance for all results
+                    tracked_count = 0
+                    from performance_tracker import PerformanceTracker
+                    tracker = PerformanceTracker()
+
+                    for symbol, data in analysis_results.items():
+                        try:
+                            if ('options' in data and not isinstance(data['options'], bool) 
+                                and not data['options'].empty and 'trade_plan' in data 
+                                and data['trade_plan']):
+
+                                top_option = data['options'].iloc[0].to_dict()
+                                trade_plan = data['trade_plan']
+                                track_id = tracker.track_option_performance(
+                                    symbol, top_option, trade_plan, 
+                                    datetime.now().strftime('%Y-%m-%d')
+                                )
+                                tracked_count += 1
+                        except Exception as e:
+                            print(f"⚠️ Failed to track {symbol}: {e}")
+
+                    mega_results["analysis_results"] = analysis_results
+                    mega_results["opportunities_found"] = len(analysis_results)
+                    mega_results["performance_tracking"] = f"Now tracking {tracked_count} options"
+
+                    # Add top opportunities summary
+                    top_opportunities = sorted(
+                        [(symbol, data.get('confluence', {}).get('score', 0)) 
+                         for symbol, data in analysis_results.items()],
+                        key=lambda x: x[1], reverse=True
+                    )[:10]
+
+                    mega_results["top_opportunities"] = [
+                        {
+                            "symbol": symbol,
+                            "confluence_score": score,
+                            "bias": analysis_results[symbol].get('confluence', {}).get('bias', 'N/A')
+                        }
+                        for symbol, score in top_opportunities
+                    ]
+                    print(f"✅ Analysis complete: {len(analysis_results)} opportunities found")
+                else:
+                    mega_results["analysis_results"] = {}
+                    mega_results["opportunities_found"] = 0
+                    print("⚠️ Analysis completed but no opportunities found")
+
+            except Exception as e:
+                mega_results["analysis_error"] = str(e)
+                print(f"❌ Analysis failed: {e}")
+
+        print("🏁 MEGA DISCOVERY SCAN COMPLETE!")
+        return jsonify(make_json_safe(mega_results))
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Mega discovery scan failed: {str(e)}"
+        }), 500
+
+
+@app.route("/discovery/info", methods=["GET"])
+def discovery_info():
+    """Show what each auto-discovery method finds without running analysis"""
+    try:
+        discovery_breakdown = {}
+
+        # Test each discovery method
+        print("🔍 Testing all auto-discovery methods...")
+
+        # Alpha Vantage
+        try:
+            av_data = fetch_alphavantage_top_symbols()
+            discovery_breakdown['alpha_vantage'] = {
+                'status': 'success',
+                'total_symbols': len(av_data['all_symbols']),
+                'breakdown': {
+                    'top_gainers': len(av_data['top_gainers']),
+                    'top_losers': len(av_data['top_losers']),
+                    'most_active': len(av_data['most_active'])
+                },
+                'sample_symbols': av_data['all_symbols'][:10]
+            }
+        except Exception as e:
+            discovery_breakdown['alpha_vantage'] = {'status': 'error', 'message': str(e)}
+
+        # Database
+        try:
+            from db_client import fetch_tickers_from_db
+            db_symbols = fetch_tickers_from_db()
+            discovery_breakdown['database'] = {
+                'status': 'success',
+                'total_symbols': len(db_symbols),
+                'sample_symbols': db_symbols[:10]
+            }
+        except Exception as e:
+            discovery_breakdown['database'] = {'status': 'error', 'message': str(e)}
+
+        # High volume
+        try:
+            from scanner_core import get_optionable_stocks_with_volume
+            volume_symbols = get_optionable_stocks_with_volume()
+            discovery_breakdown['high_volume'] = {
+                'status': 'success',
+                'total_symbols': len(volume_symbols),
+                'sample_symbols': volume_symbols[:10]
+            }
+        except Exception as e:
+            discovery_breakdown['high_volume'] = {'status': 'error', 'message': str(e)}
+
+        # Earnings
+        try:
+            from enhanced_scanner import discover_pre_earnings_stocks
+            earnings_symbols = discover_pre_earnings_stocks(verbose=False)
+            discovery_breakdown['earnings'] = {
+                'status': 'success',
+                'total_symbols': len(earnings_symbols),
+                'sample_symbols': earnings_symbols[:10]
+            }
+        except Exception as e:
+            discovery_breakdown['earnings'] = {'status': 'error', 'message': str(e)}
+
+        # Calculate totals
+        total_discovered = 0
+        working_methods = 0
+        for method, data in discovery_breakdown.items():
+            if data.get('status') == 'success':
+                total_discovered += data.get('total_symbols', 0)
+                working_methods += 1
+
+        return jsonify({
+            "status": "success",
+            "discovery_methods": discovery_breakdown,
+            "summary": {
+                "working_methods": working_methods,
+                "total_methods": len(discovery_breakdown),
+                "total_symbols_discovered": total_discovered,
+                "health_check": "All methods tested"
+            }
+        })
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Discovery info failed: {str(e)}"
         }), 500
 
 
