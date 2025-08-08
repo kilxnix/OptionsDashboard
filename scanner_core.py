@@ -364,7 +364,7 @@ def is_likely_optionable(symbol):
         'SPY', 'QQQ', 'IWM', 'DIA', 'XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLP',
         'GME', 'AMC', 'BB', 'COIN', 'HOOD', 'RIVN', 'LCID', 'SOFI', 'NKLA'
     }
-
+    
     # If it's in our known good list, always allow it
     if symbol.upper() in known_optionable:
         return True
@@ -1154,24 +1154,10 @@ class CompleteOptionsScanner:
         # Check if this is real-time options data (missing Greeks)
         has_greeks = all(col in options_data.columns for col in ['delta', 'gamma', 'theta'])
 
-        # Also check if the Greeks columns actually have valid data (not all NaN/None)
-        if has_greeks:
-            greeks_have_data = (
-                options_data['delta'].notna().any() and 
-                options_data['gamma'].notna().any() and 
-                options_data['theta'].notna().any()
-            )
-            has_greeks = has_greeks and greeks_have_data
-
         if not has_greeks:
-            print(f"⚠️ Real-time options data detected (no Greeks available). Adding estimated Greeks...")
-            print(f"📊 Available columns: {list(options_data.columns)}")
-            # Add estimated Greeks based on moneyness and time
-            options_data = self._add_estimated_greeks(options_data)
-            print(f"✅ Added estimated Greeks for {len(options_data)} options")
-            print(f"📊 Updated columns: {list(options_data.columns)}")
-        else:
-            print(f"✅ Historical options data detected - Greeks available: delta, gamma, theta")
+            print(f"⚠️ Real-time options data detected (no Greeks available). Found columns: {list(options_data.columns)}")
+            print(f"⏭️ Skipping options screening for this symbol - Greeks required for analysis")
+            return pd.DataFrame()
 
         required_cols = {
             'strike', 'type', 'expiration', 'delta', 'gamma', 'theta',
@@ -1234,53 +1220,6 @@ class CompleteOptionsScanner:
             return candidates.sort_values('score', ascending=False)
 
         return pd.DataFrame()
-
-    def _add_estimated_greeks(self, options_data):
-        """Add estimated Greeks when missing from real-time data"""
-        df = options_data.copy()
-
-        # Estimate delta based on moneyness and option type
-        if 'delta' not in df.columns:
-            df['delta'] = df.apply(self._estimate_delta, axis=1)
-
-        # Estimate gamma (roughly inverse of time and proportional to at-the-money)
-        if 'gamma' not in df.columns:
-            df['gamma'] = df.apply(self._estimate_gamma, axis=1)
-
-        # Estimate theta (time decay)
-        if 'theta' not in df.columns:
-            df['theta'] = df.apply(self._estimate_theta, axis=1)
-
-        return df
-
-    def _estimate_delta(self, row):
-        """Estimate delta based on moneyness and option type"""
-        try:
-            # This is a rough approximation - real delta calculation requires Black-Scholes
-            if row['type'].lower() == 'call':
-                # For calls: roughly 0.5 at-the-money, approaches 1.0 deep ITM
-                return min(0.95, max(0.05, 0.5))  # Default to moderate delta
-            else:
-                # For puts: negative delta
-                return min(-0.05, max(-0.95, -0.3))  # Default to moderate put delta
-        except:
-            return 0.3 if row.get('type', 'call').lower() == 'call' else -0.3
-
-    def _estimate_gamma(self, row):
-        """Estimate gamma - highest at-the-money"""
-        try:
-            # Gamma is highest for at-the-money options
-            return 0.02  # Reasonable default
-        except:
-            return 0.01
-
-    def _estimate_theta(self, row):
-        """Estimate theta (time decay)"""
-        try:
-            # Theta is always negative (time decay)
-            return -0.05  # Reasonable default for time decay
-        except:
-            return -0.03
 
     def _score_option(self, option, price_analysis):
         """Score individual options"""
@@ -1497,7 +1436,7 @@ def print_analysis(symbol,
             tabulate(
                 [["Entry Price", f"${trade_plan['entry_price']:.2f}"],
                  ["Stop Loss", f"${trade_plan['stop_loss']:.2f}"],
-                 ["Initial Target", f"${trade_plan['initial_target']:.2ff}"],
+                 ["Initial Target", f"${trade_plan['initial_target']:.2f}"],
                  ["Final Target", f"${trade_plan['final_target']:.2f}"],
                  ["Position Size", f"{trade_plan['position_size']} contracts"],
                  ["Max Hold Time", trade_plan['max_hold_time']],
@@ -2072,45 +2011,19 @@ def run_scanner(symbols=None,
         symbols = filtered_symbols  # Process all filtered symbols
         print(f"🔍 Processing all {len(symbols)} filtered symbols...")
 
-    print(f"\nAnalyzing {len(symbols)} symbols across {len(TIMEFRAMES)} timeframes...")
+    print(
+        f"\nAnalyzing {len(symbols)} symbols across {len(TIMEFRAMES)} timeframes..."
+    )
     print(f"Looking for options expiring: {time_to_expiry_range}")
 
     results = {}
-    api_calls_made = 0
-    last_call_time = time.time()
 
     for symbol in tqdm(symbols, desc="Scanning"):
         try:
-            # Rate limiting: max 1 call every 2 seconds to avoid overwhelming APIs
-            current_time = time.time()
-            if current_time - last_call_time < 2.0:
-                time.sleep(2.0 - (current_time - last_call_time))
-            
-            # Try to get daily data with fallback to mock data
-            daily_data = None
-            try:
-                daily_data = scanner.fetch_alpha_vantage_data(symbol, 'D')
-                api_calls_made += 1
-                last_call_time = time.time()
-            except:
-                pass
-            
-            # If no daily data available, create mock data to continue analysis
+            # Quick pre-filter: try to fetch just daily data first
+            daily_data = scanner.fetch_alpha_vantage_data(symbol, 'D')
             if daily_data is None or daily_data.empty:
-                print(f"📊 Creating synthetic data for {symbol} to continue analysis...")
-                # Create minimal mock daily data
-                dates = pd.date_range(end=pd.Timestamp.now(), periods=30)
-                daily_data = pd.DataFrame({
-                    'Open': [100.0] * 30,
-                    'High': [105.0] * 30, 
-                    'Low': [95.0] * 30,
-                    'Close': [100.0] * 30,
-                    'Volume': [1000000] * 30
-                }, index=dates)
-                
-            # Skip API-intensive multi-timeframe analysis and use simplified approach
-            if api_calls_made > 10:  # Limit API calls
-                print(f"🚫 API limit reached, using simplified analysis for {symbol}")
+                print(f"⚠️  No daily data for {symbol}, skipping...")
                 continue
 
             # If daily data exists, proceed with full analysis
@@ -2219,11 +2132,11 @@ def run_scanner(symbols=None,
 
                         top_option = select_top_option_candidate(
                             candidates, confluence, symbol)
-
+                        
                         if top_option is None:
                             print(f"⏭️ Skipping {symbol} - no options align with {confluence['bias']} bias")
                             continue
-
+                            
                         trade_plan = generate_trade_plan(
                             top_option, symbol_context)
                         output_file = "./TradingPlans/human_readable_plans.txt"
@@ -2283,7 +2196,8 @@ def run_scanner(symbols=None,
 
                         results[symbol] = result_data
 
-                        # Save this result immediatelysave_individual_result(symbol, result_data)
+                        # Save this result immediately
+                        save_individual_result(symbol, result_data)
                     else:
                         print("No valid options found matching criteria")
                 else:
