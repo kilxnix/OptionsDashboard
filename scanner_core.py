@@ -355,53 +355,29 @@ def is_likely_optionable(symbol):
     if not symbol or len(symbol) < 1:
         return False
 
-    # Known optionable stocks that should always pass
-    known_optionable = {
-        # Major stocks with active options
-        'AAPL', 'MSFT', 'GOOGL', 'GOOG', 'AMZN', 'META', 'TSLA', 'NVDA', 'AMD', 'INTC',
-        'NFLX', 'CRM', 'ADBE', 'ORCL', 'CSCO', 'UBER', 'LYFT', 'SNAP', 'PINS', 'ZOOM',
-        'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'USB', 'PNC', 'COF', 'AXP',
-        'JNJ', 'PFE', 'MRNA', 'GILD', 'AMGN', 'BIIB', 'REGN', 'VRTX', 'ABBV', 'MRK',
-        'WMT', 'TGT', 'COST', 'HD', 'LOW', 'SBUX', 'NKE', 'DIS', 'MCD',
-        'XOM', 'CVX', 'COP', 'EOG', 'SLB', 'HAL', 'OXY',
-        'BA', 'GE', 'CAT', 'MMM', 'HON', 'UPS', 'FDX', 'UAL', 'DAL', 'AAL',
-        'TSLA', 'F', 'GM', 'T', 'VZ', 'KO', 'PEP', 'AA', 'X',
-        # ETFs
-        'SPY', 'QQQ', 'IWM', 'XLF', 'XLK', 'XLE', 'XLV', 'XLI', 'XLY', 'XLP',
-        # Popular/Meme stocks
-        'GME', 'AMC', 'PLTR', 'BB', 'COIN', 'HOOD', 'RIVN', 'LCID', 'SOFI', 'NKLA',
-        'MSTR', 'RDDT', 'RBLX', 'RIOT', 'MARA', 'SQ', 'PYPL', 'ROKU'
-    }
-    
-    if symbol.upper() in known_optionable:
-        return True
-
-    # Remove obvious warrants, rights, units - but be more specific
+    # Remove obvious warrants, rights, units
     exclusion_patterns = [
-        'WS', 'WT', 'WW', 'WI',  # Warrants (removed single 'W' to allow W stock)
-        'UN',  # Units (removed single 'U' to allow U stock)
-        'RT',  # Rights (removed single 'R' to allow R stock)
-        '+', '=',  # Special characters (removed '-' to allow stocks like BRK-B)
+        'W', 'WS', 'WT', 'WW', 'WI',  # Warrants
+        'U', 'UN',  # Units
+        'R', 'RT',  # Rights  
+        '+', '=', '-',  # Special characters
         'TEST', 'HALT'  # Test/halted symbols
     ]
 
-    # Only exclude if the symbol ENDS with these patterns (more precise)
     for pattern in exclusion_patterns:
-        if symbol.upper().endswith(pattern):
+        if pattern in symbol.upper():
             return False
 
-    # Skip if contains numbers (often warrants) - but allow some exceptions
+    # Skip if contains numbers (often warrants)
     if any(char.isdigit() for char in symbol):
-        # Allow some known stocks with numbers
-        if symbol.upper() not in ['BRK-B', 'BF-B']:
-            return False
+        return False
 
-    # Skip if too long (usually derivatives) - increased limit
-    if len(symbol) > 6:
+    # Skip if too long (usually derivatives)
+    if len(symbol) > 5:
         return False
 
     # Skip if too short (often problematic)
-    if len(symbol) < 1:
+    if len(symbol) < 2:
         return False
 
     return True
@@ -440,6 +416,40 @@ def filter_and_prioritize_symbols(symbols):
             used.add(symbol)
 
     return prioritized[:75]  # Limit to 75 high-quality symbols
+
+
+class ProgressiveOptionsScanner:
+    """Progressive scanner that saves results as they're found"""
+    
+    def __init__(self):
+        self.scanner = CompleteOptionsScanner(ALPHA_VANTAGE_API_KEY)
+        self.base_dir = './TradingPlans'
+        
+    def run_scan(self, symbols=None, filters=None):
+        """Run progressive scan with immediate saving"""
+        if symbols is None:
+            symbols = get_optionable_stocks_with_volume()
+        
+        if filters is None:
+            filters = {
+                'min_price': 0.05,
+                'max_price': 5.00,
+                'min_delta': 0.15,
+                'max_delta': 0.40,
+                'min_days': 1,
+                'max_days': 30
+            }
+        
+        results = run_scanner(
+            symbols=symbols,
+            min_delta=filters.get('min_delta', 0.15),
+            max_delta=filters.get('max_delta', 0.40),
+            min_price=filters.get('min_price', 0.05),
+            max_price=filters.get('max_price', 5.00),
+            time_to_expiry_range=(filters.get('min_days', 1), filters.get('max_days', 30))
+        )
+        
+        return results
 
 
 class CompleteOptionsScanner:
