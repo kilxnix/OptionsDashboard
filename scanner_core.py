@@ -355,29 +355,53 @@ def is_likely_optionable(symbol):
     if not symbol or len(symbol) < 1:
         return False
 
-    # Remove obvious warrants, rights, units
+    # Known optionable stocks that should always pass
+    known_optionable = {
+        # Major stocks with active options
+        'AAPL', 'MSFT', 'GOOGL', 'GOOG', 'AMZN', 'META', 'TSLA', 'NVDA', 'AMD', 'INTC',
+        'NFLX', 'CRM', 'ADBE', 'ORCL', 'CSCO', 'UBER', 'LYFT', 'SNAP', 'PINS', 'ZOOM',
+        'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'USB', 'PNC', 'COF', 'AXP',
+        'JNJ', 'PFE', 'MRNA', 'GILD', 'AMGN', 'BIIB', 'REGN', 'VRTX', 'ABBV', 'MRK',
+        'WMT', 'TGT', 'COST', 'HD', 'LOW', 'SBUX', 'NKE', 'DIS', 'MCD',
+        'XOM', 'CVX', 'COP', 'EOG', 'SLB', 'HAL', 'OXY',
+        'BA', 'GE', 'CAT', 'MMM', 'HON', 'UPS', 'FDX', 'UAL', 'DAL', 'AAL',
+        'TSLA', 'F', 'GM', 'T', 'VZ', 'KO', 'PEP', 'AA', 'X',
+        # ETFs
+        'SPY', 'QQQ', 'IWM', 'XLF', 'XLK', 'XLE', 'XLV', 'XLI', 'XLY', 'XLP',
+        # Popular/Meme stocks
+        'GME', 'AMC', 'PLTR', 'BB', 'COIN', 'HOOD', 'RIVN', 'LCID', 'SOFI', 'NKLA',
+        'MSTR', 'RDDT', 'RBLX', 'RIOT', 'MARA', 'SQ', 'PYPL', 'ROKU'
+    }
+    
+    if symbol.upper() in known_optionable:
+        return True
+
+    # Remove obvious warrants, rights, units - but be more specific
     exclusion_patterns = [
-        'W', 'WS', 'WT', 'WW', 'WI',  # Warrants
-        'U', 'UN',  # Units
-        'R', 'RT',  # Rights  
-        '+', '=', '-',  # Special characters
+        'WS', 'WT', 'WW', 'WI',  # Warrants (removed single 'W' to allow W stock)
+        'UN',  # Units (removed single 'U' to allow U stock)
+        'RT',  # Rights (removed single 'R' to allow R stock)
+        '+', '=',  # Special characters (removed '-' to allow stocks like BRK-B)
         'TEST', 'HALT'  # Test/halted symbols
     ]
 
+    # Only exclude if the symbol ENDS with these patterns (more precise)
     for pattern in exclusion_patterns:
-        if pattern in symbol.upper():
+        if symbol.upper().endswith(pattern):
             return False
 
-    # Skip if contains numbers (often warrants)
+    # Skip if contains numbers (often warrants) - but allow some exceptions
     if any(char.isdigit() for char in symbol):
-        return False
+        # Allow some known stocks with numbers
+        if symbol.upper() not in ['BRK-B', 'BF-B']:
+            return False
 
-    # Skip if too long (usually derivatives)
-    if len(symbol) > 5:
+    # Skip if too long (usually derivatives) - increased limit
+    if len(symbol) > 6:
         return False
 
     # Skip if too short (often problematic)
-    if len(symbol) < 2:
+    if len(symbol) < 1:
         return False
 
     return True
