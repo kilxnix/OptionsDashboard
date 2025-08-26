@@ -72,7 +72,9 @@ def get_optionable_stocks_with_volume():
     Intelligent optionable stock discovery with real-time validation.
     Only returns stocks with confirmed options availability and high liquidity.
     """
-    print("🔍 Discovering high-volume optionable stocks with intelligent filtering...")
+    print(
+        "🔍 Discovering high-volume optionable stocks with intelligent filtering..."
+    )
 
     validated_symbols = []
 
@@ -101,7 +103,9 @@ def get_optionable_stocks_with_volume():
         if symbol not in validated_symbols:
             validated_symbols.append(symbol)
 
-    print(f"✅ Final validated list: {len(validated_symbols)} high-quality optionable stocks")
+    print(
+        f"✅ Final validated list: {len(validated_symbols)} high-quality optionable stocks"
+    )
     return validated_symbols
 
 
@@ -150,9 +154,12 @@ def discover_high_volume_movers():
     try:
         # Fallback to common high-volume stocks
         high_volume_stocks = [
-            'SPY', 'QQQ', 'IWM', 'TSLA', 'AAPL', 'NVDA', 'AMD', 'F', 'BAC', 'PLTR'
+            'SPY', 'QQQ', 'IWM', 'TSLA', 'AAPL', 'NVDA', 'AMD', 'F', 'BAC',
+            'PLTR'
         ]
-        print(f"   Found {len(high_volume_stocks)} high-volume symbols from fallback")
+        print(
+            f"   Found {len(high_volume_stocks)} high-volume symbols from fallback"
+        )
         return high_volume_stocks
     except Exception as e:
         print(f"   High volume discovery error: {e}")
@@ -165,22 +172,98 @@ def discover_high_volume_movers_expanded():
         # More comprehensive list of high-volume optionable stocks
         high_volume_stocks = [
             # Technology stocks with heavy options volume
-            'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'META', 'TSLA', 'AMD', 'INTC', 'NFLX',
-            'CRM', 'ADBE', 'ORCL', 'CSCO', 'IBM', 'QCOM', 'TXN', 'AVGO', 'MU', 'AMAT',
+            'AAPL',
+            'MSFT',
+            'GOOGL',
+            'AMZN',
+            'NVDA',
+            'META',
+            'TSLA',
+            'AMD',
+            'INTC',
+            'NFLX',
+            'CRM',
+            'ADBE',
+            'ORCL',
+            'CSCO',
+            'IBM',
+            'QCOM',
+            'TXN',
+            'AVGO',
+            'MU',
+            'AMAT',
             # Financial stocks
-            'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'USB', 'PNC', 'TFC', 'COF',
+            'JPM',
+            'BAC',
+            'WFC',
+            'GS',
+            'MS',
+            'C',
+            'USB',
+            'PNC',
+            'TFC',
+            'COF',
             # Healthcare/Pharma
-            'JNJ', 'PFE', 'UNH', 'ABBV', 'LLY', 'MRK', 'TMO', 'ABT', 'DHR', 'BMY',
+            'JNJ',
+            'PFE',
+            'UNH',
+            'ABBV',
+            'LLY',
+            'MRK',
+            'TMO',
+            'ABT',
+            'DHR',
+            'BMY',
             # Consumer/Retail
-            'WMT', 'HD', 'COST', 'TGT', 'LOW', 'SBUX', 'NKE', 'MCD', 'DIS', 'AMZN',
+            'WMT',
+            'HD',
+            'COST',
+            'TGT',
+            'LOW',
+            'SBUX',
+            'NKE',
+            'MCD',
+            'DIS',
+            'AMZN',
             # Energy
-            'XOM', 'CVX', 'COP', 'EOG', 'SLB', 'MPC', 'VLO', 'PSX', 'OXY', 'HAL',
+            'XOM',
+            'CVX',
+            'COP',
+            'EOG',
+            'SLB',
+            'MPC',
+            'VLO',
+            'PSX',
+            'OXY',
+            'HAL',
             # ETFs with high options volume
-            'SPY', 'QQQ', 'IWM', 'DIA', 'XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLP',
+            'SPY',
+            'QQQ',
+            'IWM',
+            'DIA',
+            'XLF',
+            'XLE',
+            'XLK',
+            'XLV',
+            'XLI',
+            'XLP',
             # Meme/Popular retail stocks
-            'GME', 'AMC', 'PLTR', 'BB', 'COIN', 'HOOD', 'RIVN', 'LCID', 'SOFI', 'NKLA',
+            'GME',
+            'AMC',
+            'PLTR',
+            'BB',
+            'COIN',
+            'HOOD',
+            'RIVN',
+            'LCID',
+            'SOFI',
+            'NKLA',
             # Volatility products
-            'UVXY', 'VXX', 'TVIX', 'SVXY', 'VIXY'
+            'UVXY',
+            'VXX',
+            'TVIX',
+            'SVXY',
+            'VIXY'
         ]
         # Remove duplicates while preserving order
         unique_stocks = list(dict.fromkeys(high_volume_stocks))
@@ -196,7 +279,8 @@ def discover_sector_rotation_plays():
     try:
         # Common sector rotation plays
         sector_plays = [
-            'XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLP', 'XLU', 'XLB', 'XLRE', 'XLY'
+            'XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLP', 'XLU', 'XLB', 'XLRE',
+            'XLY'
         ]
         print(f"   Found {len(sector_plays)} sector rotation symbols")
         return sector_plays
@@ -210,7 +294,8 @@ def discover_news_driven_stocks():
     try:
         # Common news-driven/momentum stocks
         news_driven = [
-            'TSLA', 'GME', 'AMC', 'PLTR', 'COIN', 'HOOD', 'RIVN', 'LCID', 'SOFI', 'NKLA'
+            'TSLA', 'GME', 'AMC', 'PLTR', 'COIN', 'HOOD', 'RIVN', 'LCID',
+            'SOFI', 'NKLA'
         ]
         print(f"   Found {len(news_driven)} news-driven symbols")
         return news_driven
@@ -232,7 +317,9 @@ def fetch_alphavantage_filtered():
         data = response.json()
 
         if 'Error Message' in data or 'Information' in data:
-            print(f"   Alpha Vantage API issue: {data.get('Error Message', data.get('Information', 'Unknown'))}")
+            print(
+                f"   Alpha Vantage API issue: {data.get('Error Message', data.get('Information', 'Unknown'))}"
+            )
             return []
 
         # Get ALL symbols from all categories to maximize variety
@@ -252,8 +339,10 @@ def fetch_alphavantage_filtered():
         if 'top_gainers' in data:
             for item in data['top_gainers']:
                 symbol = item['ticker']
-                if is_likely_optionable(symbol) and symbol not in all_fresh_symbols:
-                    change_pct = float(item.get('change_percent', '0%').replace('%', ''))
+                if is_likely_optionable(
+                        symbol) and symbol not in all_fresh_symbols:
+                    change_pct = float(
+                        item.get('change_percent', '0%').replace('%', ''))
                     volume = float(item.get('volume', 0))
                     # Lower thresholds for more variety
                     if change_pct > 2.0 and volume > 100000:  # Reduced thresholds
@@ -263,8 +352,11 @@ def fetch_alphavantage_filtered():
         if 'top_losers' in data:
             for item in data['top_losers']:
                 symbol = item['ticker']
-                if is_likely_optionable(symbol) and symbol not in all_fresh_symbols:
-                    change_pct = abs(float(item.get('change_percent', '0%').replace('%', '')))
+                if is_likely_optionable(
+                        symbol) and symbol not in all_fresh_symbols:
+                    change_pct = abs(
+                        float(
+                            item.get('change_percent', '0%').replace('%', '')))
                     volume = float(item.get('volume', 0))
                     # Lower thresholds for oversold plays
                     if change_pct > 3.0 and volume > 100000:  # Reduced thresholds
@@ -274,7 +366,9 @@ def fetch_alphavantage_filtered():
         import random
         random.shuffle(all_fresh_symbols)
 
-        print(f"   Filtered {len(all_fresh_symbols)} high-momentum symbols from Alpha Vantage")
+        print(
+            f"   Filtered {len(all_fresh_symbols)} high-momentum symbols from Alpha Vantage"
+        )
         return all_fresh_symbols  # Return all discovered symbols
 
     except Exception as e:
@@ -299,21 +393,24 @@ def get_sp500_components():
                 cleaned_symbol = symbol.replace('.', '-')
                 cleaned.append(cleaned_symbol)
 
-        print(f"   Successfully fetched {len(cleaned)} S&P 500 symbols from Wikipedia")
+        print(
+            f"   Successfully fetched {len(cleaned)} S&P 500 symbols from Wikipedia"
+        )
         return cleaned
 
     except Exception as e:
         print(f"   S&P 500 Wikipedia fetch failed: {e}, using fallback list")
         # Fallback to major S&P 500 components
         sp500_fallback = [
-            'AAPL', 'MSFT', 'AMZN', 'NVDA', 'GOOGL', 'GOOG', 'TSLA', 'META', 'BRK-B', 'UNH',
-            'JNJ', 'JPM', 'V', 'PG', 'HD', 'MA', 'CVX', 'LLY', 'ABBV', 'AVGO',
-            'PFE', 'KO', 'MRK', 'PEP', 'TMO', 'COST', 'WMT', 'DIS', 'ABT', 'ADBE',
-            'CRM', 'VZ', 'NKE', 'NFLX', 'DHR', 'XOM', 'CMCSA', 'AMD', 'LIN', 'TXN',
-            'QCOM', 'HON', 'UPS', 'UNP', 'IBM', 'RTX', 'INTC', 'CAT', 'AMAT', 'SPGI',
-            'LOW', 'GS', 'BKNG', 'INTU', 'ISRG', 'TJX', 'AXP', 'MDT', 'BLK', 'DE',
-            'SBUX', 'C', 'ADP', 'AMT', 'GILD', 'CVS', 'SCHW', 'PYPL', 'TMUS', 'MO',
-            'SYK', 'ZTS', 'CCI', 'EQIX', 'TGT', 'MMM', 'MDLZ', 'CI', 'SO', 'DUK'
+            'AAPL', 'MSFT', 'AMZN', 'NVDA', 'GOOGL', 'GOOG', 'TSLA', 'META',
+            'BRK-B', 'UNH', 'JNJ', 'JPM', 'V', 'PG', 'HD', 'MA', 'CVX', 'LLY',
+            'ABBV', 'AVGO', 'PFE', 'KO', 'MRK', 'PEP', 'TMO', 'COST', 'WMT',
+            'DIS', 'ABT', 'ADBE', 'CRM', 'VZ', 'NKE', 'NFLX', 'DHR', 'XOM',
+            'CMCSA', 'AMD', 'LIN', 'TXN', 'QCOM', 'HON', 'UPS', 'UNP', 'IBM',
+            'RTX', 'INTC', 'CAT', 'AMAT', 'SPGI', 'LOW', 'GS', 'BKNG', 'INTU',
+            'ISRG', 'TJX', 'AXP', 'MDT', 'BLK', 'DE', 'SBUX', 'C', 'ADP',
+            'AMT', 'GILD', 'CVS', 'SCHW', 'PYPL', 'TMUS', 'MO', 'SYK', 'ZTS',
+            'CCI', 'EQIX', 'TGT', 'MMM', 'MDLZ', 'CI', 'SO', 'DUK'
         ]
         return sp500_fallback
 
@@ -324,25 +421,111 @@ def get_nasdaq100_components():
         # Comprehensive NASDAQ 100 list with high options volume
         nasdaq100_expanded = [
             # Top tier mega caps
-            'AAPL', 'MSFT', 'AMZN', 'NVDA', 'GOOGL', 'GOOG', 'META', 'TSLA',
+            'AAPL',
+            'MSFT',
+            'AMZN',
+            'NVDA',
+            'GOOGL',
+            'GOOG',
+            'META',
+            'TSLA',
             # Large tech
-            'AVGO', 'COST', 'NFLX', 'ADBE', 'PEP', 'TMUS', 'CSCO', 'CMCSA',
-            'INTC', 'TXN', 'QCOM', 'INTU', 'AMAT', 'AMD', 'ISRG', 'HON',
+            'AVGO',
+            'COST',
+            'NFLX',
+            'ADBE',
+            'PEP',
+            'TMUS',
+            'CSCO',
+            'CMCSA',
+            'INTC',
+            'TXN',
+            'QCOM',
+            'INTU',
+            'AMAT',
+            'AMD',
+            'ISRG',
+            'HON',
             # Growth and cloud
-            'BKNG', 'MU', 'ADI', 'VRTX', 'ADP', 'SBUX', 'GILD', 'MDLZ',
-            'PANW', 'LRCX', 'PYPL', 'REGN', 'KLAC', 'SNPS', 'CDNS', 'MAR',
+            'BKNG',
+            'MU',
+            'ADI',
+            'VRTX',
+            'ADP',
+            'SBUX',
+            'GILD',
+            'MDLZ',
+            'PANW',
+            'LRCX',
+            'PYPL',
+            'REGN',
+            'KLAC',
+            'SNPS',
+            'CDNS',
+            'MAR',
             # Mid-tier growth
-            'MRVL', 'ORLY', 'CSX', 'FTNT', 'ADSK', 'ABNB', 'CHTR', 'ASML',
-            'NXPI', 'WDAY', 'MNST', 'TEAM', 'DXCM', 'KDP', 'AEP', 'FAST',
+            'MRVL',
+            'ORLY',
+            'CSX',
+            'FTNT',
+            'ADSK',
+            'ABNB',
+            'CHTR',
+            'ASML',
+            'NXPI',
+            'WDAY',
+            'MNST',
+            'TEAM',
+            'DXCM',
+            'KDP',
+            'AEP',
+            'FAST',
             # Smaller growth and specialty
-            'ROST', 'ODFL', 'VRSK', 'EXC', 'KHC', 'GEHC', 'CTSH', 'FANG',
-            'BKR', 'DDOG', 'BIIB', 'ZS', 'IDXX', 'ANSS', 'CSGP', 'ON',
-            'TTD', 'ZM', 'ILMN', 'GFS', 'CRWD', 'WBD', 'LCID', 'ARM',
+            'ROST',
+            'ODFL',
+            'VRSK',
+            'EXC',
+            'KHC',
+            'GEHC',
+            'CTSH',
+            'FANG',
+            'BKR',
+            'DDOG',
+            'BIIB',
+            'ZS',
+            'IDXX',
+            'ANSS',
+            'CSGP',
+            'ON',
+            'TTD',
+            'ZM',
+            'ILMN',
+            'GFS',
+            'CRWD',
+            'WBD',
+            'LCID',
+            'ARM',
             # Additional high-volume options stocks
-            'CRM', 'ORCL', 'IBM', 'NOW', 'SNOW', 'UBER', 'COIN', 'HOOD',
-            'RIVN', 'SOFI', 'PLTR', 'ROKU', 'SQ', 'TWTR', 'SNAP', 'PINS'
+            'CRM',
+            'ORCL',
+            'IBM',
+            'NOW',
+            'SNOW',
+            'UBER',
+            'COIN',
+            'HOOD',
+            'RIVN',
+            'SOFI',
+            'PLTR',
+            'ROKU',
+            'SQ',
+            'TWTR',
+            'SNAP',
+            'PINS'
         ]
-        print(f"   Using expanded NASDAQ 100 list: {len(nasdaq100_expanded)} symbols")
+        print(
+            f"   Using expanded NASDAQ 100 list: {len(nasdaq100_expanded)} symbols"
+        )
         return nasdaq100_expanded
 
     except Exception as e:
@@ -357,32 +540,36 @@ def is_likely_optionable(symbol):
 
     # Create a whitelist of known good stocks that were being incorrectly filtered
     known_optionable = {
-        'LRCX', 'LUV', 'MARA', 'PLTR', 'UBER', 'LYFT', 'NFLX', 'MSFT', 'GOOGL', 
+        'LRCX', 'LUV', 'MARA', 'PLTR', 'UBER', 'LYFT', 'NFLX', 'MSFT', 'GOOGL',
         'AMZN', 'TSLA', 'META', 'NVDA', 'AAPL', 'AMD', 'INTC', 'CRM', 'ADBE',
         'JPM', 'BAC', 'WFC', 'GS', 'MS', 'C', 'USB', 'PNC', 'COF', 'AXP',
         'XOM', 'CVX', 'COP', 'EOG', 'SLB', 'HAL', 'OXY', 'MPC', 'VLO', 'PSX',
         'SPY', 'QQQ', 'IWM', 'DIA', 'XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLP',
         'GME', 'AMC', 'BB', 'COIN', 'HOOD', 'RIVN', 'LCID', 'SOFI', 'NKLA'
     }
-    
+
     # If it's in our known good list, always allow it
     if symbol.upper() in known_optionable:
         return True
 
     # More specific exclusion patterns that won't catch legitimate stocks
     exclusion_patterns = [
-        'WS', 'WT', 'WW', 'WI',  # Warrants (but not just 'W')
+        'WS',
+        'WT',
+        'WW',
+        'WI',  # Warrants (but not just 'W')
         'UN',  # Units (but not just 'U')
         'RT',  # Rights (but not just 'R')
-        '+', '=',  # Special characters (but not '-' which is in some ETFs)
-        'TEST', 'HALT'  # Test/halted symbols
+        '+',
+        '=',  # Special characters (but not '-' which is in some ETFs)
+        'TEST',
+        'HALT'  # Test/halted symbols
     ]
 
     # Check for exact matches or as suffixes (more precise)
     for pattern in exclusion_patterns:
-        if (symbol.upper() == pattern or 
-            symbol.upper().endswith(pattern) or
-            pattern in symbol.upper()):
+        if (symbol.upper() == pattern or symbol.upper().endswith(pattern)
+                or pattern in symbol.upper()):
             return False
 
     # Skip if contains numbers (often warrants) but be more specific
@@ -459,11 +646,13 @@ class CompleteOptionsScanner:
             if function == 'TIME_SERIES_INTRADAY':
                 url = (f'https://www.alphavantage.co/query?function={function}'
                        f'&symbol={symbol}&interval={tf_config["interval"]}'
-                       f'&outputsize=compact&apikey={self.api_key}')  # Use compact for faster response
+                       f'&outputsize=compact&apikey={self.api_key}'
+                       )  # Use compact for faster response
             elif function == 'TIME_SERIES_DAILY_ADJUSTED':
                 url = (
                     f'https://www.alphavantage.co/query?function={function}'
-                    f'&symbol={symbol}&outputsize=compact&apikey={self.api_key}')
+                    f'&symbol={symbol}&outputsize=compact&apikey={self.api_key}'
+                )
             else:  # Weekly
                 url = (f'https://www.alphavantage.co/query?function={function}'
                        f'&symbol={symbol}&apikey={self.api_key}')
@@ -729,13 +918,16 @@ class CompleteOptionsScanner:
             response = requests.get(url, timeout=15)
             data = response.json()
 
-            if 'Information' in data and 'rate limit' in data['Information'].lower():
+            if 'Information' in data and 'rate limit' in data[
+                    'Information'].lower():
                 print(f"⏳ Rate limit reached for {symbol} - waiting...")
                 time.sleep(60)
                 return self.fetch_options_data(symbol)
 
             if 'Error Message' in data:
-                print(f"❌ Alpha Vantage historical options error for {symbol}: {data['Error Message']}")
+                print(
+                    f"❌ Alpha Vantage historical options error for {symbol}: {data['Error Message']}"
+                )
                 # Try real-time options as fallback
                 print(f"🔄 Trying real-time options for {symbol}...")
                 return self._fetch_realtime_options(symbol)
@@ -743,11 +935,16 @@ class CompleteOptionsScanner:
             if 'data' in data and data['data'] and len(data['data']) > 0:
                 df = pd.DataFrame(data['data'])
                 # Verify this has Greeks
-                if all(col in df.columns for col in ['delta', 'gamma', 'theta']):
-                    print(f"✅ Historical options data found for {symbol}: {len(df)} contracts")
+                if all(col in df.columns
+                       for col in ['delta', 'gamma', 'theta']):
+                    print(
+                        f"✅ Historical options data found for {symbol}: {len(df)} contracts"
+                    )
                     return df
                 else:
-                    print(f"⚠️ Historical options data missing Greeks for {symbol}")
+                    print(
+                        f"⚠️ Historical options data missing Greeks for {symbol}"
+                    )
 
             # Try real-time options as fallback
             print(f"🔄 Trying real-time options for {symbol}...")
@@ -766,7 +963,9 @@ class CompleteOptionsScanner:
 
             if 'data' in data and data['data']:
                 df = pd.DataFrame(data['data'])
-                print(f"✅ Real-time options found for {symbol}: {len(df)} contracts (no Greeks)")
+                print(
+                    f"✅ Real-time options found for {symbol}: {len(df)} contracts (no Greeks)"
+                )
                 return df
 
             print(f"❌ No options data available for {symbol}")
@@ -1152,11 +1351,16 @@ class CompleteOptionsScanner:
             return pd.DataFrame()
 
         # Check if this is real-time options data (missing Greeks)
-        has_greeks = all(col in options_data.columns for col in ['delta', 'gamma', 'theta'])
+        has_greeks = all(col in options_data.columns
+                         for col in ['delta', 'gamma', 'theta'])
 
         if not has_greeks:
-            print(f"⚠️ Real-time options data detected (no Greeks available). Found columns: {list(options_data.columns)}")
-            print(f"⏭️ Skipping options screening for this symbol - Greeks required for analysis")
+            print(
+                f"⚠️ Real-time options data detected (no Greeks available). Found columns: {list(options_data.columns)}"
+            )
+            print(
+                f"⏭️ Skipping options screening for this symbol - Greeks required for analysis"
+            )
             return pd.DataFrame()
 
         required_cols = {
@@ -1292,15 +1496,20 @@ def print_volume_profile(symbol, volume_profile, tf='15min'):
     print(f"\n📊 {symbol} Key Volume Levels ({tf}):")
 
     # Show only top 3 dominant levels
-    top_levels = sorted(profile['dominant_levels'], 
-                       key=lambda x: x['percentage'], reverse=True)[:3]
+    top_levels = sorted(profile['dominant_levels'],
+                        key=lambda x: x['percentage'],
+                        reverse=True)[:3]
 
     for i, level in enumerate(top_levels, 1):
-        print(f"  {i}. ${level['price']:.2f} ({level['percentage']:.1f}% volume)")
+        print(
+            f"  {i}. ${level['price']:.2f} ({level['percentage']:.1f}% volume)"
+        )
 
     # Show volume confluence if multiple timeframes agree
     if len(profile['dominant_levels']) > 2:
-        print(f"  💡 Strong volume confluence at {len(profile['dominant_levels'])} levels")
+        print(
+            f"  💡 Strong volume confluence at {len(profile['dominant_levels'])} levels"
+        )
 
 
 def calculate_hold_time(days_to_expiry, delta, implied_vol):
@@ -1577,7 +1786,8 @@ def save_individual_result(symbol, result_data, base_dir='./TradingPlans'):
 
         # Create a filename with current date
         date_str = datetime.now().strftime('%Y-%m-%d')
-        individual_file = os.path.join(base_dir, f'progressive_results_{date_str}.json')
+        individual_file = os.path.join(base_dir,
+                                       f'progressive_results_{date_str}.json')
 
         # Load existing data or create new
         if os.path.exists(individual_file):
@@ -1596,9 +1806,10 @@ def save_individual_result(symbol, result_data, base_dir='./TradingPlans'):
         print(f"✅ Saved {symbol} to {individual_file}")
 
         # START PERFORMANCE TRACKING
-        if ('options' in result_data and not isinstance(result_data['options'], bool) 
-            and not result_data['options'].empty and 'trade_plan' in result_data 
-            and result_data['trade_plan']):
+        if ('options' in result_data
+                and not isinstance(result_data['options'], bool)
+                and not result_data['options'].empty
+                and 'trade_plan' in result_data and result_data['trade_plan']):
 
             try:
                 from performance_tracker import PerformanceTracker
@@ -1609,32 +1820,44 @@ def save_individual_result(symbol, result_data, base_dir='./TradingPlans'):
                 trade_plan = result_data['trade_plan']
 
                 # Add confluence score to option data
-                top_option['score'] = result_data.get('confluence', {}).get('score', 0)
+                top_option['score'] = result_data.get('confluence',
+                                                      {}).get('score', 0)
 
                 track_id = tracker.track_option_performance(
-                    symbol, top_option, trade_plan, date_str
-                )
+                    symbol, top_option, trade_plan, date_str)
                 print(f"📊 Started tracking performance: {track_id}")
 
             except Exception as e:
                 print(f"⚠️ Performance tracking failed for {symbol}: {e}")
 
         # Also append to human-readable format
-        human_readable_file = os.path.join(base_dir, f'progressive_plans_{date_str}.txt')
+        human_readable_file = os.path.join(
+            base_dir, f'progressive_plans_{date_str}.txt')
         with open(human_readable_file, 'a') as f:
             f.write(f"\n{'='*60}\n")
-            f.write(f"Symbol: {symbol} - {datetime.now().strftime('%H:%M:%S')}\n")
-            f.write(f"Confluence Score: {result_data.get('confluence', {}).get('score', 'N/A')}/10\n")
-            f.write(f"Bias: {result_data.get('confluence', {}).get('bias', 'N/A')}\n")
+            f.write(
+                f"Symbol: {symbol} - {datetime.now().strftime('%H:%M:%S')}\n")
+            f.write(
+                f"Confluence Score: {result_data.get('confluence', {}).get('score', 'N/A')}/10\n"
+            )
+            f.write(
+                f"Bias: {result_data.get('confluence', {}).get('bias', 'N/A')}\n"
+            )
 
             # Add options details
-            if 'options' in result_data and not isinstance(result_data['options'], bool) and not result_data['options'].empty:
-                f.write(f"\nTop Options Found: {len(result_data['options'])}\n")
+            if 'options' in result_data and not isinstance(
+                    result_data['options'],
+                    bool) and not result_data['options'].empty:
+                f.write(
+                    f"\nTop Options Found: {len(result_data['options'])}\n")
 
                 # Show top 3 options
-                for i, option in enumerate(result_data['options'].head(3).itertuples(), 1):
+                for i, option in enumerate(
+                        result_data['options'].head(3).itertuples(), 1):
                     f.write(f"\nOption {i}:\n")
-                    f.write(f"  Strike: ${option.strike} {option.type.capitalize()}\n")
+                    f.write(
+                        f"  Strike: ${option.strike} {option.type.capitalize()}\n"
+                    )
                     f.write(f"  Expiration: {option.expiration}\n")
                     f.write(f"  Delta: {option.delta:.4f}\n")
                     f.write(f"  Gamma: {option.gamma:.4f}\n")
@@ -1642,7 +1865,8 @@ def save_individual_result(symbol, result_data, base_dir='./TradingPlans'):
                     f.write(f"  Volume: {option.volume}\n")
                     f.write(f"  Score: {option.score:.2f}\n")
                     if hasattr(option, 'implied_volatility'):
-                        iv_value = float(option.implied_volatility) if option.implied_volatility else 0
+                        iv_value = float(option.implied_volatility
+                                         ) if option.implied_volatility else 0
                         f.write(f"  IV: {iv_value:.2%}\n")
 
             if 'trade_plan' in result_data and result_data['trade_plan']:
@@ -1651,8 +1875,12 @@ def save_individual_result(symbol, result_data, base_dir='./TradingPlans'):
                 f.write(f"  Entry: ${tp.get('entry_price', 0):.2f}\n")
                 f.write(f"  Stop: ${tp.get('stop_loss', 0):.2f}\n")
                 f.write(f"  Target: ${tp.get('initial_target', 0):.2f}\n")
-                f.write(f"  Position Size: {tp.get('position_size', 0)} contracts\n")
-                f.write(f"  Strike: {tp.get('strike', 'N/A')} {tp.get('type', 'N/A').capitalize()}\n")
+                f.write(
+                    f"  Position Size: {tp.get('position_size', 0)} contracts\n"
+                )
+                f.write(
+                    f"  Strike: {tp.get('strike', 'N/A')} {tp.get('type', 'N/A').capitalize()}\n"
+                )
                 f.write(f"  Expiration: {tp.get('expiration', 'N/A')}\n")
                 f.write(f"  Max Hold: {tp.get('max_hold_time', 'N/A')}\n")
 
@@ -1678,7 +1906,8 @@ def save_detailed_options_data(results, base_dir, timestamp):
             f.write(f"Analysis Date: {timestamp}\n")
 
             # FIX: Check if options exists and is not boolean and not empty
-            if ('options' in data and not isinstance(data['options'], bool) and not data['options'].empty):
+            if ('options' in data and not isinstance(data['options'], bool)
+                    and not data['options'].empty):
                 f.write("\nOptions Chain Analysis:\n")
                 for idx, option in enumerate(data['options'].itertuples(), 1):
                     f.write(f"\nOption {idx}:\n")
@@ -1759,7 +1988,8 @@ def analyze_option_enhanced(option_data, symbol, market_data=None):
         grader = EnhancedOptionsGrader(os.getenv('ALPHA_VANTAGE_API_KEY'))
 
         # Calculate comprehensive score
-        score, analysis = grader.calculate_option_score(option_data, market_data)
+        score, analysis = grader.calculate_option_score(
+            option_data, market_data)
 
         # Only proceed if score meets threshold
         if score < 60:  # Minimum score
@@ -1767,12 +1997,10 @@ def analyze_option_enhanced(option_data, symbol, market_data=None):
 
         # Generate intelligent trade plan
         if score >= 60:
-            planner = IntelligentTradePlanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
+            planner = IntelligentTradePlanner(
+                os.getenv('ALPHA_VANTAGE_API_KEY'))
             trade_plan = planner.generate_intelligent_plan(
-                option_data,
-                analysis,
-                market_data
-            )
+                option_data, analysis, market_data)
 
             return {
                 'option_data': option_data,
@@ -1847,16 +2075,20 @@ def discover_explosive_optionable_stocks():
         'PLTR', 'SNOW', 'CRWD', 'ZS', 'NET', 'DDOG', 'OKTA', 'TWLO', 'MDB'
     ]
     for symbol in earnings_movers:
-        if symbol not in explosive_stocks and validate_single_stock_optionability(symbol):
+        if symbol not in explosive_stocks and validate_single_stock_optionability(
+                symbol):
             explosive_stocks.append(symbol)
 
     # 3. Sector rotation plays with options
-    sector_etfs = ['XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLP', 'XLU', 'XLB', 'XLRE', 'XLY']
+    sector_etfs = [
+        'XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLP', 'XLU', 'XLB', 'XLRE', 'XLY'
+    ]
     for symbol in sector_etfs:
         if symbol not in explosive_stocks:
             explosive_stocks.append(symbol)
 
     return explosive_stocks
+
 
 def discover_liquid_optionable_stocks():
     """
@@ -1868,26 +2100,27 @@ def discover_liquid_optionable_stocks():
     mega_liquid = [
         'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'TSLA', 'META', 'BRK-B',
         'JPM', 'JNJ', 'UNH', 'V', 'PG', 'HD', 'MA', 'CVX', 'LLY', 'ABBV',
-        'PFE', 'KO', 'MRK', 'PEP', 'COST', 'WMT', 'DIS', 'ABT', 'ADBE',
-        'CRM', 'VZ', 'NKE', 'NFLX', 'DHR', 'XOM', 'AMD', 'INTC', 'QCOM'
+        'PFE', 'KO', 'MRK', 'PEP', 'COST', 'WMT', 'DIS', 'ABT', 'ADBE', 'CRM',
+        'VZ', 'NKE', 'NFLX', 'DHR', 'XOM', 'AMD', 'INTC', 'QCOM'
     ]
     liquid_stocks.extend(mega_liquid)
 
     # 2. High-volume ETFs (always liquid)
     liquid_etfs = [
-        'SPY', 'QQQ', 'IWM', 'DIA', 'VTI', 'EFA', 'EEM', 'GLD', 'SLV',
-        'SOXL', 'SOXS', 'TQQQ', 'SQQQ', 'UVXY', 'VXX', 'TLT', 'HYG'
+        'SPY', 'QQQ', 'IWM', 'DIA', 'VTI', 'EFA', 'EEM', 'GLD', 'SLV', 'SOXL',
+        'SOXS', 'TQQQ', 'SQQQ', 'UVXY', 'VXX', 'TLT', 'HYG'
     ]
     liquid_stocks.extend(liquid_etfs)
 
     # 3. Popular meme/retail stocks (high options volume)
     meme_stocks = [
-        'GME', 'AMC', 'BB', 'PLTR', 'COIN', 'HOOD', 'RIVN', 'LCID',
-        'SOFI', 'NKLA', 'SPCE', 'F', 'GE', 'T', 'BAC', 'WFC'
+        'GME', 'AMC', 'BB', 'PLTR', 'COIN', 'HOOD', 'RIVN', 'LCID', 'SOFI',
+        'NKLA', 'SPCE', 'F', 'GE', 'T', 'BAC', 'WFC'
     ]
     liquid_stocks.extend(meme_stocks)
 
     return liquid_stocks
+
 
 def get_proven_optionable_performers():
     """
@@ -1915,6 +2148,7 @@ def get_proven_optionable_performers():
 
     return proven_stocks
 
+
 def validate_options_availability(candidates):
     """
     Validate that stocks actually have active options with decent volume.
@@ -1930,6 +2164,7 @@ def validate_options_availability(candidates):
             break
 
     return validated
+
 
 def validate_single_stock_optionability(symbol):
     """
@@ -1967,6 +2202,7 @@ def validate_single_stock_optionability(symbol):
         # If validation fails, include it (conservative approach)
         return True
 
+
 def get_core_optionable_symbols():
     """
     Core symbols that are always optionable and liquid.
@@ -1975,6 +2211,7 @@ def get_core_optionable_symbols():
         'SPY', 'QQQ', 'IWM', 'AAPL', 'TSLA', 'NVDA', 'AMD', 'GOOGL', 'MSFT',
         'AMZN', 'META', 'SOXL', 'TQQQ', 'SQQQ', 'XLE', 'XLF', 'XLK'
     ]
+
 
 def discover_optionable_explosive_stocks(limit=50):
     """
@@ -2028,16 +2265,19 @@ def run_scanner(symbols=None,
 
             # If daily data exists, proceed with full analysis
             multi_tf_data = scanner.fetch_multi_timeframe_data(symbol)
-            if not multi_tf_data or len(multi_tf_data) < 2:  # Need at least 2 timeframes
+            if not multi_tf_data or len(
+                    multi_tf_data) < 2:  # Need at least 2 timeframes
                 continue
 
-            analysis_results = scanner.analyze_timeframes(symbol, multi_tf_data)
+            analysis_results = scanner.analyze_timeframes(
+                symbol, multi_tf_data)
             confluence = scanner.calculate_pattern_confluence(analysis_results)
 
             # Skip volume analysis for low-scoring symbols to save time
             volume_analysis = None
             if confluence['score'] >= 7.0:
-                volume_analysis = scanner.analyze_with_volume_profile(symbol, analysis_results)
+                volume_analysis = scanner.analyze_with_volume_profile(
+                    symbol, analysis_results)
 
             # Integrate volume profile with confluence score
             if volume_analysis and 'confluences' in volume_analysis:
@@ -2071,28 +2311,41 @@ def run_scanner(symbols=None,
 
             # Only show detailed analysis for high-scoring symbols
             if confluence['score'] >= 6.0:
-                scanner.print_multi_timeframe_analysis(symbol, analysis_results, confluence)
+                scanner.print_multi_timeframe_analysis(symbol,
+                                                       analysis_results,
+                                                       confluence)
 
                 # Show gap info more concisely
                 gap_info = "No gap"
-                if '15m' in analysis_results and analysis_results['15m']['gap_percent'] != 0:
+                if '15m' in analysis_results and analysis_results['15m'][
+                        'gap_percent'] != 0:
                     gap_info = f"{analysis_results['15m']['gap_percent']:.2f}% gap"
-                elif 'D' in analysis_results and analysis_results['D']['gap_percent'] != 0:
+                elif 'D' in analysis_results and analysis_results['D'][
+                        'gap_percent'] != 0:
                     gap_info = f"{analysis_results['D']['gap_percent']:.2f}% daily gap"
 
-                print(f"\n🎯 {symbol}: {confluence['score']:.1f}/10 {confluence['bias']} | {gap_info}")
+                print(
+                    f"\n🎯 {symbol}: {confluence['score']:.1f}/10 {confluence['bias']} | {gap_info}"
+                )
 
                 # Show only the most relevant volume profile (15m or 1h)
                 if volume_analysis and 'volume_profiles' in volume_analysis:
                     for tf in ['15m', '1h']:  # Priority order
-                        if tf in volume_analysis['volume_profiles'] and volume_analysis['volume_profiles'][tf]:
-                            print_volume_profile(symbol, volume_analysis, tf=tf)
+                        if tf in volume_analysis[
+                                'volume_profiles'] and volume_analysis[
+                                    'volume_profiles'][tf]:
+                            print_volume_profile(symbol,
+                                                 volume_analysis,
+                                                 tf=tf)
                             break
             else:
                 # Just show a brief summary for lower scoring symbols
-                print(f"⚪ {symbol}: {confluence['score']:.1f}/10 {confluence['bias']} (below threshold)")
+                print(
+                    f"⚪ {symbol}: {confluence['score']:.1f}/10 {confluence['bias']} (below threshold)"
+                )
 
-            if confluence['score'] >= 7.5:  # Raised threshold for higher quality setups
+            if confluence[
+                    'score'] >= 7.5:  # Raised threshold for higher quality setups
                 options_data = scanner.fetch_options_data(symbol)
                 oi_skew = scanner.analyze_oi_skew(options_data)
                 options_count = len(options_data) if (
@@ -2132,11 +2385,13 @@ def run_scanner(symbols=None,
 
                         top_option = select_top_option_candidate(
                             candidates, confluence, symbol)
-                        
+
                         if top_option is None:
-                            print(f"⏭️ Skipping {symbol} - no options align with {confluence['bias']} bias")
+                            print(
+                                f"⏭️ Skipping {symbol} - no options align with {confluence['bias']} bias"
+                            )
                             continue
-                            
+
                         trade_plan = generate_trade_plan(
                             top_option, symbol_context)
                         output_file = "./TradingPlans/human_readable_plans.txt"
@@ -2206,7 +2461,7 @@ def run_scanner(symbols=None,
         except Exception as e:
             print(f"Error analyzing {symbol}: {e}")
             continue
-
+        time.sleep(1)
     return results
 
 
@@ -2253,12 +2508,17 @@ def select_top_option_candidate(candidates_df, analysis_results, symbol):
         option_type_wanted = "any"
 
     if not matching_options.empty:
-        top_option = matching_options.sort_values(by="score", ascending=False).iloc[0]
-        print(f"✅ Selected {top_option['type'].upper()} for {symbol} ({bias} bias) - Score: {top_option['score']:.2f}")
+        top_option = matching_options.sort_values(by="score",
+                                                  ascending=False).iloc[0]
+        print(
+            f"✅ Selected {top_option['type'].upper()} for {symbol} ({bias} bias) - Score: {top_option['score']:.2f}"
+        )
         return top_option
     else:
         # NO FALLBACK TO OPPOSITE DIRECTION - this would be contradictory
-        print(f"❌ No {option_type_wanted} found for {symbol} ({bias} bias). Skipping symbol - won't trade against the signal.")
+        print(
+            f"❌ No {option_type_wanted} found for {symbol} ({bias} bias). Skipping symbol - won't trade against the signal."
+        )
         return None
 
 
@@ -2385,7 +2645,9 @@ def save_summary_report(results, filepath):
 
         f.write("\n=== End of Summary ===\n")
 
+
 # The CompleteOptionsScanner class is updated to handle real-time and historical options data.
+
 
 class EnhancedOptionsGrader:
 
@@ -2401,7 +2663,8 @@ class EnhancedOptionsGrader:
             delta = abs(float(option_data.get('delta', 0)))
             gamma = float(option_data.get('gamma', 0))
             theta = float(option_data.get('theta', 0))
-            implied_volatility = float(option_data.get('implied_volatility', 0))
+            implied_volatility = float(option_data.get('implied_volatility',
+                                                       0))
 
             # 1. Greek Weighting (60%)
             delta_score = self.grade_delta(delta)
@@ -2471,7 +2734,8 @@ class EnhancedOptionsGrader:
                 print(f"No daily data for {symbol}")
                 return {}
 
-            df = pd.DataFrame.from_dict(data['Time Series (Daily)'], orient='index')
+            df = pd.DataFrame.from_dict(data['Time Series (Daily)'],
+                                        orient='index')
             df = df.T  # Transpose
             df.columns = ['open', 'high', 'low', 'close', 'volume']
             df = df.iloc[::-1]  # Reverse to chronological order
@@ -2533,7 +2797,8 @@ class IntelligentTradePlanner:
             position_size = 1  # Default to 1 contract
 
             # 3. Determine max hold time based on days to expiry
-            days_to_expiry = (pd.to_datetime(expiration) - pd.Timestamp.today()).days
+            days_to_expiry = (pd.to_datetime(expiration) -
+                              pd.Timestamp.today()).days
             if days_to_expiry <= 3:
                 max_hold_time = "4 hours"
             elif days_to_expiry <= 7:

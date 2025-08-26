@@ -1,0 +1,329 @@
+
+============================================================
+Symbol: AEO - 13:10:09
+Confluence Score: 9.17/10
+Bias: Bullish
+
+Top Options Found: 115
+
+Option 1:
+  Strike: $15.0 Put
+  Expiration: 2027-01-15 00:00:00
+  Delta: -0.3922
+  Gamma: 0.0372
+  Theta: -0.0026
+  Volume: 0
+  Score: 6.22
+  IV: 68.31%
+
+Option 2:
+  Strike: $13.0 Put
+  Expiration: 2027-01-15 00:00:00
+  Delta: -0.3309
+  Gamma: 0.0361
+  Theta: -0.0025
+  Volume: 0
+  Score: 6.15
+  IV: 66.36%
+
+Option 3:
+  Strike: $10.0 Put
+  Expiration: 2027-01-15 00:00:00
+  Delta: -0.2216
+  Gamma: 0.0296
+  Theta: -0.0023
+  Volume: 0
+  Score: 5.59
+  IV: 66.36%
+
+Trade Plan:
+  Entry: $1.35
+  Stop: $1.01
+  Target: $2.36
+  Position Size: 1 contracts
+  Strike: $25.0 Call
+  Expiration: 2027-01-15
+  Max Hold: 12 hours
+============================================================
+
+============================================================
+Symbol: KSS - 13:10:27
+Confluence Score: 7.73/10
+Bias: Bullish
+
+Top Options Found: 221
+
+Option 1:
+  Strike: $22.5 Call
+  Expiration: 2027-01-15 00:00:00
+  Delta: 0.2343
+  Gamma: 0.0446
+  Theta: -0.0022
+  Volume: 0
+  Score: 8.38
+  IV: 50.75%
+
+Option 2:
+  Strike: $17.5 Call
+  Expiration: 2027-01-15 00:00:00
+  Delta: 0.3774
+  Gamma: 0.0552
+  Theta: -0.0028
+  Volume: 0
+  Score: 8.27
+  IV: 50.75%
+
+Option 3:
+  Strike: $20.0 Call
+  Expiration: 2027-01-15 00:00:00
+  Delta: 0.3410
+  Gamma: 0.0478
+  Theta: -0.0030
+  Volume: 21
+  Score: 7.06
+  IV: 56.61%
+
+Trade Plan:
+  Entry: $1.35
+  Stop: $1.01
+  Target: $2.36
+  Position Size: 1 contracts
+  Strike: $22.5 Call
+  Expiration: 2027-01-15
+  Max Hold: 12 hours
+============================================================
+
+============================================================
+Symbol: ACHR - 13:44:39
+Confluence Score: 7.66/10
+Bias: Bearish
+
+Top Options Found: 95
+
+Option 1:
+  Strike: $9.0 Put
+  Expiration: 2025-09-12 00:00:00
+  Delta: -0.3031
+  Gamma: 0.1615
+  Theta: -0.0101
+  Volume: 20
+  Score: 7.03
+  IV: 70.27%
+
+Option 2:
+  Strike: $7.0 Put
+  Expiration: 2026-01-16 00:00:00
+  Delta: -0.1698
+  Gamma: 0.0509
+  Theta: -0.0036
+  Volume: 31
+  Score: 6.18
+  IV: 76.12%
+
+Option 3:
+  Strike: $8.0 Put
+  Expiration: 2025-10-17 00:00:00
+  Delta: -0.2126
+  Gamma: 0.0882
+  Theta: -0.0064
+  Volume: 13
+  Score: 6.06
+  IV: 76.12%
+
+Trade Plan:
+  Entry: $0.59
+  Stop: $0.44
+  Target: $1.03
+  Position Size: 3 contracts
+  Strike: $9.0 Put
+  Expiration: 2025-09-12
+  Max Hold: 12 hours
+============================================================
+
+============================================================
+Symbol: KSS - 13:44:50
+Confluence Score: 7.73/10
+Bias: Bullish
+
+Top Options Found: 150
+
+Option 1:
+  Strike: $10.5 Put
+  Expiration: 2025-08-22 00:00:00
+  Delta: -0.2578
+  Gamma: 0.2259
+  Theta: -0.0150
+  Volume: 121
+  Score: 6.61
+  IV: 62.46%
+
+Option 2:
+  Strike: $10.5 Put
+  Expiration: 2025-08-15 00:00:00
+  Delta: -0.2002
+  Gamma: 0.2683
+  Theta: -0.0180
+  Volume: 21
+  Score: 6.52
+  IV: 62.46%
+
+Option 3:
+  Strike: $10.0 Put
+  Expiration: 2025-08-22 00:00:00
+  Delta: -0.1502
+  Gamma: 0.1632
+  Theta: -0.0109
+  Volume: 255
+  Score: 6.52
+  IV: 62.46%
+
+Trade Plan:
+  Entry: $0.10
+  Stop: $0.08
+  Target: $0.18
+  Position Size: 24 contracts
+  Strike: $11.5 Call
+  Expiration: 2025-08-08
+  Max Hold: 4 hours
+============================================================
+
+============================================================
+Symbol: AEO - 13:57:21
+Confluence Score: 9.17/10
+Bias: Bullish
+
+Top Options Found: 65
+
+Option 1:
+  Strike: $9.0 Put
+  Expiration: 2025-11-21 00:00:00
+  Delta: -0.1192
+  Gamma: 0.0455
+  Theta: -0.0039
+  Volume: 68
+  Score: 5.19
+  IV: 64.41%
+
+Option 2:
+  Strike: $8.0 Put
+  Expiration: 2026-02-20 00:00:00
+  Delta: -0.1106
+  Gamma: 0.0307
+  Theta: -0.0027
+  Volume: 34
+  Score: 5.01
+  IV: 66.36%
+
+Option 3:
+  Strike: $8.0 Put
+  Expiration: 2026-01-16 00:00:00
+  Delta: -0.1024
+  Gamma: 0.0311
+  Theta: -0.0030
+  Volume: 14
+  Score: 4.70
+  IV: 68.31%
+
+Trade Plan:
+  Entry: $0.60
+  Stop: $0.45
+  Target: $1.05
+  Position Size: 3 contracts
+  Strike: $22.0 Call
+  Expiration: 2026-02-20
+  Max Hold: 12 hours
+============================================================
+
+============================================================
+Symbol: ACHR - 13:57:31
+Confluence Score: 8.57/10
+Bias: Bullish
+
+Top Options Found: 91
+
+Option 1:
+  Strike: $9.0 Put
+  Expiration: 2025-09-12 00:00:00
+  Delta: -0.3031
+  Gamma: 0.1615
+  Theta: -0.0101
+  Volume: 20
+  Score: 7.03
+  IV: 70.27%
+
+Option 2:
+  Strike: $8.0 Put
+  Expiration: 2025-10-17 00:00:00
+  Delta: -0.2126
+  Gamma: 0.0882
+  Theta: -0.0064
+  Volume: 13
+  Score: 6.06
+  IV: 76.12%
+
+Option 3:
+  Strike: $8.0 Put
+  Expiration: 2025-09-19 00:00:00
+  Delta: -0.1813
+  Gamma: 0.1004
+  Theta: -0.0078
+  Volume: 35
+  Score: 5.70
+  IV: 78.07%
+
+Trade Plan:
+  Entry: $0.10
+  Stop: $0.08
+  Target: $0.18
+  Position Size: 24 contracts
+  Strike: $10.0 Call
+  Expiration: 2025-08-08
+  Max Hold: 4 hours
+============================================================
+
+============================================================
+Symbol: KSS - 13:57:42
+Confluence Score: 7.73/10
+Bias: Bullish
+
+Top Options Found: 140
+
+Option 1:
+  Strike: $10.5 Put
+  Expiration: 2025-08-22 00:00:00
+  Delta: -0.2578
+  Gamma: 0.2259
+  Theta: -0.0150
+  Volume: 121
+  Score: 6.61
+  IV: 62.46%
+
+Option 2:
+  Strike: $10.5 Put
+  Expiration: 2025-08-15 00:00:00
+  Delta: -0.2002
+  Gamma: 0.2683
+  Theta: -0.0180
+  Volume: 21
+  Score: 6.52
+  IV: 62.46%
+
+Option 3:
+  Strike: $10.0 Put
+  Expiration: 2025-08-22 00:00:00
+  Delta: -0.1502
+  Gamma: 0.1632
+  Theta: -0.0109
+  Volume: 255
+  Score: 6.52
+  IV: 62.46%
+
+Trade Plan:
+  Entry: $0.10
+  Stop: $0.08
+  Target: $0.18
+  Position Size: 24 contracts
+  Strike: $11.5 Call
+  Expiration: 2025-08-08
+  Max Hold: 4 hours
+============================================================
