@@ -7,7 +7,9 @@ import pandas as pd
 import numpy as np
 import requests
 import time
+import yfinance as yf
 from run_autonomous_scan import run_autonomous_scan
+from quantitative_analyzer import is_in_bollinger_squeeze, calculate_relative_volume
 
 app = Flask(__name__)
 
@@ -860,7 +862,7 @@ def enhanced_scan():
                         tracked_count += 1
                         print(
                             f"📊 Started tracking {opportunity['symbol']}: {trackid}"
-                                                )
+                        )
                 except Exception as e:
                     print(
                         f"⚠️ Failed to track {opportunity.get('symbol', 'unknown')}: {e}"
@@ -1210,7 +1212,7 @@ def run_comprehensive_backtest():
     """Run comprehensive backtest on all historical trades"""
     try:
         from backtest_engine import AdvancedBacktester
-        
+
         # Get parameters
         if request.method == 'POST' and request.is_json:
             data = request.get_json()
@@ -1218,76 +1220,92 @@ def run_comprehensive_backtest():
             min_score_filter = data.get('min_score_filter', 0)
             days_lookback = data.get('days_lookback', 365)
         else:
-            include_human_readable = request.args.get('include_human_readable', 'false').lower() == 'true'
+            include_human_readable = request.args.get(
+                'include_human_readable', 'false').lower() == 'true'
             min_score_filter = float(request.args.get('min_score_filter', 0))
             days_lookback = int(request.args.get('days_lookback', 365))
-        
+
         print("🚀 Starting comprehensive backtest...")
-        
+
         # Initialize backtester
         backtester = AdvancedBacktester()
-        
+
         # Load historical trades from JSON files
         trades = backtester.load_all_historical_trades()
-        
+
         # Optionally include human readable file
         if include_human_readable:
             human_file = "./TradingPlans/human_readable_plans.txt"
             if os.path.exists(human_file):
                 human_trades = backtester.parse_human_readable_file(human_file)
                 trades.extend(human_trades)
-                print(f"Added {len(human_trades)} trades from human readable file")
-        
+                print(
+                    f"Added {len(human_trades)} trades from human readable file"
+                )
+
         if not trades:
             return jsonify({
                 "status": "error",
                 "message": "No historical trades found to backtest"
             }), 404
-        
+
         # Filter by date and score if specified
         filtered_trades = []
         cutoff_date = datetime.now() - timedelta(days=days_lookback)
-        
+
         for trade in trades:
             # Check date filter
             trade_date = pd.to_datetime(trade.prediction_date)
             if trade_date < cutoff_date:
                 continue
-            
+
             # Check score filter
-            score = getattr(trade, 'confluence_score', 0) or getattr(trade, 'score', 0)
+            score = getattr(trade, 'confluence_score', 0) or getattr(
+                trade, 'score', 0)
             if score < min_score_filter:
                 continue
-                
+
             filtered_trades.append(trade)
-        
+
         backtester.trades = filtered_trades
-        
+
         if not filtered_trades:
             return jsonify({
-                "status": "error",
-                "message": f"No trades match filters (min_score: {min_score_filter}, days_lookback: {days_lookback})"
+                "status":
+                "error",
+                "message":
+                f"No trades match filters (min_score: {min_score_filter}, days_lookback: {days_lookback})"
             }), 404
-        
+
         # Run backtest
         backtester.backtest_all_trades()
-        
+
         # Analyze results
         results_df = backtester.analyze_results()
-        
+
         # Generate summary for API response
-        valid_results = [r for r in backtester.results if r.get('status') not in ['ERROR', 'NO_STOCK_DATA', 'FUTURE_TRADE']]
-        
+        valid_results = [
+            r for r in backtester.results if r.get('status') not in
+            ['ERROR', 'NO_STOCK_DATA', 'FUTURE_TRADE']
+        ]
+
         if valid_results:
             df = pd.DataFrame([{
-                'hit_initial': r.get('hit_initial', False),
-                'hit_final': r.get('hit_final', False),
-                'hit_stop': r.get('hit_stop', False),
-                'profit_loss': r.get('profit_loss', 0),
-                'profit_loss_pct': r.get('profit_loss_pct', 0),
-                'confluence_score': getattr(r['trade'], 'confluence_score', 0) or getattr(r['trade'], 'score', 0)
+                'hit_initial':
+                r.get('hit_initial', False),
+                'hit_final':
+                r.get('hit_final', False),
+                'hit_stop':
+                r.get('hit_stop', False),
+                'profit_loss':
+                r.get('profit_loss', 0),
+                'profit_loss_pct':
+                r.get('profit_loss_pct', 0),
+                'confluence_score':
+                getattr(r['trade'], 'confluence_score', 0)
+                or getattr(r['trade'], 'score', 0)
             } for r in valid_results])
-            
+
             # Calculate summary statistics
             win_rate = (df['hit_initial'] | df['hit_final']).mean() * 100
             initial_target_rate = df['hit_initial'].mean() * 100
@@ -1295,22 +1313,27 @@ def run_comprehensive_backtest():
             stop_loss_rate = df['hit_stop'].mean() * 100
             avg_return = df['profit_loss_pct'].mean()
             total_pnl = df['profit_loss'].sum()
-            
+
             # Best performing score threshold
             high_score_trades = df[df['confluence_score'] >= 8]
             high_score_win_rate = 0
             if len(high_score_trades) > 0:
-                high_score_win_rate = (high_score_trades['hit_initial'] | high_score_trades['hit_final']).mean() * 100
-        
+                high_score_win_rate = (
+                    high_score_trades['hit_initial']
+                    | high_score_trades['hit_final']).mean() * 100
+
         else:
             win_rate = initial_target_rate = final_target_rate = stop_loss_rate = 0
             avg_return = total_pnl = high_score_win_rate = 0
-        
+
         return jsonify({
-            "status": "success",
+            "status":
+            "success",
             "backtest_summary": {
-                "total_trades_analyzed": len(backtester.trades),
-                "valid_results": len(valid_results),
+                "total_trades_analyzed":
+                len(backtester.trades),
+                "valid_results":
+                len(valid_results),
                 "filters_applied": {
                     "min_score_filter": min_score_filter,
                     "days_lookback": days_lookback,
@@ -1332,13 +1355,14 @@ def run_comprehensive_backtest():
                     f"Stop loss hit rate: {stop_loss_rate:.1f}% - consider tighter risk management"
                 ]
             },
-            "timestamp": datetime.now().isoformat(),
+            "timestamp":
+            datetime.now().isoformat(),
             "files_generated": [
                 "backtest_results_[timestamp].csv",
                 "backtest_summary_[timestamp].json"
             ]
         })
-    
+
     except Exception as e:
         import traceback
         return jsonify({
@@ -1353,42 +1377,53 @@ def optimize_scanner_thresholds():
     """Optimize scanner thresholds based on backtest results"""
     try:
         from backtest_engine import AdvancedBacktester
-        
-        print("🎯 Optimizing scanner thresholds based on historical performance...")
-        
+
+        print(
+            "🎯 Optimizing scanner thresholds based on historical performance..."
+        )
+
         # Run backtest first
         backtester = AdvancedBacktester()
         trades = backtester.load_all_historical_trades()
-        
+
         if not trades:
             return jsonify({
-                "status": "error", 
+                "status": "error",
                 "message": "No historical data for optimization"
             }), 404
-        
+
         backtester.backtest_all_trades()
-        
+
         # Analyze for optimal thresholds
-        valid_results = [r for r in backtester.results if r.get('status') not in ['ERROR', 'NO_STOCK_DATA', 'FUTURE_TRADE']]
-        
+        valid_results = [
+            r for r in backtester.results if r.get('status') not in
+            ['ERROR', 'NO_STOCK_DATA', 'FUTURE_TRADE']
+        ]
+
         if not valid_results:
             return jsonify({
                 "status": "error",
                 "message": "No valid results for optimization"
             }), 404
-        
+
         # Find optimal thresholds
         df = pd.DataFrame([{
-            'confluence_score': getattr(r['trade'], 'confluence_score', 0) or getattr(r['trade'], 'score', 0),
-            'delta': getattr(r['trade'], 'delta', 0) or 0,
-            'gamma': getattr(r['trade'], 'gamma', 0) or 0,
-            'theta': getattr(r['trade'], 'theta', 0) or 0,
-            'successful': r.get('hit_initial', False) or r.get('hit_final', False)
+            'confluence_score':
+            getattr(r['trade'], 'confluence_score', 0)
+            or getattr(r['trade'], 'score', 0),
+            'delta':
+            getattr(r['trade'], 'delta', 0) or 0,
+            'gamma':
+            getattr(r['trade'], 'gamma', 0) or 0,
+            'theta':
+            getattr(r['trade'], 'theta', 0) or 0,
+            'successful':
+            r.get('hit_initial', False) or r.get('hit_final', False)
         } for r in valid_results])
-        
+
         # Find optimal score threshold (maximize win rate with reasonable sample size)
         optimal_thresholds = {}
-        
+
         for threshold in [5, 6, 7, 8, 9]:
             subset = df[df['confluence_score'] >= threshold]
             if len(subset) >= 10:  # Minimum sample size
@@ -1397,29 +1432,29 @@ def optimize_scanner_thresholds():
                     'win_rate': win_rate * 100,
                     'sample_size': len(subset)
                 }
-        
+
         # Find best threshold
-        best_threshold = max(optimal_thresholds.keys(), key=lambda x: optimal_thresholds[x]['win_rate'])
-        
+        best_threshold = max(optimal_thresholds.keys(),
+                             key=lambda x: optimal_thresholds[x]['win_rate'])
+
         # Find optimal Greeks ranges
         successful_trades = df[df['successful'] == True]
         delta_mean = successful_trades['delta'].mean()
         delta_std = successful_trades['delta'].std()
-        
+
         gamma_mean = successful_trades['gamma'].mean()
         gamma_std = successful_trades['gamma'].std()
-        
+
         recommendations = {
-            "optimal_confluence_threshold": best_threshold,
-            "confluence_threshold_analysis": optimal_thresholds,
-            "optimal_delta_range": [
-                max(0, delta_mean - delta_std), 
-                min(1, delta_mean + delta_std)
-            ],
-            "optimal_gamma_range": [
-                max(0, gamma_mean - gamma_std),
-                gamma_mean + gamma_std
-            ],
+            "optimal_confluence_threshold":
+            best_threshold,
+            "confluence_threshold_analysis":
+            optimal_thresholds,
+            "optimal_delta_range":
+            [max(0, delta_mean - delta_std),
+             min(1, delta_mean + delta_std)],
+            "optimal_gamma_range":
+            [max(0, gamma_mean - gamma_std), gamma_mean + gamma_std],
             "implementation_suggestions": [
                 f"Set minimum confluence score to {best_threshold} (current best performing)",
                 f"Focus on delta range {delta_mean-delta_std:.3f} to {delta_mean+delta_std:.3f}",
@@ -1427,7 +1462,7 @@ def optimize_scanner_thresholds():
                 "Consider implementing dynamic thresholds based on market volatility"
             ]
         }
-        
+
         return jsonify({
             "status": "success",
             "optimization_results": recommendations,
@@ -1435,7 +1470,7 @@ def optimize_scanner_thresholds():
             "successful_trades": len(successful_trades),
             "timestamp": datetime.now().isoformat()
         })
-    
+
     except Exception as e:
         return jsonify({
             "status": "error",
@@ -1690,6 +1725,7 @@ def get_earnings_calendar():
             f"Failed to fetch earnings calendar: {str(e)}"
         }), 500
 
+
 @app.route('/api/jpm-explosion-hunter', methods=['GET', 'POST'])
 def jpm_explosion_hunter():
     """
@@ -1710,7 +1746,8 @@ def jpm_explosion_hunter():
             similarity_threshold = float(data.get('similarity_threshold', 0.7))
         else:
             source_symbols = request.args.getlist('symbols')
-            similarity_threshold = float(request.args.get('similarity_threshold', 0.7))
+            similarity_threshold = float(
+                request.args.get('similarity_threshold', 0.7))
 
         print("🎯 JPM EXPLOSION HUNTER - PHASE 2 PATTERN MATCHING")
         print("=" * 60)
@@ -1739,11 +1776,17 @@ def jpm_explosion_hunter():
                 latest_file = max(files, key=os.path.getctime)
                 with open(latest_file, 'r') as f:
                     scan_data = json.load(f)
-                    source_symbols = list(scan_data.get('opportunities', {}).keys())
-                    print(f"📊 Loaded {len(source_symbols)} symbols from {os.path.basename(latest_file)}")
+                    source_symbols = list(
+                        scan_data.get('opportunities', {}).keys())
+                    print(
+                        f"📊 Loaded {len(source_symbols)} symbols from {os.path.basename(latest_file)}"
+                    )
             else:
                 # Fallback to common symbols
-                source_symbols = ['SPY', 'QQQ', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'JPM', 'BAC', 'WFC']
+                source_symbols = [
+                    'SPY', 'QQQ', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA',
+                    'NVDA', 'META', 'JPM', 'BAC', 'WFC'
+                ]
                 print(f"⚠️ No scan results found - using fallback symbols")
 
         print(f"🔍 Analyzing options from {len(source_symbols)} symbols...")
@@ -1757,7 +1800,8 @@ def jpm_explosion_hunter():
 
                 # Get options data for this symbol
                 from explosive_options_scanner import ExplosiveOptionsScanner
-                scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
+                scanner = ExplosiveOptionsScanner(
+                    os.getenv('ALPHA_VANTAGE_API_KEY'))
                 options_data = scanner._fetch_all_options(symbol)
 
                 if options_data is None or options_data.empty:
@@ -1771,22 +1815,38 @@ def jpm_explosion_hunter():
                     try:
                         # Extract option data
                         option_dict = {
-                            'delta': abs(float(option.get('delta', 0))),
-                            'gamma': float(option.get('gamma', 0)),
-                            'theta': float(option.get('theta', 0)),
-                            'price': float(option.get('mark', option.get('lastPrice', 0))),
-                            'iv': float(option.get('impliedVolatility', 0)),
-                            'volume': float(option.get('volume', 0)),
-                            'open_interest': float(option.get('open_interest', option.get('openInterest', 0))),
-                            'strike': float(option.get('strike', 0)),
-                            'type': str(option.get('type', 'call')),
-                            'expiration': str(option.get('expiration', ''))
+                            'delta':
+                            abs(float(option.get('delta', 0))),
+                            'gamma':
+                            float(option.get('gamma', 0)),
+                            'theta':
+                            float(option.get('theta', 0)),
+                            'price':
+                            float(
+                                option.get('mark', option.get('lastPrice',
+                                                              0))),
+                            'iv':
+                            float(option.get('impliedVolatility', 0)),
+                            'volume':
+                            float(option.get('volume', 0)),
+                            'open_interest':
+                            float(
+                                option.get('open_interest',
+                                           option.get('openInterest', 0))),
+                            'strike':
+                            float(option.get('strike', 0)),
+                            'type':
+                            str(option.get('type', 'call')),
+                            'expiration':
+                            str(option.get('expiration', ''))
                         }
 
                         # Calculate days to expiry
                         try:
-                            exp_date = pd.to_datetime(option_dict['expiration'])
-                            option_dict['days_to_expiry'] = max(1, (exp_date - pd.Timestamp.now()).days)
+                            exp_date = pd.to_datetime(
+                                option_dict['expiration'])
+                            option_dict['days_to_expiry'] = max(
+                                1, (exp_date - pd.Timestamp.now()).days)
                         except:
                             option_dict['days_to_expiry'] = 30  # Default
 
@@ -1794,8 +1854,12 @@ def jpm_explosion_hunter():
                         def calculate_similarity(option, reference):
                             try:
                                 # Extract values safely
-                                delta_diff = abs(float(option.get('delta', 0)) - reference['delta'])
-                                gamma_diff = abs(float(option.get('gamma', 0)) - reference['gamma'])
+                                delta_diff = abs(
+                                    float(option.get('delta', 0)) -
+                                    reference['delta'])
+                                gamma_diff = abs(
+                                    float(option.get('gamma', 0)) -
+                                    reference['gamma'])
 
                                 # Theta comparison: match both sign and magnitude
                                 option_theta = float(option.get('theta', 0))
@@ -1803,33 +1867,52 @@ def jpm_explosion_hunter():
 
                                 # If signs are different, heavily penalize
                                 if (option_theta > 0) != (ref_theta > 0):
-                                    theta_diff = abs(option_theta) + abs(ref_theta)  # Heavy penalty for sign mismatch
+                                    theta_diff = abs(option_theta) + abs(
+                                        ref_theta
+                                    )  # Heavy penalty for sign mismatch
                                 else:
-                                    theta_diff = abs(option_theta - ref_theta)  # Normal difference for same sign
+                                    theta_diff = abs(
+                                        option_theta - ref_theta
+                                    )  # Normal difference for same sign
 
-                                price_diff = abs(float(option.get('mark', option.get('lastPrice', 0))) - reference['price'])
-                                iv_diff = abs(float(option.get('impliedVolatility', 0)) - reference['iv'])
-                                days_diff = abs(int(option.get('days_to_expiry', 0)) - reference['days_to_expiry'])
+                                price_diff = abs(
+                                    float(
+                                        option.get('mark',
+                                                   option.get('lastPrice', 0)))
+                                    - reference['price'])
+                                iv_diff = abs(
+                                    float(option.get('impliedVolatility', 0)) -
+                                    reference['iv'])
+                                days_diff = abs(
+                                    int(option.get('days_to_expiry', 0)) -
+                                    reference['days_to_expiry'])
 
                                 # Weighted similarity calculation (lower is more similar)
                                 similarity = (
-                                    delta_diff * 25 +      # Delta weight
-                                    gamma_diff * 50 +      # Gamma weight  
-                                    theta_diff * 15 +      # Theta weight (now preserves sign)
-                                    (price_diff / max(reference['price'], 0.01)) * 10 +  # Price % diff
-                                    iv_diff * 20 +         # IV weight
-                                    (days_diff / 30) * 5   # Days weight (normalized)
+                                    delta_diff * 25 +  # Delta weight
+                                    gamma_diff * 50 +  # Gamma weight  
+                                    theta_diff * 15
+                                    +  # Theta weight (now preserves sign)
+                                    (price_diff /
+                                     max(reference['price'], 0.01)) * 10
+                                    +  # Price % diff
+                                    iv_diff * 20 +  # IV weight
+                                    (days_diff / 30) *
+                                    5  # Days weight (normalized)
                                 )
 
                                 # Convert to percentage (higher = more similar)
-                                similarity_score = max(0, (1 - similarity) * 100)
+                                similarity_score = max(0,
+                                                       (1 - similarity) * 100)
                                 return min(100, similarity_score)
 
                             except Exception as e:
                                 print(f"Error calculating similarity: {e}")
                                 return 0
+
                         # Calculate similarity score
-                        similarity_score = calculate_net_similarity(option_dict, net_reference)
+                        similarity_score = calculate_net_similarity(
+                            option_dict, net_reference)
 
                         # Check if it meets threshold
                         if similarity_score >= similarity_threshold:
@@ -1837,18 +1920,33 @@ def jpm_explosion_hunter():
                                 'symbol': symbol,
                                 'option': option_dict,
                                 'similarity_score': round(similarity_score, 3),
-                                'contract_symbol': f"{symbol} {option_dict['strike']} {option_dict['type'].upper()} exp {option_dict['expiration'][:10]}",
+                                'contract_symbol':
+                                f"{symbol} {option_dict['strike']} {option_dict['type'].upper()} exp {option_dict['expiration'][:10]}",
                                 'comparison': {
-                                    'delta_diff': abs(option_dict['delta'] - net_reference['delta']),
-                                    'gamma_diff': abs(option_dict['gamma'] - net_reference['gamma']),
-                                    'theta_diff': abs(option_dict['theta'] - net_reference['theta']),
-                                    'price_diff': abs(option_dict['price'] - net_reference['price']),
-                                    'iv_diff': abs(option_dict['iv'] - net_reference['iv']),
-                                    'days_diff': abs(option_dict['days_to_expiry'] - net_reference['days_to_expiry'])
+                                    'delta_diff':
+                                    abs(option_dict['delta'] -
+                                        net_reference['delta']),
+                                    'gamma_diff':
+                                    abs(option_dict['gamma'] -
+                                        net_reference['gamma']),
+                                    'theta_diff':
+                                    abs(option_dict['theta'] -
+                                        net_reference['theta']),
+                                    'price_diff':
+                                    abs(option_dict['price'] -
+                                        net_reference['price']),
+                                    'iv_diff':
+                                    abs(option_dict['iv'] -
+                                        net_reference['iv']),
+                                    'days_diff':
+                                    abs(option_dict['days_to_expiry'] -
+                                        net_reference['days_to_expiry'])
                                 }
                             }
                             jpm_matches.append(match)
-                            print(f"✅ JPM-like match found: {match['contract_symbol']} (similarity: {similarity_score:.1%})")
+                            print(
+                                f"✅ JPM-like match found: {match['contract_symbol']} (similarity: {similarity_score:.1%})"
+                            )
 
                     except Exception as e:
                         continue  # Skip problematic options
@@ -1865,12 +1963,16 @@ def jpm_explosion_hunter():
         print(f"🔥 JPM-like Matches Found: {len(jpm_matches)}")
 
         if jpm_matches:
-            print(f"🏆 Best Match: {jpm_matches[0]['contract_symbol']} ({jpm_matches[0]['similarity_score']:.1%} similar)")
+            print(
+                f"🏆 Best Match: {jpm_matches[0]['contract_symbol']} ({jpm_matches[0]['similarity_score']:.1%} similar)"
+            )
 
         # Save JPM hunter results to dedicated file
         timestamp = datetime.now().strftime('%H%M%S')
         date_str = datetime.now().strftime('%Y-%m-%d')
-        jpm_filename = os.path.join('./TradingPlans', f'jpm_explosion_hunter_{date_str}_{timestamp}.json')
+        jpm_filename = os.path.join(
+            './TradingPlans',
+            f'jpm_explosion_hunter_{date_str}_{timestamp}.json')
 
         jpm_results = {
             "scan_metadata": {
@@ -1878,13 +1980,17 @@ def jpm_explosion_hunter():
                 "scan_type": "jpm_explosion_hunter",
                 "net_reference_pattern": net_reference,
                 "similarity_threshold": similarity_threshold,
-                "source_file": latest_file if not source_symbols else "custom_symbols",
+                "source_file":
+                latest_file if not source_symbols else "custom_symbols",
                 "total_symbols": len(source_symbols),
                 "symbols_analyzed": symbols_analyzed
             },
-            "jpm_matches": jpm_matches,
-            "top_10_matches": jpm_matches[:10],
-            "summary": f"Found {len(jpm_matches)} NET-like options from {symbols_analyzed} symbols analyzed"
+            "jpm_matches":
+            jpm_matches,
+            "top_10_matches":
+            jpm_matches[:10],
+            "summary":
+            f"Found {len(jpm_matches)} NET-like options from {symbols_analyzed} symbols analyzed"
         }
 
         # Save results
@@ -1896,14 +2002,22 @@ def jpm_explosion_hunter():
             print(f"⚠️ Could not save JPM results: {e}")
 
         return jsonify({
-            "status": "success",
-            "total_symbols": len(source_symbols),
-            "symbols_analyzed": symbols_analyzed,
-            "net_matches": jpm_matches[:10],  # Top 10 matches
-            "net_reference_pattern": net_reference,
-            "similarity_threshold": similarity_threshold,
-            "results_saved_to": jpm_filename,
-            "summary": f"Found {len(jpm_matches)} NET-like options from {symbols_analyzed} symbols analyzed"
+            "status":
+            "success",
+            "total_symbols":
+            len(source_symbols),
+            "symbols_analyzed":
+            symbols_analyzed,
+            "net_matches":
+            jpm_matches[:10],  # Top 10 matches
+            "net_reference_pattern":
+            net_reference,
+            "similarity_threshold":
+            similarity_threshold,
+            "results_saved_to":
+            jpm_filename,
+            "summary":
+            f"Found {len(jpm_matches)} NET-like options from {symbols_analyzed} symbols analyzed"
         })
 
     except Exception as e:
@@ -1920,12 +2034,12 @@ def calculate_net_similarity(option_dict, net_reference):
     try:
         # Optimized similarity weights (total = 1.0) - Based on NET explosion characteristics
         weights = {
-            'delta': 0.30,        # Most important - directional exposure
-            'price': 0.25,        # Critical - entry cost and risk
-            'gamma': 0.20,        # Important - acceleration potential
+            'delta': 0.30,  # Most important - directional exposure
+            'price': 0.25,  # Critical - entry cost and risk
+            'gamma': 0.20,  # Important - acceleration potential
             'days_to_expiry': 0.15,  # Key - time decay window
-            'theta': 0.07,        # Moderate - time decay rate
-            'iv': 0.03           # Least - already captured in price
+            'theta': 0.07,  # Moderate - time decay rate
+            'iv': 0.03  # Least - already captured in price
         }
 
         total_similarity = 0.0
@@ -1947,9 +2061,11 @@ def calculate_net_similarity(option_dict, net_reference):
 
                 # Apply tolerance - some metrics can be more different
                 if metric == 'price':
-                    similarity = max(0, 1 - (diff / 2))  # Allow more price variation
+                    similarity = max(0, 1 -
+                                     (diff / 2))  # Allow more price variation
                 elif metric == 'days_to_expiry':
-                    similarity = max(0, 1 - (diff / 3))  # Allow more time variation
+                    similarity = max(0, 1 -
+                                     (diff / 3))  # Allow more time variation
 
                 total_similarity += similarity * weight
 
@@ -1959,231 +2075,140 @@ def calculate_net_similarity(option_dict, net_reference):
         print(f"Error calculating similarity: {e}")
         return 0.0
 
+
 @app.route("/explosive-earnings-combo", methods=["GET", "POST"])
 def explosive_earnings_combo():
-    """Combined explosive scan that finds earnings candidates AND runs full scanner_core analysis"""
-    try:
-        # Get parameters
+    """
+            True two-phase scan:
+            1. Finds candidates with the ExplosiveOptionsScanner.
+            2. Performs deep multi-timeframe analysis with scanner_core.
+            3. Combines both scores to find the best opportunities.
+            """
+    try:  # The stray backtick has been removed from this line
+        # Get parameters from request
         if request.method == 'POST' and request.is_json:
             data = request.get_json()
-            scan_type = data.get('scan_type', 'earnings')
-            min_explosive_score = data.get('min_explosive_score', 35)
-            
-            # Handle entry_price parameter in POST data
-            entry_price = data.get('entry_price')
+            min_explosive_score = float(data.get('min_explosive_score', 40))
+            min_confluence_score = float(data.get('min_confluence_score', 6.0))
             filters = data.get('filters', {})
-            if entry_price and 'max_price' not in filters:
-                filters['max_price'] = float(entry_price)
-        else:
-            scan_type = request.args.get('scan_type', 'earnings')
+        else:  # GET request
             min_explosive_score = float(
-                request.args.get('min_explosive_score', 35))
-            
-            # Handle entry_price parameter
-            entry_price = request.args.get('entry_price')
-            if entry_price:
-                max_price_limit = float(entry_price)
-            else:
-                max_price_limit = float(request.args.get('max_price', 5.00))
-            
+                request.args.get('min_explosive_score', 40))
+            min_confluence_score = float(
+                request.args.get('min_confluence_score', 6.0))
             filters = {
                 'min_price': float(request.args.get('min_price', 0.05)),
-                'max_price': max_price_limit,  # Use entry_price if provided
+                'max_price': float(request.args.get('max_price', 5.00)),
                 'min_delta': float(request.args.get('min_delta', 0.10)),
                 'max_delta': float(request.args.get('max_delta', 0.40)),
                 'min_days': int(request.args.get('min_days', 1)),
                 'max_days': int(request.args.get('max_days', 30))
             }
 
-        print("🚀 EXPLOSIVE EARNINGS COMBO SCAN - PHASE 1 + 2")
+        print("🚀 TWO-PHASE EXPLOSIVE EARNINGS SCAN")
         print("=" * 60)
-        print(f"🎯 Scan Type: {scan_type}")
-        print(f"🔥 Min Explosive Score: {min_explosive_score}")
-        print(f"📊 PHASE 1: Find explosive earnings candidates")
-        print(f"🔬 PHASE 2: Run full scanner_core analysis on best candidates")
 
         from explosive_options_scanner import ExplosiveOptionsScanner
+        from scanner_core import run_scanner
 
-        # PHASE 1: Run explosive discovery to find earnings candidates
-        print("\n📊 PHASE 1: Running explosive earnings discovery...")
+        # --- PHASE 1: Find candidates with unusual options activity ---
+        print(
+            "\n📊 PHASE 1: Discovering candidates with ExplosiveOptionsScanner..."
+        )
         explosive_scanner = ExplosiveOptionsScanner(
             os.getenv('ALPHA_VANTAGE_API_KEY'))
-
         explosive_results = explosive_scanner.run_explosive_scan(
-            symbols=None,  # Auto-discover with earnings focus
-            scan_type=scan_type,
-            filters=filters)
+            scan_type='earnings', filters=filters)
 
-        # Extract high-scoring earnings candidates for Phase 2
-        earnings_candidates = []
-        for symbol, data in explosive_results['opportunities'].items():
-            best_score = data['best_opportunity']['total_score']
-
-            if (best_score >= min_explosive_score and data['market_data'].get(
-                    'earnings_info', {}).get('is_pre_earnings')):
-                earnings_candidates.append(symbol)
+        candidates = []
+        for symbol, data in explosive_results.get('opportunities', {}).items():
+            score = data.get('best_opportunity', {}).get('total_score', 0)
+            is_earnings = data.get('market_data',
+                                   {}).get('earnings_info',
+                                           {}).get('is_pre_earnings', False)
+            if score >= min_explosive_score and is_earnings:
+                candidates.append(symbol)
 
         print(
-            f"✅ PHASE 1 COMPLETE: Found {len(earnings_candidates)} high-scoring earnings candidates"
+            f"✅ PHASE 1 COMPLETE: Found {len(candidates)} candidates meeting explosive criteria."
         )
-        print(f"🎯 Earnings candidates: {earnings_candidates[:10]}...")
+        if not candidates:
+            return jsonify({
+                "status": "no-results",
+                "message": "Phase 1 found no suitable candidates."
+            })
 
-        # PHASE 2: Run full scanner_core analysis on earnings candidates
+        # --- PHASE 2: Run deep technical analysis on candidates ---
         print(
-            f"\n🔬 PHASE 2: Running full scanner_core analysis on {len(earnings_candidates)} candidates..."
+            f"\n🔬 PHASE 2: Running scanner_core analysis on {len(candidates)} candidates..."
+        )
+        scanner_core_results = run_scanner(
+            symbols=candidates,
+            min_delta=filters.get('min_delta', 0.10),
+            max_delta=filters.get('max_delta', 0.40),
+            min_price=filters.get('min_price', 0.05),
+            max_price=filters.get('max_price', 5.00),
+            time_to_expiry_range=(filters.get('min_days',
+                                              1), filters.get('max_days', 30)))
+        print(
+            f"✅ PHASE 2 COMPLETE: Analyzed {len(scanner_core_results)} symbols."
         )
 
-        scanner_core_results = {}
-        if earnings_candidates:
-            from scanner_core import run_scanner
-            print(
-                f"🔄 Running scanner_core on {len(earnings_candidates)} symbols..."
-            )
-            scanner_core_results = run_scanner(
-                symbols=earnings_candidates,
-                min_delta=filters.get('min_delta', 0.10),
-                max_delta=filters.get('max_delta', 0.40),
-                min_price=filters.get('min_price', 0.05),
-                max_price=filters.get('max_price', 5.00),
-                time_to_expiry_range=(filters.get('min_days', 1),
-                                      filters.get('max_days', 30)))
-
-            if scanner_core_results:
-                print(
-                    f"✅ PHASE 2 COMPLETE: Full analysis completed on {len(scanner_core_results)} symbols"
-                )
-            else:
-                print("⚠️ PHASE 2: No results from scanner_core analysis")
-
-        # Combine results from both phases
-        combined_results = {
-            "status": "success",
-            "scan_metadata": {
-                "timestamp":
-                datetime.now().isoformat(),
-                "scan_type":
-                f"explosive-earnings-combo-2phase ({scan_type})",
-                "phase_1_symbols_scanned":
-                explosive_results['scan_metadata']['symbols_scanned'],
-                "phase_1_opportunities":
-                len(explosive_results['opportunities']),
-                "earnings_candidates_found":
-                len(earnings_candidates),
-                "phase_2_analyzed":
-                len(scanner_core_results) if scanner_core_results else 0,
-                "min_explosive_score":
-                min_explosive_score,
-                "filters":
-                filters,
-                "methodology":
-                "Phase 1: Explosive discovery → Phase 2: Full scanner_core analysis"
-            },
-            "phase_1_explosive_results": {
-                "opportunities": explosive_results['opportunities'],
-                "top_picks": explosive_results['top_picks'][:10],
-                "by_category": explosive_results['by_category']
-            },
-            "phase_2_scanner_core_results": scanner_core_results or {},
-            "earnings_candidates": earnings_candidates,
-            "final_opportunities": []
-        }
-
-        # Create final combined opportunities list
+        # --- FINAL STEP: Combine scores and find true explosive setups ---
         final_opportunities = []
-        if scanner_core_results:
-            for symbol, scanner_data in scanner_core_results.items():
-                # Get corresponding explosive data
+        for symbol, core_data in scanner_core_results.items():
+            confluence_score = core_data.get('confluence', {}).get('score', 0)
+
+            if confluence_score >= min_confluence_score:
                 explosive_data = explosive_results['opportunities'].get(
                     symbol, {})
+                explosive_score = explosive_data.get('best_opportunity',
+                                                     {}).get('total_score', 0)
 
-                # Combine both analyses
-                combined_opportunity = {
+                # Combined score: (Confluence score is out of 10, explosive score is out of 100)
+                combined_score = (confluence_score *
+                                  10) + explosive_score  # Max 200
+
+                final_opportunities.append({
                     'symbol':
                     symbol,
+                    'combined_score':
+                    round(combined_score, 2),
                     'explosive_score':
-                    explosive_data.get('best_opportunity',
-                                       {}).get('total_score', 0),
+                    round(explosive_score, 2),
                     'confluence_score':
-                    scanner_data.get('confluence', {}).get('score', 0),
+                    round(confluence_score, 2),
                     'confluence_bias':
-                    scanner_data.get('confluence', {}).get('bias', 'N/A'),
-                    'days_to_earnings':
-                    explosive_data.get('market_data',
-                                       {}).get('earnings_info',
-                                               {}).get('days_to_earnings',
-                                                       'N/A'),
-                    'earnings_priority':
-                    explosive_data.get('market_data',
-                                       {}).get('earnings_info',
-                                               {}).get('earnings_priority',
-                                                       'N/A'),
-                    'has_gaps':
-                    any([
-                        tf_data.get('gap_percent', 0) != 0
-                        for tf_data in scanner_data.get(
-                            'timeframe_analysis', {}).values()
-                    ]),
-                    'volume_confluence':
-                    len(
-                        scanner_data.get('volume_profile',
-                                         {}).get('confluences', [])) > 0,
+                    core_data.get('confluence', {}).get('bias', 'N/A'),
                     'trade_plan':
-                    scanner_data.get('trade_plan', {}),
-                    'patterns_found': [
-                        f"{tf}:{','.join([k for k,v in tf_data.get('patterns', {}).items() if v])}"
-                        for tf, tf_data in scanner_data.get(
-                            'timeframe_analysis', {}).items()
-                        if any(tf_data.get('patterns', {}).values())
-                    ],
-                    'explosive_analysis':
-                    explosive_data.get('best_opportunity', {}),
-                    'scanner_core_analysis':
-                    scanner_data
-                }
-                final_opportunities.append(combined_opportunity)
+                    core_data.get('trade_plan', {}),
+                    'full_explosive_analysis':
+                    explosive_data,
+                    'full_core_analysis':
+                    core_data
+                })
 
-        # Sort by combined score (explosive + confluence)
-        final_opportunities.sort(
-            key=lambda x: (x['explosive_score'] + x['confluence_score']),
-            reverse=True)
+        final_opportunities.sort(key=lambda x: x['combined_score'],
+                                 reverse=True)
 
-        combined_results['final_opportunities'] = final_opportunities
+        print(
+            f"\n🏆 FINAL RESULTS: Found {len(final_opportunities)} high-quality, two-phase opportunities."
+        )
 
-        # Generate comprehensive summary
-        top_opportunity = final_opportunities[
-            0] if final_opportunities else None
-        combined_results['summary'] = f"""
-🎯 EXPLOSIVE EARNINGS COMBO SCAN - 2 PHASE ANALYSIS COMPLETE
-{'='*70}
-📊 PHASE 1 - Explosive Discovery:
-   • Symbols Scanned: {explosive_results['scan_metadata']['symbols_scanned']}
-   • Explosive Opportunities: {len(explosive_results['opportunities'])}
-   • Earnings Candidates: {len(earnings_candidates)}
+        response = {
+            "status": "success",
+            "scan_metadata": {
+                "methodology":
+                "Two-phase analysis combining options activity and technical confluence."
+            },
+            "final_opportunities": final_opportunities,
+        }
 
-🔬 PHASE 2 - Full Scanner Core Analysis:
-   • Candidates Analyzed: {len(scanner_core_results) if scanner_core_results else 0}
-   • Multi-timeframe Analysis: ✅
-   • Volume Profile Analysis: ✅
-   • Pattern Detection: ✅
-   • Confluence Scoring: ✅
-
-🏆 TOP COMBINED OPPORTUNITY:
-   • Symbol: {top_opportunity['symbol'] if top_opportunity else 'None'}
-   • Explosive Score: {top_opportunity['explosive_score']:.1f}/100 {'' if top_opportunity else 'N/A'}
-   • Confluence Score: {top_opportunity['confluence_score']:.1f}/10 {'' if top_opportunity else 'N/A'}
-   • Bias: {top_opportunity['confluence_bias'] if top_opportunity else 'N/A'}
-   • Days to Earnings: {top_opportunity['days_to_earnings'] if top_opportunity else 'N/A'}
-
-💡 METHODOLOGY: Two-phase analysis combining explosive discovery with comprehensive technical analysis
-        """.strip()
-
-        safe_results = make_json_safe(combined_results)
-        return jsonify(safe_results)
+        return jsonify(make_json_safe(response))
 
     except Exception as e:
-        print(f"❌ Error in explosive-earnings-combo: {e}")
         import traceback
-        traceback.print_exc()
+        print(f"❌ FATAL ERROR in explosive-earnings-combo: {e}")
         return jsonify({
             "status": "error",
             "message": str(e),
@@ -2566,17 +2591,14 @@ def explosive_techvol_scan():
         scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
 
         # Phase 1: get earnings plays to avoid duplicates
-        earnings_results = scanner.run_explosive_scan(
-            scan_type='earnings',
-            filters=filters
-        )
-        earnings_symbols = set(earnings_results.get('opportunities', {}).keys())
+        earnings_results = scanner.run_explosive_scan(scan_type='earnings',
+                                                      filters=filters)
+        earnings_symbols = set(
+            earnings_results.get('opportunities', {}).keys())
 
         # Phase 2: scan for unusual activity/technical setups
-        results = scanner.run_explosive_scan(
-            scan_type='unusual_activity',
-            filters=filters
-        )
+        results = scanner.run_explosive_scan(scan_type='unusual_activity',
+                                             filters=filters)
 
         opportunities = []
 
@@ -2596,7 +2618,8 @@ def explosive_techvol_scan():
             hv = market.get('volatility_30d', 0) / 100
             price = market.get('current_price', 0)
             high = market.get('high', 0)
-            iv_percentile = best.get('iv_percentile') or market.get('iv_percentile')
+            iv_percentile = best.get('iv_percentile') or market.get(
+                'iv_percentile')
             near_high = high > 0 and price >= high * 0.95
             volume_oi = vol / max(oi, 1)
             notional = vol * mark * 100
@@ -2611,16 +2634,12 @@ def explosive_techvol_scan():
             elif hv > 0:
                 low_iv = iv < hv * 0.8
 
-            earnings_flag = market.get('earnings_info', {}).get('is_pre_earnings', False)
+            earnings_flag = market.get('earnings_info',
+                                       {}).get('is_pre_earnings', False)
 
-            if (
-                dte <= filters.get('max_days', 7)
-                and 0.2 <= abs(delta) <= 0.4
-                and volume_oi >= 3
-                and low_iv
-                and oi >= 100
-                and notional >= 1000
-            ):
+            if (dte <= filters.get('max_days', 7) and 0.2 <= abs(delta) <= 0.4
+                    and volume_oi >= 3 and low_iv and oi >= 100
+                    and notional >= 1000):
                 if mode == 'earnings' and not earnings_flag:
                     continue
 
@@ -2630,39 +2649,50 @@ def explosive_techvol_scan():
                 elif hv:
                     iv_score = max(0, hv - iv) / hv * 20
 
-                score = (
-                    min(volume_oi, 10) * 5 +
-                    iv_score +
-                    (5 if near_high else 0) +
-                    (5 if earnings_flag and mode == 'earnings' else 0)
-                )
+                score = (min(volume_oi, 10) * 5 + iv_score +
+                         (5 if near_high else 0) +
+                         (5 if earnings_flag and mode == 'earnings' else 0))
 
                 opportunities.append({
-                    'symbol': symbol,
-                    'expiration': best.get('expiration'),
-                    'strike': best.get('strike'),
-                    'type': best.get('type'),
-                    'delta': delta,
-                    'theta': best.get('theta'),
-                    'gamma': best.get('gamma'),
-                    'iv': iv,
-                    'iv_percentile': iv_percentile,
-                    'volume': vol,
-                    'open_interest': oi,
-                    'dte': dte,
-                    'volume_oi_ratio': round(volume_oi, 2),
-                    'near_52w_high': near_high,
-                    'score': round(score, 2),
-                    'trading_plan': data.get('trading_plan', {})
+                    'symbol':
+                    symbol,
+                    'expiration':
+                    best.get('expiration'),
+                    'strike':
+                    best.get('strike'),
+                    'type':
+                    best.get('type'),
+                    'delta':
+                    delta,
+                    'theta':
+                    best.get('theta'),
+                    'gamma':
+                    best.get('gamma'),
+                    'iv':
+                    iv,
+                    'iv_percentile':
+                    iv_percentile,
+                    'volume':
+                    vol,
+                    'open_interest':
+                    oi,
+                    'dte':
+                    dte,
+                    'volume_oi_ratio':
+                    round(volume_oi, 2),
+                    'near_52w_high':
+                    near_high,
+                    'score':
+                    round(score, 2),
+                    'trading_plan':
+                    data.get('trading_plan', {})
                 })
 
         opportunities.sort(key=lambda x: x['score'], reverse=True)
         top_opps = opportunities[:top_n]
 
-        summary = (
-            f"Found {len(opportunities)} technical/vol opportunities. "
-            f"Top pick: {top_opps[0]['symbol'] if top_opps else 'N/A'}"
-        )
+        summary = (f"Found {len(opportunities)} technical/vol opportunities. "
+                   f"Top pick: {top_opps[0]['symbol'] if top_opps else 'N/A'}")
 
         return jsonify({
             'status': 'success',
@@ -2691,7 +2721,8 @@ def explosive_52week_combo():
             if entry_price and 'max_price' not in filters:
                 filters['max_price'] = float(entry_price)
         else:
-            min_explosive_score = float(request.args.get('min_explosive_score', 35))
+            min_explosive_score = float(
+                request.args.get('min_explosive_score', 35))
             entry_price = request.args.get('entry_price')
             if entry_price:
                 max_price_limit = float(entry_price)
@@ -2731,16 +2762,16 @@ def explosive_52week_combo():
             track_call(state)
             url = (
                 f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED'
-                f'&symbol={symbol}&outputsize=full&apikey={api_key}'
-            )
+                f'&symbol={symbol}&outputsize=full&apikey={api_key}')
             resp = requests.get(url, timeout=30)
             data = resp.json()
             if 'Time Series (Daily)' not in data:
                 return None
-            df = pd.DataFrame.from_dict(data['Time Series (Daily)'], orient='index')
+            df = pd.DataFrame.from_dict(data['Time Series (Daily)'],
+                                        orient='index')
             df.columns = [
-                'Open', 'High', 'Low', 'Close', 'Adjusted_Close',
-                'Volume', 'Dividend_Amount', 'Split_Coefficient'
+                'Open', 'High', 'Low', 'Close', 'Adjusted_Close', 'Volume',
+                'Dividend_Amount', 'Split_Coefficient'
             ]
             for col in df.columns:
                 df[col] = pd.to_numeric(df[col], errors='coerce')
@@ -2753,61 +2784,79 @@ def explosive_52week_combo():
         phase_state = {'count': 0, 'start': time.time()}
         extreme_symbols = {}
 
-        print(f"📊 PHASE 1: Checking {len(symbols_to_scan)} symbols for extremes...")
+        print(
+            f"📊 PHASE 1: Checking {len(symbols_to_scan)} symbols for extremes..."
+        )
         for sym in symbols_to_scan:
             try:
                 hist = fetch_price_history(sym, phase_state)
                 if hist is None or hist.empty:
                     print(f"⚠️ No data for {sym}")
                     continue
-                
+
                 # Calculate 52-week highs/lows (or available data range)
                 high_52 = hist['High'].max()
                 low_52 = hist['Low'].min()
                 last = hist.iloc[-1]
                 last_price = float(last['Close'])
-                last_volume = float(last['Volume']) if not pd.isna(last['Volume']) else 0
-                
+                last_volume = float(
+                    last['Volume']) if not pd.isna(last['Volume']) else 0
+
                 # Use more recent volume average (5-day instead of 20)
                 recent_volume = hist['Volume'].tail(5)
-                avg_volume = float(recent_volume.mean()) if not recent_volume.empty else 1
+                avg_volume = float(
+                    recent_volume.mean()) if not recent_volume.empty else 1
 
                 # More generous proximity thresholds
                 near_high = last_price >= 0.90 * high_52  # Changed from 0.95 to 0.90
-                near_low = last_price <= 1.10 * low_52   # Changed from 1.05 to 1.10
+                near_low = last_price <= 1.10 * low_52  # Changed from 1.05 to 1.10
                 volume_surge = last_volume >= 1.2 * avg_volume  # Changed from 1.5 to 1.2
 
-                print(f"📈 {sym}: Price ${last_price:.2f}, High ${high_52:.2f} ({last_price/high_52:.1%}), Low ${low_52:.2f} ({last_price/low_52:.1%}), Vol {last_volume/avg_volume:.1f}x")
+                print(
+                    f"📈 {sym}: Price ${last_price:.2f}, High ${high_52:.2f} ({last_price/high_52:.1%}), Low ${low_52:.2f} ({last_price/low_52:.1%}), Vol {last_volume/avg_volume:.1f}x"
+                )
 
                 # Score based on proximity to extremes AND volume
                 score = 0
-                
+
                 if near_high:
                     # Score higher the closer to 52-week high
-                    proximity_score = (last_price / high_52) * 30  # Max 30 points
+                    proximity_score = (last_price /
+                                       high_52) * 30  # Max 30 points
                     score += proximity_score
-                    print(f"  🔥 Near 52-week high: +{proximity_score:.1f} points")
-                
+                    print(
+                        f"  🔥 Near 52-week high: +{proximity_score:.1f} points"
+                    )
+
                 if near_low:
                     # Score higher the closer to 52-week low (oversold bounce potential)
-                    proximity_score = (1 - (last_price / low_52 - 1) / 0.10) * 25  # Max 25 points
+                    proximity_score = (
+                        1 -
+                        (last_price / low_52 - 1) / 0.10) * 25  # Max 25 points
                     score += proximity_score
-                    print(f"  📉 Near 52-week low: +{proximity_score:.1f} points")
-                
+                    print(
+                        f"  📉 Near 52-week low: +{proximity_score:.1f} points")
+
                 # Volume score (more weight for volume surge)
                 volume_ratio = last_volume / max(avg_volume, 1)
-                volume_score = min(volume_ratio * 20, 40)  # Max 40 points for volume
+                volume_score = min(volume_ratio * 20,
+                                   40)  # Max 40 points for volume
                 score += volume_score
-                print(f"  📊 Volume surge ({volume_ratio:.1f}x): +{volume_score:.1f} points")
-                
+                print(
+                    f"  📊 Volume surge ({volume_ratio:.1f}x): +{volume_score:.1f} points"
+                )
+
                 # Recent momentum bonus (if price moved >2% today)
                 if len(hist) > 1:
                     prev_close = hist.iloc[-2]['Close']
                     daily_change = (last_price - prev_close) / prev_close
                     if abs(daily_change) > 0.02:  # >2% move
-                        momentum_score = min(abs(daily_change) * 100, 15)  # Max 15 points
+                        momentum_score = min(abs(daily_change) * 100,
+                                             15)  # Max 15 points
                         score += momentum_score
-                        print(f"  ⚡ Daily momentum ({daily_change:.1%}): +{momentum_score:.1f} points")
+                        print(
+                            f"  ⚡ Daily momentum ({daily_change:.1%}): +{momentum_score:.1f} points"
+                        )
 
                 score = round(score, 1)
                 print(f"  🎯 Total Score: {score:.1f}")
@@ -2824,8 +2873,10 @@ def explosive_52week_combo():
                         'near_high': near_high,
                         'near_low': near_low,
                         'score': score,
-                        'proximity_to_high': round((last_price / high_52) * 100, 1),
-                        'proximity_to_low': round((last_price / low_52) * 100, 1)
+                        'proximity_to_high': round(
+                            (last_price / high_52) * 100, 1),
+                        'proximity_to_low': round((last_price / low_52) * 100,
+                                                  1)
                     }
                     print(f"  ✅ {sym} added with score {score:.1f}")
 
@@ -2835,10 +2886,14 @@ def explosive_52week_combo():
 
         # Show top candidates regardless of min_explosive_score for debugging
         if extreme_symbols:
-            sorted_symbols = sorted(extreme_symbols.items(), key=lambda x: x[1]['score'], reverse=True)
+            sorted_symbols = sorted(extreme_symbols.items(),
+                                    key=lambda x: x[1]['score'],
+                                    reverse=True)
             print(f"\n🏆 TOP 10 CANDIDATES BY SCORE:")
             for i, (sym, data) in enumerate(sorted_symbols[:10], 1):
-                print(f"  {i}. {sym}: {data['score']:.1f} (High: {data['proximity_to_high']:.1f}%, Low: {data['proximity_to_low']:.1f}%, Vol: {data['volume_ratio']:.1f}x)")
+                print(
+                    f"  {i}. {sym}: {data['score']:.1f} (High: {data['proximity_to_high']:.1f}%, Low: {data['proximity_to_low']:.1f}%, Vol: {data['volume_ratio']:.1f}x)"
+                )
 
         # Use a more reasonable threshold - either min_explosive_score OR top 20% of found symbols
         score_threshold = min_explosive_score
@@ -2846,14 +2901,23 @@ def explosive_52week_combo():
             # If min_explosive_score is too high, use 80th percentile of found scores
             all_scores = [d['score'] for d in extreme_symbols.values()]
             percentile_80 = np.percentile(all_scores, 80) if all_scores else 0
-            score_threshold = min(min_explosive_score, max(percentile_80, 25))  # At least 25, but not more than min_explosive_score
+            score_threshold = min(min_explosive_score, max(
+                percentile_80,
+                25))  # At least 25, but not more than min_explosive_score
 
-        candidates = [s for s, d in extreme_symbols.items() if d['score'] >= score_threshold]
-        
-        print(f"✅ PHASE 1 COMPLETE: {len(candidates)} symbols meet criteria (threshold: {score_threshold:.1f})")
+        candidates = [
+            s for s, d in extreme_symbols.items()
+            if d['score'] >= score_threshold
+        ]
+
+        print(
+            f"✅ PHASE 1 COMPLETE: {len(candidates)} symbols meet criteria (threshold: {score_threshold:.1f})"
+        )
         if score_threshold != min_explosive_score:
-            print(f"  📊 Used adaptive threshold {score_threshold:.1f} instead of {min_explosive_score:.1f}")
-        
+            print(
+                f"  📊 Used adaptive threshold {score_threshold:.1f} instead of {min_explosive_score:.1f}"
+            )
+
         # Show selected candidates
         if candidates:
             print(f"🎯 Selected candidates: {candidates[:10]}")  # Show first 10
@@ -2861,15 +2925,17 @@ def explosive_52week_combo():
         scanner_core_results = {}
         if candidates:
             from scanner_core import run_scanner
-            print(f"🔬 PHASE 2: Running scanner_core on {len(candidates)} symbols")
+            print(
+                f"🔬 PHASE 2: Running scanner_core on {len(candidates)} symbols"
+            )
             scanner_core_results = run_scanner(
                 symbols=candidates,
                 min_delta=filters.get('min_delta', 0.10),
                 max_delta=filters.get('max_delta', 0.40),
                 min_price=filters.get('min_price', 0.05),
                 max_price=filters.get('max_price', 5.00),
-                time_to_expiry_range=(filters.get('min_days', 1), filters.get('max_days', 30))
-            )
+                time_to_expiry_range=(filters.get('min_days', 1),
+                                      filters.get('max_days', 30)))
 
         final_opportunities = []
         for symbol in candidates:
@@ -2878,17 +2944,30 @@ def explosive_52week_combo():
             sc_data = scanner_core_results[symbol]
             trade_plan = sc_data.get('trade_plan', {})
             final_opportunities.append({
-                'symbol': symbol,
-                'option': trade_plan.get('option_symbol', f"{symbol} {trade_plan.get('strike', '')} {trade_plan.get('type', '')}"),
-                'explosive_score': extreme_symbols[symbol]['score'],
-                'confluence_score': sc_data.get('confluence', {}).get('score', 0),
-                'confluence_bias': sc_data.get('confluence', {}).get('bias', 'N/A'),
-                'trade_plan': trade_plan,
-                'explosive_analysis': extreme_symbols[symbol],
-                'scanner_core_analysis': sc_data
+                'symbol':
+                symbol,
+                'option':
+                trade_plan.get(
+                    'option_symbol',
+                    f"{symbol} {trade_plan.get('strike', '')} {trade_plan.get('type', '')}"
+                ),
+                'explosive_score':
+                extreme_symbols[symbol]['score'],
+                'confluence_score':
+                sc_data.get('confluence', {}).get('score', 0),
+                'confluence_bias':
+                sc_data.get('confluence', {}).get('bias', 'N/A'),
+                'trade_plan':
+                trade_plan,
+                'explosive_analysis':
+                extreme_symbols[symbol],
+                'scanner_core_analysis':
+                sc_data
             })
 
-        final_opportunities.sort(key=lambda x: (x['explosive_score'] + x['confluence_score']), reverse=True)
+        final_opportunities.sort(
+            key=lambda x: (x['explosive_score'] + x['confluence_score']),
+            reverse=True)
 
         combined_results = {
             'status': 'success',
@@ -2907,18 +2986,15 @@ def explosive_52week_combo():
         }
 
         top = final_opportunities[0] if final_opportunities else None
-        summary = (
-            f"📊 PHASE 1 – Scanned {len(symbols_to_scan)} symbols, "
-            f"{len(extreme_symbols)} met criteria. "
-            f"🔬 PHASE 2 – {len(scanner_core_results)} analyzed, "
-            f"{len(final_opportunities)} opportunities found."
-        )
+        summary = (f"📊 PHASE 1 – Scanned {len(symbols_to_scan)} symbols, "
+                   f"{len(extreme_symbols)} met criteria. "
+                   f"🔬 PHASE 2 – {len(scanner_core_results)} analyzed, "
+                   f"{len(final_opportunities)} opportunities found.")
         if top:
             summary += (
                 f" 🏆 Top: {top['symbol']} {top['trade_plan'].get('strike','')} "
                 f"{top['trade_plan'].get('type','')} - Explosive {top['explosive_score']:.1f}/100, "
-                f"Confluence {top['confluence_score']:.1f}/10"
-            )
+                f"Confluence {top['confluence_score']:.1f}/10")
 
         combined_results['summary'] = summary
         print(summary)
@@ -3001,7 +3077,8 @@ def mega_discovery_scan():
             from scanner_core import get_optionable_stocks_with_volume
             volume_symbols = get_optionable_stocks_with_volume()
             all_discovered_symbols.extend(volume_symbols)
-            discovery_sources['high_volume'] = {'count': len(volume_symbols),
+            discovery_sources['high_volume'] = {
+                'count': len(volume_symbols),
                 'symbols': volume_symbols[:20]
             }
             print(f"✅ High Volume: {len(volume_symbols)} symbols")
@@ -3228,6 +3305,317 @@ def discovery_info():
             "message": f"Discovery info failed: {str(e)}"
         }), 500
 
+
+@app.route("/quantitative-squeeze-scan", methods=["GET"])
+def quantitative_squeeze_scan():
+    """
+    A dedicated endpoint to find high-potential explosive moves.
+    It filters stocks based on a Bollinger Band Squeeze and high Relative Volume,
+    then runs the full multi-timeframe analysis to find a confluence of signals.
+    """
+    try:
+        # Get parameters from the request
+        min_rvol = float(request.args.get('min_rvol', 2.0))
+        min_confluence = float(request.args.get('min_confluence', 7.0))
+        max_symbols_to_check = int(request.args.get('limit', 100))
+
+        print("🚀 QUANTITATIVE SQUEEZE & VOLUME SCAN INITIATED")
+        print("=" * 60)
+        print(
+            f"PARAMETERS: Min RVOL={min_rvol}, Min Confluence Score={min_confluence}"
+        )
+
+        from scanner_core import get_optionable_stocks_with_volume, run_scanner
+
+        # --- PHASE 1: Quantitative Discovery ---
+        print(
+            "\n📊 PHASE 1: Discovering symbols and filtering for quantitative signals..."
+        )
+
+        # Use a robust method to get a list of potential symbols
+        symbols_to_check = get_optionable_stocks_with_volume()
+        if max_symbols_to_check > 0:
+            symbols_to_check = symbols_to_check[:max_symbols_to_check]
+
+        phase_1_hits = []
+        for symbol in symbols_to_check:
+            try:
+                # 1. Check for Volatility Squeeze
+                daily_history = yf.Ticker(symbol).history(period="1y")
+                if daily_history.empty:
+                    continue
+
+                in_squeeze = is_in_bollinger_squeeze(daily_history)
+                if not in_squeeze:
+                    continue  # Skip if not in a squeeze
+
+                # 2. Check for Relative Volume
+                rvol = calculate_relative_volume(symbol)
+                if rvol < min_rvol:
+                    continue  # Skip if volume isn't high enough
+
+                # If both conditions are met, it's a Phase 1 hit
+                print(
+                    f"🔥 PHASE 1 HIT: {symbol} is in a squeeze with RVOL of {rvol:.2f}"
+                )
+                phase_1_hits.append(symbol)
+                time.sleep(1)  # Small delay to avoid API issues
+
+            except Exception as e:
+                print(f"⚠️ Error in Phase 1 for {symbol}: {e}")
+                continue
+
+        print(
+            f"\n✅ PHASE 1 COMPLETE: Found {len(phase_1_hits)} candidates with strong quantitative signals."
+        )
+
+        if not phase_1_hits:
+            return jsonify({
+                "status": "no-results",
+                "message": "Phase 1 found no candidates."
+            })
+
+        # --- PHASE 2: Deep Technical Analysis ---
+        print(
+            f"\n🔬 PHASE 2: Running scanner_core analysis on {len(phase_1_hits)} candidates..."
+        )
+
+        # Use your existing, powerful scanner_core on the highly-filtered list
+        scanner_core_results = run_scanner(symbols=phase_1_hits)
+
+        final_opportunities = []
+        for symbol, core_data in scanner_core_results.items():
+            confluence_score = core_data.get('confluence', {}).get('score', 0)
+
+            if confluence_score >= min_confluence:
+                print(
+                    f"🏆 FINAL HIT: {symbol} passed all checks with Confluence Score of {confluence_score:.2f}"
+                )
+                final_opportunities.append({
+                    "symbol":
+                    symbol,
+                    "confluence_score":
+                    confluence_score,
+                    "confluence_bias":
+                    core_data.get('confluence', {}).get('bias', 'N/A'),
+                    "trade_plan":
+                    core_data.get('trade_plan', {})
+                })
+
+        print(
+            f"\n🏁 SCAN COMPLETE: Found {len(final_opportunities)} fully-qualified opportunities."
+        )
+
+        return jsonify({
+            "status": "success",
+            "scan_parameters": {
+                "min_rvol": min_rvol,
+                "min_confluence_score": min_confluence
+            },
+            "opportunities": final_opportunities
+        })
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            "status": "error",
+            "message": str(e),
+            "traceback": traceback.format_exc()
+        }), 500
+
+
+
+@app.route("/comprehensive-pipeline-scan", methods=["GET"])
+def comprehensive_pipeline_scan():
+    """
+    Finds high-potential opportunities by looking for two distinct setups:
+    1. SQUEEZE SETUP: Stocks currently in a volatility squeeze (potential energy).
+    2. BREAKOUT SETUP: Stocks with a massive relative volume spike today (kinetic energy).
+    """
+    try:
+        # --- ADD max_price TO PARAMETERS ---
+        max_price = float(request.args.get('max_price', 2.00)) # Default to $2.00
+        min_rvol = float(request.args.get('min_rvol', 2.0))
+        min_confluence = float(request.args.get('min_confluence', 7.5))
+        max_candidates = int(request.args.get('limit', 50))
+        api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
+
+        if not api_key:
+            return jsonify({"status": "error", "message": "ALPHA_VANTAGE_API_KEY not set."}), 500
+
+        print("🚀 COMPREHENSIVE PIPELINE SCAN INITIATED (SQUEEZE + BREAKOUT)")
+        print("=" * 60)
+
+        from enhanced_scanner import discover_pre_earnings_stocks
+        from scanner_core import run_scanner
+
+        # --- STAGE 1: DISCOVERY ---
+        print("\n📊 STAGE 1: Discovering symbols...")
+        symbols_to_check = discover_pre_earnings_stocks(verbose=False)
+        print(f"✅ Found {len(symbols_to_check)} earnings candidates to check.")
+
+        # --- STAGE 2: QUANTITATIVE FILTERING (Squeeze OR Breakout) ---
+        print("\n🔬 STAGE 2: Filtering for Squeeze OR High RVOL...")
+
+        quant_approved_symbols = []
+
+        for symbol in symbols_to_check:
+            if len(quant_approved_symbols) >= max_candidates:
+                print(f"🎯 Candidate limit of {max_candidates} reached.")
+                break
+            try:
+                in_squeeze = is_in_bollinger_squeeze(symbol, api_key=api_key)
+                if in_squeeze:
+                    print(f"🔥 SQUEEZE SETUP: {symbol} passed squeeze filter.")
+                    quant_approved_symbols.append(symbol)
+                    continue 
+
+                rvol = calculate_relative_volume(symbol, api_key=api_key)
+                if rvol >= min_rvol:
+                    print(f"🔥 BREAKOUT SETUP: {symbol} passed RVOL filter ({rvol:.2f}).")
+                    quant_approved_symbols.append(symbol)
+
+            except Exception as e:
+                print(f"⚠️ Error in Stage 2 for {symbol}: {e}")
+                continue
+
+        quant_approved_symbols = list(dict.fromkeys(quant_approved_symbols))
+
+        print(f"\n✅ STAGE 2 COMPLETE: Found {len(quant_approved_symbols)} candidates meeting quantitative criteria.")
+
+        if not quant_approved_symbols:
+            return jsonify({"status": "no-results", "message": "No symbols passed the quantitative filters."})
+
+        # --- STAGE 3: PROFILE SCAN & OPTIONS GENERATION ---
+        print(f"\n📈 STAGE 3: Running deep profile scan on {len(quant_approved_symbols)} candidates...")
+
+        # --- PASS max_price TO run_scanner ---
+        final_results = run_scanner(symbols=quant_approved_symbols, max_price=max_price)
+
+        final_opportunities = []
+        for symbol, data in final_results.items():
+            if data.get('confluence', {}).get('score', 0) >= min_confluence:
+                final_opportunities.append({
+                    "symbol": symbol,
+                    "confluence_score": data['confluence']['score'],
+                    "bias": data['confluence']['bias'],
+                    "trade_plan": data.get('trade_plan')
+                })
+
+        print(f"\n🏁 PIPELINE COMPLETE: Found {len(final_opportunities)} fully-qualified trade plans.")
+
+        return jsonify({
+            "status": "success",
+            "opportunities": final_opportunities
+        })
+
+    except Exception as e:
+        import traceback
+        return jsonify({
+            "status": "error",
+            "message": str(e),
+            "traceback": traceback.format_exc()
+        }), 500
+        
+@app.route("/gamma-squeeze-scan", methods=["GET"])
+def gamma_squeeze_scan():
+    """
+    An innovative scanner that finds explosive setups by identifying "gamma walls"
+    in the options chain that can trigger a feedback loop of forced buying.
+    """
+    print("🚀 GAMMA SQUEEZE SCAN INITIATED")
+    print("=" * 60)
+
+    from scanner_core import get_optionable_stocks_with_volume, run_scanner
+    from explosive_options_scanner import ExplosiveOptionsScanner # We use this for its robust options fetching
+
+    # Helper function to find a gamma wall for a single symbol
+    def find_gamma_wall(symbol: str, scanner: ExplosiveOptionsScanner) -> dict or None:
+        try:
+            print(f"🔍 Analyzing gamma exposure for {symbol}...")
+            options_df = scanner._fetch_all_options(symbol)
+
+            if options_df is None or options_df.empty or 'gamma' not in options_df.columns:
+                return None
+
+            # Get current stock price for context
+            stock_price = yf.Ticker(symbol).history(period="1d")['Close'].iloc[-1]
+
+            # --- Gamma Calculation ---
+            # 1. Filter for out-of-the-money (OTM) calls expiring within 45 days
+            calls = options_df[
+                (options_df['type'] == 'call') &
+                (options_df['strike'] > stock_price) &
+                (options_df['days_to_expiry'] <= 45)
+            ].copy()
+
+            if calls.empty: return None
+
+            # 2. Calculate Total Gamma Exposure for each strike price
+            # Total GEX = Gamma * Open Interest * 100 shares/contract
+            calls['total_gamma'] = calls['gamma'] * calls['open_interest'] * 100
+
+            # 3. Find the strike with the maximum gamma exposure (the "gamma wall")
+            gamma_wall_strike = calls.loc[calls['total_gamma'].idxmax()]
+
+            max_gamma = gamma_wall_strike['total_gamma']
+            wall_strike_price = gamma_wall_strike['strike']
+
+            # --- The Trigger Condition ---
+            # Is the wall significant and within reach?
+            distance_to_wall_pct = (wall_strike_price / stock_price - 1) * 100
+
+            # Condition: Wall must be within 5-20% of the current price and have significant GEX
+            if (5 < distance_to_wall_pct < 20) and (max_gamma > 10000): # 10,000 is a baseline for significant GEX
+                print(f"  🔥 GAMMA WALL DETECTED for {symbol} at ${wall_strike_price:.2f}!")
+                print(f"     - Stock is at ${stock_price:.2f} ({distance_to_wall_pct:.1f}% away)")
+                print(f"     - Total Gamma Exposure: {max_gamma:,.0f}")
+
+                return {
+                    "symbol": symbol,
+                    "wall_strike": wall_strike_price,
+                    "distance_pct": distance_to_wall_pct,
+                    "total_gamma": max_gamma,
+                    "trigger_option": gamma_wall_strike.to_dict()
+                }
+
+        except Exception as e:
+            print(f"  - Error analyzing gamma for {symbol}: {e}")
+        return None
+
+    # --- Main Scan Logic ---
+    scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
+    # dynamic, market-wide list with option/liquidity validation
+    symbols_to_check = get_optionable_stocks_with_volume()
+
+    # (optional but recommended) respect a ?limit= param, default 600
+    try:
+        limit = int(request.args.get("limit", 600))
+        if limit > 0:
+            symbols_to_check = symbols_to_check[:limit]
+    except Exception:
+        pass
+
+
+    gamma_squeeze_candidates = []
+    for symbol in symbols_to_check:
+        wall_info = find_gamma_wall(symbol, scanner)
+        if wall_info:
+            gamma_squeeze_candidates.append(symbol)
+        time.sleep(1) # API delay
+
+    if not gamma_squeeze_candidates:
+        return jsonify({"status": "no-results", "message": "No gamma squeeze setups found."})
+
+    # --- Final Analysis on Filtered Candidates ---
+    print(f"\n📈 Running final analysis on {len(gamma_squeeze_candidates)} gamma squeeze candidates...")
+    final_results = run_scanner(symbols=gamma_squeeze_candidates)
+
+    return jsonify({
+        "status": "success",
+        "scan_type": "gamma_squeeze",
+        "opportunities": make_json_safe(final_results)
+    })
 
 if __name__ == "__main__":
     print("Starting Flask app on 0.0.0.0:8080...")
