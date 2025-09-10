@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 import json
 import glob
@@ -10,6 +10,7 @@ import time
 import yfinance as yf
 from run_autonomous_scan import run_autonomous_scan
 from quantitative_analyzer import is_in_bollinger_squeeze, calculate_relative_volume
+from enhanced_scanner import EnhancedOptionsScanner
 
 app = Flask(__name__)
 
@@ -3618,9 +3619,9 @@ def gamma_squeeze_scan():
     })
 
 if __name__ == "__main__":
-    print("Starting Flask app on 0.0.0.0:8080...")
+    print("Starting Flask app on 0.0.0.0:5000...")
     try:
-        app.run(host="0.0.0.0", port=8080, debug=True)
+        app.run(host="0.0.0.0", port=5000, debug=True)
     except Exception as e:
         print(f"Error starting Flask app: {e}")
         raise
