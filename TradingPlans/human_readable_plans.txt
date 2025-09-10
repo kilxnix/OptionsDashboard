@@ -16090,3 +16090,201 @@ Delta: 0.34754 | Gamma: 0.07284 | Theta: -0.01229 | Score: 3.02
 
 ================================================================================
 
+📈 Trade Plan for ACN (Bullish Bias)
+
+🔹 Option: $$257.5 Call expiring 2025-09-19
+🔹 Entry Price: $3.10
+🔹 Stop Loss: $2.33
+🔹 Initial Target: $5.42
+🔹 Final Target: $10.85
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.35589 | Gamma: 0.02859 | Theta: -0.25307 | Score: 0.70
+
+================================================================================
+
+📈 Trade Plan for BB (Bearish Bias)
+
+🔹 Option: $$4.0 Put expiring 2027-01-15
+🔹 Entry Price: $1.01
+🔹 Stop Loss: $0.76
+🔹 Initial Target: $1.77
+🔹 Final Target: $3.54
+🔹 Position Size: 2 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.37458 | Gamma: 0.15365 | Theta: -0.00067 | Score: 92.40
+
+================================================================================
+
+📈 Trade Plan for CBRL (Bullish Bias)
+
+🔹 Option: $$60.0 Call expiring 2026-01-16
+🔹 Entry Price: $3.30
+🔹 Stop Loss: $2.47
+🔹 Initial Target: $5.77
+🔹 Final Target: $11.55
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.35239 | Gamma: 0.02444 | Theta: -0.02361 | Score: 1.07
+
+================================================================================
+
+📈 Trade Plan for BB (Bearish Bias)
+
+🔹 Option: $$4.0 Put expiring 2027-01-15
+🔹 Entry Price: $1.01
+🔹 Stop Loss: $0.76
+🔹 Initial Target: $1.77
+🔹 Final Target: $3.54
+🔹 Position Size: 2 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.37458 | Gamma: 0.15365 | Theta: -0.00067 | Score: 92.40
+
+================================================================================
+
+📈 Trade Plan for ADBE (Bullish Bias)
+
+🔹 Option: $$395.0 Call expiring 2025-09-19
+🔹 Entry Price: $4.80
+🔹 Stop Loss: $3.60
+🔹 Initial Target: $8.40
+🔹 Final Target: $16.80
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.20604 | Gamma: 0.00656 | Theta: -0.62744 | Score: 0.57
+
+================================================================================
+
+📈 Trade Plan for CHWY (Bearish Bias)
+
+🔹 Option: $$37.5 Put expiring 2026-06-18
+🔹 Entry Price: $4.10
+🔹 Stop Loss: $3.07
+🔹 Initial Target: $7.17
+🔹 Final Target: $14.35
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.27219 | Gamma: 0.02298 | Theta: -0.00680 | Score: 1.79
+
+================================================================================
+
+📈 Trade Plan for ADBE (Bullish Bias)
+
+🔹 Option: $$395.0 Call expiring 2025-09-19
+🔹 Entry Price: $4.80
+🔹 Stop Loss: $3.60
+🔹 Initial Target: $8.40
+🔹 Final Target: $16.80
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.20604 | Gamma: 0.00656 | Theta: -0.62744 | Score: 0.57
+
+================================================================================
+
+📈 Trade Plan for BB (Bearish Bias)
+
+🔹 Option: $$4.0 Put expiring 2027-01-15
+🔹 Entry Price: $1.01
+🔹 Stop Loss: $0.76
+🔹 Initial Target: $1.77
+🔹 Final Target: $3.54
+🔹 Position Size: 2 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.37458 | Gamma: 0.15365 | Theta: -0.00067 | Score: 92.40
+
+================================================================================
+
+📈 Trade Plan for CBRL (Bullish Bias)
+
+🔹 Option: $$60.0 Call expiring 2026-01-16
+🔹 Entry Price: $3.30
+🔹 Stop Loss: $2.47
+🔹 Initial Target: $5.77
+🔹 Final Target: $11.55
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.35239 | Gamma: 0.02444 | Theta: -0.02361 | Score: 1.07
+
+================================================================================
+
+📈 Trade Plan for CHWY (Bearish Bias)
+
+🔹 Option: $$37.5 Put expiring 2026-06-18
+🔹 Entry Price: $4.10
+🔹 Stop Loss: $3.07
+🔹 Initial Target: $7.17
+🔹 Final Target: $14.35
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.27219 | Gamma: 0.02298 | Theta: -0.00680 | Score: 1.79
+
+================================================================================
+
+📈 Trade Plan for ADBE (Bullish Bias)
+
+🔹 Option: $$395.0 Call expiring 2025-09-19
+🔹 Entry Price: $4.80
+🔹 Stop Loss: $3.60
+🔹 Initial Target: $8.40
+🔹 Final Target: $16.80
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 8 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.20604 | Gamma: 0.00656 | Theta: -0.62744 | Score: 0.57
+
+================================================================================
+
