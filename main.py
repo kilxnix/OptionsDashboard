@@ -159,8 +159,10 @@ def trigger_scan():
         limit = int(request.args.get('limit', 0))  # 0 = unlimited
         min_delta = float(request.args.get('min_delta', 0.25))
         max_delta = float(request.args.get('max_delta', 0.68))
+        # Support both entry_price and max_price, with entry_price taking precedence
+        entry_price = request.args.get('entry_price')
         min_price = float(request.args.get('min_price', 0.01))
-        max_price = float(request.args.get('max_price', 0.10))
+        max_price = float(entry_price) if entry_price else float(request.args.get('max_price', 0.10))
         min_days = int(request.args.get('min_days', 2))
         max_days = int(request.args.get('max_days', 16))
         iv_percentile = request.args.get('iv_percentile')
@@ -910,9 +912,12 @@ def run_explosive_scan():
             scan_type = request.args.get('scan_type', 'comprehensive')
             symbols = request.args.getlist('symbols') or None
             max_symbols = int(request.args.get('max_symbols', 400))
+            # Support both entry_price and max_price, with entry_price taking precedence
+            entry_price = request.args.get('entry_price')
+            max_price = float(entry_price) if entry_price else float(request.args.get('max_price', 5.00))
             filters = {
                 'min_price': float(request.args.get('min_price', 0.05)),
-                'max_price': float(request.args.get('max_price', 5.00)),
+                'max_price': max_price,
                 'min_delta': float(request.args.get('min_delta', 0.15)),
                 'max_delta': float(request.args.get('max_delta', 0.35)),
                 'min_days': int(request.args.get('min_days', 1)),
@@ -2097,9 +2102,12 @@ def explosive_earnings_combo():
                 request.args.get('min_explosive_score', 40))
             min_confluence_score = float(
                 request.args.get('min_confluence_score', 6.0))
+            # Support both entry_price and max_price, with entry_price taking precedence
+            entry_price = request.args.get('entry_price')
+            max_price = float(entry_price) if entry_price else float(request.args.get('max_price', 5.00))
             filters = {
                 'min_price': float(request.args.get('min_price', 0.05)),
-                'max_price': float(request.args.get('max_price', 5.00)),
+                'max_price': max_price,
                 'min_delta': float(request.args.get('min_delta', 0.10)),
                 'max_delta': float(request.args.get('max_delta', 0.40)),
                 'min_days': int(request.args.get('min_days', 1)),
