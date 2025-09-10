@@ -16000,3 +16000,93 @@ Delta: -0.43600 | Gamma: 0.01913 | Theta: -0.12020 | Score: 0.77
 
 ================================================================================
 
+📈 Trade Plan for ASAN (Bearish Bias)
+
+🔹 Option: $$13.0 Put expiring 2025-10-10
+🔹 Entry Price: $1.00
+🔹 Stop Loss: $0.75
+🔹 Initial Target: $1.75
+🔹 Final Target: $3.50
+🔹 Position Size: 2 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.30802 | Gamma: 0.14331 | Theta: -0.01079 | Score: 5.94
+
+================================================================================
+
+📈 Trade Plan for CBRL (Bearish Bias)
+
+🔹 Option: $$50.0 Put expiring 2025-09-19
+🔹 Entry Price: $1.15
+🔹 Stop Loss: $0.86
+🔹 Initial Target: $2.01
+🔹 Final Target: $4.02
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.23180 | Gamma: 0.04009 | Theta: -0.06660 | Score: 0.82
+
+================================================================================
+
+📈 Trade Plan for ADBE (Bearish Bias)
+
+🔹 Option: $$335.0 Put expiring 2025-09-05
+🔹 Entry Price: $1.48
+🔹 Stop Loss: $1.11
+🔹 Initial Target: $2.59
+🔹 Final Target: $5.18
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.19254 | Gamma: 0.02130 | Theta: -0.57772 | Score: 0.57
+
+================================================================================
+
+📈 Trade Plan for AEO (Bullish Bias)
+
+🔹 Option: $$17.0 Call expiring 2026-02-20
+🔹 Entry Price: $1.15
+🔹 Stop Loss: $0.86
+🔹 Initial Target: $2.01
+🔹 Final Target: $4.02
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.36431 | Gamma: 0.07176 | Theta: -0.00621 | Score: 5.28
+
+================================================================================
+
+📈 Trade Plan for AI (Bullish Bias)
+
+🔹 Option: $$20.0 Call expiring 2025-11-21
+🔹 Entry Price: $1.03
+🔹 Stop Loss: $0.77
+🔹 Initial Target: $1.80
+🔹 Final Target: $3.60
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.34754 | Gamma: 0.07284 | Theta: -0.01229 | Score: 3.02
+
+================================================================================
+
