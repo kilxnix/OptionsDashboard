@@ -482,6 +482,68 @@ SCANNER_TEMPLATE = """
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scanner - Options Scanner Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .premium-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        .locked-input {
+            background-color: #f3f4f6;
+            cursor: not-allowed;
+            position: relative;
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            font-size: 12px;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+        }
+        .parameter-group {
+            position: relative;
+        }
+        .lock-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .upgrade-prompt {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body class="bg-gray-50">
     <nav class="bg-white shadow-lg">
@@ -500,37 +562,160 @@ SCANNER_TEMPLATE = """
     </nav>
 
     <div class="max-w-7xl mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-8">Options Scanner</h1>
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold">Options Scanner</h1>
+            <div id="tierIndicator" class="px-4 py-2 rounded-lg font-semibold"></div>
+        </div>
+        
+        <!-- Tier Limits Info Box -->
+        <div id="tierLimitsBox" class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mb-6 hidden">
+            <div class="flex items-center">
+                <svg class="w-5 h-5 text-yellow-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                </svg>
+                <p id="tierLimitsText" class="text-sm text-yellow-800"></p>
+            </div>
+        </div>
         
         <div class="bg-white p-6 rounded-lg shadow mb-8">
             <h3 class="text-xl font-semibold mb-4">Scanner Settings</h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div>
-                    <label class="block text-sm font-medium mb-1">Scanner Type</label>
-                    <select id="scanType" class="w-full px-3 py-2 border rounded-lg">
-                        <option value="scan">Basic Scan</option>
-                        <option value="explosive-scan">Explosive Scan</option>
-                        <option value="explosive-earnings-combo">Earnings Combo</option>
-                        <option value="jpm-explosion-hunter">JPM Hunter</option>
-                        <option value="gamma-squeeze-detector">Gamma Squeeze</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1">Max Price</label>
+            
+            <!-- Scanner Type Selection -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium mb-2">
+                    Scanner Type
+                    <span class="tooltip">
+                        <svg class="inline w-4 h-4 text-gray-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="tooltiptext">Choose the type of scan to run</span>
+                    </span>
+                </label>
+                <select id="scanType" class="w-full px-3 py-2 border rounded-lg">
+                    <!-- Options will be populated based on tier -->
+                </select>
+            </div>
+            
+            <!-- Basic Parameters -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="parameter-group">
+                    <label class="block text-sm font-medium mb-1">
+                        Max Price
+                        <span class="tooltip">
+                            <svg class="inline w-4 h-4 text-gray-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="tooltiptext">Maximum option contract price</span>
+                        </span>
+                    </label>
                     <input type="number" id="maxPrice" value="5.00" step="0.01" class="w-full px-3 py-2 border rounded-lg">
                 </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1">Min Delta</label>
+                <div class="parameter-group">
+                    <label class="block text-sm font-medium mb-1">
+                        Min Delta
+                        <span class="tooltip">
+                            <svg class="inline w-4 h-4 text-gray-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="tooltiptext">Minimum delta for option contracts</span>
+                        </span>
+                    </label>
                     <input type="number" id="minDelta" value="0.20" step="0.01" class="w-full px-3 py-2 border rounded-lg">
                 </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1">Max Delta</label>
+                <div class="parameter-group">
+                    <label class="block text-sm font-medium mb-1">
+                        Max Delta
+                        <span class="tooltip">
+                            <svg class="inline w-4 h-4 text-gray-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="tooltiptext">Maximum delta for option contracts</span>
+                        </span>
+                    </label>
                     <input type="number" id="maxDelta" value="0.40" step="0.01" class="w-full px-3 py-2 border rounded-lg">
                 </div>
+                <div class="parameter-group">
+                    <label class="block text-sm font-medium mb-1">
+                        Days to Expiry
+                        <span class="tooltip">
+                            <svg class="inline w-4 h-4 text-gray-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="tooltiptext">Maximum days until option expiration</span>
+                        </span>
+                    </label>
+                    <input type="number" id="daysToExpiry" value="7" step="1" class="w-full px-3 py-2 border rounded-lg">
+                </div>
             </div>
-            <button onclick="runScan()" class="mt-4 bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">
-                Run Scan
-            </button>
+            
+            <!-- Advanced Parameters (Premium Only) -->
+            <div id="advancedParams" class="hidden">
+                <h4 class="text-lg font-semibold mb-3">
+                    Advanced Parameters
+                    <span class="premium-badge">PREMIUM</span>
+                </h4>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="parameter-group">
+                        <label class="block text-sm font-medium mb-1">
+                            Min Volume
+                            <span class="tooltip">
+                                <svg class="inline w-4 h-4 text-gray-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="tooltiptext">Minimum daily volume for options</span>
+                            </span>
+                        </label>
+                        <input type="number" id="minVolume" value="100" step="10" class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                    <div class="parameter-group">
+                        <label class="block text-sm font-medium mb-1">
+                            Min Open Interest
+                            <span class="tooltip">
+                                <svg class="inline w-4 h-4 text-gray-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="tooltiptext">Minimum open interest for options</span>
+                            </span>
+                        </label>
+                        <input type="number" id="minOpenInterest" value="50" step="10" class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                    <div class="parameter-group">
+                        <label class="block text-sm font-medium mb-1">
+                            Score Threshold
+                            <span class="tooltip">
+                                <svg class="inline w-4 h-4 text-gray-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="tooltiptext">Minimum score for opportunities</span>
+                            </span>
+                        </label>
+                        <input type="number" id="scoreThreshold" value="60" step="5" class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                    <div class="parameter-group">
+                        <label class="block text-sm font-medium mb-1">
+                            Max Results
+                            <span class="tooltip">
+                                <svg class="inline w-4 h-4 text-gray-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="tooltiptext">Maximum number of results to display</span>
+                            </span>
+                        </label>
+                        <input type="number" id="maxResults" value="20" step="5" class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-between mt-6">
+                <button onclick="runScan()" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">
+                    Run Scan
+                </button>
+                <div id="upgradePrompt" class="hidden">
+                    <a href="/pricing" class="upgrade-prompt hover:opacity-90">
+                        🚀 Upgrade to Premium for Advanced Features
+                    </a>
+                </div>
+            </div>
         </div>
 
         <div id="results" class="bg-white p-6 rounded-lg shadow hidden">
@@ -540,6 +725,199 @@ SCANNER_TEMPLATE = """
     </div>
 
     <script>
+        let userTier = 'free';  // Default to free tier
+        let userInfo = {};
+        
+        // Load user information and configure scanner based on tier
+        async function loadUserInfo() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/auth/me', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    userInfo = data;
+                    // Extract tier from the subscription object returned by /api/auth/me
+                    if (data.subscription && data.subscription.tier) {
+                        userTier = data.subscription.tier.toLowerCase();
+                    } else {
+                        userTier = 'free';
+                    }
+                    console.log('User tier detected:', userTier);
+                    configureScannerForTier();
+                } else if (response.status === 401) {
+                    // Authentication failed, redirect to login
+                    console.error('Authentication required');
+                    window.location.href = '/login';
+                } else {
+                    console.error('Failed to load user info, status:', response.status);
+                    configureScannerForTier();  // Use defaults
+                }
+            } catch (error) {
+                console.error('Error loading user info:', error);
+                configureScannerForTier();  // Use defaults
+            }
+        }
+        
+        function configureScannerForTier() {
+            const scanTypeSelect = document.getElementById('scanType');
+            const tierIndicator = document.getElementById('tierIndicator');
+            const tierLimitsBox = document.getElementById('tierLimitsBox');
+            const tierLimitsText = document.getElementById('tierLimitsText');
+            const advancedParams = document.getElementById('advancedParams');
+            const upgradePrompt = document.getElementById('upgradePrompt');
+            
+            // Clear existing options
+            scanTypeSelect.innerHTML = '';
+            
+            // Configure based on tier
+            if (userTier === 'premium') {
+                // Premium tier - full access
+                tierIndicator.textContent = '👑 Premium';
+                tierIndicator.className = 'px-4 py-2 rounded-lg font-semibold bg-gradient-to-r from-purple-600 to-pink-600 text-white';
+                
+                // All scanner types available
+                scanTypeSelect.innerHTML = `
+                    <option value="scan">Basic Scan</option>
+                    <option value="explosive-scan">Explosive Scan</option>
+                    <option value="explosive-earnings-combo">Earnings Combo</option>
+                    <option value="jpm-explosion-hunter">JPM Hunter</option>
+                    <option value="gamma-squeeze-detector">Gamma Squeeze</option>
+                    <option value="enhanced-scan">Enhanced Analysis</option>
+                `;
+                
+                // Show advanced parameters
+                advancedParams.classList.remove('hidden');
+                
+                // Enable all inputs
+                enableAllInputs();
+                
+                // Hide upgrade prompt
+                upgradePrompt.classList.add('hidden');
+                tierLimitsBox.classList.add('hidden');
+                
+            } else if (userTier === 'basic') {
+                // Basic tier - limited access
+                tierIndicator.textContent = '⭐ Basic';
+                tierIndicator.className = 'px-4 py-2 rounded-lg font-semibold bg-blue-500 text-white';
+                
+                // Limited scanner types
+                scanTypeSelect.innerHTML = `
+                    <option value="scan">Basic Scan</option>
+                    <option value="explosive-scan">Explosive Scan</option>
+                    <option value="explosive-earnings-combo">Earnings Combo</option>
+                `;
+                
+                // Hide advanced parameters
+                advancedParams.classList.add('hidden');
+                
+                // Limit basic inputs
+                limitBasicInputs();
+                
+                // Show upgrade prompt
+                upgradePrompt.classList.remove('hidden');
+                
+                // Show tier limits
+                tierLimitsBox.classList.remove('hidden');
+                tierLimitsText.textContent = 'Basic Tier: Max price limited to $1.00, Delta range 0.25-0.75, Max 14 days to expiry';
+                
+            } else {
+                // Free tier - minimal access
+                tierIndicator.textContent = '🆓 Free';
+                tierIndicator.className = 'px-4 py-2 rounded-lg font-semibold bg-gray-500 text-white';
+                
+                // Only basic scan for free tier
+                scanTypeSelect.innerHTML = `
+                    <option value="scan">Basic Scan</option>
+                    <option value="explosive-scan" disabled>🔒 Explosive Scan (Upgrade Required)</option>
+                    <option value="jpm-explosion-hunter" disabled>🔒 JPM Hunter (Premium Only)</option>
+                `;
+                
+                // Hide advanced parameters
+                advancedParams.classList.add('hidden');
+                
+                // Lock most inputs to defaults
+                lockFreeInputs();
+                
+                // Show upgrade prompt
+                upgradePrompt.classList.remove('hidden');
+                
+                // Show tier limits
+                tierLimitsBox.classList.remove('hidden');
+                tierLimitsText.textContent = 'Free Tier: Max price $0.50, Delta 0.3-0.7, Max 7 days to expiry. Upgrade for full customization!';
+            }
+        }
+        
+        function enableAllInputs() {
+            const inputs = ['maxPrice', 'minDelta', 'maxDelta', 'daysToExpiry', 'minVolume', 'minOpenInterest', 'scoreThreshold', 'maxResults'];
+            inputs.forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    input.disabled = false;
+                    input.classList.remove('locked-input');
+                    // Remove any lock overlay
+                    const parent = input.parentElement;
+                    const overlay = parent.querySelector('.lock-overlay');
+                    if (overlay) overlay.remove();
+                }
+            });
+        }
+        
+        function limitBasicInputs() {
+            // Set max values for basic tier
+            document.getElementById('maxPrice').max = '1.00';
+            document.getElementById('maxPrice').value = Math.min(1.00, parseFloat(document.getElementById('maxPrice').value));
+            
+            document.getElementById('minDelta').min = '0.25';
+            document.getElementById('minDelta').value = Math.max(0.25, parseFloat(document.getElementById('minDelta').value));
+            
+            document.getElementById('maxDelta').max = '0.75';
+            document.getElementById('maxDelta').value = Math.min(0.75, parseFloat(document.getElementById('maxDelta').value));
+            
+            document.getElementById('daysToExpiry').max = '14';
+            document.getElementById('daysToExpiry').value = Math.min(14, parseInt(document.getElementById('daysToExpiry').value));
+        }
+        
+        function lockFreeInputs() {
+            // Lock inputs to free tier defaults
+            const locks = [
+                { id: 'maxPrice', value: '0.50', disabled: true },
+                { id: 'minDelta', value: '0.30', disabled: true },
+                { id: 'maxDelta', value: '0.70', disabled: true },
+                { id: 'daysToExpiry', value: '7', disabled: true }
+            ];
+            
+            locks.forEach(lock => {
+                const input = document.getElementById(lock.id);
+                if (input) {
+                    input.value = lock.value;
+                    input.disabled = lock.disabled;
+                    if (lock.disabled) {
+                        input.classList.add('locked-input');
+                        
+                        // Add lock overlay for visual feedback
+                        const parent = input.parentElement;
+                        if (!parent.querySelector('.lock-overlay')) {
+                            const overlay = document.createElement('div');
+                            overlay.className = 'lock-overlay';
+                            overlay.innerHTML = '<span class="text-gray-600 text-xs">🔒 Upgrade to unlock</span>';
+                            overlay.onclick = () => window.location.href = '/pricing';
+                            parent.appendChild(overlay);
+                        }
+                    }
+                }
+            });
+        }
+        
         async function runScan() {
             const token = localStorage.getItem('token');
             if (!token) {
@@ -551,8 +929,17 @@ SCANNER_TEMPLATE = """
             const params = new URLSearchParams({
                 max_price: document.getElementById('maxPrice').value,
                 min_delta: document.getElementById('minDelta').value,
-                max_delta: document.getElementById('maxDelta').value
+                max_delta: document.getElementById('maxDelta').value,
+                days_to_expiry: document.getElementById('daysToExpiry').value
             });
+            
+            // Add advanced parameters if premium
+            if (userTier === 'premium') {
+                params.append('min_volume', document.getElementById('minVolume').value);
+                params.append('min_open_interest', document.getElementById('minOpenInterest').value);
+                params.append('score_threshold', document.getElementById('scoreThreshold').value);
+                params.append('max_results', document.getElementById('maxResults').value);
+            }
 
             document.getElementById('results').classList.remove('hidden');
             document.getElementById('resultsContent').innerHTML = '<p>Scanning... This may take a few moments.</p>';
@@ -567,7 +954,26 @@ SCANNER_TEMPLATE = """
                 const data = await response.json();
                 
                 if (response.ok) {
+                    // Check if parameter limits were applied
+                    let resultsHtml = '';
+                    if (data.applied_limits && data.applied_limits.length > 0) {
+                        resultsHtml = '<div class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">' +
+                            '<p class="text-sm text-blue-800">📊 Parameters adjusted for ' + userTier.charAt(0).toUpperCase() + userTier.slice(1) + ' tier:<br>' +
+                            data.applied_limits.join('<br>') + '</p></div>';
+                        document.getElementById('resultsContent').innerHTML = resultsHtml;
+                    } else {
+                        document.getElementById('resultsContent').innerHTML = '';
+                    }
                     displayResults(data);
+                } else if (response.status === 403) {
+                    // Tier restriction - show upgrade prompt
+                    document.getElementById('resultsContent').innerHTML = 
+                        '<div class="p-6 bg-yellow-50 border-2 border-yellow-200 rounded-lg">' +
+                        '<h3 class="text-lg font-semibold text-yellow-800 mb-2">🔒 Feature Locked</h3>' +
+                        '<p class="text-yellow-700 mb-4">' + (data.message || 'This scanner requires a higher tier subscription') + '</p>' +
+                        '<p class="text-sm text-yellow-600 mb-4">Your current tier: <strong>' + (data.current_tier || userTier) + '</strong></p>' +
+                        '<a href="/pricing" class="inline-block bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90">Upgrade Now →</a>' +
+                        '</div>';
                 } else {
                     document.getElementById('resultsContent').innerHTML = 
                         '<p class="text-red-600">Error: ' + (data.message || 'Scan failed') + '</p>';
@@ -718,6 +1124,9 @@ SCANNER_TEMPLATE = """
             localStorage.removeItem('token');
             window.location.href = '/';
         }
+        
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', loadUserInfo);
     </script>
 </body>
 </html>
