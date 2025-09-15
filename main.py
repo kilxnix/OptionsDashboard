@@ -16,6 +16,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from auth import AuthManager, require_auth, require_admin, require_tier, validate_email, validate_password
 from models import PlanTier, UserRole, UserStatus, SubscriptionStatus
+from subscription_manager import SubscriptionManager
 from sqlalchemy import or_
 import secrets
 
@@ -805,7 +806,6 @@ def create_credit_payment():
     from db_utils import DatabaseManager
     from models import AccountTransaction, TransactionType
     from datetime import datetime, timedelta
-    from stripe_manager import PLAN_PRICES
     
     data = request.get_json()
     plan_tier_str = data.get('plan_tier')
@@ -841,6 +841,9 @@ def create_credit_payment():
     
     user = request.current_user
     
+    # First check for expired subscriptions and update them
+    SubscriptionManager.check_and_update_expired_subscriptions()
+    
     # Check if user already has an active subscription
     current_sub = DatabaseManager.get_active_subscription(user.id)
     if current_sub and current_sub.plan.tier != PlanTier.FREE:
@@ -857,13 +860,19 @@ def create_credit_payment():
             'message': 'Plan not found'
         }), 404
     
-    # Calculate subscription cost in dollars
+    # Calculate subscription cost in dollars based on billing interval
     if billing_interval == 'weekly':
         cost = plan.price_weekly
         days = 7
+        if not cost or cost <= 0:
+            # Set default weekly prices if not configured
+            cost = 7.0 if plan_tier == PlanTier.BASIC else 25.0
     else:
         cost = plan.price_monthly
         days = 30
+        if not cost or cost <= 0:
+            # Set default monthly prices if not configured
+            cost = 29.0 if plan_tier == PlanTier.BASIC else 99.0
     
     # Check if user has sufficient balance
     if user.account_balance < cost:
@@ -895,7 +904,7 @@ def create_credit_payment():
             current_sub.status = SubscriptionStatus.CANCELED
             current_sub.canceled_at = datetime.utcnow()
         
-        # Log the transaction
+        # Log the transaction with type subscription_payment
         transaction = AccountTransaction(
             user_id=user.id,
             type=TransactionType.SUBSCRIPTION_CHARGE,
@@ -905,7 +914,8 @@ def create_credit_payment():
             metadata={
                 'plan_tier': plan_tier.value,
                 'billing_interval': billing_interval,
-                'subscription_id': new_subscription.id
+                'subscription_id': new_subscription.id,
+                'payment_method': 'account_credits'
             },
             status='completed'
         )
@@ -941,6 +951,72 @@ def create_credit_payment():
             'status': 'error',
             'message': f'Failed to process payment: {str(e)}'
         }), 500
+
+
+@app.route("/api/subscription/renew", methods=["POST"])
+@require_auth
+def renew_subscription():
+    """Renew subscription using account credits"""
+    user = request.current_user
+    success, result = SubscriptionManager.manual_renew_subscription(user.id)
+    
+    if success:
+        return jsonify({
+            'status': 'success',
+            **result
+        }), 200
+    else:
+        return jsonify({
+            'status': 'error',
+            **result
+        }), 400
+
+
+@app.route("/api/subscription/status", methods=["GET"])
+@require_auth
+def get_subscription_status():
+    """Get detailed subscription status for the current user"""
+    user = request.current_user
+    status = SubscriptionManager.get_subscription_status(user.id)
+    
+    return jsonify({
+        'status': 'success',
+        **status
+    }), 200
+
+
+@app.route("/api/subscription/cancel", methods=["POST"])
+@require_auth
+def cancel_credit_subscription():
+    """Cancel current credit-based subscription"""
+    user = request.current_user
+    data = request.get_json()
+    immediate = data.get('immediate', False)
+    
+    success, result = SubscriptionManager.cancel_subscription(user.id, immediate)
+    
+    if success:
+        return jsonify({
+            'status': 'success',
+            **result
+        }), 200
+    else:
+        return jsonify({
+            'status': 'error',
+            **result
+        }), 400
+
+
+@app.route("/api/subscription/check-expiry", methods=["POST"])
+@require_auth
+def check_subscription_expiry():
+    """Check and update expired subscriptions (can be called periodically)"""
+    updated_count = SubscriptionManager.check_and_update_expired_subscriptions()
+    
+    return jsonify({
+        'status': 'success',
+        'message': f'Checked and updated {updated_count} expired subscriptions'
+    }), 200
 
 
 @app.route("/api/user/balance", methods=["GET"])
