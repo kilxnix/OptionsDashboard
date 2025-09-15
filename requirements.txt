@@ -16,3 +16,7 @@ flask-sqlalchemy
 psycopg2-binary
 pytz
 sqlalchemy
+bcrypt
+flask-cors
+PyJWT
+python-dotenv
