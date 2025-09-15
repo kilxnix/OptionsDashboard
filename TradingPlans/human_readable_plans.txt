@@ -16324,3 +16324,147 @@ Delta: 0.30532 | Gamma: 0.01338 | Theta: -0.68994 | Score: 0.63
 
 ================================================================================
 
+📈 Trade Plan for GRAB (Bearish Bias)
+
+🔹 Option: $$6.0 Put expiring 2025-09-12
+🔹 Entry Price: $0.05
+🔹 Stop Loss: $0.04
+🔹 Initial Target: $0.09
+🔹 Final Target: $0.18
+🔹 Position Size: 49 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.48764 | Gamma: 16.21753 | Theta: -0.00455 | Score: 1426.45
+
+================================================================================
+
+📈 Trade Plan for TSLZ (Bearish Bias)
+
+🔹 Option: $$1.0 Put expiring 2025-09-19
+🔹 Entry Price: $0.15
+🔹 Stop Loss: $0.11
+🔹 Initial Target: $0.26
+🔹 Final Target: $0.53
+🔹 Position Size: 12 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.65098 | Gamma: 2.58243 | Theta: -0.00370 | Score: 279.95
+
+================================================================================
+
+📈 Trade Plan for OPEN (Bearish Bias)
+
+🔹 Option: $$9.0 Put expiring 2025-09-12
+🔹 Entry Price: $0.03
+🔹 Stop Loss: $0.02
+🔹 Initial Target: $0.05
+🔹 Final Target: $0.10
+🔹 Position Size: 50 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.31235 | Gamma: 2.38632 | Theta: -0.02591 | Score: 37.47
+
+================================================================================
+
+📈 Trade Plan for TSLZ (Bearish Bias)
+
+🔹 Option: $$1.0 Put expiring 2025-09-19
+🔹 Entry Price: $0.15
+🔹 Stop Loss: $0.11
+🔹 Initial Target: $0.26
+🔹 Final Target: $0.53
+🔹 Position Size: 12 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.65098 | Gamma: 2.58243 | Theta: -0.00370 | Score: 279.95
+
+================================================================================
+
+📈 Trade Plan for GRAB (Bearish Bias)
+
+🔹 Option: $$6.0 Put expiring 2025-09-12
+🔹 Entry Price: $0.05
+🔹 Stop Loss: $0.04
+🔹 Initial Target: $0.09
+🔹 Final Target: $0.18
+🔹 Position Size: 49 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.48764 | Gamma: 16.21753 | Theta: -0.00455 | Score: 1426.45
+
+================================================================================
+
+📈 Trade Plan for OPEN (Bearish Bias)
+
+🔹 Option: $$9.0 Put expiring 2025-09-12
+🔹 Entry Price: $0.03
+🔹 Stop Loss: $0.02
+🔹 Initial Target: $0.05
+🔹 Final Target: $0.10
+🔹 Position Size: 50 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.31235 | Gamma: 2.38632 | Theta: -0.02591 | Score: 37.47
+
+================================================================================
+
+📈 Trade Plan for OPEN (Bearish Bias)
+
+🔹 Option: $$9.0 Put expiring 2025-09-12
+🔹 Entry Price: $0.03
+🔹 Stop Loss: $0.02
+🔹 Initial Target: $0.05
+🔹 Final Target: $0.10
+🔹 Position Size: 50 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.31235 | Gamma: 2.38632 | Theta: -0.02591 | Score: 37.47
+
+================================================================================
+
+📈 Trade Plan for XLB (Bearish Bias)
+
+🔹 Option: $$92.0 Put expiring 2025-10-17
+🔹 Entry Price: $4.25
+🔹 Stop Loss: $3.19
+🔹 Initial Target: $7.44
+🔹 Final Target: $14.88
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.45533 | Gamma: 0.70683 | Theta: 0.00180 | Score: 157.59
+
+================================================================================
+

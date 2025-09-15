@@ -92,3 +92,299 @@ Trade Plan:
   Expiration: 2025-09-19
   Max Hold: 6 hours
 ============================================================
+
+============================================================
+Symbol: GRAB - 04:23:33
+Confluence Score: 7.72/10
+Bias: Bearish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $6.0 Put
+  Expiration: 2025-09-12 00:00:00
+  Delta: -0.4876
+  Gamma: 16.2175
+  Theta: -0.0046
+  Volume: 189
+  Score: 1426.45
+  IV: 7.83%
+
+Option 2:
+  Strike: $6.0 Call
+  Expiration: 2025-09-12 00:00:00
+  Delta: 0.5124
+  Gamma: 16.2175
+  Theta: -0.0053
+  Volume: 2887
+  Score: 1231.68
+  IV: 7.83%
+
+Trade Plan:
+  Entry: $0.05
+  Stop: $0.04
+  Target: $0.09
+  Position Size: 49 contracts
+  Strike: $6.0 Put
+  Expiration: 2025-09-12
+  Max Hold: 4 hours
+============================================================
+
+============================================================
+Symbol: TSLZ - 04:24:12
+Confluence Score: 7.69/10
+Bias: Bearish
+
+Top Options Found: 6
+
+Option 1:
+  Strike: $1.0 Put
+  Expiration: 2025-09-19 00:00:00
+  Delta: -0.6510
+  Gamma: 2.5824
+  Theta: -0.0037
+  Volume: 1538
+  Score: 279.95
+  IV: 111.24%
+
+Option 2:
+  Strike: $1.0 Call
+  Expiration: 2025-10-03 00:00:00
+  Delta: 0.4618
+  Gamma: 1.4711
+  Theta: -0.0026
+  Volume: 174
+  Score: 227.91
+  IV: 121.00%
+
+Option 3:
+  Strike: $2.0 Call
+  Expiration: 2025-12-19 00:00:00
+  Delta: 0.2632
+  Gamma: 0.4690
+  Theta: -0.0012
+  Volume: 354
+  Score: 159.58
+  IV: 144.41%
+
+Trade Plan:
+  Entry: $0.15
+  Stop: $0.11
+  Target: $0.26
+  Position Size: 12 contracts
+  Strike: $1.0 Put
+  Expiration: 2025-09-19
+  Max Hold: 4 hours
+============================================================
+
+============================================================
+Symbol: OPEN - 04:24:23
+Confluence Score: 10.0/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $9.0 Put
+  Expiration: 2025-09-12 00:00:00
+  Delta: -0.3124
+  Gamma: 2.3863
+  Theta: -0.0259
+  Volume: 226697
+  Score: 37.47
+  IV: 31.24%
+
+Trade Plan:
+  Entry: $0.03
+  Stop: $0.02
+  Target: $0.05
+  Position Size: 50 contracts
+  Strike: $9.0 Put
+  Expiration: 2025-09-12
+  Max Hold: 4 hours
+============================================================
+
+============================================================
+Symbol: TSLZ - 04:26:52
+Confluence Score: 7.69/10
+Bias: Bearish
+
+Top Options Found: 6
+
+Option 1:
+  Strike: $1.0 Put
+  Expiration: 2025-09-19 00:00:00
+  Delta: -0.6510
+  Gamma: 2.5824
+  Theta: -0.0037
+  Volume: 1538
+  Score: 279.95
+  IV: 111.24%
+
+Option 2:
+  Strike: $1.0 Call
+  Expiration: 2025-10-03 00:00:00
+  Delta: 0.4618
+  Gamma: 1.4711
+  Theta: -0.0026
+  Volume: 174
+  Score: 227.91
+  IV: 121.00%
+
+Option 3:
+  Strike: $2.0 Call
+  Expiration: 2025-12-19 00:00:00
+  Delta: 0.2632
+  Gamma: 0.4690
+  Theta: -0.0012
+  Volume: 354
+  Score: 159.58
+  IV: 144.41%
+
+Trade Plan:
+  Entry: $0.15
+  Stop: $0.11
+  Target: $0.26
+  Position Size: 12 contracts
+  Strike: $1.0 Put
+  Expiration: 2025-09-19
+  Max Hold: 4 hours
+============================================================
+
+============================================================
+Symbol: GRAB - 04:27:16
+Confluence Score: 7.72/10
+Bias: Bearish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $6.0 Put
+  Expiration: 2025-09-12 00:00:00
+  Delta: -0.4876
+  Gamma: 16.2175
+  Theta: -0.0046
+  Volume: 189
+  Score: 1426.45
+  IV: 7.83%
+
+Option 2:
+  Strike: $6.0 Call
+  Expiration: 2025-09-12 00:00:00
+  Delta: 0.5124
+  Gamma: 16.2175
+  Theta: -0.0053
+  Volume: 2887
+  Score: 1231.68
+  IV: 7.83%
+
+Trade Plan:
+  Entry: $0.05
+  Stop: $0.04
+  Target: $0.09
+  Position Size: 49 contracts
+  Strike: $6.0 Put
+  Expiration: 2025-09-12
+  Max Hold: 4 hours
+============================================================
+
+============================================================
+Symbol: OPEN - 04:27:41
+Confluence Score: 10.0/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $9.0 Put
+  Expiration: 2025-09-12 00:00:00
+  Delta: -0.3124
+  Gamma: 2.3863
+  Theta: -0.0259
+  Volume: 226697
+  Score: 37.47
+  IV: 31.24%
+
+Trade Plan:
+  Entry: $0.03
+  Stop: $0.02
+  Target: $0.05
+  Position Size: 50 contracts
+  Strike: $9.0 Put
+  Expiration: 2025-09-12
+  Max Hold: 4 hours
+============================================================
+
+============================================================
+Symbol: OPEN - 04:29:45
+Confluence Score: 10.0/10
+Bias: Bearish
+
+Top Options Found: 1
+
+Option 1:
+  Strike: $9.0 Put
+  Expiration: 2025-09-12 00:00:00
+  Delta: -0.3124
+  Gamma: 2.3863
+  Theta: -0.0259
+  Volume: 226697
+  Score: 37.47
+  IV: 31.24%
+
+Trade Plan:
+  Entry: $0.03
+  Stop: $0.02
+  Target: $0.05
+  Position Size: 50 contracts
+  Strike: $9.0 Put
+  Expiration: 2025-09-12
+  Max Hold: 4 hours
+============================================================
+
+============================================================
+Symbol: XLB - 04:30:24
+Confluence Score: 8.34/10
+Bias: Bearish
+
+Top Options Found: 8
+
+Option 1:
+  Strike: $92.0 Put
+  Expiration: 2025-10-17 00:00:00
+  Delta: -0.4553
+  Gamma: 0.7068
+  Theta: 0.0018
+  Volume: 0
+  Score: 157.59
+  IV: 1.98%
+
+Option 2:
+  Strike: $92.0 Put
+  Expiration: 2025-10-03 00:00:00
+  Delta: -0.5821
+  Gamma: 0.8988
+  Theta: 0.0023
+  Volume: 0
+  Score: 155.55
+  IV: 1.98%
+
+Option 3:
+  Strike: $92.0 Put
+  Expiration: 2025-10-31 00:00:00
+  Delta: -0.3725
+  Gamma: 0.5702
+  Theta: 0.0015
+  Volume: 2
+  Score: 151.57
+  IV: 1.98%
+
+Trade Plan:
+  Entry: $4.25
+  Stop: $3.19
+  Target: $7.44
+  Position Size: 1 contracts
+  Strike: $92.0 Put
+  Expiration: 2025-10-17
+  Max Hold: 12 hours
+============================================================

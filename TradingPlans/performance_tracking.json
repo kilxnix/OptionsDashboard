@@ -7726,5 +7726,101 @@
     "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
+  },
+  "GRAB_6.0_put_2025-09-12 00:00:00_2025-09-15": {
+    "symbol": "GRAB",
+    "prediction_date": "2025-09-15",
+    "option_details": {
+      "strike": 6.0,
+      "type": "put",
+      "expiration": "2025-09-12 00:00:00",
+      "entry_price": 0.05,
+      "predicted_target": 0.09,
+      "predicted_bias": "Bearish",
+      "confluence_score": 7.72,
+      "delta": -0.48764,
+      "gamma": 16.21753,
+      "theta": -0.00455,
+      "implied_vol": "0.07829"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "TSLZ_1.0_put_2025-09-19 00:00:00_2025-09-15": {
+    "symbol": "TSLZ",
+    "prediction_date": "2025-09-15",
+    "option_details": {
+      "strike": 1.0,
+      "type": "put",
+      "expiration": "2025-09-19 00:00:00",
+      "entry_price": 0.15,
+      "predicted_target": 0.26,
+      "predicted_bias": "Bearish",
+      "confluence_score": 7.69,
+      "delta": -0.65098,
+      "gamma": 2.58243,
+      "theta": -0.0037,
+      "implied_vol": "1.11241"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "OPEN_9.0_put_2025-09-12 00:00:00_2025-09-15": {
+    "symbol": "OPEN",
+    "prediction_date": "2025-09-15",
+    "option_details": {
+      "strike": 9.0,
+      "type": "put",
+      "expiration": "2025-09-12 00:00:00",
+      "entry_price": 0.03,
+      "predicted_target": 0.05,
+      "predicted_bias": "Bearish",
+      "confluence_score": 10.0,
+      "delta": -0.31235,
+      "gamma": 2.38632,
+      "theta": -0.02591,
+      "implied_vol": "0.31243"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "XLB_92.0_put_2025-10-17 00:00:00_2025-09-15": {
+    "symbol": "XLB",
+    "prediction_date": "2025-09-15",
+    "option_details": {
+      "strike": 92.0,
+      "type": "put",
+      "expiration": "2025-10-17 00:00:00",
+      "entry_price": 4.25,
+      "predicted_target": 7.44,
+      "predicted_bias": "Bearish",
+      "confluence_score": 8.34,
+      "delta": -0.45533,
+      "gamma": 0.70683,
+      "theta": 0.0018,
+      "implied_vol": "0.01976"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
   }
 }
