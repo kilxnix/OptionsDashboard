@@ -579,6 +579,9 @@ SCANNER_TEMPLATE = """
         }
 
         function displayResults(data) {
+            // Log the raw data for debugging
+            console.log('Raw scan response:', data);
+            
             let html = '<div class="overflow-x-auto"><table class="min-w-full">';
             html += '<thead><tr class="border-b">';
             html += '<th class="text-left p-2">Symbol</th>';
@@ -591,24 +594,86 @@ SCANNER_TEMPLATE = """
             html += '<th class="text-left p-2">Recommendation</th>';
             html += '</tr></thead><tbody>';
             
-            // Check for all possible field names from backend
-            const opportunities = data.top_picks || data.final_opportunities || data.opportunities || [];
+            // Convert opportunities dictionary to array if needed
+            let opportunities = [];
+            
+            // Handle different response formats
+            if (data.top_picks && Array.isArray(data.top_picks)) {
+                // Use top_picks if available (from explosive scan)
+                opportunities = data.top_picks;
+                console.log(`Using top_picks: ${opportunities.length} items`);
+            } else if (data.final_opportunities && Array.isArray(data.final_opportunities)) {
+                // Use final_opportunities if available (from explosive-earnings-combo)
+                opportunities = data.final_opportunities;
+                console.log(`Using final_opportunities: ${opportunities.length} items`);
+            } else if (data.opportunities) {
+                // Handle opportunities - could be dict or array
+                if (Array.isArray(data.opportunities)) {
+                    opportunities = data.opportunities;
+                    console.log(`Using opportunities array: ${opportunities.length} items`);
+                } else if (typeof data.opportunities === 'object') {
+                    // Convert dictionary to array
+                    opportunities = Object.values(data.opportunities);
+                    console.log(`Converting opportunities dict to array: ${opportunities.length} items`);
+                }
+            }
+            
+            console.log(`Total opportunities to display: ${opportunities.length}`);
             
             if (opportunities && opportunities.length > 0) {
-                opportunities.slice(0, 20).forEach(opp => {
+                opportunities.slice(0, 20).forEach((opp, index) => {
+                    console.log(`Processing opportunity ${index}:`, opp);
+                    
+                    // Extract strike and option type from option string if needed
+                    let strike = '-';
+                    let optionType = '-';
+                    let expiration = '-';
+                    
+                    // If we have an 'option' field like "AMZN 240.0 CALL exp 2025-10-03"
+                    if (opp.option) {
+                        const optionParts = opp.option.match(/(\d+\.?\d*)\s+(CALL|PUT).*exp\s+(\d{4}-\d{2}-\d{2})/i);
+                        if (optionParts) {
+                            strike = optionParts[1];
+                            optionType = optionParts[2];
+                            expiration = optionParts[3];
+                        }
+                    }
+                    
+                    // Override with more specific fields if available
                     const plan = opp.trade_plan || opp.trading_plan || {};
                     const best = opp.best_opportunity || {};
-                    const score = opp.combined_score || opp.total_score || best.total_score || '-';
-                    const recommendation = opp.recommendation || best.recommendation || '';
+                    const explosiveData = opp.full_explosive_analysis || {};
+                    const explosiveBest = explosiveData.best_opportunity || {};
+                    
+                    // Get values from different possible sources
+                    strike = plan.strike || best.strike || explosiveBest.strike || strike;
+                    optionType = plan.option_type || plan.type || best.type || explosiveBest.type || optionType;
+                    expiration = plan.expiration || best.expiration || explosiveBest.expiration || opp.expiration || expiration;
+                    
+                    // Get entry price and target
+                    const entryPrice = opp.entry_price || plan.entry_price || best.mark || explosiveBest.mark || '-';
+                    const target = opp.target_1 || plan.initial_target || plan.target || best.target || explosiveBest.target || '-';
+                    
+                    // Get score - handle both combined scores and regular scores
+                    const score = opp.score || opp.combined_score || opp.total_score || best.total_score || explosiveBest.total_score || 0;
+                    
+                    // Get or generate recommendation
+                    let recommendation = opp.recommendation || best.recommendation || explosiveBest.recommendation || '';
+                    if (!recommendation && score > 0) {
+                        if (score >= 75) recommendation = '🔥 STRONG BUY';
+                        else if (score >= 60) recommendation = '✅ BUY';
+                        else if (score >= 45) recommendation = '⚡ WATCH';
+                        else recommendation = '📊 ANALYZE';
+                    }
                     
                     html += '<tr class="border-b hover:bg-gray-50">';
                     html += '<td class="p-2 font-semibold">' + (opp.symbol || '-') + '</td>';
-                    html += '<td class="p-2">$' + (plan.strike || best.strike || '-') + '</td>';
-                    html += '<td class="p-2">' + ((plan.option_type || best.type || '-').toUpperCase()) + '</td>';
-                    html += '<td class="p-2">' + ((plan.expiration || best.expiration || '-').split(' ')[0]) + '</td>';
-                    html += '<td class="p-2">$' + (plan.entry_price || best.mark || '-') + '</td>';
-                    html += '<td class="p-2">$' + (plan.initial_target || plan.target || '-') + '</td>';
-                    html += '<td class="p-2">' + score.toFixed(1) + '</td>';
+                    html += '<td class="p-2">$' + (strike !== '-' ? parseFloat(strike).toFixed(2) : '-') + '</td>';
+                    html += '<td class="p-2">' + (optionType.toString().toUpperCase()) + '</td>';
+                    html += '<td class="p-2">' + (expiration.toString().split(' ')[0]) + '</td>';
+                    html += '<td class="p-2">$' + (entryPrice !== '-' ? parseFloat(entryPrice).toFixed(2) : '-') + '</td>';
+                    html += '<td class="p-2">$' + (target !== '-' ? parseFloat(target).toFixed(2) : '-') + '</td>';
+                    html += '<td class="p-2">' + (typeof score === 'number' ? score.toFixed(1) : '0.0') + '</td>';
                     html += '<td class="p-2">' + recommendation + '</td>';
                     html += '</tr>';
                 });
@@ -623,6 +688,26 @@ SCANNER_TEMPLATE = """
                 html += '<div class="mt-4 p-4 bg-blue-50 rounded-lg">';
                 html += '<h4 class="font-semibold mb-2">Scan Summary:</h4>';
                 html += '<p class="text-sm">' + data.summary + '</p>';
+                html += '</div>';
+            }
+            
+            // Add scan metadata if available
+            if (data.scan_metadata) {
+                html += '<div class="mt-4 p-4 bg-gray-50 rounded-lg">';
+                html += '<h4 class="font-semibold mb-2">Scan Details:</h4>';
+                html += '<p class="text-sm text-gray-600">' + (data.scan_metadata.methodology || 'Advanced options analysis') + '</p>';
+                html += '</div>';
+            }
+            
+            // Show summary stats if opportunities were found
+            if (opportunities.length > 0) {
+                html += '<div class="mt-4 p-4 bg-green-50 rounded-lg">';
+                html += '<h4 class="font-semibold mb-2">Results Summary:</h4>';
+                html += '<p class="text-sm text-gray-600">Found ' + opportunities.length + ' trading opportunities';
+                if (opportunities.length > 20) {
+                    html += ' (showing top 20)';
+                }
+                html += '</p>';
                 html += '</div>';
             }
             

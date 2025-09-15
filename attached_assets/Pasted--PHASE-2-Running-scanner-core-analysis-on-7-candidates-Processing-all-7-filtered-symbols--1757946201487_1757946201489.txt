@@ -1,0 +1,163 @@
+🔬 PHASE 2: Running scanner_core analysis on 7 candidates...
+🔍 Processing all 7 filtered symbols...
+
+Analyzing 7 symbols across 7 timeframes...
+Looking for options expiring: (1, 30)
+Scanning:   0%|                                                                                                                                           | 0/7 [00:00<?, ?it/s]No data available for CAG at D timeframe
+↩️ Falling back to yfinance for CAG D
+No data available for CAG at 1m timeframe
+↩️ Falling back to yfinance for CAG 1m
+No data available for CAG at 5m timeframe
+↩️ Falling back to yfinance for CAG 5m
+No data available for CAG at 15m timeframe
+↩️ Falling back to yfinance for CAG 15m
+No data available for CAG at 30m timeframe
+↩️ Falling back to yfinance for CAG 30m
+No data available for CAG at 1h timeframe
+↩️ Falling back to yfinance for CAG 1h
+No data available for CAG at D timeframe
+↩️ Falling back to yfinance for CAG D
+No data available for CAG at W timeframe
+↩️ Falling back to yfinance for CAG W
+⚪ CAG: 5.5/10 Bearish (below threshold)
+Scanning:  14%|██████████████████▋                                                                                                                | 1/7 [00:11<01:09, 11.56s/it]No data available for HAIN at D timeframe
+↩️ Falling back to yfinance for HAIN D
+No data available for HAIN at 1m timeframe
+↩️ Falling back to yfinance for HAIN 1m
+No data available for HAIN at 5m timeframe
+↩️ Falling back to yfinance for HAIN 5m
+No data available for HAIN at 15m timeframe
+↩️ Falling back to yfinance for HAIN 15m
+No data available for HAIN at 30m timeframe
+↩️ Falling back to yfinance for HAIN 30m
+No data available for HAIN at 1h timeframe
+↩️ Falling back to yfinance for HAIN 1h
+No data available for HAIN at D timeframe
+↩️ Falling back to yfinance for HAIN D
+No data available for HAIN at W timeframe
+↩️ Falling back to yfinance for HAIN W
+⚪ HAIN: 5.8/10 Bullish (below threshold)
+Scanning:  29%|█████████████████████████████████████▍                                                                                             | 2/7 [00:22<00:56, 11.38s/it]No data available for BB at D timeframe
+↩️ Falling back to yfinance for BB D
+No data available for BB at 1m timeframe
+↩️ Falling back to yfinance for BB 1m
+No data available for BB at 5m timeframe
+↩️ Falling back to yfinance for BB 5m
+No data available for BB at 15m timeframe
+↩️ Falling back to yfinance for BB 15m
+No data available for BB at 30m timeframe
+↩️ Falling back to yfinance for BB 30m
+No data available for BB at 1h timeframe
+↩️ Falling back to yfinance for BB 1h
+No data available for BB at D timeframe
+↩️ Falling back to yfinance for BB D
+No data available for BB at W timeframe
+↩️ Falling back to yfinance for BB W
+No intraday data available for BB
+No intraday data available for BB
+No intraday data available for BB
+No intraday data available for BB
+No intraday data available for BB
+
+=== BB Multi-Timeframe Analysis ===
+Overall Confluence Score: 7.23/10 (Bullish)
+Bullish Signals: 10.55
+Bearish Signals: 4.05
+
++-----------+--------+-----------+----------+---------+--------+
+| Timeframe | Gap %  | Direction | Patterns | Candles | Volume |
++-----------+--------+-----------+----------+---------+--------+
+|    1m     | -0.05% |   Down    |   None   | Bearish | Normal |
+|    5m     | -0.05% |   Down    |   None   | Bearish | Normal |
+|    15m    | 0.07%  |    Up     |   None   |  None   | Normal |
+|    30m    | 0.00%  |   Down    |   None   |  None   | Normal |
+|    1h     | 1.15%  |    Up     |   None   | Bullish | Normal |
+|     D     | 1.28%  |    Up     |   None   | Bullish | Normal |
+|     W     | 1.28%  |    Up     |   None   | Bullish | Normal |
++-----------+--------+-----------+----------+---------+--------+
+
+🎯 BB: 7.2/10 Bullish | 0.07% gap
+Scanning:  43%|████████████████████████████████████████████████████████▏                                                                          | 3/7 [00:35<00:47, 11.88s/it]No data available for GRRR at D timeframe
+↩️ Falling back to yfinance for GRRR D
+No data available for GRRR at 1m timeframe
+↩️ Falling back to yfinance for GRRR 1m
+No data available for GRRR at 5m timeframe
+↩️ Falling back to yfinance for GRRR 5m
+No data available for GRRR at 15m timeframe
+↩️ Falling back to yfinance for GRRR 15m
+No data available for GRRR at 30m timeframe
+↩️ Falling back to yfinance for GRRR 30m
+No data available for GRRR at 1h timeframe
+↩️ Falling back to yfinance for GRRR 1h
+No data available for GRRR at D timeframe
+↩️ Falling back to yfinance for GRRR D
+No data available for GRRR at W timeframe
+↩️ Falling back to yfinance for GRRR W
+⚪ GRRR: 5.8/10 Bullish (below threshold)
+Scanning:  57%|██████████████████████████████████████████████████████████████████████████▊                                                        | 4/7 [00:47<00:35, 11.87s/it]Successfully fetched D data for GIS
+Successfully fetched 1m data for GIS
+Successfully fetched 5m data for GIS
+Successfully fetched 15m data for GIS
+Successfully fetched 30m data for GIS
+Successfully fetched 1h data for GIS
+Successfully fetched D data for GIS
+Successfully fetched W data for GIS
+⚪ GIS: 5.1/10 Bullish (below threshold)
+Scanning:  71%|█████████████████████████████████████████████████████████████████████████████████████████████▌                                     | 5/7 [00:55<00:21, 10.50s/it]Successfully fetched D data for KMX
+Successfully fetched 1m data for KMX
+Successfully fetched 5m data for KMX
+Successfully fetched 15m data for KMX
+Successfully fetched 30m data for KMX
+Successfully fetched 1h data for KMX
+Successfully fetched D data for KMX
+Successfully fetched W data for KMX
+
+=== KMX Multi-Timeframe Analysis ===
+Overall Confluence Score: 6.8/10 (Bearish)
+Bullish Signals: 2.68
+Bearish Signals: 5.67
+
++-----------+--------+-----------+--------------+---------+--------+
+| Timeframe | Gap %  | Direction |   Patterns   | Candles | Volume |
++-----------+--------+-----------+--------------+---------+--------+
+|    1m     | 0.02%  |    Up     |     None     |  None   | Normal |
+|    5m     | -1.28% |   Down    |     None     |  None   | Normal |
+|    15m    | 1.30%  |    Up     |     None     |  None   | Normal |
+|    30m    | 0.00%  |   Down    |     None     | Bullish | Normal |
+|    1h     | -1.21% |   Down    |     None     |  None   | Normal |
+|     D     | -0.52% |   Down    |     None     |  None   | Normal |
+|     W     | -0.44% |   Down    | Rising Wedge |  None   | Normal |
++-----------+--------+-----------+--------------+---------+--------+
+
+🎯 KMX: 6.8/10 Bearish | 1.30% gap
+Scanning:  86%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████▎                  | 6/7 [01:03<00:09,  9.69s/it]Successfully fetched D data for CCL
+Successfully fetched 1m data for CCL
+Successfully fetched 5m data for CCL
+Successfully fetched 15m data for CCL
+Successfully fetched 30m data for CCL
+Successfully fetched 1h data for CCL
+Successfully fetched D data for CCL
+Successfully fetched W data for CCL
+
+=== CCL Multi-Timeframe Analysis ===
+Overall Confluence Score: 6.58/10 (Bearish)
+Bullish Signals: 2.98
+Bearish Signals: 5.73
+
++-----------+--------+-----------+---------------+---------+--------+
+| Timeframe | Gap %  | Direction |   Patterns    | Candles | Volume |
++-----------+--------+-----------+---------------+---------+--------+
+|    1m     | -0.30% |   Down    |     None      |  None   | Normal |
+|    5m     | 0.35%  |    Up     |     None      |  None   | Normal |
+|    15m    | 0.22%  |    Up     | Falling Wedge |  None   | Normal |
+|    30m    | -0.13% |   Down    |     None      |  None   | Normal |
+|    1h     | -0.06% |   Down    |     None      |  None   | Normal |
+|     D     | -0.22% |   Down    | Rising Wedge  |  None   | Normal |
+|     W     | 0.41%  |    Up     |     None      |  None   | Normal |
++-----------+--------+-----------+---------------+---------+--------+
+
+🎯 CCL: 6.6/10 Bearish | 0.22% gap
+Scanning: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 7/7 [01:14<00:00, 10.58s/it]
+✅ PHASE 2 COMPLETE: Analyzed 0 symbols.
+
+🏆 FINAL RESULTS: Found 0 high-quality, two-phase opportunities.
