@@ -375,6 +375,128 @@ def logout():
     }), 200
 
 
+# ==================== Account Balance Endpoints ====================
+
+@app.route("/api/account/balance", methods=["GET"])
+@require_auth
+def get_balance():
+    """Get current account balance"""
+    user = request.current_user
+    return jsonify({
+        'status': 'success',
+        'balance': user.account_balance,
+        'currency': 'USD'
+    })
+
+
+@app.route("/api/account/transactions", methods=["GET"])
+@require_auth
+def get_transactions():
+    """Get account transaction history"""
+    from models import AccountTransaction
+    
+    user = request.current_user
+    
+    # Get pagination parameters
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 20, type=int)
+    
+    # Get transactions for the user
+    transactions = AccountTransaction.query.filter_by(
+        user_id=user.id
+    ).order_by(AccountTransaction.created_at.desc()).paginate(
+        page=page, per_page=per_page, error_out=False
+    )
+    
+    return jsonify({
+        'status': 'success',
+        'transactions': [{
+            'id': t.id,
+            'amount': t.amount,
+            'type': t.type.value,
+            'description': t.description,
+            'balance_after': t.balance_after,
+            'status': t.status,
+            'created_at': t.created_at.isoformat()
+        } for t in transactions.items],
+        'pagination': {
+            'page': page,
+            'per_page': per_page,
+            'total': transactions.total,
+            'pages': transactions.pages
+        }
+    })
+
+
+@app.route("/api/account/topup", methods=["POST"])
+@require_auth
+def topup_account():
+    """Create a top-up session for adding credits to account"""
+    data = request.get_json()
+    user = request.current_user
+    
+    # Validate amount
+    amount_str = data.get('amount', '')
+    custom_amount = data.get('custom_amount', 0)
+    
+    # Predefined amounts in cents
+    amounts = {
+        'small': 1000,   # $10
+        'medium': 2500,  # $25
+        'large': 5000,   # $50
+        'xlarge': 10000  # $100
+    }
+    
+    if amount_str == 'custom':
+        # Custom amount validation
+        amount = int(custom_amount * 100)  # Convert to cents
+        if amount < 500:  # Minimum $5
+            return jsonify({
+                'status': 'error',
+                'message': 'Minimum top-up amount is $5'
+            }), 400
+        if amount > 100000:  # Maximum $1000
+            return jsonify({
+                'status': 'error',
+                'message': 'Maximum top-up amount is $1000'
+            }), 400
+    elif amount_str in amounts:
+        amount = amounts[amount_str]
+    else:
+        return jsonify({
+            'status': 'error',
+            'message': 'Invalid amount specified'
+        }), 400
+    
+    # Get currency
+    currency = data.get('currency', 'usd')
+    
+    # Create top-up session
+    from stripe_manager import StripeManager
+    try:
+        session = StripeManager.create_topup_session(
+            user_id=user.id,
+            amount=amount,
+            currency=currency,
+            success_url=data.get('success_url', 'http://localhost:5000/dashboard?topup=success'),
+            cancel_url=data.get('cancel_url', 'http://localhost:5000/dashboard?topup=cancelled')
+        )
+        
+        return jsonify({
+            'status': 'success',
+            'session_id': session['session_id'],
+            'checkout_url': session['url']
+        })
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
+
+
+# Webhook endpoint is already defined below in the file
+
+
 @app.route("/api/auth/api-keys", methods=["POST"])
 @require_auth
 def create_api_key():

@@ -50,6 +50,15 @@ class PlanTier(enum.Enum):
     PREMIUM = "premium"
 
 
+class TransactionType(enum.Enum):
+    """Account transaction types"""
+    TOP_UP = "top_up"
+    SUBSCRIPTION_CHARGE = "subscription_charge"
+    REFUND = "refund"
+    CREDIT_ADJUSTMENT = "credit_adjustment"
+    BONUS = "bonus"
+
+
 class User(db.Model):
     """User account model"""
     __tablename__ = 'users'
@@ -69,10 +78,14 @@ class User(db.Model):
     company = Column(String(255))
     phone = Column(String(50))
     
+    # Account balance for credit-based payments
+    account_balance = Column(Float, default=0.00, nullable=False)
+    
     # Relationships
     subscriptions = relationship('Subscription', back_populates='user', cascade='all, delete-orphan')
     api_keys = relationship('ApiKey', back_populates='user', cascade='all, delete-orphan')
     usage_events = relationship('UsageEvent', back_populates='user', cascade='all, delete-orphan')
+    account_transactions = relationship('AccountTransaction', back_populates='user', cascade='all, delete-orphan')
     
     # Indexes
     __table_args__ = (
@@ -93,6 +106,7 @@ class Plan(db.Model):
     tier = Column(Enum(PlanTier), nullable=False)
     price_monthly = Column(Float, nullable=False)
     price_yearly = Column(Float)
+    price_weekly = Column(Float)  # Weekly pricing option
     
     # JSON fields for flexible configuration
     quotas_json = Column(JSON, nullable=False, default={})  # {"scans_per_day": 100, "api_calls_per_minute": 60}
@@ -107,11 +121,17 @@ class Plan(db.Model):
     stripe_product_id = Column(String(255), index=True)
     stripe_price_monthly_id = Column(String(255))
     stripe_price_yearly_id = Column(String(255))
+    stripe_price_weekly_id = Column(String(255))
     
-    # Multi-currency price IDs
+    # Multi-currency price IDs (monthly)
     stripe_price_eur_id = Column(String(255))
     stripe_price_gbp_id = Column(String(255))
     stripe_price_usdc_id = Column(String(255))
+    
+    # Multi-currency price IDs (weekly)
+    stripe_price_weekly_eur_id = Column(String(255))
+    stripe_price_weekly_gbp_id = Column(String(255))
+    stripe_price_weekly_usdc_id = Column(String(255))
     
     # Relationships
     subscriptions = relationship('Subscription', back_populates='plan')
@@ -138,6 +158,7 @@ class Subscription(db.Model):
     # Billing period
     period_start = Column(DateTime, nullable=False)
     period_end = Column(DateTime, nullable=False)
+    billing_period = Column(String(20), default='monthly')  # 'weekly' or 'monthly'
     
     # Usage tracking
     current_period_usage = Column(JSON, default={})  # {"scans": 45, "api_calls": 1200}
@@ -335,3 +356,41 @@ class FeatureFlag(db.Model):
     
     def __repr__(self):
         return f'<FeatureFlag {self.name} enabled={self.enabled}>'
+
+
+class AccountTransaction(db.Model):
+    """Track account balance transactions"""
+    __tablename__ = 'account_transactions'
+    
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False, index=True)
+    amount = Column(Float, nullable=False)  # Positive for credits, negative for charges
+    balance_after = Column(Float, nullable=False)  # Balance after transaction
+    type = Column(Enum(TransactionType), nullable=False)
+    description = Column(Text)
+    
+    # Payment tracking
+    stripe_payment_intent_id = Column(String(255), index=True)
+    stripe_invoice_id = Column(String(255), index=True)
+    
+    # Related subscription if applicable
+    subscription_id = Column(Integer, ForeignKey('subscriptions.id'))
+    
+    # Status
+    status = Column(String(50), default='completed')  # completed, pending, failed
+    
+    # Timestamps
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False, index=True)
+    
+    # Relationships
+    user = relationship('User', back_populates='account_transactions')
+    subscription = relationship('Subscription', foreign_keys=[subscription_id])
+    
+    # Indexes
+    __table_args__ = (
+        Index('idx_transaction_user_created', 'user_id', 'created_at'),
+        Index('idx_transaction_type', 'type', 'created_at'),
+    )
+    
+    def __repr__(self):
+        return f'<AccountTransaction user={self.user_id} amount={self.amount} type={self.type.value}>'

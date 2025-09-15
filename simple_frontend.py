@@ -307,7 +307,12 @@ DASHBOARD_TEMPLATE = """
     <div class="max-w-7xl mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold mb-8">Your Dashboard</h1>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-semibold mb-2">Account Balance</h3>
+                <p class="text-2xl font-bold text-green-600" id="accountBalance">$0.00</p>
+                <button onclick="showTopupModal()" class="mt-2 text-sm bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">Add Credits</button>
+            </div>
             <div class="bg-white p-6 rounded-lg shadow">
                 <h3 class="text-lg font-semibold mb-2">Current Plan</h3>
                 <p class="text-2xl font-bold text-purple-600" id="currentPlan">Loading...</p>
@@ -330,8 +335,38 @@ DASHBOARD_TEMPLATE = """
             </div>
         </div>
     </div>
+    
+    <!-- Top-up Modal -->
+    <div id="topupModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Add Credits to Your Account</h3>
+                <div class="mt-4">
+                    <p class="text-sm text-gray-500 mb-4">Select amount to add to your account balance:</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="selectTopupAmount('small')" class="topup-btn border-2 border-gray-300 p-3 rounded-lg hover:border-green-500 focus:border-green-500 focus:bg-green-50">$10</button>
+                        <button onclick="selectTopupAmount('medium')" class="topup-btn border-2 border-gray-300 p-3 rounded-lg hover:border-green-500 focus:border-green-500 focus:bg-green-50">$25</button>
+                        <button onclick="selectTopupAmount('large')" class="topup-btn border-2 border-gray-300 p-3 rounded-lg hover:border-green-500 focus:border-green-500 focus:bg-green-50">$50</button>
+                        <button onclick="selectTopupAmount('xlarge')" class="topup-btn border-2 border-gray-300 p-3 rounded-lg hover:border-green-500 focus:border-green-500 focus:bg-green-50">$100</button>
+                    </div>
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-gray-700">Custom Amount ($5 - $1000)</label>
+                        <input type="number" id="customAmount" min="5" max="1000" step="1" placeholder="Enter amount" 
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+                               onchange="selectTopupAmount('custom')">
+                    </div>
+                </div>
+                <div class="flex justify-end mt-6 space-x-3">
+                    <button onclick="closeTopupModal()" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400">Cancel</button>
+                    <button onclick="processTopup()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Add Credits</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
+        let selectedTopupAmount = null;
+        
         async function loadDashboard() {
             const token = localStorage.getItem('token');
             if (!token) {
@@ -339,6 +374,7 @@ DASHBOARD_TEMPLATE = """
                 return;
             }
 
+            // Load user info
             const response = await fetch('/api/auth/me', {
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -347,10 +383,79 @@ DASHBOARD_TEMPLATE = """
             
             if (response.ok) {
                 const data = await response.json();
-                document.getElementById('currentPlan').textContent = data.subscription?.plan_name || 'Free';
-                document.getElementById('dailyLimit').textContent = data.subscription?.daily_scans_limit || '10';
+                document.getElementById('currentPlan').textContent = data.subscription?.plan || 'Free';
+                document.getElementById('dailyLimit').textContent = data.subscription?.quotas?.scans_per_day || '5';
             } else {
                 window.location.href = '/login';
+            }
+            
+            // Load account balance
+            const balanceResponse = await fetch('/api/account/balance', {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+            
+            if (balanceResponse.ok) {
+                const balanceData = await balanceResponse.json();
+                document.getElementById('accountBalance').textContent = `$${balanceData.balance.toFixed(2)}`;
+            }
+        }
+
+        function showTopupModal() {
+            document.getElementById('topupModal').classList.remove('hidden');
+        }
+        
+        function closeTopupModal() {
+            document.getElementById('topupModal').classList.add('hidden');
+            selectedTopupAmount = null;
+            document.querySelectorAll('.topup-btn').forEach(btn => {
+                btn.classList.remove('border-green-500', 'bg-green-50');
+            });
+        }
+        
+        function selectTopupAmount(amount) {
+            selectedTopupAmount = amount;
+            document.querySelectorAll('.topup-btn').forEach(btn => {
+                btn.classList.remove('border-green-500', 'bg-green-50');
+            });
+            if (amount !== 'custom') {
+                event.target.classList.add('border-green-500', 'bg-green-50');
+            }
+        }
+        
+        async function processTopup() {
+            const token = localStorage.getItem('token');
+            if (!token || !selectedTopupAmount) {
+                alert('Please select an amount');
+                return;
+            }
+            
+            let requestData = { amount: selectedTopupAmount };
+            if (selectedTopupAmount === 'custom') {
+                const customValue = parseFloat(document.getElementById('customAmount').value);
+                if (customValue < 5 || customValue > 1000) {
+                    alert('Please enter an amount between $5 and $1000');
+                    return;
+                }
+                requestData.custom_amount = customValue;
+            }
+            
+            const response = await fetch('/api/account/topup', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                // Redirect to Stripe checkout
+                window.location.href = data.checkout_url;
+            } else {
+                alert('Failed to create top-up session');
             }
         }
 

@@ -6,7 +6,7 @@ import stripe
 import json
 from datetime import datetime, timedelta
 from typing import Dict, Any, Optional, List
-from models import db, User, Plan, Subscription, PlanTier, SubscriptionStatus
+from models import db, User, Plan, Subscription, PlanTier, SubscriptionStatus, AccountTransaction, TransactionType
 from db_utils import DatabaseManager
 from flask import current_app
 import logging
@@ -23,6 +23,7 @@ PLAN_PRICES = {
     PlanTier.FREE: {
         'name': 'Free Tier',
         'price_monthly': 0,
+        'price_weekly': 0,
         'features': {
             'scans_per_day': 5,
             'api_calls_per_minute': 10,
@@ -33,9 +34,13 @@ PLAN_PRICES = {
     PlanTier.BASIC: {
         'name': 'Basic Plan',
         'price_monthly': 2900,  # $29.00 in cents
+        'price_weekly': 700,    # $7.00 in cents
         'price_eur': 2700,     # €27.00 in cents
+        'price_eur_weekly': 650,  # €6.50 in cents
         'price_gbp': 2300,     # £23.00 in pence
+        'price_gbp_weekly': 550,  # £5.50 in pence
         'price_usdc': 2900,    # 29.00 USDC in cents equivalent
+        'price_usdc_weekly': 700,  # 7.00 USDC in cents equivalent
         'trial_days': 14,
         'features': {
             'scans_per_day': 50,
@@ -47,9 +52,13 @@ PLAN_PRICES = {
     PlanTier.PREMIUM: {
         'name': 'Premium Plan',
         'price_monthly': 9900,  # $99.00 in cents
+        'price_weekly': 2500,   # $25.00 in cents
         'price_eur': 9200,     # €92.00 in cents
+        'price_eur_weekly': 2300,  # €23.00 in cents
         'price_gbp': 7900,     # £79.00 in pence
+        'price_gbp_weekly': 2000,  # £20.00 in pence
         'price_usdc': 9900,    # 99.00 USDC in cents equivalent
+        'price_usdc_weekly': 2500,  # 25.00 USDC in cents equivalent
         'trial_days': 14,
         'features': {
             'scans_per_day': 500,
@@ -58,6 +67,14 @@ PLAN_PRICES = {
             'description': 'Advanced scanning with all premium features'
         }
     }
+}
+
+# Top-up configurations
+TOPUP_AMOUNTS = {
+    'small': {'amount': 1000, 'display': '$10'},
+    'medium': {'amount': 2500, 'display': '$25'},
+    'large': {'amount': 5000, 'display': '$50'},
+    'xlarge': {'amount': 10000, 'display': '$100'}
 }
 
 # Currency conversion rates (approximate, should be updated regularly)
@@ -91,15 +108,23 @@ class StripeManager:
     
     @staticmethod
     def create_or_update_products() -> Dict[str, Any]:
-        """Create or update Stripe products and prices for all tiers in multiple currencies"""
+        """Create or update Stripe products and prices for all tiers in multiple currencies with weekly and monthly options"""
         results = {}
         
-        # Define supported currencies
-        currencies = {
+        # Define supported currencies for monthly billing
+        monthly_currencies = {
             'usd': {'field': 'price_monthly', 'db_field': 'stripe_price_monthly_id'},
             'eur': {'field': 'price_eur', 'db_field': 'stripe_price_eur_id'},
             'gbp': {'field': 'price_gbp', 'db_field': 'stripe_price_gbp_id'},
             'usdc': {'field': 'price_usdc', 'db_field': 'stripe_price_usdc_id'}
+        }
+        
+        # Define supported currencies for weekly billing
+        weekly_currencies = {
+            'usd': {'field': 'price_weekly', 'db_field': 'stripe_price_weekly_id'},
+            'eur': {'field': 'price_eur_weekly', 'db_field': 'stripe_price_weekly_eur_id'},
+            'gbp': {'field': 'price_gbp_weekly', 'db_field': 'stripe_price_weekly_gbp_id'},
+            'usdc': {'field': 'price_usdc_weekly', 'db_field': 'stripe_price_weekly_usdc_id'}
         }
         
         for tier, config in PLAN_PRICES.items():
@@ -137,9 +162,9 @@ class StripeManager:
                         }
                     )
                 
-                # Create prices for each currency
-                price_ids = {}
-                for currency, currency_info in currencies.items():
+                # Create prices for each currency (monthly)
+                monthly_price_ids = {}
+                for currency, currency_info in monthly_currencies.items():
                     price_field = currency_info['field']
                     
                     # Get price amount for this currency
@@ -188,7 +213,60 @@ class StripeManager:
                     else:
                         price = existing_price
                     
-                    price_ids[currency_info['db_field']] = price.id
+                    monthly_price_ids[currency_info['db_field']] = price.id
+                
+                # Create prices for each currency (weekly)
+                weekly_price_ids = {}
+                for currency, currency_info in weekly_currencies.items():
+                    price_field = currency_info['field']
+                    
+                    # Get price amount for this currency
+                    if currency == 'usd':
+                        price_amount = config.get('price_weekly', 0)
+                    else:
+                        price_amount = config.get(price_field, 0)
+                    
+                    if price_amount == 0 and tier != PlanTier.FREE:
+                        continue  # Skip creating price for non-supported currency
+                    
+                    # For USDC (stablecoin), use USD pricing but mark as crypto
+                    if currency == 'usdc':
+                        # USDC uses USD pricing as it's a stablecoin
+                        price_amount = config.get('price_weekly', 0)
+                    
+                    # Create or retrieve price
+                    price_id = f'price_{tier.value}_{currency}_weekly'
+                    
+                    # Search for existing price
+                    prices = stripe.Price.list(product=product.id, active=True, currency=currency if currency != 'usdc' else 'usd')
+                    existing_price = None
+                    for price in prices.data:
+                        if price.recurring and price.recurring.interval == 'week':
+                            if currency == 'usdc' and price.metadata.get('is_crypto') == 'true':
+                                existing_price = price
+                                break
+                            elif currency != 'usdc' and not price.metadata.get('is_crypto'):
+                                existing_price = price
+                                break
+                    
+                    if not existing_price and price_amount > 0:
+                        # Create new price
+                        price_metadata = {'tier': tier.value, 'billing_period': 'weekly'}
+                        if currency == 'usdc':
+                            price_metadata['is_crypto'] = 'true'
+                            price_metadata['currency_type'] = 'usdc'
+                        
+                        price = stripe.Price.create(
+                            product=product.id,
+                            unit_amount=price_amount,
+                            currency='usd' if currency == 'usdc' else currency,
+                            recurring={'interval': 'week'},
+                            metadata=price_metadata
+                        )
+                        weekly_price_ids[currency_info['db_field']] = price.id
+                        logger.info(f"Created weekly price {price.id} for {tier.value} in {currency}")
+                    elif existing_price:
+                        weekly_price_ids[currency_info['db_field']] = existing_price.id
                 
                 # Update database with Stripe IDs
                 plan = Plan.query.filter_by(tier=tier).first()
@@ -198,6 +276,7 @@ class StripeManager:
                         name=config['name'],
                         tier=tier,
                         price_monthly=config['price_monthly'] / 100,  # Convert cents to dollars
+                        price_weekly=config.get('price_weekly', 0) / 100,  # Convert cents to dollars
                         quotas_json={
                             'scans_per_day': config['features']['scans_per_day'],
                             'api_calls_per_minute': config['features']['api_calls_per_minute']
@@ -206,10 +285,17 @@ class StripeManager:
                         features_json={'description': config['features']['description']}
                     )
                     db.session.add(plan)
+                else:
+                    # Update existing plan with weekly pricing
+                    plan.price_weekly = config.get('price_weekly', 0) / 100
                 
                 plan.stripe_product_id = product.id
-                # Set all currency price IDs
-                for db_field, price_id in price_ids.items():
+                # Set all currency price IDs (monthly)
+                for db_field, price_id in monthly_price_ids.items():
+                    setattr(plan, db_field, price_id)
+                
+                # Set all currency price IDs (weekly)
+                for db_field, price_id in weekly_price_ids.items():
                     setattr(plan, db_field, price_id)
                 
                 db.session.commit()
@@ -405,7 +491,12 @@ class StripeManager:
             logger.info(f"Processing Stripe webhook: {event_type}")
             
             if event_type == 'checkout.session.completed':
-                return StripeManager._handle_checkout_completed(data)
+                # Check if this is a top-up session
+                metadata = data.get('metadata', {})
+                if metadata.get('type') == 'topup':
+                    return StripeManager._handle_topup_completed(data)
+                else:
+                    return StripeManager._handle_checkout_completed(data)
             
             elif event_type == 'customer.subscription.created':
                 return StripeManager._handle_subscription_created(data)
@@ -431,6 +522,26 @@ class StripeManager:
             return {'status': 'error', 'error': 'Invalid signature'}
         except Exception as e:
             logger.error(f"Webhook processing error: {str(e)}")
+            return {'status': 'error', 'error': str(e)}
+    
+    @staticmethod
+    def _handle_topup_completed(session: Dict) -> Dict[str, Any]:
+        """Handle successful top-up checkout session completion"""
+        try:
+            session_id = session.get('id')
+            
+            # Process the top-up payment
+            success = StripeManager.process_topup_payment(session_id)
+            
+            if success:
+                logger.info(f"Top-up session {session_id} processed successfully")
+                return {'status': 'success', 'message': 'Top-up processed'}
+            else:
+                logger.error(f"Failed to process top-up session {session_id}")
+                return {'status': 'error', 'error': 'Top-up processing failed'}
+                
+        except Exception as e:
+            logger.error(f"Error handling top-up completion: {str(e)}")
             return {'status': 'error', 'error': str(e)}
     
     @staticmethod
@@ -640,6 +751,176 @@ class StripeManager:
         except Exception as e:
             logger.error(f"Error handling payment failure: {str(e)}")
             return {'status': 'error', 'error': str(e)}
+    
+    @staticmethod
+    def create_topup_session(user_id: int, amount: int, currency: str = 'usd', success_url: str = None, cancel_url: str = None) -> Dict[str, Any]:
+        """Create a Stripe checkout session for account top-up
+        
+        Args:
+            user_id: User ID
+            amount: Amount in cents
+            currency: Currency code (default 'usd')
+            success_url: URL to redirect after successful payment
+            cancel_url: URL to redirect if payment is cancelled
+        
+        Returns:
+            Dict with checkout session details
+        """
+        try:
+            # Get user and ensure they have a Stripe customer ID
+            from db_utils import DatabaseManager
+            user = User.query.get(user_id)
+            if not user:
+                raise ValueError(f"User {user_id} not found")
+            
+            # Create or get Stripe customer
+            if not user.stripe_customer_id:
+                customer = stripe.Customer.create(
+                    email=user.email,
+                    metadata={'user_id': str(user.id)}
+                )
+                user.stripe_customer_id = customer.id
+                db.session.commit()
+            
+            # Create checkout session for one-time payment
+            session = stripe.checkout.Session.create(
+                customer=user.stripe_customer_id,
+                payment_method_types=['card'],
+                line_items=[{
+                    'price_data': {
+                        'currency': currency,
+                        'product_data': {
+                            'name': 'Account Credits Top-up',
+                            'description': f'Add ${amount/100:.2f} to your account balance'
+                        },
+                        'unit_amount': amount,
+                    },
+                    'quantity': 1,
+                }],
+                mode='payment',
+                success_url=success_url or 'http://localhost:5000/dashboard?topup=success',
+                cancel_url=cancel_url or 'http://localhost:5000/dashboard?topup=cancelled',
+                metadata={
+                    'user_id': str(user_id),
+                    'type': 'topup',
+                    'amount': str(amount)
+                }
+            )
+            
+            logger.info(f"Created top-up session {session.id} for user {user_id}, amount: {amount}")
+            return {
+                'session_id': session.id,
+                'url': session.url
+            }
+            
+        except Exception as e:
+            logger.error(f"Error creating top-up session: {str(e)}")
+            raise
+    
+    @staticmethod
+    def process_topup_payment(session_id: str) -> bool:
+        """Process successful top-up payment and update user balance
+        
+        Args:
+            session_id: Stripe checkout session ID
+        
+        Returns:
+            True if successful, False otherwise
+        """
+        try:
+            # Retrieve the session
+            session = stripe.checkout.Session.retrieve(session_id)
+            
+            if session.payment_status != 'paid':
+                logger.warning(f"Session {session_id} is not paid yet")
+                return False
+            
+            # Get user and amount from metadata
+            user_id = int(session.metadata.get('user_id'))
+            amount_cents = int(session.metadata.get('amount'))
+            amount_dollars = amount_cents / 100
+            
+            # Get payment intent for transaction tracking
+            payment_intent = stripe.PaymentIntent.retrieve(session.payment_intent)
+            
+            # Update user balance
+            user = User.query.get(user_id)
+            if not user:
+                logger.error(f"User {user_id} not found for top-up")
+                return False
+            
+            # Create transaction record
+            transaction = AccountTransaction(
+                user_id=user_id,
+                amount=amount_dollars,
+                balance_after=user.account_balance + amount_dollars,
+                type=TransactionType.TOP_UP,
+                description=f'Account top-up via Stripe',
+                stripe_payment_intent_id=payment_intent.id,
+                status='completed'
+            )
+            
+            # Update user balance
+            user.account_balance += amount_dollars
+            
+            db.session.add(transaction)
+            db.session.commit()
+            
+            logger.info(f"Successfully processed top-up for user {user_id}: ${amount_dollars}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Error processing top-up payment: {str(e)}")
+            db.session.rollback()
+            return False
+    
+    @staticmethod
+    def charge_from_balance(user_id: int, amount: float, description: str, subscription_id: int = None) -> bool:
+        """Charge amount from user's account balance
+        
+        Args:
+            user_id: User ID
+            amount: Amount to charge in dollars
+            description: Description of the charge
+            subscription_id: Related subscription ID if applicable
+        
+        Returns:
+            True if successful, False if insufficient balance
+        """
+        try:
+            user = User.query.get(user_id)
+            if not user:
+                logger.error(f"User {user_id} not found")
+                return False
+            
+            if user.account_balance < amount:
+                logger.warning(f"Insufficient balance for user {user_id}: {user.account_balance} < {amount}")
+                return False
+            
+            # Create transaction record
+            transaction = AccountTransaction(
+                user_id=user_id,
+                amount=-amount,  # Negative for charges
+                balance_after=user.account_balance - amount,
+                type=TransactionType.SUBSCRIPTION_CHARGE,
+                description=description,
+                subscription_id=subscription_id,
+                status='completed'
+            )
+            
+            # Update user balance
+            user.account_balance -= amount
+            
+            db.session.add(transaction)
+            db.session.commit()
+            
+            logger.info(f"Successfully charged ${amount} from user {user_id} balance")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Error charging from balance: {str(e)}")
+            db.session.rollback()
+            return False
     
     @staticmethod
     def _map_stripe_status(stripe_status: str) -> SubscriptionStatus:
