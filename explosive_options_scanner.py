@@ -35,7 +35,7 @@ class ExplosiveOptionsScanner:
 
         # Scan configuration optimized for your API plan
         self.scan_config = {
-            'min_score': 20,  # Lowered from 35 to find more opportunities  
+            'min_score': 15,  # Lowered to 15 to show more actionable opportunities  
             'max_positions': 10,  # Max concurrent positions
             'scan_frequency': 'continuous',  # or 'daily', 'hourly'
             'focus_list': [],  # Symbols to prioritize

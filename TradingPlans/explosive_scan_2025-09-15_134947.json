@@ -1,0 +1,23 @@
+{
+  "scan_metadata": {
+    "timestamp": "2025-09-15T13:49:47.687818",
+    "scan_type": "earnings",
+    "symbols_scanned": 0,
+    "filters_applied": {
+      "min_price": 0.05,
+      "max_price": 1.25,
+      "min_delta": 0.4,
+      "max_delta": 0.47,
+      "min_days": 1,
+      "max_days": 30
+    }
+  },
+  "opportunities": {},
+  "top_picks": [],
+  "by_category": {
+    "earnings_plays": [],
+    "unusual_activity": [],
+    "technical_setups": [],
+    "volatility_plays": []
+  }
+}
