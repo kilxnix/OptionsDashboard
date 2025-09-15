@@ -588,29 +588,44 @@ SCANNER_TEMPLATE = """
             html += '<th class="text-left p-2">Entry Price</th>';
             html += '<th class="text-left p-2">Target</th>';
             html += '<th class="text-left p-2">Score</th>';
+            html += '<th class="text-left p-2">Recommendation</th>';
             html += '</tr></thead><tbody>';
             
-            // Check for both possible field names
-            const opportunities = data.final_opportunities || data.opportunities || [];
+            // Check for all possible field names from backend
+            const opportunities = data.top_picks || data.final_opportunities || data.opportunities || [];
             
             if (opportunities && opportunities.length > 0) {
                 opportunities.slice(0, 20).forEach(opp => {
-                    const plan = opp.trade_plan || {};
+                    const plan = opp.trade_plan || opp.trading_plan || {};
+                    const best = opp.best_opportunity || {};
+                    const score = opp.combined_score || opp.total_score || best.total_score || '-';
+                    const recommendation = opp.recommendation || best.recommendation || '';
+                    
                     html += '<tr class="border-b hover:bg-gray-50">';
                     html += '<td class="p-2 font-semibold">' + (opp.symbol || '-') + '</td>';
-                    html += '<td class="p-2">$' + (plan.strike || '-') + '</td>';
-                    html += '<td class="p-2">' + (plan.option_type || '-').toUpperCase() + '</td>';
-                    html += '<td class="p-2">' + (plan.expiration ? plan.expiration.split(' ')[0] : '-') + '</td>';
-                    html += '<td class="p-2">$' + (plan.entry_price || '-') + '</td>';
-                    html += '<td class="p-2">$' + (plan.initial_target || '-') + '</td>';
-                    html += '<td class="p-2">' + (opp.combined_score || opp.total_score || '-') + '</td>';
+                    html += '<td class="p-2">$' + (plan.strike || best.strike || '-') + '</td>';
+                    html += '<td class="p-2">' + ((plan.option_type || best.type || '-').toUpperCase()) + '</td>';
+                    html += '<td class="p-2">' + ((plan.expiration || best.expiration || '-').split(' ')[0]) + '</td>';
+                    html += '<td class="p-2">$' + (plan.entry_price || best.mark || '-') + '</td>';
+                    html += '<td class="p-2">$' + (plan.initial_target || plan.target || '-') + '</td>';
+                    html += '<td class="p-2">' + score.toFixed(1) + '</td>';
+                    html += '<td class="p-2">' + recommendation + '</td>';
                     html += '</tr>';
                 });
             } else {
-                html += '<tr><td colspan="7" class="p-4 text-center text-gray-500">No opportunities found matching your criteria</td></tr>';
+                html += '<tr><td colspan="8" class="p-4 text-center text-gray-500">No opportunities found matching your criteria</td></tr>';
             }
             
             html += '</tbody></table></div>';
+            
+            // Add summary information if available
+            if (data.summary) {
+                html += '<div class="mt-4 p-4 bg-blue-50 rounded-lg">';
+                html += '<h4 class="font-semibold mb-2">Scan Summary:</h4>';
+                html += '<p class="text-sm">' + data.summary + '</p>';
+                html += '</div>';
+            }
+            
             document.getElementById('resultsContent').innerHTML = html;
         }
 
