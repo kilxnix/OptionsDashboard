@@ -12,9 +12,16 @@ from run_autonomous_scan import run_autonomous_scan
 from quantitative_analyzer import is_in_bollinger_squeeze, calculate_relative_volume
 from enhanced_scanner import EnhancedOptionsScanner
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
+from auth import AuthManager, require_auth, require_admin, require_tier, validate_email, validate_password
+from models import PlanTier, UserRole, UserStatus
+import secrets
 
 # Initialize Flask app
 app = Flask(__name__)
+
+# Enable CORS for all routes
+CORS(app, origins=['*'], allow_headers=['Content-Type', 'Authorization', 'X-API-Key'])
 
 # Database configuration - using blueprint:python_database integration
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a-very-secret-key-for-development"
@@ -83,14 +90,361 @@ def make_json_safe(obj):
 def index():
     return jsonify({
         "status": "online",
-        "message": "Autonomous scanner is running.",
-        "timestamp": datetime.now().isoformat()
+        "message": "Options Scanner API - Visit /api/docs for documentation",
+        "timestamp": datetime.now().isoformat(),
+        "endpoints": {
+            "auth": [
+                "POST /api/auth/register",
+                "POST /api/auth/login",
+                "POST /api/auth/refresh",
+                "GET /api/auth/me",
+                "POST /api/auth/logout",
+                "POST /api/auth/api-keys",
+                "DELETE /api/auth/api-keys/{key_id}"
+            ],
+            "scanner": [
+                "GET /scan",
+                "GET /explosive-scan",
+                "GET /jpm-explosion-hunter",
+                "GET /plans"
+            ]
+        }
     })
 
 
 @app.route("/health")
 def health():
     return "OK", 200
+
+
+# ==================== Authentication Endpoints ====================
+
+@app.route("/api/auth/register", methods=["POST"])
+def register():
+    """Register a new user"""
+    data = request.get_json()
+    
+    # Validate input
+    email = data.get('email', '').strip().lower()
+    password = data.get('password', '')
+    first_name = data.get('first_name', '')
+    last_name = data.get('last_name', '')
+    company = data.get('company', '')
+    
+    # Validate email
+    if not email or not validate_email(email):
+        return jsonify({
+            'status': 'error',
+            'message': 'Invalid email address'
+        }), 400
+    
+    # Validate password
+    password_validation = validate_password(password)
+    if not password_validation['valid']:
+        return jsonify({
+            'status': 'error',
+            'message': 'Password validation failed',
+            'errors': password_validation['errors']
+        }), 400
+    
+    # Check if user already exists
+    from db_utils import DatabaseManager
+    existing_user = DatabaseManager.get_user_by_email(email)
+    if existing_user:
+        return jsonify({
+            'status': 'error',
+            'message': 'Email already registered'
+        }), 409
+    
+    # Create new user
+    from models import User
+    new_user = User(
+        email=email,
+        password_hash=AuthManager.hash_password(password),
+        first_name=first_name,
+        last_name=last_name,
+        company=company,
+        status=UserStatus.ACTIVE,
+        role=UserRole.USER
+    )
+    
+    db.session.add(new_user)
+    db.session.commit()
+    
+    # Create free tier subscription
+    from models import Plan, Subscription, SubscriptionStatus
+    free_plan = Plan.query.filter_by(tier=PlanTier.FREE).first()
+    if not free_plan:
+        # Create default free plan if it doesn't exist
+        free_plan = Plan(
+            code='free',
+            name='Free Tier',
+            tier=PlanTier.FREE,
+            price_monthly=0,
+            quotas_json={'scans_per_day': 5, 'api_calls_per_minute': 10},
+            allowed_endpoints_json=['/scan'],
+            features_json={'basic_scanning': True}
+        )
+        db.session.add(free_plan)
+        db.session.commit()
+    
+    subscription = Subscription(
+        user_id=new_user.id,
+        plan_id=free_plan.id,
+        status=SubscriptionStatus.ACTIVE,
+        period_start=datetime.utcnow(),
+        period_end=datetime.utcnow() + timedelta(days=30)
+    )
+    db.session.add(subscription)
+    db.session.commit()
+    
+    # Generate tokens
+    access_token = AuthManager.generate_access_token(new_user.id, new_user.email, new_user.role.value)
+    refresh_token = AuthManager.generate_refresh_token(new_user.id)
+    
+    return jsonify({
+        'status': 'success',
+        'message': 'User registered successfully',
+        'user': {
+            'id': new_user.id,
+            'email': new_user.email,
+            'first_name': new_user.first_name,
+            'last_name': new_user.last_name,
+            'role': new_user.role.value,
+            'plan': free_plan.name
+        },
+        'tokens': {
+            'access_token': access_token,
+            'refresh_token': refresh_token
+        }
+    }), 201
+
+
+@app.route("/api/auth/login", methods=["POST"])
+def login():
+    """Login user and return JWT token"""
+    data = request.get_json()
+    
+    email = data.get('email', '').strip().lower()
+    password = data.get('password', '')
+    
+    if not email or not password:
+        return jsonify({
+            'status': 'error',
+            'message': 'Email and password required'
+        }), 400
+    
+    # Get user
+    from db_utils import DatabaseManager
+    user = DatabaseManager.get_user_by_email(email)
+    
+    if not user or not AuthManager.verify_password(password, user.password_hash):
+        return jsonify({
+            'status': 'error',
+            'message': 'Invalid credentials'
+        }), 401
+    
+    if user.status != UserStatus.ACTIVE:
+        return jsonify({
+            'status': 'error',
+            'message': f'Account is {user.status.value}'
+        }), 403
+    
+    # Get user's plan
+    plan = DatabaseManager.get_user_plan(user.id)
+    
+    # Generate tokens
+    access_token = AuthManager.generate_access_token(user.id, user.email, user.role.value)
+    refresh_token = AuthManager.generate_refresh_token(user.id)
+    
+    return jsonify({
+        'status': 'success',
+        'message': 'Login successful',
+        'user': {
+            'id': user.id,
+            'email': user.email,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'role': user.role.value,
+            'plan': plan.name if plan else 'Free'
+        },
+        'tokens': {
+            'access_token': access_token,
+            'refresh_token': refresh_token
+        }
+    }), 200
+
+
+@app.route("/api/auth/refresh", methods=["POST"])
+def refresh_token():
+    """Refresh access token using refresh token"""
+    data = request.get_json()
+    refresh_token = data.get('refresh_token')
+    
+    if not refresh_token:
+        return jsonify({
+            'status': 'error',
+            'message': 'Refresh token required'
+        }), 400
+    
+    # Decode refresh token
+    payload = AuthManager.decode_token(refresh_token)
+    
+    if not payload or payload.get('type') != 'refresh':
+        return jsonify({
+            'status': 'error',
+            'message': 'Invalid refresh token'
+        }), 401
+    
+    # Get user
+    from db_utils import DatabaseManager
+    user = DatabaseManager.get_user_by_id(payload['user_id'])
+    
+    if not user or user.status != UserStatus.ACTIVE:
+        return jsonify({
+            'status': 'error',
+            'message': 'User not found or inactive'
+        }), 401
+    
+    # Generate new access token
+    access_token = AuthManager.generate_access_token(user.id, user.email, user.role.value)
+    
+    return jsonify({
+        'status': 'success',
+        'message': 'Token refreshed successfully',
+        'access_token': access_token
+    }), 200
+
+
+@app.route("/api/auth/me", methods=["GET"])
+@require_auth
+def get_current_user():
+    """Get current user information"""
+    user = request.current_user
+    
+    from db_utils import DatabaseManager
+    plan = DatabaseManager.get_user_plan(user.id)
+    subscription = DatabaseManager.get_active_subscription(user.id)
+    
+    # Get API keys
+    from models import ApiKey
+    api_keys = ApiKey.query.filter_by(user_id=user.id, active=True).all()
+    
+    return jsonify({
+        'status': 'success',
+        'user': {
+            'id': user.id,
+            'email': user.email,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'company': user.company,
+            'role': user.role.value,
+            'status': user.status.value,
+            'created_at': user.created_at.isoformat()
+        },
+        'subscription': {
+            'plan': plan.name if plan else 'Free',
+            'tier': plan.tier.value if plan else 'free',
+            'status': subscription.status.value if subscription else 'none',
+            'period_end': subscription.period_end.isoformat() if subscription else None,
+            'quotas': plan.quotas_json if plan else {},
+            'features': plan.features_json if plan else {}
+        },
+        'api_keys': [{
+            'id': key.id,
+            'name': key.name,
+            'created_at': key.created_at.isoformat(),
+            'last_used_at': key.last_used_at.isoformat() if key.last_used_at else None
+        } for key in api_keys]
+    }), 200
+
+
+@app.route("/api/auth/logout", methods=["POST"])
+@require_auth
+def logout():
+    """Logout user and invalidate token"""
+    auth_header = request.headers.get('Authorization')
+    if auth_header and auth_header.startswith('Bearer '):
+        token = auth_header.split(' ')[1]
+        AuthManager.revoke_token(token)
+    
+    return jsonify({
+        'status': 'success',
+        'message': 'Logged out successfully'
+    }), 200
+
+
+@app.route("/api/auth/api-keys", methods=["POST"])
+@require_auth
+def create_api_key():
+    """Generate a new API key"""
+    data = request.get_json()
+    name = data.get('name', 'Unnamed Key')
+    
+    user = request.current_user
+    
+    # Check if user has reached API key limit
+    from models import ApiKey
+    existing_keys = ApiKey.query.filter_by(user_id=user.id, active=True).count()
+    
+    from db_utils import DatabaseManager
+    plan = DatabaseManager.get_user_plan(user.id)
+    max_keys = plan.quotas_json.get('max_api_keys', 5) if plan else 1
+    
+    if existing_keys >= max_keys:
+        return jsonify({
+            'status': 'error',
+            'message': f'API key limit reached ({max_keys} keys maximum)'
+        }), 400
+    
+    # Generate new API key
+    api_key = ApiKey.generate_key()
+    key_hash = ApiKey.hash_key(api_key)
+    
+    new_key = ApiKey(
+        user_id=user.id,
+        key_hash=key_hash,
+        name=name
+    )
+    
+    db.session.add(new_key)
+    db.session.commit()
+    
+    return jsonify({
+        'status': 'success',
+        'message': 'API key created successfully',
+        'api_key': {
+            'id': new_key.id,
+            'key': api_key,  # Only shown once
+            'name': new_key.name,
+            'created_at': new_key.created_at.isoformat()
+        },
+        'warning': 'Save this API key securely. It will not be shown again.'
+    }), 201
+
+
+@app.route("/api/auth/api-keys/<int:key_id>", methods=["DELETE"])
+@require_auth
+def revoke_api_key(key_id):
+    """Revoke an API key"""
+    user = request.current_user
+    
+    from models import ApiKey
+    api_key = ApiKey.query.filter_by(id=key_id, user_id=user.id).first()
+    
+    if not api_key:
+        return jsonify({
+            'status': 'error',
+            'message': 'API key not found'
+        }), 404
+    
+    api_key.active = False
+    db.session.commit()
+    
+    return jsonify({
+        'status': 'success',
+        'message': 'API key revoked successfully'
+    }), 200
 
 
 @app.route("/scan/parameters", methods=["GET"])
@@ -158,6 +512,7 @@ def get_scan_parameters():
 
 
 @app.route("/scan", methods=["GET", "POST"])
+@require_tier([PlanTier.FREE, PlanTier.BASIC, PlanTier.PREMIUM, PlanTier.ENTERPRISE])
 def trigger_scan():
     # Handle both GET (query params) and POST (JSON body) requests
     if request.method == 'POST' and request.is_json:
@@ -826,6 +1181,7 @@ CONFLUENCE SCORE ACCURACY:
 
 
 @app.route("/enhanced-scan", methods=["GET", "POST"])
+@require_tier([PlanTier.PREMIUM, PlanTier.ENTERPRISE])
 def enhanced_scan():
     """Enhanced options scanning with complex analysis"""
     try:
@@ -915,6 +1271,7 @@ def enhanced_scan():
 
 
 @app.route("/explosive-scan", methods=["GET", "POST"])
+@require_tier([PlanTier.BASIC, PlanTier.PREMIUM, PlanTier.ENTERPRISE])
 def run_explosive_scan():
     """Run the explosive options scanner optimized for your API plan"""
     try:
@@ -1754,6 +2111,7 @@ def get_earnings_calendar():
 
 
 @app.route('/api/jpm-explosion-hunter', methods=['GET', 'POST'])
+@require_tier([PlanTier.PREMIUM, PlanTier.ENTERPRISE])
 def jpm_explosion_hunter():
     """
     Phase 2: Find options matching the JPM explosion pattern from your example contract.
@@ -2247,6 +2605,7 @@ def explosive_earnings_combo():
 
 
 @app.route("/pre-earnings-scan", methods=["GET", "POST"])
+@require_tier([PlanTier.PREMIUM, PlanTier.ENTERPRISE])
 def run_pre_earnings_scan():
     """Run specialized scan focused on pre-earnings opportunities"""
     try:
@@ -2432,6 +2791,7 @@ def get_formatted_plans():
 
 
 @app.route("/enhanced-scan", methods=["GET", "POST"])
+@require_tier([PlanTier.PREMIUM, PlanTier.ENTERPRISE])
 def run_enhanced_scan():
     """Run enhanced options scan with comprehensive analysis"""
     try:
@@ -2514,6 +2874,7 @@ def run_enhanced_scan():
 
 
 @app.route("/enhanced-scan/progress", methods=["GET"])
+@require_tier([PlanTier.PREMIUM, PlanTier.ENTERPRISE])
 def get_enhanced_scan_progress():
     """Check progress of enhanced scan"""
     try:
@@ -2574,6 +2935,7 @@ def get_enhanced_scan_progress():
 
 
 @app.route("/enhanced-scan/resume", methods=["POST"])
+@require_tier([PlanTier.PREMIUM, PlanTier.ENTERPRISE])
 def resume_enhanced_scan():
     """Resume an interrupted enhanced scan"""
     try:
@@ -2596,6 +2958,7 @@ def resume_enhanced_scan():
 
 
 @app.route("/explosive-techvol-scan", methods=["GET", "POST"])
+@require_tier([PlanTier.PREMIUM, PlanTier.ENTERPRISE])
 def explosive_techvol_scan():
     """Find short-term technical or volatility driven setups."""
     try:
@@ -3038,6 +3401,7 @@ def explosive_52week_combo():
 
 
 @app.route("/mega-discovery-scan", methods=["GET", "POST"])
+@require_tier([PlanTier.ENTERPRISE])
 def mega_discovery_scan():
     """Ultimate auto-discovery scan combining ALL methods with full analysis"""
     try:
@@ -3337,6 +3701,7 @@ def discovery_info():
 
 
 @app.route("/quantitative-squeeze-scan", methods=["GET"])
+@require_tier([PlanTier.PREMIUM, PlanTier.ENTERPRISE])
 def quantitative_squeeze_scan():
     """
     A dedicated endpoint to find high-potential explosive moves.
@@ -3456,6 +3821,7 @@ def quantitative_squeeze_scan():
 
 
 @app.route("/comprehensive-pipeline-scan", methods=["GET"])
+@require_tier([PlanTier.ENTERPRISE])
 def comprehensive_pipeline_scan():
     """
     Finds high-potential opportunities by looking for two distinct setups:
@@ -3548,6 +3914,7 @@ def comprehensive_pipeline_scan():
         }), 500
         
 @app.route("/gamma-squeeze-scan", methods=["GET"])
+@require_tier([PlanTier.PREMIUM, PlanTier.ENTERPRISE])
 def gamma_squeeze_scan():
     """
     An innovative scanner that finds explosive setups by identifying "gamma walls"
