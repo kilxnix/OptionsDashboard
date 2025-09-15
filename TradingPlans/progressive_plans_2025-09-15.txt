@@ -1,0 +1,94 @@
+
+============================================================
+Symbol: CBRL - 03:15:43
+Confluence Score: 9.57/10
+Bias: Bullish
+
+Top Options Found: 35
+
+Option 1:
+  Strike: $45.0 Put
+  Expiration: 2026-03-20 00:00:00
+  Delta: -0.2784
+  Gamma: 0.0173
+  Theta: -0.0151
+  Volume: 5
+  Score: 1.03
+  IV: 52.71%
+
+Option 2:
+  Strike: $85.0 Call
+  Expiration: 2027-01-15 00:00:00
+  Delta: 0.2565
+  Gamma: 0.0126
+  Theta: -0.0096
+  Volume: 3
+  Score: 1.02
+  IV: 42.95%
+
+Option 3:
+  Strike: $47.5 Put
+  Expiration: 2025-12-19 00:00:00
+  Delta: -0.3300
+  Gamma: 0.0241
+  Theta: -0.0253
+  Volume: 9
+  Score: 1.02
+  IV: 56.61%
+
+Trade Plan:
+  Entry: $3.60
+  Stop: $2.70
+  Target: $6.30
+  Position Size: 1 contracts
+  Strike: $85.0 Call
+  Expiration: 2027-01-15
+  Max Hold: 12 hours
+============================================================
+
+============================================================
+Symbol: COST - 03:16:05
+Confluence Score: 9.9/10
+Bias: Bullish
+
+Top Options Found: 8
+
+Option 1:
+  Strike: $967.5 Put
+  Expiration: 2025-09-12 00:00:00
+  Delta: -0.3975
+  Gamma: 0.1939
+  Theta: -0.3379
+  Volume: 34
+  Score: 0.91
+  IV: 3.93%
+
+Option 2:
+  Strike: $982.5 Call
+  Expiration: 2025-09-19 00:00:00
+  Delta: 0.3053
+  Gamma: 0.0134
+  Theta: -0.6899
+  Volume: 45
+  Score: 0.63
+  IV: 19.54%
+
+Option 3:
+  Strike: $955.0 Put
+  Expiration: 2025-09-19 00:00:00
+  Delta: -0.2945
+  Gamma: 0.0132
+  Theta: -0.6105
+  Volume: 88
+  Score: 0.63
+  IV: 19.54%
+
+Trade Plan:
+  Entry: $5.00
+  Stop: $3.75
+  Target: $8.75
+  Position Size: 1 contracts
+  Strike: $982.5 Call
+  Expiration: 2025-09-19
+  Max Hold: 6 hours
+============================================================

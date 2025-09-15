@@ -7678,5 +7678,53 @@
     "days_tracked": 0,
     "hit_target": false,
     "hit_stop": false
+  },
+  "CBRL_45.0_put_2026-03-20 00:00:00_2025-09-15": {
+    "symbol": "CBRL",
+    "prediction_date": "2025-09-15",
+    "option_details": {
+      "strike": 45.0,
+      "type": "put",
+      "expiration": "2026-03-20 00:00:00",
+      "entry_price": 3.6,
+      "predicted_target": 6.3,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.57,
+      "delta": -0.27842,
+      "gamma": 0.0173,
+      "theta": -0.01506,
+      "implied_vol": "0.52706"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
+  },
+  "COST_967.5_put_2025-09-12 00:00:00_2025-09-15": {
+    "symbol": "COST",
+    "prediction_date": "2025-09-15",
+    "option_details": {
+      "strike": 967.5,
+      "type": "put",
+      "expiration": "2025-09-12 00:00:00",
+      "entry_price": 5.0,
+      "predicted_target": 8.75,
+      "predicted_bias": "Bullish",
+      "confluence_score": 9.9,
+      "delta": -0.39749,
+      "gamma": 0.19388,
+      "theta": -0.33794,
+      "implied_vol": "0.03927"
+    },
+    "daily_tracking": {},
+    "final_outcome": null,
+    "max_profit": 0,
+    "max_loss": 0,
+    "days_tracked": 0,
+    "hit_target": false,
+    "hit_stop": false
   }
 }
