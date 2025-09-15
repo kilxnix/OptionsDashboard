@@ -16792,3 +16792,147 @@ Delta: 0.39236 | Gamma: 1.25707 | Theta: -0.00857 | Score: 59.35
 
 ================================================================================
 
+📈 Trade Plan for BB (Bullish Bias)
+
+🔹 Option: $$4.0 Call expiring 2025-09-19
+🔹 Entry Price: $0.09
+🔹 Stop Loss: $0.07
+🔹 Initial Target: $0.16
+🔹 Final Target: $0.32
+🔹 Position Size: 25 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.39236 | Gamma: 1.25707 | Theta: -0.00857 | Score: 59.35
+
+================================================================================
+
+📈 Trade Plan for BLSH (Bearish Bias)
+
+🔹 Option: $$50.0 Put expiring 2025-10-03
+🔹 Entry Price: $3.50
+🔹 Stop Loss: $2.62
+🔹 Initial Target: $6.12
+🔹 Final Target: $12.25
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 10 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.38408 | Gamma: 0.03747 | Theta: -0.08998 | Score: 0.84
+
+================================================================================
+
+📈 Trade Plan for DRI (Bearish Bias)
+
+🔹 Option: $$200.0 Put expiring 2025-10-17
+🔹 Entry Price: $3.60
+🔹 Stop Loss: $2.70
+🔹 Initial Target: $6.30
+🔹 Final Target: $12.60
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.24616 | Gamma: 0.01442 | Theta: -0.09179 | Score: 0.65
+
+================================================================================
+
+📈 Trade Plan for CBRL (Bullish Bias)
+
+🔹 Option: $$85.0 Call expiring 2027-01-15
+🔹 Entry Price: $3.60
+🔹 Stop Loss: $2.70
+🔹 Initial Target: $6.30
+🔹 Final Target: $12.60
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.25650 | Gamma: 0.01265 | Theta: -0.00956 | Score: 1.02
+
+================================================================================
+
+📈 Trade Plan for GRRR (Bearish Bias)
+
+🔹 Option: $$15.0 Put expiring 2025-10-31
+🔹 Entry Price: $1.25
+🔹 Stop Loss: $0.94
+🔹 Initial Target: $2.19
+🔹 Final Target: $4.38
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 10 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.20817 | Gamma: 0.05394 | Theta: -0.01502 | Score: 1.80
+
+================================================================================
+
+📈 Trade Plan for CCL (Bearish Bias)
+
+🔹 Option: $$28.0 Put expiring 2027-12-17
+🔹 Entry Price: $5.10
+🔹 Stop Loss: $3.82
+🔹 Initial Target: $8.92
+🔹 Final Target: $17.85
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.25543 | Gamma: 0.01579 | Theta: -0.00247 | Score: 2.95
+
+================================================================================
+
+📈 Trade Plan for TSLZ (Bearish Bias)
+
+🔹 Option: $$1.0 Put expiring 2026-03-20
+🔹 Entry Price: $0.50
+🔹 Stop Loss: $0.38
+🔹 Initial Target: $0.88
+🔹 Final Target: $1.75
+🔹 Position Size: 4 contracts
+🔹 Max Hold Time: 10 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.33257 | Gamma: 0.40308 | Theta: -0.00078 | Score: 207.35
+
+================================================================================
+
+📈 Trade Plan for GRAB (Bearish Bias)
+
+🔹 Option: $$7.0 Put expiring 2027-12-17
+🔹 Entry Price: $2.35
+🔹 Stop Loss: $1.76
+🔹 Initial Target: $4.11
+🔹 Final Target: $8.22
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.36587 | Gamma: 0.07625 | Theta: -0.00061 | Score: 50.66
+
+================================================================================
+
