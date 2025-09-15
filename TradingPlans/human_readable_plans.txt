@@ -16486,3 +16486,21 @@ Delta: -0.65098 | Gamma: 2.58243 | Theta: -0.00370 | Score: 279.95
 
 ================================================================================
 
+📈 Trade Plan for GRAB (Bearish Bias)
+
+🔹 Option: $$6.0 Put expiring 2025-09-12
+🔹 Entry Price: $0.05
+🔹 Stop Loss: $0.04
+🔹 Initial Target: $0.09
+🔹 Final Target: $0.18
+🔹 Position Size: 49 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.48764 | Gamma: 16.21753 | Theta: -0.00455 | Score: 1426.45
+
+================================================================================
+
