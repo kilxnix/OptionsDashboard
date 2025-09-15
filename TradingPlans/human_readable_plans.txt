@@ -16468,3 +16468,21 @@ Delta: -0.45533 | Gamma: 0.70683 | Theta: 0.00180 | Score: 157.59
 
 ================================================================================
 
+📈 Trade Plan for TSLZ (Bearish Bias)
+
+🔹 Option: $$1.0 Put expiring 2025-09-19
+🔹 Entry Price: $0.15
+🔹 Stop Loss: $0.11
+🔹 Initial Target: $0.26
+🔹 Final Target: $0.53
+🔹 Position Size: 12 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.65098 | Gamma: 2.58243 | Theta: -0.00370 | Score: 279.95
+
+================================================================================
+
