@@ -203,6 +203,20 @@ def require_tier(allowed_tiers):
                     'message': 'Authentication required'
                 }), 401
             
+            # Admins automatically get premium access
+            if user.role in [UserRole.ADMIN, UserRole.SUPER_ADMIN]:
+                # Create a virtual premium plan for admins
+                from models import Plan, PlanTier
+                plan = Plan(
+                    tier=PlanTier.PREMIUM,
+                    code='admin_premium',
+                    name='Admin Premium Access'
+                )
+                request.current_user = user
+                request.current_plan = plan
+                # Skip rate limiting for admins
+                return f(*args, **kwargs)
+            
             # Get user's current plan
             plan = DatabaseManager.get_user_plan(user.id)
             if not plan:

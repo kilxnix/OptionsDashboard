@@ -1543,6 +1543,19 @@ def get_scan_parameters():
 @app.route("/scan", methods=["GET", "POST"])
 @require_tier([PlanTier.FREE, PlanTier.BASIC, PlanTier.PREMIUM])
 def trigger_scan():
+    from tier_limits import apply_tier_limits, is_scanner_allowed
+    
+    # Get user tier from request context (set by require_tier decorator)
+    user_tier = request.current_plan.tier if hasattr(request, 'current_plan') else PlanTier.FREE
+    
+    # Check if this scanner type is allowed for user's tier
+    if not is_scanner_allowed(user_tier, 'scan'):
+        return jsonify({
+            'status': 'error',
+            'message': 'Basic scan not available for your tier. Please upgrade.',
+            'upgrade_url': '/pricing'
+        }), 403
+    
     # Handle both GET (query params) and POST (JSON body) requests
     if request.method == 'POST' and request.is_json:
         data = request.get_json()
@@ -1573,6 +1586,24 @@ def trigger_scan():
         iv_percentile = request.args.get('iv_percentile')
         iv_percentile = int(iv_percentile) if iv_percentile else None
 
+    # Apply tier-based parameter limits
+    params = {
+        'max_price': max_price,
+        'min_delta': min_delta,
+        'max_delta': max_delta,
+        'days_to_expiry': max_days,
+        'max_days': max_days,
+        'max_results': 25  # Will be limited based on tier
+    }
+    
+    adjusted_params, applied_limits = apply_tier_limits(user_tier, params)
+    
+    # Update parameters with tier-adjusted values
+    max_price = adjusted_params['max_price']
+    min_delta = adjusted_params['min_delta']
+    max_delta = adjusted_params['max_delta']
+    max_days = min(adjusted_params['days_to_expiry'], max_days)
+    
     result = run_autonomous_scan(dry_run=False,
                                  auto_refresh_symbols=auto_refresh,
                                  symbol_limit=limit,
@@ -1602,7 +1633,7 @@ def trigger_scan():
                         key=lambda x: x[1],
                         reverse=True)
 
-    return jsonify({
+    response = {
         "status":
         "completed",
         "digest":
@@ -1622,8 +1653,15 @@ def trigger_scan():
             "iv_percentile_threshold": iv_percentile,
             "auto_refresh": auto_refresh,
             "symbol_limit": limit
-        }
-    }), 200
+        },
+        "tier": user_tier.value
+    }
+    
+    # Add applied limits if any
+    if applied_limits:
+        response['applied_limits'] = ', '.join(applied_limits)
+    
+    return jsonify(response), 200
 
 
 @app.route("/plans", methods=["GET"])
@@ -2305,6 +2343,19 @@ def run_explosive_scan():
     """Run the explosive options scanner optimized for your API plan"""
     try:
         from explosive_options_scanner import ExplosiveOptionsScanner
+        from tier_limits import apply_tier_limits, is_scanner_allowed
+        
+        # Get user tier from request context
+        user_tier = request.current_plan.tier if hasattr(request, 'current_plan') else PlanTier.FREE
+        
+        # Check if this scanner type is allowed
+        if not is_scanner_allowed(user_tier, 'explosive-scan'):
+            return jsonify({
+                'status': 'error',
+                'message': 'Explosive scan requires Basic or Premium tier. Please upgrade.',
+                'upgrade_url': '/pricing',
+                'current_tier': user_tier.value
+            }), 403
 
         # Get parameters
         if request.method == 'POST' and request.is_json:
@@ -2332,6 +2383,23 @@ def run_explosive_scan():
             }
             market_data = {}
 
+        # Apply tier-based limits to filters
+        params = {
+            'max_price': filters.get('max_price', 5.00),
+            'min_delta': filters.get('min_delta', 0.15),
+            'max_delta': filters.get('max_delta', 0.35),
+            'days_to_expiry': filters.get('max_days', 21),
+            'max_results': 50  # Will be limited based on tier
+        }
+        
+        adjusted_params, applied_limits = apply_tier_limits(user_tier, params)
+        
+        # Update filters with adjusted values
+        filters['max_price'] = adjusted_params['max_price']
+        filters['min_delta'] = adjusted_params['min_delta']
+        filters['max_delta'] = adjusted_params['max_delta']
+        filters['max_days'] = adjusted_params['days_to_expiry']
+        
         # Initialize scanner
         scanner = ExplosiveOptionsScanner(os.getenv('ALPHA_VANTAGE_API_KEY'))
 
@@ -2368,7 +2436,7 @@ def run_explosive_scan():
                 except Exception as e:
                     print(f"⚠️ Failed to track {symbol}: {e}")
 
-        return jsonify({
+        response = {
             "status":
             "success",
             "scan_type":
@@ -2388,8 +2456,15 @@ def run_explosive_scan():
             "performance_tracking":
             f"Now tracking {tracked_count} options",
             "summary":
-            results['summary']
-        })
+            results['summary'],
+            "tier": user_tier.value
+        }
+        
+        # Add applied limits if any
+        if applied_limits:
+            response['applied_limits'] = ', '.join(applied_limits)
+        
+        return jsonify(response)
 
     except Exception as e:
         return jsonify({
@@ -3153,6 +3228,20 @@ def jpm_explosion_hunter():
     - Price: $1.52, Current stock: $293.725
     """
     try:
+        from tier_limits import is_scanner_allowed
+        
+        # Get user tier from request context
+        user_tier = request.current_plan.tier if hasattr(request, 'current_plan') else PlanTier.FREE
+        
+        # Check if this scanner type is allowed (Premium only)
+        if not is_scanner_allowed(user_tier, 'jpm-explosion-hunter'):
+            return jsonify({
+                'status': 'error',
+                'message': 'JPM Explosion Hunter requires Premium tier. Upgrade to unlock this advanced scanner.',
+                'upgrade_url': '/pricing',
+                'current_tier': user_tier.value
+            }), 403
+        
         # Get parameters
         if request.method == 'POST' and request.is_json:
             data = request.get_json()
@@ -3491,6 +3580,7 @@ def calculate_net_similarity(option_dict, net_reference):
 
 
 @app.route("/explosive-earnings-combo", methods=["GET", "POST"])
+@require_tier([PlanTier.BASIC, PlanTier.PREMIUM])
 def explosive_earnings_combo():
     """
             True two-phase scan:
@@ -3499,6 +3589,20 @@ def explosive_earnings_combo():
             3. Combines both scores to find the best opportunities.
             """
     try:  # The stray backtick has been removed from this line
+        from tier_limits import apply_tier_limits, is_scanner_allowed, get_tier_limits
+        
+        # Get user tier from request context
+        user_tier = request.current_plan.tier if hasattr(request, 'current_plan') else PlanTier.FREE
+        
+        # Check if this scanner type is allowed
+        if not is_scanner_allowed(user_tier, 'explosive-earnings-combo'):
+            return jsonify({
+                'status': 'error',
+                'message': 'Explosive earnings combo requires Basic or Premium tier. Please upgrade.',
+                'upgrade_url': '/pricing',
+                'current_tier': user_tier.value
+            }), 403
+        
         # Get parameters from request
         if request.method == 'POST' and request.is_json:
             data = request.get_json()
@@ -3521,6 +3625,9 @@ def explosive_earnings_combo():
                 'min_days': int(request.args.get('min_days', 1)),
                 'max_days': int(request.args.get('max_days', 30))
             }
+        
+        # Apply tier limits to filters
+        filters, applied_limits = apply_tier_limits(user_tier, filters)
 
         print("🚀 TWO-PHASE EXPLOSIVE EARNINGS SCAN")
         print("=" * 60)

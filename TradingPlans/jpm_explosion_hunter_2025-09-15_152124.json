@@ -1,0 +1,3299 @@
+{
+  "scan_metadata": {
+    "timestamp": "2025-09-15T15:21:24.341260",
+    "scan_type": "jpm_explosion_hunter",
+    "net_reference_pattern": {
+      "delta": 0.15696,
+      "gamma": 0.01411,
+      "theta": -0.09836,
+      "price": 1.52,
+      "iv": 0.23438,
+      "days_to_expiry": 17
+    },
+    "similarity_threshold": 0.7,
+    "source_file": "custom_symbols",
+    "total_symbols": 22,
+    "symbols_analyzed": 22
+  },
+  "jpm_matches": [
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.1582,
+        "gamma": 0.01432,
+        "theta": -0.0554,
+        "price": 1.45,
+        "iv": 0.39048,
+        "volume": 38.0,
+        "open_interest": 292.0,
+        "strike": 125.0,
+        "type": "put",
+        "expiration": "2025-10-17",
+        "days_to_expiry": 31
+      },
+      "similarity_score": 0.897,
+      "contract_symbol": "STZ 125.0 PUT exp 2025-10-17",
+      "comparison": {
+        "delta_diff": 0.0012400000000000189,
+        "gamma_diff": 0.00021000000000000012,
+        "theta_diff": 0.042960000000000005,
+        "price_diff": 0.07000000000000006,
+        "iv_diff": 0.1561,
+        "days_diff": 14
+      }
+    },
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.14642,
+        "gamma": 0.01448,
+        "theta": -0.06232,
+        "price": 1.18,
+        "iv": 0.40999,
+        "volume": 3.0,
+        "open_interest": 34.0,
+        "strike": 125.0,
+        "type": "put",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.878,
+      "contract_symbol": "STZ 125.0 PUT exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.010539999999999994,
+        "gamma_diff": 0.00037000000000000054,
+        "theta_diff": 0.03604,
+        "price_diff": 0.3400000000000001,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.17572,
+        "gamma": 0.01399,
+        "theta": -0.05956,
+        "price": 1.55,
+        "iv": 0.39048,
+        "volume": 1.0,
+        "open_interest": 22.0,
+        "strike": 160.0,
+        "type": "call",
+        "expiration": "2025-10-24",
+        "days_to_expiry": 38
+      },
+      "similarity_score": 0.851,
+      "contract_symbol": "STZ 160.0 CALL exp 2025-10-24",
+      "comparison": {
+        "delta_diff": 0.01876,
+        "gamma_diff": 0.00011999999999999858,
+        "theta_diff": 0.0388,
+        "price_diff": 0.030000000000000027,
+        "iv_diff": 0.1561,
+        "days_diff": 21
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.15473,
+        "gamma": 0.01633,
+        "theta": -0.06276,
+        "price": 1.05,
+        "iv": 1.01485,
+        "volume": 1.0,
+        "open_interest": 8.0,
+        "strike": 72.0,
+        "type": "call",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.85,
+      "contract_symbol": "BLSH 72.0 CALL exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.002229999999999982,
+        "gamma_diff": 0.0022200000000000015,
+        "theta_diff": 0.03560000000000001,
+        "price_diff": 0.47,
+        "iv_diff": 0.78047,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.15135,
+        "gamma": 0.01468,
+        "theta": -0.05434,
+        "price": 1.12,
+        "iv": 0.99534,
+        "volume": 29.0,
+        "open_interest": 438.0,
+        "strike": 75.0,
+        "type": "call",
+        "expiration": "2025-10-17",
+        "days_to_expiry": 31
+      },
+      "similarity_score": 0.846,
+      "contract_symbol": "BLSH 75.0 CALL exp 2025-10-17",
+      "comparison": {
+        "delta_diff": 0.005609999999999976,
+        "gamma_diff": 0.0005700000000000011,
+        "theta_diff": 0.044020000000000004,
+        "price_diff": 0.3999999999999999,
+        "iv_diff": 0.76096,
+        "days_diff": 14
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.14412,
+        "gamma": 0.015,
+        "theta": -0.0621,
+        "price": 1.0,
+        "iv": 1.05388,
+        "volume": 0.0,
+        "open_interest": 4.0,
+        "strike": 74.0,
+        "type": "call",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.844,
+      "contract_symbol": "BLSH 74.0 CALL exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.01283999999999999,
+        "gamma_diff": 0.0008900000000000002,
+        "theta_diff": 0.03626,
+        "price_diff": 0.52,
+        "iv_diff": 0.8194999999999999,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.16959,
+        "gamma": 0.01407,
+        "theta": -0.04894,
+        "price": 1.5,
+        "iv": 0.35146,
+        "volume": 15.0,
+        "open_interest": 0.0,
+        "strike": 160.0,
+        "type": "call",
+        "expiration": "2025-10-31",
+        "days_to_expiry": 45
+      },
+      "similarity_score": 0.841,
+      "contract_symbol": "STZ 160.0 CALL exp 2025-10-31",
+      "comparison": {
+        "delta_diff": 0.012630000000000002,
+        "gamma_diff": 4.0000000000000105e-05,
+        "theta_diff": 0.049420000000000006,
+        "price_diff": 0.020000000000000018,
+        "iv_diff": 0.11707999999999999,
+        "days_diff": 28
+      }
+    },
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.17298,
+        "gamma": 0.01785,
+        "theta": -0.0682,
+        "price": 1.32,
+        "iv": 0.37097,
+        "volume": 129.0,
+        "open_interest": 130.0,
+        "strike": 155.0,
+        "type": "call",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.84,
+      "contract_symbol": "STZ 155.0 CALL exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.016020000000000006,
+        "gamma_diff": 0.003740000000000002,
+        "theta_diff": 0.030160000000000006,
+        "price_diff": 0.19999999999999996,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.14128,
+        "gamma": 0.01426,
+        "theta": -0.0394,
+        "price": 1.27,
+        "iv": 0.33194,
+        "volume": 0.0,
+        "open_interest": 12.0,
+        "strike": 125.0,
+        "type": "put",
+        "expiration": "2025-10-24",
+        "days_to_expiry": 38
+      },
+      "similarity_score": 0.831,
+      "contract_symbol": "STZ 125.0 PUT exp 2025-10-24",
+      "comparison": {
+        "delta_diff": 0.01568,
+        "gamma_diff": 0.00015000000000000083,
+        "theta_diff": 0.058960000000000005,
+        "price_diff": 0.25,
+        "iv_diff": 0.09756000000000001,
+        "days_diff": 21
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.15497,
+        "gamma": 0.01477,
+        "theta": -0.04657,
+        "price": 1.18,
+        "iv": 0.91729,
+        "volume": 0.0,
+        "open_interest": 16.0,
+        "strike": 75.0,
+        "type": "call",
+        "expiration": "2025-10-24",
+        "days_to_expiry": 38
+      },
+      "similarity_score": 0.83,
+      "contract_symbol": "BLSH 75.0 CALL exp 2025-10-24",
+      "comparison": {
+        "delta_diff": 0.0019899999999999918,
+        "gamma_diff": 0.0006600000000000009,
+        "theta_diff": 0.05179,
+        "price_diff": 0.3400000000000001,
+        "iv_diff": 0.68291,
+        "days_diff": 21
+      }
+    },
+    {
+      "symbol": "THO",
+      "option": {
+        "delta": 0.13865,
+        "gamma": 0.0134,
+        "theta": -0.05026,
+        "price": 1.27,
+        "iv": 0.50755,
+        "volume": 0.0,
+        "open_interest": 210.0,
+        "strike": 90.0,
+        "type": "put",
+        "expiration": "2025-10-17",
+        "days_to_expiry": 31
+      },
+      "similarity_score": 0.829,
+      "contract_symbol": "THO 90.0 PUT exp 2025-10-17",
+      "comparison": {
+        "delta_diff": 0.018309999999999993,
+        "gamma_diff": 0.0007099999999999988,
+        "theta_diff": 0.048100000000000004,
+        "price_diff": 0.25,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 14
+      }
+    },
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.13553,
+        "gamma": 0.01359,
+        "theta": -0.05195,
+        "price": 1.0,
+        "iv": 0.37097,
+        "volume": 95.0,
+        "open_interest": 570.0,
+        "strike": 160.0,
+        "type": "call",
+        "expiration": "2025-10-17",
+        "days_to_expiry": 31
+      },
+      "similarity_score": 0.817,
+      "contract_symbol": "STZ 160.0 CALL exp 2025-10-17",
+      "comparison": {
+        "delta_diff": 0.021429999999999977,
+        "gamma_diff": 0.0005199999999999996,
+        "theta_diff": 0.04641,
+        "price_diff": 0.52,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 14
+      }
+    },
+    {
+      "symbol": "THO",
+      "option": {
+        "delta": 0.13568,
+        "gamma": 0.0143,
+        "theta": -0.04899,
+        "price": 1.02,
+        "iv": 0.46853,
+        "volume": 0.0,
+        "open_interest": 9.0,
+        "strike": 125.0,
+        "type": "call",
+        "expiration": "2025-10-17",
+        "days_to_expiry": 31
+      },
+      "similarity_score": 0.809,
+      "contract_symbol": "THO 125.0 CALL exp 2025-10-17",
+      "comparison": {
+        "delta_diff": 0.021279999999999993,
+        "gamma_diff": 0.00019000000000000093,
+        "theta_diff": 0.049370000000000004,
+        "price_diff": 0.5,
+        "iv_diff": 0.23415,
+        "days_diff": 14
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.15212,
+        "gamma": 0.00913,
+        "theta": -0.14127,
+        "price": 2.25,
+        "iv": 0.68315,
+        "volume": 28.0,
+        "open_interest": 718.0,
+        "strike": 135.0,
+        "type": "put",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.8,
+      "contract_symbol": "MU 135.0 PUT exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.004839999999999983,
+        "gamma_diff": 0.00498,
+        "theta_diff": 0.042910000000000004,
+        "price_diff": 0.73,
+        "iv_diff": 0.44877,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.14169,
+        "gamma": 0.00871,
+        "theta": -0.13477,
+        "price": 2.09,
+        "iv": 0.68315,
+        "volume": 6.0,
+        "open_interest": 53.0,
+        "strike": 134.0,
+        "type": "put",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.791,
+      "contract_symbol": "MU 134.0 PUT exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.015269999999999978,
+        "gamma_diff": 0.0053999999999999986,
+        "theta_diff": 0.03641,
+        "price_diff": 0.5699999999999998,
+        "iv_diff": 0.44877,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.16296,
+        "gamma": 0.00956,
+        "theta": -0.14773,
+        "price": 2.36,
+        "iv": 0.68315,
+        "volume": 29.0,
+        "open_interest": 148.0,
+        "strike": 136.0,
+        "type": "put",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.79,
+      "contract_symbol": "MU 136.0 PUT exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.006000000000000005,
+        "gamma_diff": 0.0045499999999999985,
+        "theta_diff": 0.04937,
+        "price_diff": 0.8399999999999999,
+        "iv_diff": 0.44877,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.18745,
+        "gamma": 0.01883,
+        "theta": -0.06968,
+        "price": 1.32,
+        "iv": 0.99534,
+        "volume": 0.0,
+        "open_interest": 1.0,
+        "strike": 69.0,
+        "type": "call",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.787,
+      "contract_symbol": "BLSH 69.0 CALL exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.030490000000000017,
+        "gamma_diff": 0.00472,
+        "theta_diff": 0.028679999999999997,
+        "price_diff": 0.19999999999999996,
+        "iv_diff": 0.76096,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.13741,
+        "gamma": 0.00829,
+        "theta": -0.13586,
+        "price": 1.99,
+        "iv": 0.70267,
+        "volume": 2.0,
+        "open_interest": 50.0,
+        "strike": 133.0,
+        "type": "put",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.785,
+      "contract_symbol": "MU 133.0 PUT exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.019549999999999984,
+        "gamma_diff": 0.005819999999999999,
+        "theta_diff": 0.037500000000000006,
+        "price_diff": 0.47,
+        "iv_diff": 0.46829,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.1841,
+        "gamma": 0.02069,
+        "theta": -0.08249,
+        "price": 1.15,
+        "iv": 1.03437,
+        "volume": 0.0,
+        "open_interest": 739.0,
+        "strike": 67.0,
+        "type": "call",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.783,
+      "contract_symbol": "BLSH 67.0 CALL exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.027140000000000025,
+        "gamma_diff": 0.006580000000000001,
+        "theta_diff": 0.01587000000000001,
+        "price_diff": 0.3700000000000001,
+        "iv_diff": 0.79999,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.15542,
+        "gamma": 0.02151,
+        "theta": -0.09546,
+        "price": 0.82,
+        "iv": 1.0929,
+        "volume": 0.0,
+        "open_interest": 14.0,
+        "strike": 66.0,
+        "type": "call",
+        "expiration": "2025-09-26",
+        "days_to_expiry": 10
+      },
+      "similarity_score": 0.782,
+      "contract_symbol": "BLSH 66.0 CALL exp 2025-09-26",
+      "comparison": {
+        "delta_diff": 0.0015399999999999858,
+        "gamma_diff": 0.007400000000000002,
+        "theta_diff": 0.0029,
+        "price_diff": 0.7000000000000001,
+        "iv_diff": 0.85852,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.15098,
+        "gamma": 0.01025,
+        "theta": -0.18797,
+        "price": 1.98,
+        "iv": 0.74169,
+        "volume": 96.0,
+        "open_interest": 118.0,
+        "strike": 137.0,
+        "type": "put",
+        "expiration": "2025-09-26",
+        "days_to_expiry": 10
+      },
+      "similarity_score": 0.782,
+      "contract_symbol": "MU 137.0 PUT exp 2025-09-26",
+      "comparison": {
+        "delta_diff": 0.005979999999999985,
+        "gamma_diff": 0.003859999999999999,
+        "theta_diff": 0.08961,
+        "price_diff": 0.45999999999999996,
+        "iv_diff": 0.5073099999999999,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.13948,
+        "gamma": 0.00972,
+        "theta": -0.17828,
+        "price": 1.73,
+        "iv": 0.74169,
+        "volume": 385.0,
+        "open_interest": 2050.0,
+        "strike": 136.0,
+        "type": "put",
+        "expiration": "2025-09-26",
+        "days_to_expiry": 10
+      },
+      "similarity_score": 0.78,
+      "contract_symbol": "MU 136.0 PUT exp 2025-09-26",
+      "comparison": {
+        "delta_diff": 0.017479999999999996,
+        "gamma_diff": 0.00439,
+        "theta_diff": 0.07991999999999999,
+        "price_diff": 0.20999999999999996,
+        "iv_diff": 0.5073099999999999,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.1478,
+        "gamma": 0.00823,
+        "theta": -0.11261,
+        "price": 2.23,
+        "iv": 0.64413,
+        "volume": 50.0,
+        "open_interest": 26.0,
+        "strike": 133.0,
+        "type": "put",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.78,
+      "contract_symbol": "MU 133.0 PUT exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.009160000000000001,
+        "gamma_diff": 0.00588,
+        "theta_diff": 0.014249999999999999,
+        "price_diff": 0.71,
+        "iv_diff": 0.40974999999999995,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.1794,
+        "gamma": 0.01381,
+        "theta": -0.04746,
+        "price": 2.0,
+        "iv": 0.37097,
+        "volume": 3.0,
+        "open_interest": 0.0,
+        "strike": 125.0,
+        "type": "put",
+        "expiration": "2025-10-31",
+        "days_to_expiry": 45
+      },
+      "similarity_score": 0.777,
+      "contract_symbol": "STZ 125.0 PUT exp 2025-10-31",
+      "comparison": {
+        "delta_diff": 0.022440000000000015,
+        "gamma_diff": 0.0002999999999999999,
+        "theta_diff": 0.0509,
+        "price_diff": 0.48,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 28
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.12781,
+        "gamma": 0.00789,
+        "theta": -0.12931,
+        "price": 1.85,
+        "iv": 0.70267,
+        "volume": 74.0,
+        "open_interest": 158.0,
+        "strike": 132.0,
+        "type": "put",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.777,
+      "contract_symbol": "MU 132.0 PUT exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.02914999999999998,
+        "gamma_diff": 0.00622,
+        "theta_diff": 0.030950000000000005,
+        "price_diff": 0.33000000000000007,
+        "iv_diff": 0.46829,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.15771,
+        "gamma": 0.00859,
+        "theta": -0.11749,
+        "price": 2.48,
+        "iv": 0.64413,
+        "volume": 2.0,
+        "open_interest": 1.0,
+        "strike": 134.0,
+        "type": "put",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.777,
+      "contract_symbol": "MU 134.0 PUT exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.0007500000000000007,
+        "gamma_diff": 0.005519999999999999,
+        "theta_diff": 0.019129999999999994,
+        "price_diff": 0.96,
+        "iv_diff": 0.40974999999999995,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.11862,
+        "gamma": 0.00749,
+        "theta": -0.12278,
+        "price": 1.63,
+        "iv": 0.70267,
+        "volume": 2.0,
+        "open_interest": 122.0,
+        "strike": 131.0,
+        "type": "put",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.776,
+      "contract_symbol": "MU 131.0 PUT exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.038339999999999985,
+        "gamma_diff": 0.006619999999999999,
+        "theta_diff": 0.024419999999999997,
+        "price_diff": 0.10999999999999988,
+        "iv_diff": 0.46829,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.14436,
+        "gamma": 0.02012,
+        "theta": -0.09246,
+        "price": 0.75,
+        "iv": 1.11241,
+        "volume": 0.0,
+        "open_interest": 12.0,
+        "strike": 67.0,
+        "type": "call",
+        "expiration": "2025-09-26",
+        "days_to_expiry": 10
+      },
+      "similarity_score": 0.773,
+      "contract_symbol": "BLSH 67.0 CALL exp 2025-09-26",
+      "comparison": {
+        "delta_diff": 0.0126,
+        "gamma_diff": 0.00601,
+        "theta_diff": 0.0059000000000000025,
+        "price_diff": 0.77,
+        "iv_diff": 0.8780299999999999,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.17064,
+        "gamma": 0.01156,
+        "theta": -0.05942,
+        "price": 1.9,
+        "iv": 0.4295,
+        "volume": 0.0,
+        "open_interest": 0.0,
+        "strike": 165.0,
+        "type": "call",
+        "expiration": "2025-10-31",
+        "days_to_expiry": 45
+      },
+      "similarity_score": 0.771,
+      "contract_symbol": "STZ 165.0 CALL exp 2025-10-31",
+      "comparison": {
+        "delta_diff": 0.013679999999999998,
+        "gamma_diff": 0.0025499999999999984,
+        "theta_diff": 0.03894,
+        "price_diff": 0.3799999999999999,
+        "iv_diff": 0.19512,
+        "days_diff": 28
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.16301,
+        "gamma": 0.01078,
+        "theta": -0.1976,
+        "price": 2.15,
+        "iv": 0.74169,
+        "volume": 148.0,
+        "open_interest": 327.0,
+        "strike": 138.0,
+        "type": "put",
+        "expiration": "2025-09-26",
+        "days_to_expiry": 10
+      },
+      "similarity_score": 0.769,
+      "contract_symbol": "MU 138.0 PUT exp 2025-09-26",
+      "comparison": {
+        "delta_diff": 0.00605,
+        "gamma_diff": 0.0033299999999999996,
+        "theta_diff": 0.09924,
+        "price_diff": 0.6299999999999999,
+        "iv_diff": 0.5073099999999999,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.13389,
+        "gamma": 0.00921,
+        "theta": -0.17803,
+        "price": 1.66,
+        "iv": 0.7612,
+        "volume": 934.0,
+        "open_interest": 2334.0,
+        "strike": 135.0,
+        "type": "put",
+        "expiration": "2025-09-26",
+        "days_to_expiry": 10
+      },
+      "similarity_score": 0.768,
+      "contract_symbol": "MU 135.0 PUT exp 2025-09-26",
+      "comparison": {
+        "delta_diff": 0.02306999999999998,
+        "gamma_diff": 0.0049,
+        "theta_diff": 0.07966999999999999,
+        "price_diff": 0.1399999999999999,
+        "iv_diff": 0.52682,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.20491,
+        "gamma": 0.01773,
+        "theta": -0.06821,
+        "price": 1.65,
+        "iv": 0.37097,
+        "volume": 163.0,
+        "open_interest": 379.0,
+        "strike": 155.0,
+        "type": "call",
+        "expiration": "2025-10-17",
+        "days_to_expiry": 31
+      },
+      "similarity_score": 0.766,
+      "contract_symbol": "STZ 155.0 CALL exp 2025-10-17",
+      "comparison": {
+        "delta_diff": 0.04795000000000002,
+        "gamma_diff": 0.00362,
+        "theta_diff": 0.030149999999999996,
+        "price_diff": 0.1299999999999999,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 14
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.10984,
+        "gamma": 0.00709,
+        "theta": -0.11629,
+        "price": 1.54,
+        "iv": 0.70267,
+        "volume": 84.0,
+        "open_interest": 234.0,
+        "strike": 130.0,
+        "type": "put",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.766,
+      "contract_symbol": "MU 130.0 PUT exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.047119999999999995,
+        "gamma_diff": 0.007019999999999999,
+        "theta_diff": 0.01793,
+        "price_diff": 0.020000000000000018,
+        "iv_diff": 0.46829,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.13825,
+        "gamma": 0.00787,
+        "theta": -0.10771,
+        "price": 2.17,
+        "iv": 0.64413,
+        "volume": 9.0,
+        "open_interest": 98.0,
+        "strike": 132.0,
+        "type": "put",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.765,
+      "contract_symbol": "MU 132.0 PUT exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.018709999999999977,
+        "gamma_diff": 0.006239999999999999,
+        "theta_diff": 0.009349999999999997,
+        "price_diff": 0.6499999999999999,
+        "iv_diff": 0.40974999999999995,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.16186,
+        "gamma": 0.00901,
+        "theta": -0.11576,
+        "price": 2.62,
+        "iv": 0.62462,
+        "volume": 27.0,
+        "open_interest": 461.0,
+        "strike": 135.0,
+        "type": "put",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.765,
+      "contract_symbol": "MU 135.0 PUT exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.0049000000000000155,
+        "gamma_diff": 0.005099999999999999,
+        "theta_diff": 0.0174,
+        "price_diff": 1.1,
+        "iv_diff": 0.3902399999999999,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.10723,
+        "gamma": 0.01335,
+        "theta": -0.06139,
+        "price": 0.62,
+        "iv": 1.11241,
+        "volume": 0.0,
+        "open_interest": 29.0,
+        "strike": 75.0,
+        "type": "call",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.764,
+      "contract_symbol": "BLSH 75.0 CALL exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.04972999999999998,
+        "gamma_diff": 0.0007599999999999985,
+        "theta_diff": 0.03697,
+        "price_diff": 0.9,
+        "iv_diff": 0.8780299999999999,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.14108,
+        "gamma": 0.01257,
+        "theta": -0.04136,
+        "price": 1.15,
+        "iv": 0.93681,
+        "volume": 0.0,
+        "open_interest": 0.0,
+        "strike": 80.0,
+        "type": "call",
+        "expiration": "2025-10-31",
+        "days_to_expiry": 45
+      },
+      "similarity_score": 0.764,
+      "contract_symbol": "BLSH 80.0 CALL exp 2025-10-31",
+      "comparison": {
+        "delta_diff": 0.015879999999999977,
+        "gamma_diff": 0.0015399999999999997,
+        "theta_diff": 0.057,
+        "price_diff": 0.3700000000000001,
+        "iv_diff": 0.70243,
+        "days_diff": 28
+      }
+    },
+    {
+      "symbol": "PAYX",
+      "option": {
+        "delta": 0.15965,
+        "gamma": 0.01314,
+        "theta": -0.02933,
+        "price": 1.7,
+        "iv": 0.31243,
+        "volume": 0.0,
+        "open_interest": 33.0,
+        "strike": 120.0,
+        "type": "put",
+        "expiration": "2025-11-21",
+        "days_to_expiry": 66
+      },
+      "similarity_score": 0.763,
+      "contract_symbol": "PAYX 120.0 PUT exp 2025-11-21",
+      "comparison": {
+        "delta_diff": 0.002689999999999998,
+        "gamma_diff": 0.0009699999999999986,
+        "theta_diff": 0.06903000000000001,
+        "price_diff": 0.17999999999999994,
+        "iv_diff": 0.07804999999999998,
+        "days_diff": 49
+      }
+    },
+    {
+      "symbol": "PAYX",
+      "option": {
+        "delta": 0.18534,
+        "gamma": 0.02044,
+        "theta": -0.04677,
+        "price": 1.43,
+        "iv": 0.31243,
+        "volume": 22.0,
+        "open_interest": 1034.0,
+        "strike": 125.0,
+        "type": "put",
+        "expiration": "2025-10-17",
+        "days_to_expiry": 31
+      },
+      "similarity_score": 0.761,
+      "contract_symbol": "PAYX 125.0 PUT exp 2025-10-17",
+      "comparison": {
+        "delta_diff": 0.028380000000000016,
+        "gamma_diff": 0.0063300000000000006,
+        "theta_diff": 0.051590000000000004,
+        "price_diff": 0.09000000000000008,
+        "iv_diff": 0.07804999999999998,
+        "days_diff": 14
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.12906,
+        "gamma": 0.0075,
+        "theta": -0.10279,
+        "price": 1.99,
+        "iv": 0.64413,
+        "volume": 5.0,
+        "open_interest": 25.0,
+        "strike": 131.0,
+        "type": "put",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.761,
+      "contract_symbol": "MU 131.0 PUT exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.02789999999999998,
+        "gamma_diff": 0.0066099999999999996,
+        "theta_diff": 0.004430000000000003,
+        "price_diff": 0.47,
+        "iv_diff": 0.40974999999999995,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.20353,
+        "gamma": 0.01806,
+        "theta": -0.06438,
+        "price": 1.52,
+        "iv": 0.97583,
+        "volume": 262.0,
+        "open_interest": 1089.0,
+        "strike": 70.0,
+        "type": "call",
+        "expiration": "2025-10-17",
+        "days_to_expiry": 31
+      },
+      "similarity_score": 0.76,
+      "contract_symbol": "BLSH 70.0 CALL exp 2025-10-17",
+      "comparison": {
+        "delta_diff": 0.04657,
+        "gamma_diff": 0.00395,
+        "theta_diff": 0.033979999999999996,
+        "price_diff": 0.0,
+        "iv_diff": 0.7414499999999999,
+        "days_diff": 14
+      }
+    },
+    {
+      "symbol": "THO",
+      "option": {
+        "delta": 0.19481,
+        "gamma": 0.01887,
+        "theta": -0.05973,
+        "price": 1.45,
+        "iv": 0.44901,
+        "volume": 0.0,
+        "open_interest": 14.0,
+        "strike": 120.0,
+        "type": "call",
+        "expiration": "2025-10-17",
+        "days_to_expiry": 31
+      },
+      "similarity_score": 0.758,
+      "contract_symbol": "THO 120.0 CALL exp 2025-10-17",
+      "comparison": {
+        "delta_diff": 0.03785000000000002,
+        "gamma_diff": 0.004760000000000002,
+        "theta_diff": 0.038630000000000005,
+        "price_diff": 0.07000000000000006,
+        "iv_diff": 0.21463000000000002,
+        "days_diff": 14
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.12342,
+        "gamma": 0.0087,
+        "theta": -0.16832,
+        "price": 1.54,
+        "iv": 0.7612,
+        "volume": 23.0,
+        "open_interest": 53.0,
+        "strike": 134.0,
+        "type": "put",
+        "expiration": "2025-09-26",
+        "days_to_expiry": 10
+      },
+      "similarity_score": 0.757,
+      "contract_symbol": "MU 134.0 PUT exp 2025-09-26",
+      "comparison": {
+        "delta_diff": 0.033539999999999986,
+        "gamma_diff": 0.00541,
+        "theta_diff": 0.06996,
+        "price_diff": 0.020000000000000018,
+        "iv_diff": 0.52682,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.19486,
+        "gamma": 0.02184,
+        "theta": -0.08386,
+        "price": 1.25,
+        "iv": 1.01485,
+        "volume": 28.0,
+        "open_interest": 5.0,
+        "strike": 66.0,
+        "type": "call",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.755,
+      "contract_symbol": "BLSH 66.0 CALL exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.03790000000000002,
+        "gamma_diff": 0.007729999999999999,
+        "theta_diff": 0.014499999999999999,
+        "price_diff": 0.27,
+        "iv_diff": 0.78047,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.12946,
+        "gamma": 0.01868,
+        "theta": -0.0858,
+        "price": 0.68,
+        "iv": 1.11241,
+        "volume": 0.0,
+        "open_interest": 107.0,
+        "strike": 68.0,
+        "type": "call",
+        "expiration": "2025-09-26",
+        "days_to_expiry": 10
+      },
+      "similarity_score": 0.754,
+      "contract_symbol": "BLSH 68.0 CALL exp 2025-09-26",
+      "comparison": {
+        "delta_diff": 0.027499999999999997,
+        "gamma_diff": 0.004569999999999999,
+        "theta_diff": 0.012560000000000002,
+        "price_diff": 0.84,
+        "iv_diff": 0.8780299999999999,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "NKE",
+      "option": {
+        "delta": 0.15947,
+        "gamma": 0.01381,
+        "theta": -0.01536,
+        "price": 1.6,
+        "iv": 0.40999,
+        "volume": 7.0,
+        "open_interest": 23576.0,
+        "strike": 60.0,
+        "type": "put",
+        "expiration": "2026-01-16",
+        "days_to_expiry": 122
+      },
+      "similarity_score": 0.753,
+      "contract_symbol": "NKE 60.0 PUT exp 2026-01-16",
+      "comparison": {
+        "delta_diff": 0.0025100000000000122,
+        "gamma_diff": 0.0002999999999999999,
+        "theta_diff": 0.083,
+        "price_diff": 0.08000000000000007,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 105
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.11769,
+        "gamma": 0.00683,
+        "theta": -0.09942,
+        "price": 1.73,
+        "iv": 0.66364,
+        "volume": 1.0,
+        "open_interest": 103.0,
+        "strike": 129.0,
+        "type": "put",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.753,
+      "contract_symbol": "MU 129.0 PUT exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.039269999999999985,
+        "gamma_diff": 0.007279999999999999,
+        "theta_diff": 0.0010599999999999915,
+        "price_diff": 0.20999999999999996,
+        "iv_diff": 0.42926,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.17421,
+        "gamma": 0.00998,
+        "theta": -0.15412,
+        "price": 2.57,
+        "iv": 0.68315,
+        "volume": 82.0,
+        "open_interest": 21.0,
+        "strike": 137.0,
+        "type": "put",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.752,
+      "contract_symbol": "MU 137.0 PUT exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.017250000000000015,
+        "gamma_diff": 0.00413,
+        "theta_diff": 0.055760000000000004,
+        "price_diff": 1.0499999999999998,
+        "iv_diff": 0.44877,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.10685,
+        "gamma": 0.00676,
+        "theta": -0.11725,
+        "price": 1.44,
+        "iv": 0.72218,
+        "volume": 5.0,
+        "open_interest": 192.0,
+        "strike": 129.0,
+        "type": "put",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.75,
+      "contract_symbol": "MU 129.0 PUT exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.05010999999999999,
+        "gamma_diff": 0.007349999999999999,
+        "theta_diff": 0.01888999999999999,
+        "price_diff": 0.08000000000000007,
+        "iv_diff": 0.4878,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.12024,
+        "gamma": 0.00714,
+        "theta": -0.09789,
+        "price": 1.88,
+        "iv": 0.64413,
+        "volume": 100.0,
+        "open_interest": 85.0,
+        "strike": 130.0,
+        "type": "put",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.75,
+      "contract_symbol": "MU 130.0 PUT exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.03671999999999999,
+        "gamma_diff": 0.00697,
+        "theta_diff": 0.0004699999999999982,
+        "price_diff": 0.3599999999999999,
+        "iv_diff": 0.40974999999999995,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.12069,
+        "gamma": 0.01748,
+        "theta": -0.0831,
+        "price": 0.62,
+        "iv": 1.13192,
+        "volume": 0.0,
+        "open_interest": 9.0,
+        "strike": 69.0,
+        "type": "call",
+        "expiration": "2025-09-26",
+        "days_to_expiry": 10
+      },
+      "similarity_score": 0.747,
+      "contract_symbol": "BLSH 69.0 CALL exp 2025-09-26",
+      "comparison": {
+        "delta_diff": 0.03626999999999998,
+        "gamma_diff": 0.0033699999999999997,
+        "theta_diff": 0.01526000000000001,
+        "price_diff": 0.9,
+        "iv_diff": 0.89754,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.16936,
+        "gamma": 0.02312,
+        "theta": -0.06657,
+        "price": 0.93,
+        "iv": 0.87827,
+        "volume": 0.0,
+        "open_interest": 21.0,
+        "strike": 65.0,
+        "type": "call",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.747,
+      "contract_symbol": "BLSH 65.0 CALL exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.012400000000000022,
+        "gamma_diff": 0.009010000000000002,
+        "theta_diff": 0.03179,
+        "price_diff": 0.59,
+        "iv_diff": 0.64389,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "NKE",
+      "option": {
+        "delta": 0.1584,
+        "gamma": 0.01294,
+        "theta": -0.01161,
+        "price": 1.41,
+        "iv": 0.33194,
+        "volume": 16.0,
+        "open_interest": 282.0,
+        "strike": 100.0,
+        "type": "call",
+        "expiration": "2026-04-17",
+        "days_to_expiry": 213
+      },
+      "similarity_score": 0.747,
+      "contract_symbol": "NKE 100.0 CALL exp 2026-04-17",
+      "comparison": {
+        "delta_diff": 0.0014400000000000246,
+        "gamma_diff": 0.0011699999999999992,
+        "theta_diff": 0.08675000000000001,
+        "price_diff": 0.1100000000000001,
+        "iv_diff": 0.09756000000000001,
+        "days_diff": 196
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.13958,
+        "gamma": 0.00702,
+        "theta": -0.16975,
+        "price": 2.0,
+        "iv": 0.83925,
+        "volume": 59.0,
+        "open_interest": 0.0,
+        "strike": 200.0,
+        "type": "call",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.746,
+      "contract_symbol": "MU 200.0 CALL exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.01737999999999998,
+        "gamma_diff": 0.007089999999999999,
+        "theta_diff": 0.07139000000000001,
+        "price_diff": 0.48,
+        "iv_diff": 0.60487,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.14155,
+        "gamma": 0.02288,
+        "theta": -0.0499,
+        "price": 0.8,
+        "iv": 0.29292,
+        "volume": 6.0,
+        "open_interest": 32.0,
+        "strike": 130.0,
+        "type": "put",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.745,
+      "contract_symbol": "STZ 130.0 PUT exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.01540999999999998,
+        "gamma_diff": 0.008770000000000002,
+        "theta_diff": 0.04846,
+        "price_diff": 0.72,
+        "iv_diff": 0.05854000000000001,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.15255,
+        "gamma": 0.01163,
+        "theta": -0.0365,
+        "price": 1.65,
+        "iv": 0.33194,
+        "volume": 48.0,
+        "open_interest": 330.0,
+        "strike": 165.0,
+        "type": "call",
+        "expiration": "2025-11-21",
+        "days_to_expiry": 66
+      },
+      "similarity_score": 0.745,
+      "contract_symbol": "STZ 165.0 CALL exp 2025-11-21",
+      "comparison": {
+        "delta_diff": 0.004409999999999997,
+        "gamma_diff": 0.0024799999999999996,
+        "theta_diff": 0.061860000000000005,
+        "price_diff": 0.1299999999999999,
+        "iv_diff": 0.09756000000000001,
+        "days_diff": 49
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.15578,
+        "gamma": 0.00719,
+        "theta": -0.11621,
+        "price": 2.38,
+        "iv": 0.68315,
+        "volume": 580.0,
+        "open_interest": 0.0,
+        "strike": 200.0,
+        "type": "call",
+        "expiration": "2025-10-17",
+        "days_to_expiry": 31
+      },
+      "similarity_score": 0.745,
+      "contract_symbol": "MU 200.0 CALL exp 2025-10-17",
+      "comparison": {
+        "delta_diff": 0.0011799999999999866,
+        "gamma_diff": 0.006919999999999999,
+        "theta_diff": 0.01784999999999999,
+        "price_diff": 0.8599999999999999,
+        "iv_diff": 0.44877,
+        "days_diff": 14
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.17306,
+        "gamma": 0.02307,
+        "theta": -0.10238,
+        "price": 0.95,
+        "iv": 1.0929,
+        "volume": 7.0,
+        "open_interest": 55.0,
+        "strike": 65.0,
+        "type": "call",
+        "expiration": "2025-09-26",
+        "days_to_expiry": 10
+      },
+      "similarity_score": 0.742,
+      "contract_symbol": "BLSH 65.0 CALL exp 2025-09-26",
+      "comparison": {
+        "delta_diff": 0.016100000000000003,
+        "gamma_diff": 0.008960000000000001,
+        "theta_diff": 0.004019999999999996,
+        "price_diff": 0.5700000000000001,
+        "iv_diff": 0.85852,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.11281,
+        "gamma": 0.01638,
+        "theta": -0.08056,
+        "price": 0.57,
+        "iv": 1.15144,
+        "volume": 10.0,
+        "open_interest": 1513.0,
+        "strike": 70.0,
+        "type": "call",
+        "expiration": "2025-09-26",
+        "days_to_expiry": 10
+      },
+      "similarity_score": 0.742,
+      "contract_symbol": "BLSH 70.0 CALL exp 2025-09-26",
+      "comparison": {
+        "delta_diff": 0.044149999999999995,
+        "gamma_diff": 0.0022699999999999994,
+        "theta_diff": 0.017799999999999996,
+        "price_diff": 0.9500000000000001,
+        "iv_diff": 0.91706,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.14631,
+        "gamma": 0.0071,
+        "theta": -0.13472,
+        "price": 2.27,
+        "iv": 0.74169,
+        "volume": 138.0,
+        "open_interest": 0.0,
+        "strike": 200.0,
+        "type": "call",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.742,
+      "contract_symbol": "MU 200.0 CALL exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.010649999999999993,
+        "gamma_diff": 0.007009999999999999,
+        "theta_diff": 0.03636,
+        "price_diff": 0.75,
+        "iv_diff": 0.5073099999999999,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.21409,
+        "gamma": 0.01963,
+        "theta": -0.07843,
+        "price": 1.6,
+        "iv": 1.03437,
+        "volume": 0.0,
+        "open_interest": 7.0,
+        "strike": 68.0,
+        "type": "call",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.741,
+      "contract_symbol": "BLSH 68.0 CALL exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.057130000000000014,
+        "gamma_diff": 0.005520000000000002,
+        "theta_diff": 0.019930000000000003,
+        "price_diff": 0.08000000000000007,
+        "iv_diff": 0.79999,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "NKE",
+      "option": {
+        "delta": 0.15914,
+        "gamma": 0.01507,
+        "theta": -0.01335,
+        "price": 1.3,
+        "iv": 0.33194,
+        "volume": 11.0,
+        "open_interest": 355.0,
+        "strike": 95.0,
+        "type": "call",
+        "expiration": "2026-02-20",
+        "days_to_expiry": 157
+      },
+      "similarity_score": 0.741,
+      "contract_symbol": "NKE 95.0 CALL exp 2026-02-20",
+      "comparison": {
+        "delta_diff": 0.0021800000000000153,
+        "gamma_diff": 0.0009600000000000008,
+        "theta_diff": 0.08501,
+        "price_diff": 0.21999999999999997,
+        "iv_diff": 0.09756000000000001,
+        "days_diff": 140
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.10954,
+        "gamma": 0.00649,
+        "theta": -0.09451,
+        "price": 1.6,
+        "iv": 0.66364,
+        "volume": 1.0,
+        "open_interest": 9.0,
+        "strike": 128.0,
+        "type": "put",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.741,
+      "contract_symbol": "MU 128.0 PUT exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.04741999999999999,
+        "gamma_diff": 0.007619999999999999,
+        "theta_diff": 0.003850000000000006,
+        "price_diff": 0.08000000000000007,
+        "iv_diff": 0.42926,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.16257,
+        "gamma": 0.00795,
+        "theta": -0.18371,
+        "price": 2.4,
+        "iv": 0.81974,
+        "volume": 1339.0,
+        "open_interest": 0.0,
+        "strike": 195.0,
+        "type": "call",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.739,
+      "contract_symbol": "MU 195.0 CALL exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.005610000000000004,
+        "gamma_diff": 0.006159999999999999,
+        "theta_diff": 0.08535000000000001,
+        "price_diff": 0.8799999999999999,
+        "iv_diff": 0.58536,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "PAYX",
+      "option": {
+        "delta": 0.16528,
+        "gamma": 0.01308,
+        "theta": -0.01495,
+        "price": 1.75,
+        "iv": 0.19536,
+        "volume": 8.0,
+        "open_interest": 150.0,
+        "strike": 160.0,
+        "type": "call",
+        "expiration": "2026-03-20",
+        "days_to_expiry": 185
+      },
+      "similarity_score": 0.736,
+      "contract_symbol": "PAYX 160.0 CALL exp 2026-03-20",
+      "comparison": {
+        "delta_diff": 0.008320000000000022,
+        "gamma_diff": 0.0010299999999999997,
+        "theta_diff": 0.08341,
+        "price_diff": 0.22999999999999998,
+        "iv_diff": 0.03902,
+        "days_diff": 168
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.17555,
+        "gamma": 0.01131,
+        "theta": -0.20713,
+        "price": 2.35,
+        "iv": 0.74169,
+        "volume": 64.0,
+        "open_interest": 86.0,
+        "strike": 139.0,
+        "type": "put",
+        "expiration": "2025-09-26",
+        "days_to_expiry": 10
+      },
+      "similarity_score": 0.736,
+      "contract_symbol": "MU 139.0 PUT exp 2025-09-26",
+      "comparison": {
+        "delta_diff": 0.018590000000000023,
+        "gamma_diff": 0.0027999999999999987,
+        "theta_diff": 0.10877,
+        "price_diff": 0.8300000000000001,
+        "iv_diff": 0.5073099999999999,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.21136,
+        "gamma": 0.02065,
+        "theta": -0.0735,
+        "price": 1.52,
+        "iv": 0.97583,
+        "volume": 0.0,
+        "open_interest": 3.0,
+        "strike": 67.0,
+        "type": "call",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.735,
+      "contract_symbol": "BLSH 67.0 CALL exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.054400000000000004,
+        "gamma_diff": 0.006540000000000002,
+        "theta_diff": 0.024860000000000007,
+        "price_diff": 0.0,
+        "iv_diff": 0.7414499999999999,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.18799,
+        "gamma": 0.01785,
+        "theta": -0.0471,
+        "price": 1.82,
+        "iv": 0.85876,
+        "volume": 0.0,
+        "open_interest": 2.0,
+        "strike": 42.0,
+        "type": "put",
+        "expiration": "2025-10-24",
+        "days_to_expiry": 38
+      },
+      "similarity_score": 0.735,
+      "contract_symbol": "BLSH 42.0 PUT exp 2025-10-24",
+      "comparison": {
+        "delta_diff": 0.031030000000000002,
+        "gamma_diff": 0.003740000000000002,
+        "theta_diff": 0.05126,
+        "price_diff": 0.30000000000000004,
+        "iv_diff": 0.6243799999999999,
+        "days_diff": 21
+      }
+    },
+    {
+      "symbol": "NKE",
+      "option": {
+        "delta": 0.14808,
+        "gamma": 0.01423,
+        "theta": -0.01771,
+        "price": 1.35,
+        "iv": 0.4295,
+        "volume": 32.0,
+        "open_interest": 5481.0,
+        "strike": 60.0,
+        "type": "put",
+        "expiration": "2025-12-19",
+        "days_to_expiry": 94
+      },
+      "similarity_score": 0.735,
+      "contract_symbol": "NKE 60.0 PUT exp 2025-12-19",
+      "comparison": {
+        "delta_diff": 0.008879999999999999,
+        "gamma_diff": 0.00012000000000000031,
+        "theta_diff": 0.08065,
+        "price_diff": 0.16999999999999993,
+        "iv_diff": 0.19512,
+        "days_diff": 77
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.11761,
+        "gamma": 0.01535,
+        "theta": -0.03537,
+        "price": 0.82,
+        "iv": 0.80022,
+        "volume": 30.0,
+        "open_interest": 214.0,
+        "strike": 40.0,
+        "type": "put",
+        "expiration": "2025-10-17",
+        "days_to_expiry": 31
+      },
+      "similarity_score": 0.734,
+      "contract_symbol": "BLSH 40.0 PUT exp 2025-10-17",
+      "comparison": {
+        "delta_diff": 0.03934999999999998,
+        "gamma_diff": 0.0012400000000000015,
+        "theta_diff": 0.06299,
+        "price_diff": 0.7000000000000001,
+        "iv_diff": 0.56584,
+        "days_diff": 14
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.11872,
+        "gamma": 0.01196,
+        "theta": -0.04772,
+        "price": 0.85,
+        "iv": 1.03437,
+        "volume": 24.0,
+        "open_interest": 240.0,
+        "strike": 80.0,
+        "type": "call",
+        "expiration": "2025-10-17",
+        "days_to_expiry": 31
+      },
+      "similarity_score": 0.734,
+      "contract_symbol": "BLSH 80.0 CALL exp 2025-10-17",
+      "comparison": {
+        "delta_diff": 0.03823999999999998,
+        "gamma_diff": 0.002149999999999999,
+        "theta_diff": 0.050640000000000004,
+        "price_diff": 0.67,
+        "iv_diff": 0.79999,
+        "days_diff": 14
+      }
+    },
+    {
+      "symbol": "PAYX",
+      "option": {
+        "delta": 0.10646,
+        "gamma": 0.01322,
+        "theta": -0.03464,
+        "price": 0.78,
+        "iv": 0.33194,
+        "volume": 0.0,
+        "open_interest": 54.0,
+        "strike": 120.0,
+        "type": "put",
+        "expiration": "2025-10-17",
+        "days_to_expiry": 31
+      },
+      "similarity_score": 0.731,
+      "contract_symbol": "PAYX 120.0 PUT exp 2025-10-17",
+      "comparison": {
+        "delta_diff": 0.05049999999999999,
+        "gamma_diff": 0.0008899999999999984,
+        "theta_diff": 0.06372,
+        "price_diff": 0.74,
+        "iv_diff": 0.09756000000000001,
+        "days_diff": 14
+      }
+    },
+    {
+      "symbol": "PAYX",
+      "option": {
+        "delta": 0.14676,
+        "gamma": 0.01235,
+        "theta": -0.01916,
+        "price": 1.3,
+        "iv": 0.23438,
+        "volume": 1.0,
+        "open_interest": 305.0,
+        "strike": 160.0,
+        "type": "call",
+        "expiration": "2026-01-16",
+        "days_to_expiry": 122
+      },
+      "similarity_score": 0.731,
+      "contract_symbol": "PAYX 160.0 CALL exp 2026-01-16",
+      "comparison": {
+        "delta_diff": 0.010199999999999987,
+        "gamma_diff": 0.0017599999999999994,
+        "theta_diff": 0.0792,
+        "price_diff": 0.21999999999999997,
+        "iv_diff": 0.0,
+        "days_diff": 105
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.12042,
+        "gamma": 0.00619,
+        "theta": -0.15667,
+        "price": 1.71,
+        "iv": 0.85876,
+        "volume": 1.0,
+        "open_interest": 0.0,
+        "strike": 205.0,
+        "type": "call",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.731,
+      "contract_symbol": "MU 205.0 CALL exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.03653999999999999,
+        "gamma_diff": 0.00792,
+        "theta_diff": 0.05831,
+        "price_diff": 0.18999999999999995,
+        "iv_diff": 0.6243799999999999,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.10122,
+        "gamma": 0.01515,
+        "theta": -0.07449,
+        "price": 0.53,
+        "iv": 1.15144,
+        "volume": 0.0,
+        "open_interest": 20.0,
+        "strike": 71.0,
+        "type": "call",
+        "expiration": "2025-09-26",
+        "days_to_expiry": 10
+      },
+      "similarity_score": 0.73,
+      "contract_symbol": "BLSH 71.0 CALL exp 2025-09-26",
+      "comparison": {
+        "delta_diff": 0.055739999999999984,
+        "gamma_diff": 0.001040000000000001,
+        "theta_diff": 0.023870000000000002,
+        "price_diff": 0.99,
+        "iv_diff": 0.91706,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.1677,
+        "gamma": 0.02559,
+        "theta": -0.06121,
+        "price": 0.88,
+        "iv": 0.29292,
+        "volume": 47.0,
+        "open_interest": 147.0,
+        "strike": 150.0,
+        "type": "call",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.73,
+      "contract_symbol": "STZ 150.0 CALL exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.01074,
+        "gamma_diff": 0.011480000000000002,
+        "theta_diff": 0.03715,
+        "price_diff": 0.64,
+        "iv_diff": 0.05854000000000001,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "CBRL",
+      "option": {
+        "delta": 0.16365,
+        "gamma": 0.01321,
+        "theta": -0.01304,
+        "price": 1.45,
+        "iv": 0.50755,
+        "volume": 0.0,
+        "open_interest": 33.0,
+        "strike": 80.0,
+        "type": "call",
+        "expiration": "2026-03-20",
+        "days_to_expiry": 185
+      },
+      "similarity_score": 0.728,
+      "contract_symbol": "CBRL 80.0 CALL exp 2026-03-20",
+      "comparison": {
+        "delta_diff": 0.0066900000000000015,
+        "gamma_diff": 0.0008999999999999998,
+        "theta_diff": 0.08532000000000001,
+        "price_diff": 0.07000000000000006,
+        "iv_diff": 0.2731699999999999,
+        "days_diff": 168
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.11346,
+        "gamma": 0.0082,
+        "theta": -0.15866,
+        "price": 1.38,
+        "iv": 0.7612,
+        "volume": 40.0,
+        "open_interest": 79.0,
+        "strike": 133.0,
+        "type": "put",
+        "expiration": "2025-09-26",
+        "days_to_expiry": 10
+      },
+      "similarity_score": 0.728,
+      "contract_symbol": "MU 133.0 PUT exp 2025-09-26",
+      "comparison": {
+        "delta_diff": 0.04349999999999998,
+        "gamma_diff": 0.005909999999999999,
+        "theta_diff": 0.06029999999999999,
+        "price_diff": 0.14000000000000012,
+        "iv_diff": 0.52682,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.14756,
+        "gamma": 0.00783,
+        "theta": -0.24505,
+        "price": 2.06,
+        "iv": 0.95632,
+        "volume": 159.0,
+        "open_interest": 0.0,
+        "strike": 195.0,
+        "type": "call",
+        "expiration": "2025-09-26",
+        "days_to_expiry": 10
+      },
+      "similarity_score": 0.728,
+      "contract_symbol": "MU 195.0 CALL exp 2025-09-26",
+      "comparison": {
+        "delta_diff": 0.009399999999999992,
+        "gamma_diff": 0.006279999999999999,
+        "theta_diff": 0.14669,
+        "price_diff": 0.54,
+        "iv_diff": 0.7219399999999999,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.12773,
+        "gamma": 0.0063,
+        "theta": -0.12585,
+        "price": 1.95,
+        "iv": 0.7612,
+        "volume": 1.0,
+        "open_interest": 0.0,
+        "strike": 205.0,
+        "type": "call",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.728,
+      "contract_symbol": "MU 205.0 CALL exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.029229999999999978,
+        "gamma_diff": 0.007809999999999999,
+        "theta_diff": 0.027489999999999987,
+        "price_diff": 0.42999999999999994,
+        "iv_diff": 0.52682,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.09881,
+        "gamma": 0.00639,
+        "theta": -0.11081,
+        "price": 1.34,
+        "iv": 0.72218,
+        "volume": 2.0,
+        "open_interest": 26.0,
+        "strike": 128.0,
+        "type": "put",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.726,
+      "contract_symbol": "MU 128.0 PUT exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.05814999999999999,
+        "gamma_diff": 0.007719999999999999,
+        "theta_diff": 0.012450000000000003,
+        "price_diff": 0.17999999999999994,
+        "iv_diff": 0.4878,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.13536,
+        "gamma": 0.00715,
+        "theta": -0.09171,
+        "price": 2.24,
+        "iv": 0.62462,
+        "volume": 742.0,
+        "open_interest": 1883.0,
+        "strike": 130.0,
+        "type": "put",
+        "expiration": "2025-10-17",
+        "days_to_expiry": 31
+      },
+      "similarity_score": 0.725,
+      "contract_symbol": "MU 130.0 PUT exp 2025-10-17",
+      "comparison": {
+        "delta_diff": 0.02159999999999998,
+        "gamma_diff": 0.006959999999999999,
+        "theta_diff": 0.006650000000000003,
+        "price_diff": 0.7200000000000002,
+        "iv_diff": 0.3902399999999999,
+        "days_diff": 14
+      }
+    },
+    {
+      "symbol": "CBRL",
+      "option": {
+        "delta": 0.16372,
+        "gamma": 0.01539,
+        "theta": -0.01903,
+        "price": 1.62,
+        "iv": 0.60511,
+        "volume": 1.0,
+        "open_interest": 105.0,
+        "strike": 40.0,
+        "type": "put",
+        "expiration": "2025-12-19",
+        "days_to_expiry": 94
+      },
+      "similarity_score": 0.724,
+      "contract_symbol": "CBRL 40.0 PUT exp 2025-12-19",
+      "comparison": {
+        "delta_diff": 0.006760000000000016,
+        "gamma_diff": 0.0012799999999999999,
+        "theta_diff": 0.07933000000000001,
+        "price_diff": 0.10000000000000009,
+        "iv_diff": 0.37073,
+        "days_diff": 77
+      }
+    },
+    {
+      "symbol": "CCL",
+      "option": {
+        "delta": 0.14707,
+        "gamma": 0.01385,
+        "theta": -0.00339,
+        "price": 1.6,
+        "iv": 0.46853,
+        "volume": 1.0,
+        "open_interest": 2096.0,
+        "strike": 22.0,
+        "type": "put",
+        "expiration": "2026-12-18",
+        "days_to_expiry": 458
+      },
+      "similarity_score": 0.723,
+      "contract_symbol": "CCL 22.0 PUT exp 2026-12-18",
+      "comparison": {
+        "delta_diff": 0.009889999999999982,
+        "gamma_diff": 0.0002599999999999998,
+        "theta_diff": 0.09497,
+        "price_diff": 0.08000000000000007,
+        "iv_diff": 0.23415,
+        "days_diff": 441
+      }
+    },
+    {
+      "symbol": "THO",
+      "option": {
+        "delta": 0.15349,
+        "gamma": 0.01061,
+        "theta": -0.02867,
+        "price": 1.52,
+        "iv": 0.40999,
+        "volume": 0.0,
+        "open_interest": 2.0,
+        "strike": 135.0,
+        "type": "call",
+        "expiration": "2025-12-19",
+        "days_to_expiry": 94
+      },
+      "similarity_score": 0.722,
+      "contract_symbol": "THO 135.0 CALL exp 2025-12-19",
+      "comparison": {
+        "delta_diff": 0.003470000000000001,
+        "gamma_diff": 0.0034999999999999996,
+        "theta_diff": 0.06969,
+        "price_diff": 0.0,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 77
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.10175,
+        "gamma": 0.00615,
+        "theta": -0.08965,
+        "price": 1.48,
+        "iv": 0.66364,
+        "volume": 2.0,
+        "open_interest": 52.0,
+        "strike": 127.0,
+        "type": "put",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.722,
+      "contract_symbol": "MU 127.0 PUT exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.055209999999999995,
+        "gamma_diff": 0.007959999999999998,
+        "theta_diff": 0.00871000000000001,
+        "price_diff": 0.040000000000000036,
+        "iv_diff": 0.42926,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "CBRL",
+      "option": {
+        "delta": 0.17294,
+        "gamma": 0.01424,
+        "theta": -0.01304,
+        "price": 1.45,
+        "iv": 0.48804,
+        "volume": 0.0,
+        "open_interest": 18.0,
+        "strike": 77.5,
+        "type": "call",
+        "expiration": "2026-03-20",
+        "days_to_expiry": 185
+      },
+      "similarity_score": 0.721,
+      "contract_symbol": "CBRL 77.5 CALL exp 2026-03-20",
+      "comparison": {
+        "delta_diff": 0.015980000000000022,
+        "gamma_diff": 0.0001299999999999999,
+        "theta_diff": 0.08532000000000001,
+        "price_diff": 0.07000000000000006,
+        "iv_diff": 0.25366,
+        "days_diff": 168
+      }
+    },
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.09334,
+        "gamma": 0.01216,
+        "theta": -0.05597,
+        "price": 0.55,
+        "iv": 0.40999,
+        "volume": 10.0,
+        "open_interest": 153.0,
+        "strike": 160.0,
+        "type": "call",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.718,
+      "contract_symbol": "STZ 160.0 CALL exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.06361999999999998,
+        "gamma_diff": 0.0019499999999999986,
+        "theta_diff": 0.042390000000000004,
+        "price_diff": 0.97,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "PRGS",
+      "option": {
+        "delta": 0.16387,
+        "gamma": 0.01341,
+        "theta": -0.00559,
+        "price": 1.23,
+        "iv": 0.39048,
+        "volume": 0.0,
+        "open_interest": 46.0,
+        "strike": 75.0,
+        "type": "call",
+        "expiration": "2026-12-18",
+        "days_to_expiry": 458
+      },
+      "similarity_score": 0.717,
+      "contract_symbol": "PRGS 75.0 CALL exp 2026-12-18",
+      "comparison": {
+        "delta_diff": 0.0069099999999999995,
+        "gamma_diff": 0.0006999999999999992,
+        "theta_diff": 0.09277,
+        "price_diff": 0.29000000000000004,
+        "iv_diff": 0.1561,
+        "days_diff": 441
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.09626,
+        "gamma": 0.0061,
+        "theta": -0.1117,
+        "price": 1.35,
+        "iv": 0.74169,
+        "volume": 15.0,
+        "open_interest": 68.0,
+        "strike": 127.0,
+        "type": "put",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.717,
+      "contract_symbol": "MU 127.0 PUT exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.06069999999999999,
+        "gamma_diff": 0.00801,
+        "theta_diff": 0.01333999999999999,
+        "price_diff": 0.16999999999999993,
+        "iv_diff": 0.5073099999999999,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "GIS",
+      "option": {
+        "delta": 0.15327,
+        "gamma": 0.01633,
+        "theta": -0.00508,
+        "price": 1.32,
+        "iv": 0.33194,
+        "volume": 30.0,
+        "open_interest": 79.0,
+        "strike": 40.0,
+        "type": "put",
+        "expiration": "2026-06-18",
+        "days_to_expiry": 275
+      },
+      "similarity_score": 0.716,
+      "contract_symbol": "GIS 40.0 PUT exp 2026-06-18",
+      "comparison": {
+        "delta_diff": 0.003689999999999999,
+        "gamma_diff": 0.0022200000000000015,
+        "theta_diff": 0.09328,
+        "price_diff": 0.19999999999999996,
+        "iv_diff": 0.09756000000000001,
+        "days_diff": 258
+      }
+    },
+    {
+      "symbol": "GIS",
+      "option": {
+        "delta": 0.16832,
+        "gamma": 0.01505,
+        "theta": -0.00446,
+        "price": 1.77,
+        "iv": 0.33194,
+        "volume": 0.0,
+        "open_interest": 75.0,
+        "strike": 40.0,
+        "type": "put",
+        "expiration": "2026-09-18",
+        "days_to_expiry": 367
+      },
+      "similarity_score": 0.715,
+      "contract_symbol": "GIS 40.0 PUT exp 2026-09-18",
+      "comparison": {
+        "delta_diff": 0.011360000000000009,
+        "gamma_diff": 0.0009399999999999999,
+        "theta_diff": 0.0939,
+        "price_diff": 0.25,
+        "iv_diff": 0.09756000000000001,
+        "days_diff": 350
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.10538,
+        "gamma": 0.0055,
+        "theta": -0.1097,
+        "price": 1.59,
+        "iv": 0.7612,
+        "volume": 1.0,
+        "open_interest": 0.0,
+        "strike": 210.0,
+        "type": "call",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.715,
+      "contract_symbol": "MU 210.0 CALL exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.05157999999999999,
+        "gamma_diff": 0.00861,
+        "theta_diff": 0.011340000000000003,
+        "price_diff": 0.07000000000000006,
+        "iv_diff": 0.52682,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "CCL",
+      "option": {
+        "delta": 0.1433,
+        "gamma": 0.01458,
+        "theta": -0.00402,
+        "price": 1.44,
+        "iv": 0.48804,
+        "volume": 0.0,
+        "open_interest": 826.0,
+        "strike": 22.0,
+        "type": "put",
+        "expiration": "2026-09-18",
+        "days_to_expiry": 367
+      },
+      "similarity_score": 0.714,
+      "contract_symbol": "CCL 22.0 PUT exp 2026-09-18",
+      "comparison": {
+        "delta_diff": 0.013659999999999978,
+        "gamma_diff": 0.00046999999999999993,
+        "theta_diff": 0.09434000000000001,
+        "price_diff": 0.08000000000000007,
+        "iv_diff": 0.25366,
+        "days_diff": 350
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.1187,
+        "gamma": 0.01947,
+        "theta": -0.04737,
+        "price": 0.65,
+        "iv": 0.81974,
+        "volume": 2.0,
+        "open_interest": 8.0,
+        "strike": 42.0,
+        "type": "put",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.713,
+      "contract_symbol": "BLSH 42.0 PUT exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.03825999999999999,
+        "gamma_diff": 0.005360000000000002,
+        "theta_diff": 0.05099,
+        "price_diff": 0.87,
+        "iv_diff": 0.58536,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "NKE",
+      "option": {
+        "delta": 0.15757,
+        "gamma": 0.01048,
+        "theta": -0.00863,
+        "price": 1.65,
+        "iv": 0.31243,
+        "volume": 0.0,
+        "open_interest": 162.0,
+        "strike": 110.0,
+        "type": "call",
+        "expiration": "2026-09-18",
+        "days_to_expiry": 367
+      },
+      "similarity_score": 0.713,
+      "contract_symbol": "NKE 110.0 CALL exp 2026-09-18",
+      "comparison": {
+        "delta_diff": 0.0006099999999999994,
+        "gamma_diff": 0.0036299999999999995,
+        "theta_diff": 0.08973,
+        "price_diff": 0.1299999999999999,
+        "iv_diff": 0.07804999999999998,
+        "days_diff": 350
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.16284,
+        "gamma": 0.02068,
+        "theta": -0.21214,
+        "price": 1.01,
+        "iv": 0.54657,
+        "volume": 3765.0,
+        "open_interest": 1809.0,
+        "strike": 170.0,
+        "type": "call",
+        "expiration": "2025-09-19",
+        "days_to_expiry": 3
+      },
+      "similarity_score": 0.713,
+      "contract_symbol": "MU 170.0 CALL exp 2025-09-19",
+      "comparison": {
+        "delta_diff": 0.005880000000000024,
+        "gamma_diff": 0.006570000000000001,
+        "theta_diff": 0.11377999999999999,
+        "price_diff": 0.51,
+        "iv_diff": 0.31218999999999997,
+        "days_diff": 14
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.21946,
+        "gamma": 0.0211,
+        "theta": -0.07514,
+        "price": 1.55,
+        "iv": 0.97583,
+        "volume": 0.0,
+        "open_interest": 0.0,
+        "strike": 66.5,
+        "type": "call",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.712,
+      "contract_symbol": "BLSH 66.5 CALL exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.0625,
+        "gamma_diff": 0.006990000000000001,
+        "theta_diff": 0.023220000000000005,
+        "price_diff": 0.030000000000000027,
+        "iv_diff": 0.7414499999999999,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.1287,
+        "gamma": 0.01704,
+        "theta": -0.18727,
+        "price": 0.81,
+        "iv": 0.56608,
+        "volume": 3320.0,
+        "open_interest": 0.0,
+        "strike": 172.5,
+        "type": "call",
+        "expiration": "2025-09-19",
+        "days_to_expiry": 3
+      },
+      "similarity_score": 0.712,
+      "contract_symbol": "MU 172.5 CALL exp 2025-09-19",
+      "comparison": {
+        "delta_diff": 0.02825999999999998,
+        "gamma_diff": 0.0029300000000000003,
+        "theta_diff": 0.08890999999999999,
+        "price_diff": 0.71,
+        "iv_diff": 0.3317,
+        "days_diff": 14
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.10445,
+        "gamma": 0.00547,
+        "theta": -0.14463,
+        "price": 1.48,
+        "iv": 0.87827,
+        "volume": 44.0,
+        "open_interest": 0.0,
+        "strike": 210.0,
+        "type": "call",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.711,
+      "contract_symbol": "MU 210.0 CALL exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.05250999999999999,
+        "gamma_diff": 0.008639999999999998,
+        "theta_diff": 0.046270000000000006,
+        "price_diff": 0.040000000000000036,
+        "iv_diff": 0.64389,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.09075,
+        "gamma": 0.01563,
+        "theta": -0.04212,
+        "price": 0.4,
+        "iv": 0.31243,
+        "volume": 32.0,
+        "open_interest": 174.0,
+        "strike": 155.0,
+        "type": "call",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.71,
+      "contract_symbol": "STZ 155.0 CALL exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.06620999999999999,
+        "gamma_diff": 0.0015200000000000023,
+        "theta_diff": 0.056240000000000005,
+        "price_diff": 1.12,
+        "iv_diff": 0.07804999999999998,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.12219,
+        "gamma": 0.01015,
+        "theta": -0.03908,
+        "price": 1.23,
+        "iv": 0.39048,
+        "volume": 2.0,
+        "open_interest": 0.0,
+        "strike": 120.0,
+        "type": "put",
+        "expiration": "2025-10-31",
+        "days_to_expiry": 45
+      },
+      "similarity_score": 0.709,
+      "contract_symbol": "STZ 120.0 PUT exp 2025-10-31",
+      "comparison": {
+        "delta_diff": 0.034769999999999995,
+        "gamma_diff": 0.00396,
+        "theta_diff": 0.059280000000000006,
+        "price_diff": 0.29000000000000004,
+        "iv_diff": 0.1561,
+        "days_diff": 28
+      }
+    },
+    {
+      "symbol": "CCL",
+      "option": {
+        "delta": 0.1491,
+        "gamma": 0.01358,
+        "theta": -0.00329,
+        "price": 1.78,
+        "iv": 0.46853,
+        "volume": 0.0,
+        "open_interest": 1718.0,
+        "strike": 22.0,
+        "type": "put",
+        "expiration": "2027-01-15",
+        "days_to_expiry": 486
+      },
+      "similarity_score": 0.708,
+      "contract_symbol": "CCL 22.0 PUT exp 2027-01-15",
+      "comparison": {
+        "delta_diff": 0.007859999999999978,
+        "gamma_diff": 0.0005299999999999992,
+        "theta_diff": 0.09507,
+        "price_diff": 0.26,
+        "iv_diff": 0.23415,
+        "days_diff": 469
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.1101,
+        "gamma": 0.01428,
+        "theta": -0.17906,
+        "price": 0.65,
+        "iv": 0.60511,
+        "volume": 5804.0,
+        "open_interest": 1411.0,
+        "strike": 175.0,
+        "type": "call",
+        "expiration": "2025-09-19",
+        "days_to_expiry": 3
+      },
+      "similarity_score": 0.708,
+      "contract_symbol": "MU 175.0 CALL exp 2025-09-19",
+      "comparison": {
+        "delta_diff": 0.046859999999999985,
+        "gamma_diff": 0.00017,
+        "theta_diff": 0.0807,
+        "price_diff": 0.87,
+        "iv_diff": 0.37073,
+        "days_diff": 14
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.14829,
+        "gamma": 0.00654,
+        "theta": -0.09997,
+        "price": 2.44,
+        "iv": 0.66364,
+        "volume": 0.0,
+        "open_interest": 0.0,
+        "strike": 205.0,
+        "type": "call",
+        "expiration": "2025-10-24",
+        "days_to_expiry": 38
+      },
+      "similarity_score": 0.708,
+      "contract_symbol": "MU 205.0 CALL exp 2025-10-24",
+      "comparison": {
+        "delta_diff": 0.008669999999999983,
+        "gamma_diff": 0.0075699999999999995,
+        "theta_diff": 0.0016100000000000003,
+        "price_diff": 0.9199999999999999,
+        "iv_diff": 0.42926,
+        "days_diff": 21
+      }
+    },
+    {
+      "symbol": "NKE",
+      "option": {
+        "delta": 0.1658,
+        "gamma": 0.01652,
+        "theta": -0.01619,
+        "price": 1.29,
+        "iv": 0.35146,
+        "volume": 11.0,
+        "open_interest": 1823.0,
+        "strike": 92.5,
+        "type": "call",
+        "expiration": "2026-01-16",
+        "days_to_expiry": 122
+      },
+      "similarity_score": 0.707,
+      "contract_symbol": "NKE 92.5 CALL exp 2026-01-16",
+      "comparison": {
+        "delta_diff": 0.008840000000000015,
+        "gamma_diff": 0.0024100000000000007,
+        "theta_diff": 0.08217,
+        "price_diff": 0.22999999999999998,
+        "iv_diff": 0.11707999999999999,
+        "days_diff": 105
+      }
+    },
+    {
+      "symbol": "NKE",
+      "option": {
+        "delta": 0.16865,
+        "gamma": 0.0133,
+        "theta": -0.01311,
+        "price": 1.88,
+        "iv": 0.39048,
+        "volume": 1.0,
+        "open_interest": 222.0,
+        "strike": 60.0,
+        "type": "put",
+        "expiration": "2026-02-20",
+        "days_to_expiry": 157
+      },
+      "similarity_score": 0.706,
+      "contract_symbol": "NKE 60.0 PUT exp 2026-02-20",
+      "comparison": {
+        "delta_diff": 0.011690000000000006,
+        "gamma_diff": 0.00081,
+        "theta_diff": 0.08525,
+        "price_diff": 0.3599999999999999,
+        "iv_diff": 0.1561,
+        "days_diff": 140
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.16986,
+        "gamma": 0.00895,
+        "theta": -0.25803,
+        "price": 2.44,
+        "iv": 0.91729,
+        "volume": 1991.0,
+        "open_interest": 2342.0,
+        "strike": 190.0,
+        "type": "call",
+        "expiration": "2025-09-26",
+        "days_to_expiry": 10
+      },
+      "similarity_score": 0.706,
+      "contract_symbol": "MU 190.0 CALL exp 2025-09-26",
+      "comparison": {
+        "delta_diff": 0.012900000000000023,
+        "gamma_diff": 0.00516,
+        "theta_diff": 0.15966999999999998,
+        "price_diff": 0.9199999999999999,
+        "iv_diff": 0.68291,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.18586,
+        "gamma": 0.01039,
+        "theta": -0.16041,
+        "price": 2.88,
+        "iv": 0.68315,
+        "volume": 165.0,
+        "open_interest": 95.0,
+        "strike": 138.0,
+        "type": "put",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.706,
+      "contract_symbol": "MU 138.0 PUT exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.02890000000000001,
+        "gamma_diff": 0.0037199999999999993,
+        "theta_diff": 0.062049999999999994,
+        "price_diff": 1.3599999999999999,
+        "iv_diff": 0.44877,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.12227,
+        "gamma": 0.00576,
+        "theta": -0.10387,
+        "price": 1.94,
+        "iv": 0.72218,
+        "volume": 128.0,
+        "open_interest": 0.0,
+        "strike": 210.0,
+        "type": "call",
+        "expiration": "2025-10-17",
+        "days_to_expiry": 31
+      },
+      "similarity_score": 0.706,
+      "contract_symbol": "MU 210.0 CALL exp 2025-10-17",
+      "comparison": {
+        "delta_diff": 0.034689999999999985,
+        "gamma_diff": 0.00835,
+        "theta_diff": 0.005510000000000001,
+        "price_diff": 0.41999999999999993,
+        "iv_diff": 0.4878,
+        "days_diff": 14
+      }
+    },
+    {
+      "symbol": "PAYX",
+      "option": {
+        "delta": 0.18238,
+        "gamma": 0.01551,
+        "theta": -0.02064,
+        "price": 1.77,
+        "iv": 0.21487,
+        "volume": 1.0,
+        "open_interest": 317.0,
+        "strike": 155.0,
+        "type": "call",
+        "expiration": "2026-01-16",
+        "days_to_expiry": 122
+      },
+      "similarity_score": 0.703,
+      "contract_symbol": "PAYX 155.0 CALL exp 2026-01-16",
+      "comparison": {
+        "delta_diff": 0.025419999999999998,
+        "gamma_diff": 0.0014000000000000002,
+        "theta_diff": 0.07772000000000001,
+        "price_diff": 0.25,
+        "iv_diff": 0.01951,
+        "days_diff": 105
+      }
+    },
+    {
+      "symbol": "NKE",
+      "option": {
+        "delta": 0.1584,
+        "gamma": 0.02619,
+        "theta": -0.05165,
+        "price": 0.78,
+        "iv": 0.52706,
+        "volume": 131.0,
+        "open_interest": 123.0,
+        "strike": 65.0,
+        "type": "put",
+        "expiration": "2025-10-03",
+        "days_to_expiry": 17
+      },
+      "similarity_score": 0.702,
+      "contract_symbol": "NKE 65.0 PUT exp 2025-10-03",
+      "comparison": {
+        "delta_diff": 0.0014400000000000246,
+        "gamma_diff": 0.012080000000000002,
+        "theta_diff": 0.04671,
+        "price_diff": 0.74,
+        "iv_diff": 0.29267999999999994,
+        "days_diff": 0
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.10403,
+        "gamma": 0.00771,
+        "theta": -0.14911,
+        "price": 1.29,
+        "iv": 0.7612,
+        "volume": 109.0,
+        "open_interest": 222.0,
+        "strike": 132.0,
+        "type": "put",
+        "expiration": "2025-09-26",
+        "days_to_expiry": 10
+      },
+      "similarity_score": 0.702,
+      "contract_symbol": "MU 132.0 PUT exp 2025-09-26",
+      "comparison": {
+        "delta_diff": 0.05292999999999999,
+        "gamma_diff": 0.0063999999999999994,
+        "theta_diff": 0.05074999999999999,
+        "price_diff": 0.22999999999999998,
+        "iv_diff": 0.52682,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "PAYX",
+      "option": {
+        "delta": 0.14225,
+        "gamma": 0.01077,
+        "theta": -0.01455,
+        "price": 1.38,
+        "iv": 0.21487,
+        "volume": 0.0,
+        "open_interest": 65.0,
+        "strike": 165.0,
+        "type": "call",
+        "expiration": "2026-03-20",
+        "days_to_expiry": 185
+      },
+      "similarity_score": 0.701,
+      "contract_symbol": "PAYX 165.0 CALL exp 2026-03-20",
+      "comparison": {
+        "delta_diff": 0.01471,
+        "gamma_diff": 0.0033399999999999992,
+        "theta_diff": 0.08381,
+        "price_diff": 0.14000000000000012,
+        "iv_diff": 0.01951,
+        "days_diff": 168
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.14843,
+        "gamma": 0.00741,
+        "theta": -0.08301,
+        "price": 2.56,
+        "iv": 0.5856,
+        "volume": 3.0,
+        "open_interest": 59.0,
+        "strike": 131.0,
+        "type": "put",
+        "expiration": "2025-10-24",
+        "days_to_expiry": 38
+      },
+      "similarity_score": 0.701,
+      "contract_symbol": "MU 131.0 PUT exp 2025-10-24",
+      "comparison": {
+        "delta_diff": 0.008529999999999982,
+        "gamma_diff": 0.006699999999999999,
+        "theta_diff": 0.015350000000000003,
+        "price_diff": 1.04,
+        "iv_diff": 0.35122,
+        "days_diff": 21
+      }
+    },
+    {
+      "symbol": "MU",
+      "option": {
+        "delta": 0.17855,
+        "gamma": 0.00931,
+        "theta": -0.12709,
+        "price": 2.97,
+        "iv": 0.64413,
+        "volume": 0.0,
+        "open_interest": 3.0,
+        "strike": 136.0,
+        "type": "put",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.7,
+      "contract_symbol": "MU 136.0 PUT exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.021589999999999998,
+        "gamma_diff": 0.004799999999999999,
+        "theta_diff": 0.028730000000000006,
+        "price_diff": 1.4500000000000002,
+        "iv_diff": 0.40974999999999995,
+        "days_diff": 7
+      }
+    }
+  ],
+  "top_10_matches": [
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.1582,
+        "gamma": 0.01432,
+        "theta": -0.0554,
+        "price": 1.45,
+        "iv": 0.39048,
+        "volume": 38.0,
+        "open_interest": 292.0,
+        "strike": 125.0,
+        "type": "put",
+        "expiration": "2025-10-17",
+        "days_to_expiry": 31
+      },
+      "similarity_score": 0.897,
+      "contract_symbol": "STZ 125.0 PUT exp 2025-10-17",
+      "comparison": {
+        "delta_diff": 0.0012400000000000189,
+        "gamma_diff": 0.00021000000000000012,
+        "theta_diff": 0.042960000000000005,
+        "price_diff": 0.07000000000000006,
+        "iv_diff": 0.1561,
+        "days_diff": 14
+      }
+    },
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.14642,
+        "gamma": 0.01448,
+        "theta": -0.06232,
+        "price": 1.18,
+        "iv": 0.40999,
+        "volume": 3.0,
+        "open_interest": 34.0,
+        "strike": 125.0,
+        "type": "put",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.878,
+      "contract_symbol": "STZ 125.0 PUT exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.010539999999999994,
+        "gamma_diff": 0.00037000000000000054,
+        "theta_diff": 0.03604,
+        "price_diff": 0.3400000000000001,
+        "iv_diff": 0.17561000000000002,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.17572,
+        "gamma": 0.01399,
+        "theta": -0.05956,
+        "price": 1.55,
+        "iv": 0.39048,
+        "volume": 1.0,
+        "open_interest": 22.0,
+        "strike": 160.0,
+        "type": "call",
+        "expiration": "2025-10-24",
+        "days_to_expiry": 38
+      },
+      "similarity_score": 0.851,
+      "contract_symbol": "STZ 160.0 CALL exp 2025-10-24",
+      "comparison": {
+        "delta_diff": 0.01876,
+        "gamma_diff": 0.00011999999999999858,
+        "theta_diff": 0.0388,
+        "price_diff": 0.030000000000000027,
+        "iv_diff": 0.1561,
+        "days_diff": 21
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.15473,
+        "gamma": 0.01633,
+        "theta": -0.06276,
+        "price": 1.05,
+        "iv": 1.01485,
+        "volume": 1.0,
+        "open_interest": 8.0,
+        "strike": 72.0,
+        "type": "call",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.85,
+      "contract_symbol": "BLSH 72.0 CALL exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.002229999999999982,
+        "gamma_diff": 0.0022200000000000015,
+        "theta_diff": 0.03560000000000001,
+        "price_diff": 0.47,
+        "iv_diff": 0.78047,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.15135,
+        "gamma": 0.01468,
+        "theta": -0.05434,
+        "price": 1.12,
+        "iv": 0.99534,
+        "volume": 29.0,
+        "open_interest": 438.0,
+        "strike": 75.0,
+        "type": "call",
+        "expiration": "2025-10-17",
+        "days_to_expiry": 31
+      },
+      "similarity_score": 0.846,
+      "contract_symbol": "BLSH 75.0 CALL exp 2025-10-17",
+      "comparison": {
+        "delta_diff": 0.005609999999999976,
+        "gamma_diff": 0.0005700000000000011,
+        "theta_diff": 0.044020000000000004,
+        "price_diff": 0.3999999999999999,
+        "iv_diff": 0.76096,
+        "days_diff": 14
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.14412,
+        "gamma": 0.015,
+        "theta": -0.0621,
+        "price": 1.0,
+        "iv": 1.05388,
+        "volume": 0.0,
+        "open_interest": 4.0,
+        "strike": 74.0,
+        "type": "call",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.844,
+      "contract_symbol": "BLSH 74.0 CALL exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.01283999999999999,
+        "gamma_diff": 0.0008900000000000002,
+        "theta_diff": 0.03626,
+        "price_diff": 0.52,
+        "iv_diff": 0.8194999999999999,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.16959,
+        "gamma": 0.01407,
+        "theta": -0.04894,
+        "price": 1.5,
+        "iv": 0.35146,
+        "volume": 15.0,
+        "open_interest": 0.0,
+        "strike": 160.0,
+        "type": "call",
+        "expiration": "2025-10-31",
+        "days_to_expiry": 45
+      },
+      "similarity_score": 0.841,
+      "contract_symbol": "STZ 160.0 CALL exp 2025-10-31",
+      "comparison": {
+        "delta_diff": 0.012630000000000002,
+        "gamma_diff": 4.0000000000000105e-05,
+        "theta_diff": 0.049420000000000006,
+        "price_diff": 0.020000000000000018,
+        "iv_diff": 0.11707999999999999,
+        "days_diff": 28
+      }
+    },
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.17298,
+        "gamma": 0.01785,
+        "theta": -0.0682,
+        "price": 1.32,
+        "iv": 0.37097,
+        "volume": 129.0,
+        "open_interest": 130.0,
+        "strike": 155.0,
+        "type": "call",
+        "expiration": "2025-10-10",
+        "days_to_expiry": 24
+      },
+      "similarity_score": 0.84,
+      "contract_symbol": "STZ 155.0 CALL exp 2025-10-10",
+      "comparison": {
+        "delta_diff": 0.016020000000000006,
+        "gamma_diff": 0.003740000000000002,
+        "theta_diff": 0.030160000000000006,
+        "price_diff": 0.19999999999999996,
+        "iv_diff": 0.13659000000000002,
+        "days_diff": 7
+      }
+    },
+    {
+      "symbol": "STZ",
+      "option": {
+        "delta": 0.14128,
+        "gamma": 0.01426,
+        "theta": -0.0394,
+        "price": 1.27,
+        "iv": 0.33194,
+        "volume": 0.0,
+        "open_interest": 12.0,
+        "strike": 125.0,
+        "type": "put",
+        "expiration": "2025-10-24",
+        "days_to_expiry": 38
+      },
+      "similarity_score": 0.831,
+      "contract_symbol": "STZ 125.0 PUT exp 2025-10-24",
+      "comparison": {
+        "delta_diff": 0.01568,
+        "gamma_diff": 0.00015000000000000083,
+        "theta_diff": 0.058960000000000005,
+        "price_diff": 0.25,
+        "iv_diff": 0.09756000000000001,
+        "days_diff": 21
+      }
+    },
+    {
+      "symbol": "BLSH",
+      "option": {
+        "delta": 0.15497,
+        "gamma": 0.01477,
+        "theta": -0.04657,
+        "price": 1.18,
+        "iv": 0.91729,
+        "volume": 0.0,
+        "open_interest": 16.0,
+        "strike": 75.0,
+        "type": "call",
+        "expiration": "2025-10-24",
+        "days_to_expiry": 38
+      },
+      "similarity_score": 0.83,
+      "contract_symbol": "BLSH 75.0 CALL exp 2025-10-24",
+      "comparison": {
+        "delta_diff": 0.0019899999999999918,
+        "gamma_diff": 0.0006600000000000009,
+        "theta_diff": 0.05179,
+        "price_diff": 0.3400000000000001,
+        "iv_diff": 0.68291,
+        "days_diff": 21
+      }
+    }
+  ],
+  "summary": "Found 116 NET-like options from 22 symbols analyzed"
+}

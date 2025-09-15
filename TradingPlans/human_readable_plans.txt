@@ -16936,3 +16936,111 @@ Delta: -0.36587 | Gamma: 0.07625 | Theta: -0.00061 | Score: 50.66
 
 ================================================================================
 
+📈 Trade Plan for GRAB (Bearish Bias)
+
+🔹 Option: $$6.0 Put expiring 2025-09-12
+🔹 Entry Price: $0.05
+🔹 Stop Loss: $0.04
+🔹 Initial Target: $0.09
+🔹 Final Target: $0.18
+🔹 Position Size: 49 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.48764 | Gamma: 16.21753 | Theta: -0.00455 | Score: 1426.45
+
+================================================================================
+
+📈 Trade Plan for OPEN (Bearish Bias)
+
+🔹 Option: $$9.0 Put expiring 2025-09-12
+🔹 Entry Price: $0.03
+🔹 Stop Loss: $0.02
+🔹 Initial Target: $0.05
+🔹 Final Target: $0.10
+🔹 Position Size: 50 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.31235 | Gamma: 2.38632 | Theta: -0.02591 | Score: 37.47
+
+================================================================================
+
+📈 Trade Plan for BBAI (Bullish Bias)
+
+🔹 Option: $$5.5 Call expiring 2025-10-24
+🔹 Entry Price: $0.50
+🔹 Stop Loss: $0.38
+🔹 Initial Target: $0.88
+🔹 Final Target: $1.75
+🔹 Position Size: 4 contracts
+🔹 Max Hold Time: 10 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.46161 | Gamma: 0.25221 | Theta: -0.00766 | Score: 13.89
+
+================================================================================
+
+📈 Trade Plan for TSLZ (Bearish Bias)
+
+🔹 Option: $$1.0 Put expiring 2025-09-19
+🔹 Entry Price: $0.15
+🔹 Stop Loss: $0.11
+🔹 Initial Target: $0.26
+🔹 Final Target: $0.53
+🔹 Position Size: 12 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.65098 | Gamma: 2.58243 | Theta: -0.00370 | Score: 279.95
+
+================================================================================
+
+📈 Trade Plan for TSLZ (Bearish Bias)
+
+🔹 Option: $$1.0 Put expiring 2025-09-19
+🔹 Entry Price: $0.15
+🔹 Stop Loss: $0.11
+🔹 Initial Target: $0.26
+🔹 Final Target: $0.53
+🔹 Position Size: 12 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: -0.65098 | Gamma: 2.58243 | Theta: -0.00370 | Score: 279.95
+
+================================================================================
+
+📈 Trade Plan for HOOD (Bullish Bias)
+
+🔹 Option: $$115.0 Call expiring 2025-09-12
+🔹 Entry Price: $0.20
+🔹 Stop Loss: $0.15
+🔹 Initial Target: $0.35
+🔹 Final Target: $0.70
+🔹 Position Size: 9 contracts
+🔹 Max Hold Time: 4 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.54969 | Gamma: 1.11850 | Theta: -0.07753 | Score: 6.54
+
+================================================================================
+
