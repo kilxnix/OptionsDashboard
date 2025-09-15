@@ -57,6 +57,11 @@ Admin account: sheltontraylor@gmail.com (UserRole.ADMIN)
 - **Usage Tracking**: API rate limiting, scan quotas, and feature gating based on subscription tier
 - **Trial System**: 14-day trials for paid plans with automatic conversion
 - **Auto-Renewal**: Automatic subscription renewal with sufficient account balance
+- **Tier-Based Scanner Customization**:
+  - **Free Tier**: 1 scanner type, locked parameters (max $0.50, 7 days expiration)
+  - **Basic Tier**: 3 scanner types, limited customization (max $1.00, 14 days expiration, delta 0.25-0.75)
+  - **Premium Tier**: All scanner types, full customization (up to $10, 90 days expiration, any delta range)
+  - **Admin Access**: Automatic premium-level features regardless of subscription
 
 ## Data Storage and Management
 - **Primary Database**: PostgreSQL for user data, subscriptions, API keys, and usage events
@@ -73,6 +78,8 @@ Admin account: sheltontraylor@gmail.com (UserRole.ADMIN)
 ## Security and Access Control
 - **Multi-tier Authentication**: JWT tokens, API keys, and role-based permissions
 - **Usage Enforcement**: Per-tier quotas for scans, API calls, and feature access
+- **Server-Side Tier Enforcement**: All scanner parameter limits enforced at API level to prevent bypassing
+- **Dynamic UI Restrictions**: Frontend adapts based on user tier with clear upgrade prompts
 - **Audit Logging**: Comprehensive tracking of user actions and system events
 - **Data Validation**: Input sanitization and type safety throughout the pipeline
 
