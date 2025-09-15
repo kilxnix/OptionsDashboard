@@ -192,12 +192,27 @@ LOGIN_TEMPLATE = """
                     password: document.getElementById('password').value
                 })
             });
-            const data = await response.json();
-            if (data.access_token) {
-                localStorage.setItem('token', data.access_token);
-                window.location.href = '/dashboard';
+            
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Login response:', data);
+                
+                if (data.access_token) {
+                    localStorage.setItem('token', data.access_token);
+                    alert('Login successful! Redirecting to dashboard...');
+                    window.location.href = '/dashboard';
+                } else if (data.token) {
+                    // Handle alternative token field
+                    localStorage.setItem('token', data.token);
+                    alert('Login successful! Redirecting to dashboard...');
+                    window.location.href = '/dashboard';
+                } else {
+                    alert('Login successful but no token received. Please try again.');
+                    console.error('No token in response:', data);
+                }
             } else {
-                alert(data.message || 'Login failed');
+                const error = await response.text();
+                alert('Login failed: ' + error);
             }
         });
     </script>
