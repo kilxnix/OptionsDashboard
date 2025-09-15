@@ -403,8 +403,10 @@ class StripeManager:
             
             # Determine payment method types
             if payment_type == 'crypto' and currency == 'usdc':
-                # For crypto payments (USDC stablecoin)
-                payment_method_types = ['card', 'link', 'crypto']
+                # For USDC crypto payments, use Link which supports various payment methods
+                # Note: 'crypto' is not a direct Stripe payment method type
+                # USDC payments are processed through Link or converted to fiat
+                payment_method_types = ['card', 'link']
             else:
                 # Standard card payments
                 payment_method_types = ['card']

@@ -1317,17 +1317,17 @@ PAYMENT_METHOD_TEMPLATE = """
                     <div class="w-16 h-16 bg-green-100 rounded-full mx-auto flex items-center justify-center mb-3">
                         <span class="text-2xl">₿</span>
                     </div>
-                    <h3 class="text-xl font-bold">Pay with Crypto</h3>
-                    <span class="inline-block mt-2 px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">USDC Stablecoin</span>
+                    <h3 class="text-xl font-bold">Pay with USDC</h3>
+                    <span class="inline-block mt-2 px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">Stablecoin (1:1 USD)</span>
                 </div>
                 <ul class="text-sm text-gray-600 space-y-2">
-                    <li>✓ Pay with USDC</li>
-                    <li>✓ Secure blockchain payment</li>
-                    <li>✓ Lower fees</li>
-                    <li>✓ Instant confirmation</li>
+                    <li>✓ USDC stablecoin pegged to USD</li>
+                    <li>✓ Pay via Stripe Link</li>
+                    <li>✓ Secure & regulated</li>
+                    <li>✓ Same price as USD</li>
                 </ul>
                 <button class="w-full mt-4 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
-                    Continue with Crypto
+                    Continue with USDC
                 </button>
             </div>
 
