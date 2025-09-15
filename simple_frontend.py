@@ -639,6 +639,84 @@ PRICING_TEMPLATE = """
             display: inline-block;
             margin-right: 8px;
         }
+        
+        /* Custom toggle switch styles */
+        .toggle-switch {
+            position: relative;
+            width: 200px;
+            height: 44px;
+            background: #e5e7eb;
+            border-radius: 22px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .toggle-switch.monthly {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 92px;
+            height: 36px;
+            background: white;
+            border-radius: 18px;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .toggle-switch.monthly .toggle-slider {
+            transform: translateX(100px);
+        }
+        
+        .toggle-label {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 600;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+        
+        .toggle-label.weekly {
+            left: 20px;
+            color: #4b5563;
+        }
+        
+        .toggle-label.monthly {
+            right: 20px;
+            color: #9ca3af;
+        }
+        
+        .toggle-switch.monthly .toggle-label.weekly {
+            color: #e5e7eb;
+        }
+        
+        .toggle-switch.monthly .toggle-label.monthly {
+            color: white;
+        }
+        
+        /* Animation for price changes */
+        .price-fade {
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Savings badge animation */
+        .savings-badge {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -659,7 +737,18 @@ PRICING_TEMPLATE = """
     </nav>
 
     <div class="max-w-7xl mx-auto px-4 py-16">
-        <h1 class="text-4xl font-bold text-center mb-4">Choose Your Plan</h1>
+        <h1 class="text-4xl font-bold text-center mb-8">Choose Your Plan</h1>
+        
+        <!-- Billing Period Toggle -->
+        <div class="flex justify-center mb-8">
+            <div class="bg-white rounded-full shadow-lg p-2 flex items-center">
+                <div id="billingToggle" class="toggle-switch monthly">
+                    <div class="toggle-slider"></div>
+                    <span class="toggle-label weekly">Weekly</span>
+                    <span class="toggle-label monthly">Monthly</span>
+                </div>
+            </div>
+        </div>
         
         <!-- Currency Selector -->
         <div class="flex justify-center mb-12">
@@ -692,11 +781,11 @@ PRICING_TEMPLATE = """
     <script>
         const stripe = Stripe('pk_test_51J1234567890'); // Will be replaced with actual key
         
-        // Pricing data for each currency
+        // Pricing data for each currency with both weekly and monthly options
         const pricingData = {
             'USD': {
                 symbol: '$',
-                plans: [
+                weekly: [
                     {
                         id: 'free',
                         name: 'Free',
@@ -708,9 +797,9 @@ PRICING_TEMPLATE = """
                         ]
                     },
                     {
-                        id: 'basic_usd',
+                        id: 'basic_usd_weekly',
                         name: 'Basic',
-                        price: 29,
+                        price: 7,
                         popular: true,
                         features: [
                             '50 scans/day',
@@ -720,9 +809,46 @@ PRICING_TEMPLATE = """
                         ]
                     },
                     {
-                        id: 'premium_usd',
+                        id: 'premium_usd_weekly',
+                        name: 'Premium',
+                        price: 25,
+                        features: [
+                            '500 scans/day',
+                            'All scanners',
+                            'Priority support',
+                            'Advanced features'
+                        ]
+                    }
+                ],
+                monthly: [
+                    {
+                        id: 'free',
+                        name: 'Free',
+                        price: 0,
+                        features: [
+                            '5 scans/day',
+                            'Basic scanner',
+                            'Community support'
+                        ]
+                    },
+                    {
+                        id: 'basic_usd_monthly',
+                        name: 'Basic',
+                        price: 29,
+                        popular: true,
+                        savings: '40',
+                        features: [
+                            '50 scans/day',
+                            'Explosive scanner',
+                            'Technical analysis',
+                            'Email support'
+                        ]
+                    },
+                    {
+                        id: 'premium_usd_monthly',
                         name: 'Premium',
                         price: 99,
+                        savings: '37',
                         features: [
                             '500 scans/day',
                             'All scanners',
@@ -734,7 +860,7 @@ PRICING_TEMPLATE = """
             },
             'EUR': {
                 symbol: '€',
-                plans: [
+                weekly: [
                     {
                         id: 'free',
                         name: 'Free',
@@ -746,9 +872,9 @@ PRICING_TEMPLATE = """
                         ]
                     },
                     {
-                        id: 'basic_eur',
+                        id: 'basic_eur_weekly',
                         name: 'Basic',
-                        price: 27,
+                        price: 6.50,
                         popular: true,
                         features: [
                             '50 scans/day',
@@ -758,9 +884,46 @@ PRICING_TEMPLATE = """
                         ]
                     },
                     {
-                        id: 'premium_eur',
+                        id: 'premium_eur_weekly',
+                        name: 'Premium',
+                        price: 23,
+                        features: [
+                            '500 scans/day',
+                            'All scanners',
+                            'Priority support',
+                            'Advanced features'
+                        ]
+                    }
+                ],
+                monthly: [
+                    {
+                        id: 'free',
+                        name: 'Free',
+                        price: 0,
+                        features: [
+                            '5 scans/day',
+                            'Basic scanner',
+                            'Community support'
+                        ]
+                    },
+                    {
+                        id: 'basic_eur_monthly',
+                        name: 'Basic',
+                        price: 27,
+                        popular: true,
+                        savings: '39',
+                        features: [
+                            '50 scans/day',
+                            'Explosive scanner',
+                            'Technical analysis',
+                            'Email support'
+                        ]
+                    },
+                    {
+                        id: 'premium_eur_monthly',
                         name: 'Premium',
                         price: 92,
+                        savings: '35',
                         features: [
                             '500 scans/day',
                             'All scanners',
@@ -772,7 +935,7 @@ PRICING_TEMPLATE = """
             },
             'GBP': {
                 symbol: '£',
-                plans: [
+                weekly: [
                     {
                         id: 'free',
                         name: 'Free',
@@ -784,9 +947,9 @@ PRICING_TEMPLATE = """
                         ]
                     },
                     {
-                        id: 'basic_gbp',
+                        id: 'basic_gbp_weekly',
                         name: 'Basic',
-                        price: 23,
+                        price: 5.50,
                         popular: true,
                         features: [
                             '50 scans/day',
@@ -796,9 +959,46 @@ PRICING_TEMPLATE = """
                         ]
                     },
                     {
-                        id: 'premium_gbp',
+                        id: 'premium_gbp_weekly',
+                        name: 'Premium',
+                        price: 20,
+                        features: [
+                            '500 scans/day',
+                            'All scanners',
+                            'Priority support',
+                            'Advanced features'
+                        ]
+                    }
+                ],
+                monthly: [
+                    {
+                        id: 'free',
+                        name: 'Free',
+                        price: 0,
+                        features: [
+                            '5 scans/day',
+                            'Basic scanner',
+                            'Community support'
+                        ]
+                    },
+                    {
+                        id: 'basic_gbp_monthly',
+                        name: 'Basic',
+                        price: 23,
+                        popular: true,
+                        savings: '38',
+                        features: [
+                            '50 scans/day',
+                            'Explosive scanner',
+                            'Technical analysis',
+                            'Email support'
+                        ]
+                    },
+                    {
+                        id: 'premium_gbp_monthly',
                         name: 'Premium',
                         price: 79,
+                        savings: '36',
                         features: [
                             '500 scans/day',
                             'All scanners',
@@ -811,7 +1011,7 @@ PRICING_TEMPLATE = """
             'USDC': {
                 symbol: '',
                 suffix: ' USDC',
-                plans: [
+                weekly: [
                     {
                         id: 'free',
                         name: 'Free',
@@ -823,9 +1023,9 @@ PRICING_TEMPLATE = """
                         ]
                     },
                     {
-                        id: 'basic_usdc',
+                        id: 'basic_usdc_weekly',
                         name: 'Basic',
-                        price: 29,
+                        price: 7,
                         popular: true,
                         features: [
                             '50 scans/day',
@@ -836,9 +1036,48 @@ PRICING_TEMPLATE = """
                         ]
                     },
                     {
-                        id: 'premium_usdc',
+                        id: 'premium_usdc_weekly',
+                        name: 'Premium',
+                        price: 25,
+                        features: [
+                            '500 scans/day',
+                            'All scanners',
+                            'Priority support',
+                            'Advanced features',
+                            '🔐 Pay with crypto'
+                        ]
+                    }
+                ],
+                monthly: [
+                    {
+                        id: 'free',
+                        name: 'Free',
+                        price: 0,
+                        features: [
+                            '5 scans/day',
+                            'Basic scanner',
+                            'Community support'
+                        ]
+                    },
+                    {
+                        id: 'basic_usdc_monthly',
+                        name: 'Basic',
+                        price: 29,
+                        popular: true,
+                        savings: '40',
+                        features: [
+                            '50 scans/day',
+                            'Explosive scanner',
+                            'Technical analysis',
+                            'Email support',
+                            '🔐 Pay with crypto'
+                        ]
+                    },
+                    {
+                        id: 'premium_usdc_monthly',
                         name: 'Premium',
                         price: 99,
+                        savings: '37',
                         features: [
                             '500 scans/day',
                             'All scanners',
@@ -852,41 +1091,62 @@ PRICING_TEMPLATE = """
         };
         
         let currentCurrency = 'USD';
+        let currentPeriod = 'monthly'; // Default to monthly
         
-        function loadPricing(currency = 'USD') {
-            currentCurrency = currency;
-            const data = pricingData[currency];
+        function loadPricing(currency = null, period = null) {
+            // Update current values if provided
+            if (currency) currentCurrency = currency;
+            if (period) currentPeriod = period;
+            
+            const data = pricingData[currentCurrency];
+            const plans = data[currentPeriod];
             const container = document.getElementById('pricingCards');
             const cryptoBadge = document.getElementById('cryptoBadge');
             
             // Show/hide crypto badge
-            if (currency === 'USDC') {
+            if (currentCurrency === 'USDC') {
                 cryptoBadge.classList.remove('hidden');
             } else {
                 cryptoBadge.classList.add('hidden');
             }
             
-            container.innerHTML = data.plans.map(plan => `
+            // Add animation class
+            container.classList.add('price-fade');
+            
+            container.innerHTML = plans.map(plan => `
                 <div class="bg-white p-6 rounded-lg shadow-lg ${plan.popular ? 'transform scale-105 border-2 border-purple-600 relative' : ''} transition-all duration-300">
                     ${plan.popular ? 
                         '<div class="absolute -top-3 left-1/2 transform -translate-x-1/2"><span class="bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-4 py-1 rounded-full text-sm font-bold">Most Popular</span></div>' : 
                         ''
                     }
                     <h3 class="text-xl font-semibold mb-3 ${plan.popular ? 'mt-2' : ''}">${plan.name}</h3>
-                    <p class="text-3xl font-bold mb-4">
+                    
+                    ${plan.savings && currentPeriod === 'monthly' ? 
+                        `<div class="mb-2">
+                            <span class="inline-block bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full savings-badge">
+                                Save ${plan.savings}%
+                            </span>
+                        </div>` : 
+                        ''
+                    }
+                    
+                    <p class="text-3xl font-bold mb-4 price-fade">
                         ${data.symbol}${plan.price}${data.suffix || ''}
-                        <span class="text-sm text-gray-600">/month</span>
+                        <span class="text-sm text-gray-600">/${currentPeriod === 'weekly' ? 'week' : 'month'}</span>
                     </p>
-                    ${currency === 'USDC' && plan.price > 0 ? 
+                    
+                    ${currentCurrency === 'USDC' && plan.price > 0 ? 
                         '<div class="mb-4"><span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">₿ Pay with Crypto</span></div>' : 
                         ''
                     }
+                    
                     <ul class="text-gray-600 space-y-2 mb-6">
                         ${plan.features.map(f => `<li class="flex items-start"><span class="text-green-500 mr-2">✓</span><span>${f}</span></li>`).join('')}
                     </ul>
+                    
                     ${plan.price > 0 ? 
-                        `<button onclick="subscribe('${plan.id}', '${currency}')" class="w-full ${plan.popular ? 'bg-gradient-to-r from-purple-600 to-purple-700' : 'bg-purple-600'} text-white py-3 rounded-lg hover:shadow-lg transition-all duration-200 font-semibold">
-                            ${currency === 'USDC' ? 'Pay with Crypto' : 'Subscribe Now'}
+                        `<button onclick="subscribe('${plan.id}', '${currentCurrency}', '${currentPeriod}')" class="w-full ${plan.popular ? 'bg-gradient-to-r from-purple-600 to-purple-700' : 'bg-purple-600'} text-white py-3 rounded-lg hover:shadow-lg transition-all duration-200 font-semibold">
+                            ${currentCurrency === 'USDC' ? 'Pay with Crypto' : 'Subscribe Now'}
                         </button>` :
                         `<a href="/register" class="block w-full bg-gray-600 text-white py-3 rounded-lg text-center hover:bg-gray-700 transition-all duration-200 font-semibold">
                             Start Free
@@ -894,9 +1154,14 @@ PRICING_TEMPLATE = """
                     }
                 </div>
             `).join('');
+            
+            // Remove animation class after animation completes
+            setTimeout(() => {
+                container.classList.remove('price-fade');
+            }, 300);
         }
         
-        async function subscribe(planId, currency) {
+        async function subscribe(planId, currency, period) {
             const token = localStorage.getItem('token');
             if (!token) {
                 window.location.href = '/login';
@@ -914,7 +1179,8 @@ PRICING_TEMPLATE = """
                 body: JSON.stringify({ 
                     plan_id: planId,
                     currency: currency,
-                    payment_type: paymentType
+                    payment_type: paymentType,
+                    billing_period: period
                 })
             });
             
@@ -926,13 +1192,29 @@ PRICING_TEMPLATE = """
             }
         }
         
-        // Handle currency change
-        document.getElementById('currencySelector').addEventListener('change', (e) => {
-            loadPricing(e.target.value);
+        // Initialize pricing and event handlers on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize with monthly pricing
+            loadPricing('USD', 'monthly');
+            
+            // Handle billing period toggle
+            const billingToggle = document.getElementById('billingToggle');
+            billingToggle.addEventListener('click', () => {
+                // Toggle the visual state
+                billingToggle.classList.toggle('monthly');
+                
+                // Determine new period
+                const newPeriod = billingToggle.classList.contains('monthly') ? 'monthly' : 'weekly';
+                
+                // Reload pricing with new period
+                loadPricing(null, newPeriod);
+            });
+            
+            // Handle currency selector
+            document.getElementById('currencySelector').addEventListener('change', (e) => {
+                loadPricing(e.target.value, null);
+            });
         });
-        
-        // Load initial pricing
-        loadPricing('USD');
     </script>
 </body>
 </html>
