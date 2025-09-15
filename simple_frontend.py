@@ -1220,6 +1220,444 @@ PRICING_TEMPLATE = """
 </html>
 """
 
+# Admin Dashboard Template
+ADMIN_DASHBOARD_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Options Scanner Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 500px;
+            max-width: 90%;
+        }
+        .modal.show {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-purple-600">Options Scanner Pro - Admin</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/" class="text-gray-700 hover:text-purple-600">Home</a>
+                    <a href="/dashboard" class="text-gray-700 hover:text-purple-600">Dashboard</a>
+                    <a href="/admin" class="text-gray-700 hover:text-purple-600 font-bold">Admin</a>
+                    <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="gradient-bg text-white py-10">
+        <div class="max-w-7xl mx-auto px-4">
+            <h1 class="text-3xl font-bold">Admin Dashboard</h1>
+            <p class="mt-2">Manage users, subscriptions, and account balances</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Search Bar -->
+        <div class="mb-6 bg-white p-4 rounded-lg shadow">
+            <input type="text" id="searchInput" placeholder="Search users by email, name, or company..." 
+                   class="w-full px-4 py-2 border rounded-lg" onkeyup="searchUsers()">
+        </div>
+
+        <!-- Users Table -->
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <table class="min-w-full">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Balance</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subscription</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Active</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody" class="bg-white divide-y divide-gray-200">
+                    <!-- Users will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-4 flex justify-between items-center">
+            <div>
+                <span id="pageInfo" class="text-gray-600"></span>
+            </div>
+            <div class="space-x-2">
+                <button onclick="previousPage()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">Previous</button>
+                <button onclick="nextPage()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Up Modal -->
+    <div id="topupModal" class="modal">
+        <div class="modal-content">
+            <h2 class="text-2xl font-bold mb-4">Top Up User Balance</h2>
+            <p class="mb-2">User: <span id="topupUserEmail" class="font-semibold"></span></p>
+            <p class="mb-4">Current Balance: $<span id="currentBalance" class="font-semibold"></span></p>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2">Select Amount:</label>
+                <div class="grid grid-cols-3 gap-2 mb-4">
+                    <button onclick="setTopupAmount(10)" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">$10</button>
+                    <button onclick="setTopupAmount(25)" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">$25</button>
+                    <button onclick="setTopupAmount(50)" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">$50</button>
+                    <button onclick="setTopupAmount(100)" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">$100</button>
+                    <button onclick="setTopupAmount(500)" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">$500</button>
+                    <button onclick="setTopupAmount(1000)" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">$1000</button>
+                </div>
+                
+                <label class="block text-sm font-medium mb-2">Or enter custom amount:</label>
+                <input type="number" id="topupAmount" placeholder="Enter amount" class="w-full px-3 py-2 border rounded-lg" step="0.01" min="0.01" max="10000">
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2">Description (optional):</label>
+                <input type="text" id="topupDescription" placeholder="Reason for top-up" class="w-full px-3 py-2 border rounded-lg">
+            </div>
+            
+            <div class="flex justify-end space-x-2">
+                <button onclick="closeTopupModal()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">Cancel</button>
+                <button onclick="confirmTopup()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Confirm Top Up</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grant Subscription Modal -->
+    <div id="subscriptionModal" class="modal">
+        <div class="modal-content">
+            <h2 class="text-2xl font-bold mb-4">Grant Subscription</h2>
+            <p class="mb-2">User: <span id="subUserEmail" class="font-semibold"></span></p>
+            <p class="mb-4">Current Plan: <span id="currentPlan" class="font-semibold"></span></p>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2">Select Plan Tier:</label>
+                <select id="planTier" class="w-full px-3 py-2 border rounded-lg">
+                    <option value="free">Free</option>
+                    <option value="basic" selected>Basic</option>
+                    <option value="premium">Premium</option>
+                </select>
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2">Duration (days):</label>
+                <select id="duration" class="w-full px-3 py-2 border rounded-lg">
+                    <option value="7">7 days</option>
+                    <option value="30" selected>30 days</option>
+                    <option value="90">90 days</option>
+                    <option value="180">180 days</option>
+                    <option value="365">365 days</option>
+                </select>
+            </div>
+            
+            <div class="flex justify-end space-x-2">
+                <button onclick="closeSubscriptionModal()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">Cancel</button>
+                <button onclick="confirmGrantSubscription()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Grant Subscription</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        let totalPages = 1;
+        let currentUserId = null;
+        let users = [];
+
+        async function loadUsers(page = 1) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/admin/users?page=${page}&per_page=20`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                if (response.status === 403) {
+                    alert('Access denied. Admin privileges required.');
+                    window.location.href = '/dashboard';
+                    return;
+                }
+
+                const data = await response.json();
+                if (data.status === 'success') {
+                    users = data.users;
+                    currentPage = data.pagination.page;
+                    totalPages = data.pagination.pages;
+                    renderUsers();
+                    updatePageInfo(data.pagination);
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+
+        function renderUsers() {
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = '';
+
+            users.forEach(user => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div>
+                            <div class="text-sm font-medium text-gray-900">${user.email}</div>
+                            <div class="text-sm text-gray-500">${user.first_name || ''} ${user.last_name || ''}</div>
+                            <div class="text-xs text-gray-400">${user.company || ''}</div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="text-sm font-semibold">$${user.account_balance.toFixed(2)}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                            ${user.subscription.tier === 'premium' ? 'bg-purple-100 text-purple-800' : 
+                              user.subscription.tier === 'basic' ? 'bg-blue-100 text-blue-800' : 
+                              'bg-gray-100 text-gray-800'}">
+                            ${user.subscription.tier.toUpperCase()}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                            ${user.status === 'active' ? 'bg-green-100 text-green-800' : 
+                              'bg-red-100 text-red-800'}">
+                            ${user.status}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${user.last_activity ? new Date(user.last_activity).toLocaleDateString() : 'Never'}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button onclick="openTopupModal(${user.id}, '${user.email}', ${user.account_balance})" 
+                                class="text-green-600 hover:text-green-900 mr-3">Top Up</button>
+                        <button onclick="openSubscriptionModal(${user.id}, '${user.email}', '${user.subscription.tier}')" 
+                                class="text-blue-600 hover:text-blue-900">Grant Sub</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updatePageInfo(pagination) {
+            document.getElementById('pageInfo').textContent = 
+                `Showing ${(pagination.page - 1) * pagination.per_page + 1} to ${Math.min(pagination.page * pagination.per_page, pagination.total)} of ${pagination.total} users`;
+        }
+
+        function searchUsers() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            // For now, we'll just filter the current page
+            // In production, this should make an API call with search parameter
+            const filtered = users.filter(user => 
+                user.email.toLowerCase().includes(searchTerm) ||
+                (user.first_name && user.first_name.toLowerCase().includes(searchTerm)) ||
+                (user.last_name && user.last_name.toLowerCase().includes(searchTerm)) ||
+                (user.company && user.company.toLowerCase().includes(searchTerm))
+            );
+            // Re-render with filtered results
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = '';
+            filtered.forEach(user => {
+                // Same rendering logic as in renderUsers()
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div>
+                            <div class="text-sm font-medium text-gray-900">${user.email}</div>
+                            <div class="text-sm text-gray-500">${user.first_name || ''} ${user.last_name || ''}</div>
+                            <div class="text-xs text-gray-400">${user.company || ''}</div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="text-sm font-semibold">$${user.account_balance.toFixed(2)}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                            ${user.subscription.tier === 'premium' ? 'bg-purple-100 text-purple-800' : 
+                              user.subscription.tier === 'basic' ? 'bg-blue-100 text-blue-800' : 
+                              'bg-gray-100 text-gray-800'}">
+                            ${user.subscription.tier.toUpperCase()}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                            ${user.status === 'active' ? 'bg-green-100 text-green-800' : 
+                              'bg-red-100 text-red-800'}">
+                            ${user.status}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${user.last_activity ? new Date(user.last_activity).toLocaleDateString() : 'Never'}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button onclick="openTopupModal(${user.id}, '${user.email}', ${user.account_balance})" 
+                                class="text-green-600 hover:text-green-900 mr-3">Top Up</button>
+                        <button onclick="openSubscriptionModal(${user.id}, '${user.email}', '${user.subscription.tier}')" 
+                                class="text-blue-600 hover:text-blue-900">Grant Sub</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function previousPage() {
+            if (currentPage > 1) {
+                loadUsers(currentPage - 1);
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                loadUsers(currentPage + 1);
+            }
+        }
+
+        function openTopupModal(userId, email, balance) {
+            currentUserId = userId;
+            document.getElementById('topupUserEmail').textContent = email;
+            document.getElementById('currentBalance').textContent = balance.toFixed(2);
+            document.getElementById('topupAmount').value = '';
+            document.getElementById('topupDescription').value = '';
+            document.getElementById('topupModal').classList.add('show');
+        }
+
+        function closeTopupModal() {
+            document.getElementById('topupModal').classList.remove('show');
+            currentUserId = null;
+        }
+
+        function setTopupAmount(amount) {
+            document.getElementById('topupAmount').value = amount;
+        }
+
+        async function confirmTopup() {
+            const amount = parseFloat(document.getElementById('topupAmount').value);
+            const description = document.getElementById('topupDescription').value;
+
+            if (!amount || amount <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch(`/api/admin/topup/${currentUserId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({
+                        amount: amount,
+                        description: description || 'Admin credit adjustment'
+                    })
+                });
+
+                const data = await response.json();
+                if (data.status === 'success') {
+                    alert(data.message);
+                    closeTopupModal();
+                    loadUsers(currentPage);
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error processing topup: ' + error.message);
+            }
+        }
+
+        function openSubscriptionModal(userId, email, currentTier) {
+            currentUserId = userId;
+            document.getElementById('subUserEmail').textContent = email;
+            document.getElementById('currentPlan').textContent = currentTier.toUpperCase();
+            document.getElementById('subscriptionModal').classList.add('show');
+        }
+
+        function closeSubscriptionModal() {
+            document.getElementById('subscriptionModal').classList.remove('show');
+            currentUserId = null;
+        }
+
+        async function confirmGrantSubscription() {
+            const tier = document.getElementById('planTier').value;
+            const duration = parseInt(document.getElementById('duration').value);
+
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch(`/api/admin/grant-subscription/${currentUserId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({
+                        tier: tier,
+                        duration_days: duration
+                    })
+                });
+
+                const data = await response.json();
+                if (data.status === 'success') {
+                    alert(data.message);
+                    closeSubscriptionModal();
+                    loadUsers(currentPage);
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error granting subscription: ' + error.message);
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = '/login';
+        }
+
+        // Load users on page load
+        window.onload = () => {
+            loadUsers();
+        };
+    </script>
+</body>
+</html>
+"""
+
 @frontend_app.route('/')
 def home():
     return render_template_string(HTML_TEMPLATE)
@@ -1243,6 +1681,10 @@ def scanner():
 @frontend_app.route('/pricing')
 def pricing():
     return render_template_string(PRICING_TEMPLATE)
+
+@frontend_app.route('/admin')
+def admin():
+    return render_template_string(ADMIN_DASHBOARD_TEMPLATE)
 
 # Proxy all API calls to backend
 @frontend_app.route('/api/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
