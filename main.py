@@ -8,6 +8,7 @@ import numpy as np
 import requests
 import time
 import yfinance as yf
+import stripe
 from run_autonomous_scan import run_autonomous_scan
 from quantitative_analyzer import is_in_bollinger_squeeze, calculate_relative_volume
 from enhanced_scanner import EnhancedOptionsScanner
@@ -444,6 +445,237 @@ def revoke_api_key(key_id):
     return jsonify({
         'status': 'success',
         'message': 'API key revoked successfully'
+    }), 200
+
+
+# ==================== Stripe Integration Endpoints ====================
+
+@app.route("/api/stripe/prices", methods=["GET"])
+def get_stripe_prices():
+    """Get available subscription prices"""
+    from stripe_manager import StripeManager, PLAN_PRICES
+    
+    prices = []
+    for tier, config in PLAN_PRICES.items():
+        plan = Plan.query.filter_by(tier=tier).first()
+        price_info = {
+            'tier': tier.value,
+            'name': config['name'],
+            'price_monthly': config['price_monthly'] / 100,  # Convert cents to dollars
+            'price_display': f"${config['price_monthly'] / 100:.2f}/month",
+            'features': config['features'],
+            'stripe_price_id': plan.stripe_price_monthly_id if plan else None
+        }
+        
+        if 'trial_days' in config:
+            price_info['trial_days'] = config['trial_days']
+        
+        prices.append(price_info)
+    
+    return jsonify({
+        'status': 'success',
+        'prices': prices
+    }), 200
+
+
+@app.route("/api/stripe/create-checkout", methods=["POST"])
+@require_auth
+def create_checkout_session():
+    """Create Stripe checkout session for subscription"""
+    from stripe_manager import StripeManager
+    
+    data = request.get_json()
+    plan_tier_str = data.get('plan_tier')
+    
+    if not plan_tier_str:
+        return jsonify({
+            'status': 'error',
+            'message': 'Plan tier required'
+        }), 400
+    
+    # Convert string to PlanTier enum
+    try:
+        plan_tier = PlanTier(plan_tier_str)
+    except ValueError:
+        return jsonify({
+            'status': 'error',
+            'message': f'Invalid plan tier: {plan_tier_str}'
+        }), 400
+    
+    if plan_tier == PlanTier.FREE:
+        return jsonify({
+            'status': 'error',
+            'message': 'Cannot checkout free tier'
+        }), 400
+    
+    user = request.current_user
+    
+    # Check if user already has an active subscription
+    from db_utils import DatabaseManager
+    current_sub = DatabaseManager.get_active_subscription(user.id)
+    if current_sub and current_sub.plan.tier != PlanTier.FREE:
+        return jsonify({
+            'status': 'error',
+            'message': 'You already have an active subscription. Please manage it through the customer portal.'
+        }), 400
+    
+    # Create checkout session
+    base_url = request.host_url.rstrip('/')
+    success_url = f"{base_url}/subscription/success?session_id={{CHECKOUT_SESSION_ID}}"
+    cancel_url = f"{base_url}/subscription/cancel"
+    
+    session_data = StripeManager.create_checkout_session(
+        user_id=user.id,
+        plan_tier=plan_tier,
+        success_url=success_url,
+        cancel_url=cancel_url
+    )
+    
+    if not session_data:
+        return jsonify({
+            'status': 'error',
+            'message': 'Failed to create checkout session'
+        }), 500
+    
+    return jsonify({
+        'status': 'success',
+        'message': 'Checkout session created',
+        'session_id': session_data['session_id'],
+        'checkout_url': session_data['url'],
+        'trial_days': session_data.get('trial_days')
+    }), 200
+
+
+@app.route("/api/stripe/create-portal", methods=["POST"])
+@require_auth
+def create_portal_session():
+    """Create Stripe customer portal session for subscription management"""
+    from stripe_manager import StripeManager
+    
+    user = request.current_user
+    
+    # Check if user has a Stripe customer ID
+    if not user.stripe_customer_id:
+        return jsonify({
+            'status': 'error',
+            'message': 'No subscription found. Please subscribe to a plan first.'
+        }), 404
+    
+    # Create portal session
+    base_url = request.host_url.rstrip('/')
+    return_url = f"{base_url}/account"
+    
+    portal_url = StripeManager.create_portal_session(
+        user_id=user.id,
+        return_url=return_url
+    )
+    
+    if not portal_url:
+        # Portal not configured in Stripe Dashboard
+        return jsonify({
+            'status': 'error',
+            'message': 'Customer portal is not yet configured. Please contact support or use the checkout page to manage subscriptions.',
+            'note': 'Portal configuration required at https://dashboard.stripe.com/settings/billing/portal'
+        }), 503
+    
+    return jsonify({
+        'status': 'success',
+        'message': 'Portal session created',
+        'portal_url': portal_url
+    }), 200
+
+
+@app.route("/api/stripe/webhook", methods=["POST"])
+def stripe_webhook():
+    """Handle Stripe webhook events"""
+    from stripe_manager import StripeManager
+    import stripe
+    
+    payload = request.get_data(as_text=True)
+    signature = request.headers.get('Stripe-Signature')
+    
+    if not signature:
+        return jsonify({
+            'status': 'error',
+            'message': 'Missing signature'
+        }), 400
+    
+    # Process webhook
+    result = StripeManager.handle_webhook_event(payload, signature)
+    
+    if result['status'] == 'error':
+        return jsonify(result), 400
+    
+    return jsonify(result), 200
+
+
+@app.route("/api/stripe/subscription", methods=["GET"])
+@require_auth
+def get_subscription_info():
+    """Get current user's subscription information"""
+    from stripe_manager import StripeManager
+    
+    user = request.current_user
+    
+    sub_info = StripeManager.get_subscription_info(user.id)
+    
+    if not sub_info:
+        # Return free tier info
+        free_plan = Plan.query.filter_by(tier=PlanTier.FREE).first()
+        return jsonify({
+            'status': 'success',
+            'subscription': {
+                'plan': 'Free Tier',
+                'tier': 'free',
+                'status': 'active',
+                'price': 0,
+                'features': free_plan.features_json if free_plan else {}
+            }
+        }), 200
+    
+    return jsonify({
+        'status': 'success',
+        'subscription': sub_info
+    }), 200
+
+
+@app.route("/api/stripe/cancel-subscription", methods=["POST"])
+@require_auth
+def cancel_subscription():
+    """Cancel current user's subscription"""
+    from stripe_manager import StripeManager
+    
+    user = request.current_user
+    data = request.get_json()
+    immediately = data.get('immediately', False)
+    
+    success = StripeManager.cancel_subscription(user.id, immediately)
+    
+    if not success:
+        return jsonify({
+            'status': 'error',
+            'message': 'No active subscription to cancel'
+        }), 404
+    
+    return jsonify({
+        'status': 'success',
+        'message': 'Subscription canceled successfully',
+        'cancel_immediately': immediately
+    }), 200
+
+
+@app.route("/api/stripe/init-products", methods=["POST"])
+@require_admin
+def init_stripe_products():
+    """Initialize Stripe products and prices (Admin only)"""
+    from stripe_manager import StripeManager
+    
+    results = StripeManager.create_or_update_products()
+    
+    return jsonify({
+        'status': 'success',
+        'message': 'Stripe products initialized',
+        'results': results
     }), 200
 
 

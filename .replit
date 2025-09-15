@@ -23,6 +23,10 @@ externalPort = 80
 localPort = 8080
 externalPort = 8080
 
+[[ports]]
+localPort = 41925
+externalPort = 3000
+
 [workflows]
 runButton = "Project"
 
@@ -58,4 +62,4 @@ outputType = "webview"
 
 [agent]
 expertMode = true
-integrations = ["python_database:1.0.0"]
+integrations = ["python_database:1.0.0", "flask_stripe:1.0.0"]
