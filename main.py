@@ -607,11 +607,20 @@ def create_checkout_session():
     
     data = request.get_json()
     plan_tier_str = data.get('plan_tier')
+    billing_interval = data.get('billing_interval', 'monthly')  # 'monthly' or 'weekly'
+    currency = data.get('currency', 'usd')  # 'usd', 'eur', 'gbp', 'usdc'
     
     if not plan_tier_str:
         return jsonify({
             'status': 'error',
             'message': 'Plan tier required'
+        }), 400
+    
+    # Validate billing interval
+    if billing_interval not in ['monthly', 'weekly']:
+        return jsonify({
+            'status': 'error',
+            'message': f'Invalid billing interval: {billing_interval}. Must be "monthly" or "weekly"'
         }), 400
     
     # Convert string to PlanTier enum
@@ -648,8 +657,10 @@ def create_checkout_session():
     session_data = StripeManager.create_checkout_session(
         user_id=user.id,
         plan_tier=plan_tier,
+        billing_interval=billing_interval,
         success_url=success_url,
-        cancel_url=cancel_url
+        cancel_url=cancel_url,
+        currency=currency
     )
     
     if not session_data:
@@ -663,6 +674,8 @@ def create_checkout_session():
         'message': 'Checkout session created',
         'session_id': session_data['session_id'],
         'checkout_url': session_data['url'],
+        'billing_interval': session_data.get('billing_interval', billing_interval),
+        'currency': session_data.get('currency', currency),
         'trial_days': session_data.get('trial_days')
     }), 200
 

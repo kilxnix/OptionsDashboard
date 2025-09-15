@@ -302,7 +302,8 @@ class StripeManager:
                 
                 results[tier.value] = {
                     'product_id': product.id,
-                    'price_ids': price_ids,
+                    'monthly_price_ids': monthly_price_ids,
+                    'weekly_price_ids': weekly_price_ids,
                     'status': 'success'
                 }
                 
@@ -321,6 +322,7 @@ class StripeManager:
         plan_tier: PlanTier,
         success_url: str,
         cancel_url: str,
+        billing_interval: str = 'monthly',
         currency: str = 'usd',
         payment_type: str = 'card'
     ) -> Optional[Dict[str, Any]]:
@@ -331,6 +333,7 @@ class StripeManager:
             plan_tier: Plan tier to subscribe to
             success_url: URL to redirect to on success
             cancel_url: URL to redirect to on cancel
+            billing_interval: Billing interval ('monthly' or 'weekly')
             currency: Currency to use (usd, eur, gbp, usdc)
             payment_type: Payment type (card, crypto)
         """
@@ -344,19 +347,32 @@ class StripeManager:
             if not plan:
                 raise ValueError(f"Plan {plan_tier.value} not found")
             
-            # Determine which price ID to use based on currency
+            # Determine which price ID to use based on currency and billing interval
             price_id = None
-            if currency == 'usd' or (currency == 'usdc' and payment_type != 'crypto'):
-                price_id = plan.stripe_price_monthly_id
-            elif currency == 'eur':
-                price_id = plan.stripe_price_eur_id
-            elif currency == 'gbp':
-                price_id = plan.stripe_price_gbp_id
-            elif currency == 'usdc' and payment_type == 'crypto':
-                price_id = plan.stripe_price_usdc_id
+            
+            if billing_interval == 'weekly':
+                # Use weekly price IDs
+                if currency == 'usd' or (currency == 'usdc' and payment_type != 'crypto'):
+                    price_id = plan.stripe_price_weekly_id
+                elif currency == 'eur':
+                    price_id = plan.stripe_price_weekly_eur_id
+                elif currency == 'gbp':
+                    price_id = plan.stripe_price_weekly_gbp_id
+                elif currency == 'usdc' and payment_type == 'crypto':
+                    price_id = plan.stripe_price_weekly_usdc_id
+            else:
+                # Use monthly price IDs (default)
+                if currency == 'usd' or (currency == 'usdc' and payment_type != 'crypto'):
+                    price_id = plan.stripe_price_monthly_id
+                elif currency == 'eur':
+                    price_id = plan.stripe_price_eur_id
+                elif currency == 'gbp':
+                    price_id = plan.stripe_price_gbp_id
+                elif currency == 'usdc' and payment_type == 'crypto':
+                    price_id = plan.stripe_price_usdc_id
             
             if not price_id:
-                raise ValueError(f"Price not configured for {currency} in {plan_tier.value} plan")
+                raise ValueError(f"Price not configured for {currency} {billing_interval} in {plan_tier.value} plan")
             
             # Create or retrieve Stripe customer
             if not user.stripe_customer_id:
@@ -407,13 +423,19 @@ class StripeManager:
                 'metadata': {
                     'user_id': str(user.id),
                     'plan_tier': plan_tier.value,
+                    'billing_interval': billing_interval,
                     'currency': currency,
                     'payment_type': payment_type
                 }
             }
             
             # Add automatic tax collection if needed
+            # Also allow customer to update their address during checkout for tax calculation
             session_params['automatic_tax'] = {'enabled': True}
+            session_params['customer_update'] = {
+                'address': 'auto',
+                'name': 'auto'
+            }
             
             # Enable customer to choose their preferred currency
             if currency != 'usdc':
@@ -425,6 +447,7 @@ class StripeManager:
                     'metadata': {
                         'user_id': str(user.id),
                         'plan_tier': plan_tier.value,
+                        'billing_interval': billing_interval,
                         'currency': currency
                     }
                 }
@@ -436,6 +459,7 @@ class StripeManager:
                 'url': session.url,
                 'customer_id': customer.id,
                 'trial_days': trial_period_days,
+                'billing_interval': billing_interval,
                 'currency': currency,
                 'payment_type': payment_type
             }
