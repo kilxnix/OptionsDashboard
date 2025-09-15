@@ -27,17 +27,21 @@ app = Flask(__name__)
 CORS(app, origins=['*'], allow_headers=['Content-Type', 'Authorization', 'X-API-Key'])
 
 # Database configuration - using blueprint:python_database integration
-# Secret key is REQUIRED from environment for security
+# Secret key configuration - prefer environment variable but provide fallback
 app.secret_key = os.environ.get("FLASK_SECRET_KEY")
 if not app.secret_key:
-    # Generate a temporary key for development only - DO NOT use in production
-    # Check if we're in development mode (no explicit ENV or ENV=development)
+    # Generate a secure key if not provided
+    app.secret_key = secrets.token_hex(32)
     env = os.environ.get("ENV", "development")
-    if env == "development":
-        app.secret_key = secrets.token_hex(32)
-        print("WARNING: Using auto-generated secret key for development. Set FLASK_SECRET_KEY for production!")
+    
+    # Log appropriate warning based on environment
+    if env == "production":
+        print("⚠️  WARNING: Production environment detected without FLASK_SECRET_KEY!")
+        print("   A temporary key has been generated but this is NOT recommended for production.")
+        print("   Please set FLASK_SECRET_KEY environment variable for security.")
     else:
-        raise ValueError("FLASK_SECRET_KEY environment variable must be set for production")
+        print("ℹ️  INFO: Using auto-generated secret key for development environment.")
+        print("   For production, set FLASK_SECRET_KEY environment variable.")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_recycle": 300,
