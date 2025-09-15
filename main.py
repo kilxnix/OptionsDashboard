@@ -27,7 +27,17 @@ app = Flask(__name__)
 CORS(app, origins=['*'], allow_headers=['Content-Type', 'Authorization', 'X-API-Key'])
 
 # Database configuration - using blueprint:python_database integration
-app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a-very-secret-key-for-development"
+# Secret key is REQUIRED from environment for security
+app.secret_key = os.environ.get("FLASK_SECRET_KEY")
+if not app.secret_key:
+    # Generate a temporary key for development only - DO NOT use in production
+    # Check if we're in development mode (no explicit ENV or ENV=development)
+    env = os.environ.get("ENV", "development")
+    if env == "development":
+        app.secret_key = secrets.token_hex(32)
+        print("WARNING: Using auto-generated secret key for development. Set FLASK_SECRET_KEY for production!")
+    else:
+        raise ValueError("FLASK_SECRET_KEY environment variable must be set for production")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_recycle": 300,
@@ -1055,13 +1065,29 @@ def init_stripe_products():
     """Initialize Stripe products and prices (Admin only)"""
     from stripe_manager import StripeManager
     
-    results = StripeManager.create_or_update_products()
-    
-    return jsonify({
-        'status': 'success',
-        'message': 'Stripe products initialized',
-        'results': results
-    }), 200
+    try:
+        results = StripeManager.create_or_update_products()
+        
+        # Check if any errors occurred
+        has_errors = any(result.get('status') == 'error' for result in results.values())
+        
+        if has_errors:
+            return jsonify({
+                'status': 'partial',
+                'message': 'Some products failed to initialize',
+                'results': results
+            }), 207  # 207 Multi-Status for partial success
+        
+        return jsonify({
+            'status': 'success',
+            'message': 'All Stripe products initialized successfully',
+            'results': results
+        }), 200
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': f'Failed to initialize Stripe products: {str(e)}'
+        }), 500
 
 
 # ==================== Admin API Endpoints ====================
