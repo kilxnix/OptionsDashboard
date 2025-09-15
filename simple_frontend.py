@@ -483,21 +483,30 @@ SCANNER_TEMPLATE = """
             html += '<th class="text-left p-2">Symbol</th>';
             html += '<th class="text-left p-2">Strike</th>';
             html += '<th class="text-left p-2">Type</th>';
-            html += '<th class="text-left p-2">Price</th>';
+            html += '<th class="text-left p-2">Expiry</th>';
+            html += '<th class="text-left p-2">Entry Price</th>';
+            html += '<th class="text-left p-2">Target</th>';
             html += '<th class="text-left p-2">Score</th>';
             html += '</tr></thead><tbody>';
             
-            if (data.opportunities) {
-                Object.entries(data.opportunities).slice(0, 20).forEach(([symbol, opp]) => {
-                    const best = opp.best_opportunity || {};
+            // Check for both possible field names
+            const opportunities = data.final_opportunities || data.opportunities || [];
+            
+            if (opportunities && opportunities.length > 0) {
+                opportunities.slice(0, 20).forEach(opp => {
+                    const plan = opp.trade_plan || {};
                     html += '<tr class="border-b hover:bg-gray-50">';
-                    html += '<td class="p-2 font-semibold">' + symbol + '</td>';
-                    html += '<td class="p-2">' + (best.strike || '-') + '</td>';
-                    html += '<td class="p-2">' + (best.type || '-') + '</td>';
-                    html += '<td class="p-2">$' + (best.mark || '-') + '</td>';
-                    html += '<td class="p-2">' + (best.total_score || '-') + '</td>';
+                    html += '<td class="p-2 font-semibold">' + (opp.symbol || '-') + '</td>';
+                    html += '<td class="p-2">$' + (plan.strike || '-') + '</td>';
+                    html += '<td class="p-2">' + (plan.option_type || '-').toUpperCase() + '</td>';
+                    html += '<td class="p-2">' + (plan.expiration ? plan.expiration.split(' ')[0] : '-') + '</td>';
+                    html += '<td class="p-2">$' + (plan.entry_price || '-') + '</td>';
+                    html += '<td class="p-2">$' + (plan.initial_target || '-') + '</td>';
+                    html += '<td class="p-2">' + (opp.combined_score || opp.total_score || '-') + '</td>';
                     html += '</tr>';
                 });
+            } else {
+                html += '<tr><td colspan="7" class="p-4 text-center text-gray-500">No opportunities found matching your criteria</td></tr>';
             }
             
             html += '</tbody></table></div>';

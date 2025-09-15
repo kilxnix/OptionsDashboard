@@ -16288,3 +16288,39 @@ Delta: 0.20604 | Gamma: 0.00656 | Theta: -0.62744 | Score: 0.57
 
 ================================================================================
 
+📈 Trade Plan for CBRL (Bullish Bias)
+
+🔹 Option: $$85.0 Call expiring 2027-01-15
+🔹 Entry Price: $3.60
+🔹 Stop Loss: $2.70
+🔹 Initial Target: $6.30
+🔹 Final Target: $12.60
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 12 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.25650 | Gamma: 0.01265 | Theta: -0.00956 | Score: 1.02
+
+================================================================================
+
+📈 Trade Plan for COST (Bullish Bias)
+
+🔹 Option: $$982.5 Call expiring 2025-09-19
+🔹 Entry Price: $5.00
+🔹 Stop Loss: $3.75
+🔹 Initial Target: $8.75
+🔹 Final Target: $17.50
+🔹 Position Size: 1 contracts
+🔹 Max Hold Time: 6 hours
+🔹 Delta Exposure: $0.00
+🔹 Gamma/Theta Ratio: N/A
+🔹 Implied Volatility: N/A
+
+🧠 Option Metrics:
+Delta: 0.30532 | Gamma: 0.01338 | Theta: -0.68994 | Score: 0.63
+
+================================================================================
+
