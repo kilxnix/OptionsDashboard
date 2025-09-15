@@ -1,0 +1,928 @@
+{
+  "scan_metadata": {
+    "timestamp": "2025-09-15T03:23:57.496411",
+    "scan_type": "earnings",
+    "symbols_scanned": 139,
+    "filters_applied": {
+      "min_price": 0.05,
+      "max_price": 1.5,
+      "min_delta": 0.07,
+      "max_delta": 0.25,
+      "min_days": 1,
+      "max_days": 30
+    }
+  },
+  "opportunities": {
+    "CCL": {
+      "symbol": "CCL",
+      "market_data": {
+        "symbol": "CCL",
+        "current_price": 31.52,
+        "volatility_30d": 29.412,
+        "market_cap": 0,
+        "sector": "Unknown",
+        "beta": 1.0,
+        "earnings_info": {
+          "is_pre_earnings": true,
+          "days_to_earnings": 15,
+          "earnings_priority": "medium"
+        },
+        "volume_avg": 13004138,
+        "change_percent": -2.9412,
+        "high": 32.42,
+        "low": 31.515
+      },
+      "best_opportunity": {
+        "contractID": "CCL250919C00033000",
+        "symbol": "CCL",
+        "expiration": "2025-09-19",
+        "strike": 33.0,
+        "type": "call",
+        "last": "0.20",
+        "mark": 0.19,
+        "bid": 0.18,
+        "bid_size": "1",
+        "ask": 0.2,
+        "ask_size": "422",
+        "volume": 215.0,
+        "open_interest": 10649.0,
+        "date": "2025-09-12T00:00:00",
+        "implied_volatility": 0.39048,
+        "delta": 0.20839,
+        "gamma": 0.16838,
+        "theta": -0.03567,
+        "vega": 0.01252,
+        "rho": 0.00122,
+        "contractSymbol": "CCL250919C00033000",
+        "impliedVolatility": 0.39048,
+        "days_to_expiry": 3.0,
+        "openInterest": 50.0,
+        "lastPrice": 0.5,
+        "change": 0.0,
+        "percentChange": 0.0,
+        "score_analysis": {
+          "total_score": 50,
+          "components": {
+            "liquidity_score": 13,
+            "greeks_score": 22,
+            "unusual_activity_score": 0,
+            "technical_score": 0,
+            "iv_opportunity_score": 10,
+            "market_regime_score": 5
+          },
+          "recommendation": "\ud83e\udd14 NEUTRAL - Wait for better setup",
+          "holding_period": {
+            "recommended_days": 1,
+            "maximum_days": 2,
+            "exit_triggers": {
+              "profit_target": 0.4,
+              "stop_loss": -0.25,
+              "theta_limit": -0.15,
+              "delta_limit": 0.104195
+            }
+          },
+          "confidence": 47,
+          "risk_level": "LOW"
+        },
+        "total_score": 50.0
+      },
+      "trading_plan": {
+        "symbol": "CCL",
+        "option_details": {
+          "strike": 33.0,
+          "type": "call",
+          "expiration": "2025-09-19",
+          "current_price": 0.19,
+          "delta": 0.20839,
+          "gamma": 0.16838,
+          "theta": -0.03567,
+          "iv": 0.39048
+        },
+        "scoring": {
+          "total_score": 50,
+          "confidence": 47,
+          "risk_level": "LOW",
+          "recommendation": "\ud83e\udd14 NEUTRAL - Wait for better setup"
+        },
+        "position_sizing": {
+          "contracts": 20,
+          "method": "kelly_criterion",
+          "kelly_fraction": 13.9,
+          "position_value": 380.0,
+          "risk_amount": 500.0,
+          "percentage_of_capital": 1.5
+        },
+        "entry_plan": {
+          "entry_triggers": [
+            {
+              "type": "MACD_BULLISH_CROSS",
+              "condition": "MACD histogram turns positive",
+              "priority": "MEDIUM"
+            },
+            {
+              "type": "MA_BREAKOUT",
+              "condition": "Price breaks above 20-SMA at $180.50",
+              "priority": "HIGH"
+            },
+            {
+              "type": "TIME_WINDOW",
+              "condition": "Enter between 10:00 AM - 3:00 PM ET (avoid first/last hour)",
+              "priority": "LOW"
+            },
+            {
+              "type": "SPREAD_IMPROVEMENT",
+              "condition": "Bid-ask spread narrows below 10% (currently 10.0%)",
+              "priority": "MEDIUM"
+            }
+          ],
+          "entry_range": {
+            "ideal_entry": 0.1862,
+            "max_entry": 0.1938,
+            "current_mark": 0.19
+          },
+          "confirmation_required": 3,
+          "entry_method": "LIMIT_ORDER",
+          "urgency": "LOW - Wait for confirmations"
+        },
+        "targets": {
+          "target_1": {
+            "price": 0.25,
+            "percentage": 32.2,
+            "stock_price": 33.660000000000004,
+            "probability": 43,
+            "typical_time": "2-3 days"
+          },
+          "target_2": {
+            "price": 0.29,
+            "percentage": 55.2,
+            "stock_price": 34.32,
+            "probability": 26,
+            "typical_time": "4-6 days"
+          },
+          "target_3": {
+            "price": 0.35,
+            "percentage": 84.0,
+            "stock_price": 34.980000000000004,
+            "probability": 13,
+            "typical_time": "6-9 days"
+          }
+        },
+        "stop_loss": {
+          "stop_price": 0.16,
+          "stop_percentage": -14.7,
+          "stop_type": "TRAILING_STOP",
+          "trail_trigger": 0.21,
+          "trail_percentage": 15,
+          "time_stop": 2,
+          "theta_stop": "Exit if theta exceeds $0.07/day"
+        },
+        "exit_strategy": {
+          "profit_taking": {
+            "target_1": {
+              "action": "Sell 40% at $0.25",
+              "reasoning": "Lock in base profits"
+            },
+            "target_2": {
+              "action": "Sell 40% at $0.29",
+              "reasoning": "Secure substantial gains"
+            },
+            "target_3": {
+              "action": "Sell final 20% at $0.35 or trail",
+              "reasoning": "Let winners run with trailing stop"
+            }
+          },
+          "defensive_exits": {
+            "stop_loss": {
+              "trigger": "Price hits $0.16",
+              "action": "Exit full position immediately"
+            },
+            "time_decay": {
+              "trigger": "After 1 days if no targets hit",
+              "action": "Exit 50%, trail remainder"
+            },
+            "theta_acceleration": {
+              "trigger": "Exit if theta exceeds $0.07/day",
+              "action": "Exit full position"
+            },
+            "delta_deterioration": {
+              "trigger": "Delta drops below 0.104",
+              "action": "Exit full position"
+            }
+          },
+          "management_rules": {
+            "morning_check": "Review position 30 min after open",
+            "alerts": [
+              "Set price alerts at all targets and stop",
+              "Set Greeks alerts for theta/delta limits",
+              "Set unusual activity alerts"
+            ],
+            "adjustment_options": "Consider rolling up/out if up 50%+ with time remaining"
+          }
+        },
+        "risk_reward": {
+          "position_value": 380.0,
+          "max_risk": 60.0,
+          "risk_percentage": 15.8,
+          "reward_amounts": {
+            "target_1": 120.0,
+            "target_2": 200.0,
+            "target_3": 320.0
+          },
+          "risk_reward_ratios": {
+            "target_1": 2.0,
+            "target_2": 3.33,
+            "target_3": 5.33
+          },
+          "expected_value": 134.4,
+          "expected_return": 35.4,
+          "breakeven_win_rate": 33.3
+        },
+        "execution_notes": [
+          "\u23f0 NEAR EXPIRATION: Only 3 days left, gamma play",
+          "\u26a0\ufe0f LOWER CONFIDENCE: Consider smaller position or skip"
+        ],
+        "plan_generated": "2025-09-15T03:24:04.762506",
+        "plan_validity": "2025-09-15 16:00 ET",
+        "formatted_text": "\n============================================================\nCAUTIOUS BUY: CCL 33.0 CALL exp 2025-09-19\n============================================================\n\n\ud83d\udcca SCORING\n- Total Score: 50.0/100\n- Confidence: 47%\n- Risk Level: LOW\n- Recommendation: \ud83e\udd14 NEUTRAL - Wait for better setup\n\n\ud83d\udcb0 POSITION SIZING\n- Contracts: 20\n- Position Value: $380.00 (1.5% of capital)\n- Method: Kelly Criterion\n- Kelly Fraction: 13.9%\n\n\ud83c\udfaf ENTRY PLAN\n- Entry Range: $0.19 - $0.19\n- Current Mark: $0.19\n- Confirmations Required: 3 of the following:\n  \u2022 MACD histogram turns positive [MEDIUM]\n  \u2022 Price breaks above 20-SMA at $180.50 [HIGH]\n  \u2022 Enter between 10:00 AM - 3:00 PM ET (avoid first/last hour) [LOW]\n  \u2022 Bid-ask spread narrows below 10% (currently 10.0%) [MEDIUM]\n\n\ud83d\udcc8 PROFIT TARGETS\n- Target 1: $0.25 (+32.2%) @ $33.66 stock [43% prob]\n- Target 2: $0.29 (+55.2%) @ $34.32 stock [26% prob]\n- Target 3: $0.35 (+84.0%) @ $34.98 stock [13% prob]\n\n\ud83d\uded1 RISK MANAGEMENT\n- Stop Loss: $0.16 (-14.7%)\n- Stop Type: Trailing Stop\n- Trail Trigger: $0.21 (+10%)\n- Max Hold Time: 2 days\n- Theta Stop: Exit if theta exceeds $0.07/day\n\n\ud83d\udcca RISK/REWARD ANALYSIS\n- Max Risk: $60.00\n- Expected Value: $134.40 (35.4% return)\n- Risk/Reward Ratios:\n  \u2022 target_1: 2.00:1\n  \u2022 target_2: 3.33:1\n  \u2022 target_3: 5.33:1\n- Breakeven Win Rate: 33.3%\n\n\ud83d\udcdd EXECUTION NOTES\n\u23f0 NEAR EXPIRATION: Only 3 days left, gamma play\n\u26a0\ufe0f LOWER CONFIDENCE: Consider smaller position or skip\n\n\u23f0 Plan Valid Until: 2025-09-15 16:00 ET\nGenerated: 2025-09-15T03:24:04.762506\n"
+      },
+      "other_opportunities": [
+        {
+          "contractID": "CCL250919P00030000",
+          "symbol": "CCL",
+          "expiration": "2025-09-19",
+          "strike": 30.0,
+          "type": "put",
+          "last": "0.15",
+          "mark": 0.16,
+          "bid": 0.15,
+          "bid_size": "118",
+          "ask": 0.17,
+          "ask_size": "278",
+          "volume": 232.0,
+          "open_interest": 3258.0,
+          "date": "2025-09-12T00:00:00",
+          "implied_volatility": 0.39048,
+          "delta": -0.17092,
+          "gamma": 0.14903,
+          "theta": -0.03025,
+          "vega": 0.01108,
+          "rho": -0.00106,
+          "contractSymbol": "CCL250919P00030000",
+          "impliedVolatility": 0.39048,
+          "days_to_expiry": 3.0,
+          "openInterest": 50.0,
+          "lastPrice": 0.5,
+          "change": 0.0,
+          "percentChange": 0.0,
+          "score_analysis": {
+            "total_score": 45,
+            "components": {
+              "liquidity_score": 10,
+              "greeks_score": 20,
+              "unusual_activity_score": 0,
+              "technical_score": 0,
+              "iv_opportunity_score": 10,
+              "market_regime_score": 5
+            },
+            "recommendation": "\u274c AVOID - Poor risk/reward",
+            "holding_period": {
+              "recommended_days": 1,
+              "maximum_days": 2,
+              "exit_triggers": {
+                "profit_target": 0.4,
+                "stop_loss": -0.25,
+                "theta_limit": -0.15,
+                "delta_limit": -0.08546
+              }
+            },
+            "confidence": 42,
+            "risk_level": "LOW"
+          },
+          "total_score": 45.0
+        }
+      ],
+      "scan_time": "2025-09-15T03:24:04.762594"
+    },
+    "GIS": {
+      "symbol": "GIS",
+      "market_data": {
+        "symbol": "GIS",
+        "current_price": 49.93,
+        "volatility_30d": 25.0,
+        "market_cap": 0,
+        "sector": "Unknown",
+        "beta": 1.0,
+        "earnings_info": {
+          "is_pre_earnings": true,
+          "days_to_earnings": 2,
+          "earnings_priority": "critical"
+        },
+        "volume_avg": 4340617,
+        "change_percent": -1.3436,
+        "high": 50.44,
+        "low": 49.87
+      },
+      "best_opportunity": {
+        "contractID": "GIS250919P00047500",
+        "symbol": "GIS",
+        "expiration": "2025-09-19",
+        "strike": 47.5,
+        "type": "put",
+        "last": "0.32",
+        "mark": 0.32,
+        "bid": 0.3,
+        "bid_size": "51",
+        "ask": 0.35,
+        "ask_size": "120",
+        "volume": 381.0,
+        "open_interest": 6911.0,
+        "date": "2025-09-12T00:00:00",
+        "implied_volatility": 0.4295,
+        "delta": -0.18966,
+        "gamma": 0.09129,
+        "theta": -0.05633,
+        "vega": 0.01874,
+        "rho": -0.00188,
+        "contractSymbol": "GIS250919P00047500",
+        "impliedVolatility": 0.4295,
+        "days_to_expiry": 3.0,
+        "openInterest": 50.0,
+        "lastPrice": 0.5,
+        "change": 0.0,
+        "percentChange": 0.0,
+        "score_analysis": {
+          "total_score": 47,
+          "components": {
+            "liquidity_score": 11,
+            "greeks_score": 20,
+            "unusual_activity_score": 1,
+            "technical_score": 0,
+            "iv_opportunity_score": 10,
+            "market_regime_score": 5
+          },
+          "recommendation": "\u274c AVOID - Poor risk/reward",
+          "holding_period": {
+            "recommended_days": 1,
+            "maximum_days": 2,
+            "exit_triggers": {
+              "profit_target": 0.4,
+              "stop_loss": -0.25,
+              "theta_limit": -0.15,
+              "delta_limit": -0.09483
+            }
+          },
+          "confidence": 44,
+          "risk_level": "LOW"
+        },
+        "total_score": 47.0
+      },
+      "trading_plan": {
+        "symbol": "GIS",
+        "option_details": {
+          "strike": 47.5,
+          "type": "put",
+          "expiration": "2025-09-19",
+          "current_price": 0.32,
+          "delta": -0.18966,
+          "gamma": 0.09129,
+          "theta": -0.05633,
+          "iv": 0.4295
+        },
+        "scoring": {
+          "total_score": 47,
+          "confidence": 44,
+          "risk_level": "LOW",
+          "recommendation": "\u274c AVOID - Poor risk/reward"
+        },
+        "position_sizing": {
+          "contracts": 20,
+          "method": "kelly_criterion",
+          "kelly_fraction": 9.0,
+          "position_value": 640.0,
+          "risk_amount": 500.0,
+          "percentage_of_capital": 2.6
+        },
+        "entry_plan": {
+          "entry_triggers": [
+            {
+              "type": "MACD_BULLISH_CROSS",
+              "condition": "MACD histogram turns positive",
+              "priority": "MEDIUM"
+            },
+            {
+              "type": "MA_BREAKOUT",
+              "condition": "Price breaks above 20-SMA at $180.50",
+              "priority": "HIGH"
+            },
+            {
+              "type": "DELTA_INCREASE",
+              "condition": "Delta rises above -0.228",
+              "priority": "MEDIUM"
+            },
+            {
+              "type": "TIME_WINDOW",
+              "condition": "Enter between 10:00 AM - 3:00 PM ET (avoid first/last hour)",
+              "priority": "LOW"
+            },
+            {
+              "type": "SPREAD_IMPROVEMENT",
+              "condition": "Bid-ask spread narrows below 10% (currently 14.3%)",
+              "priority": "MEDIUM"
+            }
+          ],
+          "entry_range": {
+            "ideal_entry": 0.3136,
+            "max_entry": 0.3264,
+            "current_mark": 0.32
+          },
+          "confirmation_required": 3,
+          "entry_method": "LIMIT_ORDER",
+          "urgency": "LOW - Wait for confirmations"
+        },
+        "targets": {
+          "target_1": {
+            "price": 0.42,
+            "percentage": 32.2,
+            "stock_price": 48.45,
+            "probability": 40,
+            "typical_time": "2-3 days"
+          },
+          "target_2": {
+            "price": 0.5,
+            "percentage": 55.2,
+            "stock_price": 49.4,
+            "probability": 25,
+            "typical_time": "4-6 days"
+          },
+          "target_3": {
+            "price": 0.59,
+            "percentage": 84.0,
+            "stock_price": 50.35,
+            "probability": 12,
+            "typical_time": "6-9 days"
+          }
+        },
+        "stop_loss": {
+          "stop_price": 0.28,
+          "stop_percentage": -12.5,
+          "stop_type": "TRAILING_STOP",
+          "trail_trigger": 0.35,
+          "trail_percentage": 15,
+          "time_stop": 2,
+          "theta_stop": "Exit if theta exceeds $0.11/day"
+        },
+        "exit_strategy": {
+          "profit_taking": {
+            "target_1": {
+              "action": "Sell 40% at $0.42",
+              "reasoning": "Lock in base profits"
+            },
+            "target_2": {
+              "action": "Sell 40% at $0.50",
+              "reasoning": "Secure substantial gains"
+            },
+            "target_3": {
+              "action": "Sell final 20% at $0.59 or trail",
+              "reasoning": "Let winners run with trailing stop"
+            }
+          },
+          "defensive_exits": {
+            "stop_loss": {
+              "trigger": "Price hits $0.28",
+              "action": "Exit full position immediately"
+            },
+            "time_decay": {
+              "trigger": "After 1 days if no targets hit",
+              "action": "Exit 50%, trail remainder"
+            },
+            "theta_acceleration": {
+              "trigger": "Exit if theta exceeds $0.11/day",
+              "action": "Exit full position"
+            },
+            "delta_deterioration": {
+              "trigger": "Delta drops below -0.095",
+              "action": "Exit full position"
+            }
+          },
+          "management_rules": {
+            "morning_check": "Review position 30 min after open",
+            "alerts": [
+              "Set price alerts at all targets and stop",
+              "Set Greeks alerts for theta/delta limits",
+              "Set unusual activity alerts"
+            ],
+            "adjustment_options": "Consider rolling up/out if up 50%+ with time remaining"
+          }
+        },
+        "risk_reward": {
+          "position_value": 640.0,
+          "max_risk": 80.0,
+          "risk_percentage": 12.5,
+          "reward_amounts": {
+            "target_1": 200.0,
+            "target_2": 360.0,
+            "target_3": 540.0
+          },
+          "risk_reward_ratios": {
+            "target_1": 2.5,
+            "target_2": 4.5,
+            "target_3": 6.75
+          },
+          "expected_value": 216.4,
+          "expected_return": 33.8,
+          "breakeven_win_rate": 28.6
+        },
+        "execution_notes": [
+          "\ud83d\udcca LOW DELTA: Requires significant move, true lottery ticket",
+          "\u23f0 NEAR EXPIRATION: Only 3 days left, gamma play",
+          "\u26a0\ufe0f LOWER CONFIDENCE: Consider smaller position or skip"
+        ],
+        "plan_generated": "2025-09-15T03:24:07.007153",
+        "plan_validity": "2025-09-15 16:00 ET",
+        "formatted_text": "\n============================================================\nCAUTIOUS BUY: GIS 47.5 PUT exp 2025-09-19\n============================================================\n\n\ud83d\udcca SCORING\n- Total Score: 47.0/100\n- Confidence: 44%\n- Risk Level: LOW\n- Recommendation: \u274c AVOID - Poor risk/reward\n\n\ud83d\udcb0 POSITION SIZING\n- Contracts: 20\n- Position Value: $640.00 (2.6% of capital)\n- Method: Kelly Criterion\n- Kelly Fraction: 9.0%\n\n\ud83c\udfaf ENTRY PLAN\n- Entry Range: $0.31 - $0.33\n- Current Mark: $0.32\n- Confirmations Required: 3 of the following:\n  \u2022 MACD histogram turns positive [MEDIUM]\n  \u2022 Price breaks above 20-SMA at $180.50 [HIGH]\n  \u2022 Delta rises above -0.228 [MEDIUM]\n  \u2022 Enter between 10:00 AM - 3:00 PM ET (avoid first/last hour) [LOW]\n\n\ud83d\udcc8 PROFIT TARGETS\n- Target 1: $0.42 (+32.2%) @ $48.45 stock [40% prob]\n- Target 2: $0.50 (+55.2%) @ $49.40 stock [25% prob]\n- Target 3: $0.59 (+84.0%) @ $50.35 stock [12% prob]\n\n\ud83d\uded1 RISK MANAGEMENT\n- Stop Loss: $0.28 (-12.5%)\n- Stop Type: Trailing Stop\n- Trail Trigger: $0.35 (+10%)\n- Max Hold Time: 2 days\n- Theta Stop: Exit if theta exceeds $0.11/day\n\n\ud83d\udcca RISK/REWARD ANALYSIS\n- Max Risk: $80.00\n- Expected Value: $216.40 (33.8% return)\n- Risk/Reward Ratios:\n  \u2022 target_1: 2.50:1\n  \u2022 target_2: 4.50:1\n  \u2022 target_3: 6.75:1\n- Breakeven Win Rate: 28.6%\n\n\ud83d\udcdd EXECUTION NOTES\n\ud83d\udcca LOW DELTA: Requires significant move, true lottery ticket\n\u23f0 NEAR EXPIRATION: Only 3 days left, gamma play\n\u26a0\ufe0f LOWER CONFIDENCE: Consider smaller position or skip\n\n\u23f0 Plan Valid Until: 2025-09-15 16:00 ET\nGenerated: 2025-09-15T03:24:07.007153\n"
+      },
+      "other_opportunities": [
+        {
+          "contractID": "GIS250919C00052500",
+          "symbol": "GIS",
+          "expiration": "2025-09-19",
+          "strike": 52.5,
+          "type": "call",
+          "last": "0.39",
+          "mark": 0.38,
+          "bid": 0.35,
+          "bid_size": "55",
+          "ask": 0.4,
+          "ask_size": "1",
+          "volume": 221.0,
+          "open_interest": 4326.0,
+          "date": "2025-09-12T00:00:00",
+          "implied_volatility": 0.44901,
+          "delta": 0.22185,
+          "gamma": 0.09585,
+          "theta": -0.06723,
+          "vega": 0.02057,
+          "rho": 0.00205,
+          "contractSymbol": "GIS250919C00052500",
+          "impliedVolatility": 0.44901,
+          "days_to_expiry": 3.0,
+          "openInterest": 50.0,
+          "lastPrice": 0.5,
+          "change": 0.0,
+          "percentChange": 0.0,
+          "score_analysis": {
+            "total_score": 47,
+            "components": {
+              "liquidity_score": 10,
+              "greeks_score": 22,
+              "unusual_activity_score": 0,
+              "technical_score": 0,
+              "iv_opportunity_score": 10,
+              "market_regime_score": 5
+            },
+            "recommendation": "\u274c AVOID - Poor risk/reward",
+            "holding_period": {
+              "recommended_days": 1,
+              "maximum_days": 2,
+              "exit_triggers": {
+                "profit_target": 0.4,
+                "stop_loss": -0.25,
+                "theta_limit": -0.15,
+                "delta_limit": 0.110925
+              }
+            },
+            "confidence": 44,
+            "risk_level": "LOW"
+          },
+          "total_score": 47.0
+        }
+      ],
+      "scan_time": "2025-09-15T03:24:07.007239"
+    },
+    "LEN": {
+      "symbol": "LEN",
+      "market_data": {
+        "symbol": "LEN",
+        "current_price": 137.26,
+        "volatility_30d": 25.0,
+        "market_cap": 0,
+        "sector": "Unknown",
+        "beta": 1.0,
+        "earnings_info": {
+          "is_pre_earnings": true,
+          "days_to_earnings": 3,
+          "earnings_priority": "critical"
+        },
+        "volume_avg": 2854228,
+        "change_percent": -2.0201,
+        "high": 139.83,
+        "low": 136.97
+      },
+      "best_opportunity": {
+        "contractID": "LEN250919P00125000",
+        "symbol": "LEN",
+        "expiration": "2025-09-19",
+        "strike": 125.0,
+        "type": "put",
+        "last": "0.87",
+        "mark": 0.88,
+        "bid": 0.8,
+        "bid_size": "32",
+        "ask": 0.95,
+        "ask_size": "21",
+        "volume": 296.0,
+        "open_interest": 364.0,
+        "date": "2025-09-12T00:00:00",
+        "implied_volatility": 0.64413,
+        "delta": -0.13488,
+        "gamma": 0.01772,
+        "theta": -0.18748,
+        "vega": 0.04125,
+        "rho": -0.00372,
+        "contractSymbol": "LEN250919P00125000",
+        "impliedVolatility": 0.64413,
+        "days_to_expiry": 3.0,
+        "openInterest": 50.0,
+        "lastPrice": 0.5,
+        "change": 0.0,
+        "percentChange": 0.0,
+        "score_analysis": {
+          "total_score": 52,
+          "components": {
+            "liquidity_score": 10,
+            "greeks_score": 10,
+            "unusual_activity_score": 17,
+            "technical_score": 0,
+            "iv_opportunity_score": 10,
+            "market_regime_score": 5
+          },
+          "recommendation": "\ud83e\udd14 NEUTRAL - Wait for better setup",
+          "holding_period": {
+            "recommended_days": 2,
+            "maximum_days": 2,
+            "exit_triggers": {
+              "profit_target": 0.4,
+              "stop_loss": -0.25,
+              "theta_limit": -0.15,
+              "delta_limit": -0.06744
+            }
+          },
+          "confidence": 49,
+          "risk_level": "LOW"
+        },
+        "total_score": 52.0
+      },
+      "trading_plan": {
+        "symbol": "LEN",
+        "option_details": {
+          "strike": 125.0,
+          "type": "put",
+          "expiration": "2025-09-19",
+          "current_price": 0.88,
+          "delta": -0.13488,
+          "gamma": 0.01772,
+          "theta": -0.18748,
+          "iv": 0.64413
+        },
+        "scoring": {
+          "total_score": 52,
+          "confidence": 49,
+          "risk_level": "LOW",
+          "recommendation": "\ud83e\udd14 NEUTRAL - Wait for better setup"
+        },
+        "position_sizing": {
+          "contracts": 20,
+          "method": "kelly_criterion",
+          "kelly_fraction": 17.1,
+          "position_value": 1760.0000000000002,
+          "risk_amount": 500.0,
+          "percentage_of_capital": 7.0
+        },
+        "entry_plan": {
+          "entry_triggers": [
+            {
+              "type": "MACD_BULLISH_CROSS",
+              "condition": "MACD histogram turns positive",
+              "priority": "MEDIUM"
+            },
+            {
+              "type": "MA_BREAKOUT",
+              "condition": "Price breaks above 20-SMA at $180.50",
+              "priority": "HIGH"
+            },
+            {
+              "type": "VOLUME_SURGE",
+              "condition": "Maintain 2x average volume for 30 minutes",
+              "priority": "HIGH"
+            },
+            {
+              "type": "DELTA_INCREASE",
+              "condition": "Delta rises above -0.162",
+              "priority": "MEDIUM"
+            },
+            {
+              "type": "TIME_WINDOW",
+              "condition": "Enter between 10:00 AM - 3:00 PM ET (avoid first/last hour)",
+              "priority": "LOW"
+            },
+            {
+              "type": "SPREAD_IMPROVEMENT",
+              "condition": "Bid-ask spread narrows below 10% (currently 15.8%)",
+              "priority": "MEDIUM"
+            }
+          ],
+          "entry_range": {
+            "ideal_entry": 0.8623999999999999,
+            "max_entry": 0.8976000000000001,
+            "current_mark": 0.88
+          },
+          "confirmation_required": 3,
+          "entry_method": "LIMIT_ORDER",
+          "urgency": "LOW - Wait for confirmations"
+        },
+        "targets": {
+          "target_1": {
+            "price": 1.09,
+            "percentage": 24.2,
+            "stock_price": 127.5,
+            "probability": 45,
+            "typical_time": "2-3 days"
+          },
+          "target_2": {
+            "price": 1.28,
+            "percentage": 45.8,
+            "stock_price": 130.0,
+            "probability": 28,
+            "typical_time": "4-6 days"
+          },
+          "target_3": {
+            "price": 1.52,
+            "percentage": 72.8,
+            "stock_price": 132.5,
+            "probability": 14,
+            "typical_time": "6-9 days"
+          }
+        },
+        "stop_loss": {
+          "stop_price": 0.77,
+          "stop_percentage": -11.9,
+          "stop_type": "TRAILING_STOP",
+          "trail_trigger": 0.97,
+          "trail_percentage": 15,
+          "time_stop": 2,
+          "theta_stop": "Exit if theta exceeds $0.37/day"
+        },
+        "exit_strategy": {
+          "profit_taking": {
+            "target_1": {
+              "action": "Sell 40% at $1.09",
+              "reasoning": "Lock in base profits"
+            },
+            "target_2": {
+              "action": "Sell 40% at $1.28",
+              "reasoning": "Secure substantial gains"
+            },
+            "target_3": {
+              "action": "Sell final 20% at $1.52 or trail",
+              "reasoning": "Let winners run with trailing stop"
+            }
+          },
+          "defensive_exits": {
+            "stop_loss": {
+              "trigger": "Price hits $0.77",
+              "action": "Exit full position immediately"
+            },
+            "time_decay": {
+              "trigger": "After 2 days if no targets hit",
+              "action": "Exit 50%, trail remainder"
+            },
+            "theta_acceleration": {
+              "trigger": "Exit if theta exceeds $0.37/day",
+              "action": "Exit full position"
+            },
+            "delta_deterioration": {
+              "trigger": "Delta drops below -0.067",
+              "action": "Exit full position"
+            }
+          },
+          "management_rules": {
+            "morning_check": "Review position 30 min after open",
+            "alerts": [
+              "Set price alerts at all targets and stop",
+              "Set Greeks alerts for theta/delta limits",
+              "Set unusual activity alerts"
+            ],
+            "adjustment_options": "Consider rolling up/out if up 50%+ with time remaining"
+          }
+        },
+        "risk_reward": {
+          "position_value": 1760.0,
+          "max_risk": 220.0,
+          "risk_percentage": 12.5,
+          "reward_amounts": {
+            "target_1": 420.0,
+            "target_2": 800.0,
+            "target_3": 1280.0
+          },
+          "risk_reward_ratios": {
+            "target_1": 1.91,
+            "target_2": 3.64,
+            "target_3": 5.82
+          },
+          "expected_value": 563.6,
+          "expected_return": 32.0,
+          "breakeven_win_rate": 34.4
+        },
+        "execution_notes": [
+          "\u26a0\ufe0f LOW OPEN INTEREST: May have difficulty exiting, size accordingly",
+          "\u26a0\ufe0f WIDE SPREAD (15.8%): Avoid market orders, work the bid/ask",
+          "\u26a0\ufe0f HIGH THETA DECAY: Time is against you, need quick move",
+          "\ud83d\udcca LOW DELTA: Requires significant move, true lottery ticket",
+          "\u23f0 NEAR EXPIRATION: Only 3 days left, gamma play",
+          "\u26a0\ufe0f LOWER CONFIDENCE: Consider smaller position or skip"
+        ],
+        "plan_generated": "2025-09-15T03:24:07.526611",
+        "plan_validity": "2025-09-15 16:00 ET",
+        "formatted_text": "\n============================================================\nCAUTIOUS BUY: LEN 125.0 PUT exp 2025-09-19\n============================================================\n\n\ud83d\udcca SCORING\n- Total Score: 52.0/100\n- Confidence: 49%\n- Risk Level: LOW\n- Recommendation: \ud83e\udd14 NEUTRAL - Wait for better setup\n\n\ud83d\udcb0 POSITION SIZING\n- Contracts: 20\n- Position Value: $1,760.00 (7.0% of capital)\n- Method: Kelly Criterion\n- Kelly Fraction: 17.1%\n\n\ud83c\udfaf ENTRY PLAN\n- Entry Range: $0.86 - $0.90\n- Current Mark: $0.88\n- Confirmations Required: 3 of the following:\n  \u2022 MACD histogram turns positive [MEDIUM]\n  \u2022 Price breaks above 20-SMA at $180.50 [HIGH]\n  \u2022 Maintain 2x average volume for 30 minutes [HIGH]\n  \u2022 Delta rises above -0.162 [MEDIUM]\n\n\ud83d\udcc8 PROFIT TARGETS\n- Target 1: $1.09 (+24.2%) @ $127.50 stock [45% prob]\n- Target 2: $1.28 (+45.8%) @ $130.00 stock [28% prob]\n- Target 3: $1.52 (+72.8%) @ $132.50 stock [14% prob]\n\n\ud83d\uded1 RISK MANAGEMENT\n- Stop Loss: $0.77 (-11.9%)\n- Stop Type: Trailing Stop\n- Trail Trigger: $0.97 (+10%)\n- Max Hold Time: 2 days\n- Theta Stop: Exit if theta exceeds $0.37/day\n\n\ud83d\udcca RISK/REWARD ANALYSIS\n- Max Risk: $220.00\n- Expected Value: $563.60 (32.0% return)\n- Risk/Reward Ratios:\n  \u2022 target_1: 1.91:1\n  \u2022 target_2: 3.64:1\n  \u2022 target_3: 5.82:1\n- Breakeven Win Rate: 34.4%\n\n\ud83d\udcdd EXECUTION NOTES\n\u26a0\ufe0f LOW OPEN INTEREST: May have difficulty exiting, size accordingly\n\u26a0\ufe0f WIDE SPREAD (15.8%): Avoid market orders, work the bid/ask\n\u26a0\ufe0f HIGH THETA DECAY: Time is against you, need quick move\n\ud83d\udcca LOW DELTA: Requires significant move, true lottery ticket\n\u23f0 NEAR EXPIRATION: Only 3 days left, gamma play\n\u26a0\ufe0f LOWER CONFIDENCE: Consider smaller position or skip\n\n\u23f0 Plan Valid Until: 2025-09-15 16:00 ET\nGenerated: 2025-09-15T03:24:07.526611\n"
+      },
+      "other_opportunities": [],
+      "scan_time": "2025-09-15T03:24:07.526663"
+    }
+  },
+  "top_picks": [
+    {
+      "symbol": "LEN",
+      "option": "LEN 125.0 PUT exp 2025-09-19",
+      "expiration": "2025-09-19",
+      "score": 52.0,
+      "confidence": 49,
+      "entry_price": 0.88,
+      "target_1": 1.09,
+      "stop_loss": 0.77,
+      "recommendation": "\ud83e\udd14 NEUTRAL - Wait for better setup",
+      "formatted_plan": "\n============================================================\nCAUTIOUS BUY: LEN 125.0 PUT exp 2025-09-19\n============================================================\n\n\ud83d\udcca SCORING\n- Total Score: 52.0/100\n- Confidence: 49%\n- Risk Level: LOW\n- Recommendation: \ud83e\udd14 NEUTRAL - Wait for better setup\n\n\ud83d\udcb0 POSITION SIZING\n- Contracts: 20\n- Position Value: $1,760.00 (7.0% of capital)\n- Method: Kelly Criterion\n- Kelly Fraction: 17.1%\n\n\ud83c\udfaf ENTRY PLAN\n- Entry Range: $0.86 - $0.90\n- Current Mark: $0.88\n- Confirmations Required: 3 of the following:\n  \u2022 MACD histogram turns positive [MEDIUM]\n  \u2022 Price breaks above 20-SMA at $180.50 [HIGH]\n  \u2022 Maintain 2x average volume for 30 minutes [HIGH]\n  \u2022 Delta rises above -0.162 [MEDIUM]\n\n\ud83d\udcc8 PROFIT TARGETS\n- Target 1: $1.09 (+24.2%) @ $127.50 stock [45% prob]\n- Target 2: $1.28 (+45.8%) @ $130.00 stock [28% prob]\n- Target 3: $1.52 (+72.8%) @ $132.50 stock [14% prob]\n\n\ud83d\uded1 RISK MANAGEMENT\n- Stop Loss: $0.77 (-11.9%)\n- Stop Type: Trailing Stop\n- Trail Trigger: $0.97 (+10%)\n- Max Hold Time: 2 days\n- Theta Stop: Exit if theta exceeds $0.37/day\n\n\ud83d\udcca RISK/REWARD ANALYSIS\n- Max Risk: $220.00\n- Expected Value: $563.60 (32.0% return)\n- Risk/Reward Ratios:\n  \u2022 target_1: 1.91:1\n  \u2022 target_2: 3.64:1\n  \u2022 target_3: 5.82:1\n- Breakeven Win Rate: 34.4%\n\n\ud83d\udcdd EXECUTION NOTES\n\u26a0\ufe0f LOW OPEN INTEREST: May have difficulty exiting, size accordingly\n\u26a0\ufe0f WIDE SPREAD (15.8%): Avoid market orders, work the bid/ask\n\u26a0\ufe0f HIGH THETA DECAY: Time is against you, need quick move\n\ud83d\udcca LOW DELTA: Requires significant move, true lottery ticket\n\u23f0 NEAR EXPIRATION: Only 3 days left, gamma play\n\u26a0\ufe0f LOWER CONFIDENCE: Consider smaller position or skip\n\n\u23f0 Plan Valid Until: 2025-09-15 16:00 ET\nGenerated: 2025-09-15T03:24:07.526611\n"
+    },
+    {
+      "symbol": "CCL",
+      "option": "CCL 33.0 CALL exp 2025-09-19",
+      "expiration": "2025-09-19",
+      "score": 50.0,
+      "confidence": 47,
+      "entry_price": 0.19,
+      "target_1": 0.25,
+      "stop_loss": 0.16,
+      "recommendation": "\ud83e\udd14 NEUTRAL - Wait for better setup",
+      "formatted_plan": "\n============================================================\nCAUTIOUS BUY: CCL 33.0 CALL exp 2025-09-19\n============================================================\n\n\ud83d\udcca SCORING\n- Total Score: 50.0/100\n- Confidence: 47%\n- Risk Level: LOW\n- Recommendation: \ud83e\udd14 NEUTRAL - Wait for better setup\n\n\ud83d\udcb0 POSITION SIZING\n- Contracts: 20\n- Position Value: $380.00 (1.5% of capital)\n- Method: Kelly Criterion\n- Kelly Fraction: 13.9%\n\n\ud83c\udfaf ENTRY PLAN\n- Entry Range: $0.19 - $0.19\n- Current Mark: $0.19\n- Confirmations Required: 3 of the following:\n  \u2022 MACD histogram turns positive [MEDIUM]\n  \u2022 Price breaks above 20-SMA at $180.50 [HIGH]\n  \u2022 Enter between 10:00 AM - 3:00 PM ET (avoid first/last hour) [LOW]\n  \u2022 Bid-ask spread narrows below 10% (currently 10.0%) [MEDIUM]\n\n\ud83d\udcc8 PROFIT TARGETS\n- Target 1: $0.25 (+32.2%) @ $33.66 stock [43% prob]\n- Target 2: $0.29 (+55.2%) @ $34.32 stock [26% prob]\n- Target 3: $0.35 (+84.0%) @ $34.98 stock [13% prob]\n\n\ud83d\uded1 RISK MANAGEMENT\n- Stop Loss: $0.16 (-14.7%)\n- Stop Type: Trailing Stop\n- Trail Trigger: $0.21 (+10%)\n- Max Hold Time: 2 days\n- Theta Stop: Exit if theta exceeds $0.07/day\n\n\ud83d\udcca RISK/REWARD ANALYSIS\n- Max Risk: $60.00\n- Expected Value: $134.40 (35.4% return)\n- Risk/Reward Ratios:\n  \u2022 target_1: 2.00:1\n  \u2022 target_2: 3.33:1\n  \u2022 target_3: 5.33:1\n- Breakeven Win Rate: 33.3%\n\n\ud83d\udcdd EXECUTION NOTES\n\u23f0 NEAR EXPIRATION: Only 3 days left, gamma play\n\u26a0\ufe0f LOWER CONFIDENCE: Consider smaller position or skip\n\n\u23f0 Plan Valid Until: 2025-09-15 16:00 ET\nGenerated: 2025-09-15T03:24:04.762506\n"
+    },
+    {
+      "symbol": "GIS",
+      "option": "GIS 47.5 PUT exp 2025-09-19",
+      "expiration": "2025-09-19",
+      "score": 47.0,
+      "confidence": 44,
+      "entry_price": 0.32,
+      "target_1": 0.42,
+      "stop_loss": 0.28,
+      "recommendation": "\u274c AVOID - Poor risk/reward",
+      "formatted_plan": "\n============================================================\nCAUTIOUS BUY: GIS 47.5 PUT exp 2025-09-19\n============================================================\n\n\ud83d\udcca SCORING\n- Total Score: 47.0/100\n- Confidence: 44%\n- Risk Level: LOW\n- Recommendation: \u274c AVOID - Poor risk/reward\n\n\ud83d\udcb0 POSITION SIZING\n- Contracts: 20\n- Position Value: $640.00 (2.6% of capital)\n- Method: Kelly Criterion\n- Kelly Fraction: 9.0%\n\n\ud83c\udfaf ENTRY PLAN\n- Entry Range: $0.31 - $0.33\n- Current Mark: $0.32\n- Confirmations Required: 3 of the following:\n  \u2022 MACD histogram turns positive [MEDIUM]\n  \u2022 Price breaks above 20-SMA at $180.50 [HIGH]\n  \u2022 Delta rises above -0.228 [MEDIUM]\n  \u2022 Enter between 10:00 AM - 3:00 PM ET (avoid first/last hour) [LOW]\n\n\ud83d\udcc8 PROFIT TARGETS\n- Target 1: $0.42 (+32.2%) @ $48.45 stock [40% prob]\n- Target 2: $0.50 (+55.2%) @ $49.40 stock [25% prob]\n- Target 3: $0.59 (+84.0%) @ $50.35 stock [12% prob]\n\n\ud83d\uded1 RISK MANAGEMENT\n- Stop Loss: $0.28 (-12.5%)\n- Stop Type: Trailing Stop\n- Trail Trigger: $0.35 (+10%)\n- Max Hold Time: 2 days\n- Theta Stop: Exit if theta exceeds $0.11/day\n\n\ud83d\udcca RISK/REWARD ANALYSIS\n- Max Risk: $80.00\n- Expected Value: $216.40 (33.8% return)\n- Risk/Reward Ratios:\n  \u2022 target_1: 2.50:1\n  \u2022 target_2: 4.50:1\n  \u2022 target_3: 6.75:1\n- Breakeven Win Rate: 28.6%\n\n\ud83d\udcdd EXECUTION NOTES\n\ud83d\udcca LOW DELTA: Requires significant move, true lottery ticket\n\u23f0 NEAR EXPIRATION: Only 3 days left, gamma play\n\u26a0\ufe0f LOWER CONFIDENCE: Consider smaller position or skip\n\n\u23f0 Plan Valid Until: 2025-09-15 16:00 ET\nGenerated: 2025-09-15T03:24:07.007153\n"
+    }
+  ],
+  "by_category": {
+    "earnings_plays": [
+      {
+        "symbol": "CCL",
+        "days_to_earnings": 15,
+        "score": 50.0
+      },
+      {
+        "symbol": "GIS",
+        "days_to_earnings": 2,
+        "score": 47.0
+      },
+      {
+        "symbol": "LEN",
+        "days_to_earnings": 3,
+        "score": 52.0
+      }
+    ],
+    "unusual_activity": [],
+    "technical_setups": [],
+    "volatility_plays": [
+      {
+        "symbol": "CCL",
+        "iv_score": 10,
+        "total_score": 50.0
+      },
+      {
+        "symbol": "GIS",
+        "iv_score": 10,
+        "total_score": 47.0
+      },
+      {
+        "symbol": "LEN",
+        "iv_score": 10,
+        "total_score": 52.0
+      }
+    ]
+  }
+}

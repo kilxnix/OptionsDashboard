@@ -81,8 +81,8 @@ class EnhancedOptionsGrader:
         liquidity_score = self._calculate_liquidity_score(option_data)
         scores['liquidity_score'] = liquidity_score
 
-        # More stringent early exit for illiquid options
-        if liquidity_score < 10:
+        # Early rejection for illiquid options (lowered threshold)
+        if liquidity_score < 5:  # Lowered from 10 to 5 for more opportunities
             return 0, {
                 'total_score': 0,
                 'components': scores,
@@ -114,7 +114,7 @@ class EnhancedOptionsGrader:
         total_score = sum(scores.values())
 
         # Apply minimum Greeks requirement - reject if Greeks score too low
-        if greeks_score < 8:
+        if greeks_score < 4:  # Lowered from 8 to 4 for more opportunities
             return 0, {
                 'total_score': 0,
                 'components': scores,
@@ -724,21 +724,21 @@ class EnhancedOptionsGrader:
         Generate actionable recommendation based on enhanced score (max 115)
         """
         # Must have minimum scores in key areas
-        liquidity_min = components['liquidity_score'] >= 12
-        greeks_min = components['greeks_score'] >= 10
-        activity_min = components['unusual_activity_score'] >= 8
+        liquidity_min = components['liquidity_score'] >= 6  # Lowered from 12
+        greeks_min = components['greeks_score'] >= 5  # Lowered from 10
+        activity_min = components['unusual_activity_score'] >= 4  # Lowered from 8
         
-        # Adjusted thresholds for 115-point scale
-        if score >= 85 and liquidity_min and greeks_min and activity_min:
+        # Adjusted thresholds for 115-point scale (lowered for more realistic scoring)
+        if score >= 60 and liquidity_min and greeks_min and activity_min:
             return "🔥 STRONG BUY - High explosion potential"
-        elif score >= 70 and liquidity_min and greeks_min:
+        elif score >= 50 and liquidity_min and greeks_min:
             return "✅ BUY - Good opportunity"
-        elif score >= 55 and liquidity_min:
+        elif score >= 40 and liquidity_min:
             return "⚡ CAUTIOUS BUY - Monitor closely"
-        elif score >= 40:
+        elif score >= 30:
             return "⚠️ WATCH - Needs confirmation"
-        elif score >= 25:
-            return "⚠️ WEAK - Better opportunities exist"
+        elif score >= 20:
+            return "🤔 NEUTRAL - Wait for better setup"
         else:
             return "❌ REJECT - Does not meet criteria"
 
