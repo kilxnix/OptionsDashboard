@@ -435,3 +435,40 @@ Trade Plan:
   Expiration: 2025-09-19
   Max Hold: 4 hours
 ============================================================
+
+============================================================
+Symbol: GRAB - 04:31:15
+Confluence Score: 7.72/10
+Bias: Bearish
+
+Top Options Found: 2
+
+Option 1:
+  Strike: $6.0 Put
+  Expiration: 2025-09-12 00:00:00
+  Delta: -0.4876
+  Gamma: 16.2175
+  Theta: -0.0046
+  Volume: 189
+  Score: 1426.45
+  IV: 7.83%
+
+Option 2:
+  Strike: $6.0 Call
+  Expiration: 2025-09-12 00:00:00
+  Delta: 0.5124
+  Gamma: 16.2175
+  Theta: -0.0053
+  Volume: 2887
+  Score: 1231.68
+  IV: 7.83%
+
+Trade Plan:
+  Entry: $0.05
+  Stop: $0.04
+  Target: $0.09
+  Position Size: 49 contracts
+  Strike: $6.0 Put
+  Expiration: 2025-09-12
+  Max Hold: 4 hours
+============================================================
