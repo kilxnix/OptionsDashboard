@@ -23,6 +23,15 @@ Admin account: sheltontraylor@gmail.com (UserRole.ADMIN)
 - **Grant Subscriptions**: Give free Basic or Premium subscriptions
 - **User Management**: View all users, balances, and subscription status
 - **Audit Trail**: All admin actions are logged with timestamp and details
+- **Self-Management**: Admin can top up own account and grant self subscriptions
+
+## Payment Method Selection
+- **Unified Checkout**: Single payment selection page for all subscription purchases
+- **Three Payment Options**: 
+  1. Pay with Card (Stripe) - Traditional card payments
+  2. Pay with Crypto (USDC) - Stablecoin payments via Stripe
+  3. Pay with Account Credits - Instant payment from balance
+- **Smart Routing**: Automatically redirects to appropriate payment processor
 
 # System Architecture
 
@@ -42,10 +51,12 @@ Admin account: sheltontraylor@gmail.com (UserRole.ADMIN)
 - **Analysis Methods**: Greeks-based analysis, unusual activity detection, technical pattern recognition, earnings play identification
 
 ## Subscription Management
-- **Payment Processing**: Stripe integration for subscription billing
-- **Tier System**: Free, Basic ($29/month), Premium ($99/month), Enterprise ($299/month)
+- **Payment Processing**: Three payment methods - Stripe Card, USDC Crypto, Account Credits
+- **Tier System**: Free, Basic (Weekly: $7, Monthly: $29), Premium (Weekly: $25, Monthly: $99), Enterprise ($299/month)
+- **Account Balance**: Credit system with top-up functionality for instant payments
 - **Usage Tracking**: API rate limiting, scan quotas, and feature gating based on subscription tier
 - **Trial System**: 14-day trials for paid plans with automatic conversion
+- **Auto-Renewal**: Automatic subscription renewal with sufficient account balance
 
 ## Data Storage and Management
 - **Primary Database**: PostgreSQL for user data, subscriptions, API keys, and usage events
@@ -73,8 +84,11 @@ Admin account: sheltontraylor@gmail.com (UserRole.ADMIN)
 - **Third-party Rate Limits**: 150 requests/minute for Alpha Vantage subscription plan
 
 ## Payment and Subscription Services
-- **Stripe**: Payment processing, subscription management, customer portal, and webhook handling
-- **Stripe Products**: Automated product and price creation for all subscription tiers
+- **Payment Methods**: Three payment options - Stripe Card, USDC Crypto (via Stripe), Account Credits
+- **Stripe Integration**: Card payments, USDC stablecoin payments, subscription management, webhook handling
+- **Account Credits System**: Internal balance system for instant subscription payments
+- **Billing Periods**: Weekly ($7 Basic, $25 Premium) and Monthly ($29 Basic, $99 Premium) options
+- **Multi-Currency Support**: USD, EUR, GBP, and USDC stablecoin
 
 ## Database and Infrastructure
 - **PostgreSQL**: Primary database (Supabase-compatible configuration)
