@@ -1,0 +1,125 @@
+{
+  "timestamp": "2025-09-15T13:25:08.810645",
+  "tests": [
+    {
+      "test": "User Setup",
+      "status": "PASSED",
+      "details": "Logged in existing user",
+      "timestamp": "2025-09-15T13:25:09.278104"
+    },
+    {
+      "test": "Add Test Credits",
+      "status": "PASSED",
+      "details": "Added $100 to test account",
+      "timestamp": "2025-09-15T13:25:09.881571"
+    },
+    {
+      "test": "API - API Root",
+      "status": "PASSED",
+      "details": "Endpoint exists (status: 200)",
+      "timestamp": "2025-09-15T13:25:09.886525"
+    },
+    {
+      "test": "API - Health Check",
+      "status": "PASSED",
+      "details": "Endpoint exists (status: 200)",
+      "timestamp": "2025-09-15T13:25:09.890591"
+    },
+    {
+      "test": "API - Registration Endpoint",
+      "status": "PASSED",
+      "details": "Endpoint exists (status: 405)",
+      "timestamp": "2025-09-15T13:25:09.898681"
+    },
+    {
+      "test": "API - Login Endpoint",
+      "status": "PASSED",
+      "details": "Endpoint exists (status: 405)",
+      "timestamp": "2025-09-15T13:25:09.906210"
+    },
+    {
+      "test": "API - Credit Payment Endpoint",
+      "status": "PASSED",
+      "details": "Endpoint exists (status: 405)",
+      "timestamp": "2025-09-15T13:25:09.910552"
+    },
+    {
+      "test": "API - Stripe Checkout Endpoint",
+      "status": "PASSED",
+      "details": "Endpoint exists (status: 405)",
+      "timestamp": "2025-09-15T13:25:09.915895"
+    },
+    {
+      "test": "API - Top-up Endpoint",
+      "status": "PASSED",
+      "details": "Endpoint exists (status: 405)",
+      "timestamp": "2025-09-15T13:25:09.923365"
+    },
+    {
+      "test": "Frontend Homepage",
+      "status": "PASSED",
+      "details": "Homepage loads successfully",
+      "timestamp": "2025-09-15T13:25:09.936056"
+    },
+    {
+      "test": "Pricing Page - Weekly/Monthly Toggle",
+      "status": "PASSED",
+      "details": "Element found",
+      "timestamp": "2025-09-15T13:25:09.948554"
+    },
+    {
+      "test": "Pricing Page - Currency Selection",
+      "status": "PASSED",
+      "details": "Element found",
+      "timestamp": "2025-09-15T13:25:09.948625"
+    },
+    {
+      "test": "Pricing Page - Plan Cards",
+      "status": "WARNING",
+      "details": "Element not found",
+      "timestamp": "2025-09-15T13:25:09.948675"
+    },
+    {
+      "test": "Pricing Page - Subscribe Buttons",
+      "status": "PASSED",
+      "details": "Element found",
+      "timestamp": "2025-09-15T13:25:09.948726"
+    },
+    {
+      "test": "Frontend Dashboard",
+      "status": "PASSED",
+      "details": "Dashboard endpoint accessible",
+      "timestamp": "2025-09-15T13:25:09.954684"
+    },
+    {
+      "test": "Check Balance",
+      "status": "PASSED",
+      "details": "Current balance: $0",
+      "timestamp": "2025-09-15T13:25:10.154288"
+    },
+    {
+      "test": "Credit Payment",
+      "status": "PASSED",
+      "details": "Successfully subscribed to Basic Plan. Balance: $0 -> $93.0",
+      "timestamp": "2025-09-15T13:25:10.519056"
+    },
+    {
+      "test": "Subscription Verification",
+      "status": "FAILED",
+      "details": "Expected basic plan, got None",
+      "timestamp": "2025-09-15T13:25:10.710782"
+    },
+    {
+      "test": "Stripe Checkout Session",
+      "status": "FAILED",
+      "details": "You already have an active subscription. Please manage it through the customer portal.",
+      "timestamp": "2025-09-15T13:25:10.873133"
+    },
+    {
+      "test": "USDC Checkout Session",
+      "status": "FAILED",
+      "details": "You already have an active subscription. Please manage it through the customer portal.",
+      "timestamp": "2025-09-15T13:25:11.043225"
+    }
+  ]
+}
