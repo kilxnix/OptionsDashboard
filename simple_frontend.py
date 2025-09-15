@@ -197,18 +197,16 @@ LOGIN_TEMPLATE = """
                 const data = await response.json();
                 console.log('Login response:', data);
                 
-                if (data.access_token) {
-                    localStorage.setItem('token', data.access_token);
-                    alert('Login successful! Redirecting to dashboard...');
-                    window.location.href = '/dashboard';
-                } else if (data.token) {
-                    // Handle alternative token field
-                    localStorage.setItem('token', data.token);
+                // Check for token in different possible locations
+                const token = data.access_token || data.token || (data.tokens && data.tokens.access_token);
+                
+                if (token) {
+                    localStorage.setItem('token', token);
                     alert('Login successful! Redirecting to dashboard...');
                     window.location.href = '/dashboard';
                 } else {
                     alert('Login successful but no token received. Please try again.');
-                    console.error('No token in response:', data);
+                    console.error('No token found in response:', data);
                 }
             } else {
                 const error = await response.text();
