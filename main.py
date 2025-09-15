@@ -11,8 +11,29 @@ import yfinance as yf
 from run_autonomous_scan import run_autonomous_scan
 from quantitative_analyzer import is_in_bollinger_squeeze, calculate_relative_volume
 from enhanced_scanner import EnhancedOptionsScanner
+from flask_sqlalchemy import SQLAlchemy
 
+# Initialize Flask app
 app = Flask(__name__)
+
+# Database configuration - using blueprint:python_database integration
+app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a-very-secret-key-for-development"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+    "pool_recycle": 300,
+    "pool_pre_ping": True,
+}
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+# Initialize database
+from models import db, User, Plan, Subscription, ApiKey, UsageEvent, AuditLog
+
+db.init_app(app)
+
+# Create all tables
+with app.app_context():
+    db.create_all()
+    print("Database tables created successfully")
 
 # Alpha Vantage API integration - no rate limiting needed with subscription
 

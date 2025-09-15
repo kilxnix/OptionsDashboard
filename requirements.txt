@@ -11,3 +11,8 @@ lxml
 beautifulsoup4
 numpy
 psycopg2-binary
+flask-migrate
+flask-sqlalchemy
+psycopg2-binary
+pytz
+sqlalchemy
