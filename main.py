@@ -15,7 +15,8 @@ from enhanced_scanner import EnhancedOptionsScanner
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from auth import AuthManager, require_auth, require_admin, require_tier, validate_email, validate_password
-from models import PlanTier, UserRole, UserStatus
+from models import PlanTier, UserRole, UserStatus, SubscriptionStatus
+from sqlalchemy import or_
 import secrets
 
 # Initialize Flask app
@@ -817,7 +818,7 @@ def admin_list_users():
         # Apply search filter if provided
         if search:
             query = query.filter(
-                db.or_(
+                or_(
                     User.email.ilike(f'%{search}%'),
                     User.first_name.ilike(f'%{search}%'),
                     User.last_name.ilike(f'%{search}%'),
