@@ -798,6 +798,164 @@ def cancel_subscription():
     }), 200
 
 
+@app.route("/api/subscription/credit-payment", methods=["POST"])
+@require_auth
+def create_credit_payment():
+    """Create subscription using account credits"""
+    from db_utils import DatabaseManager
+    from models import AccountTransaction, TransactionType
+    from datetime import datetime, timedelta
+    from stripe_manager import PLAN_PRICES
+    
+    data = request.get_json()
+    plan_tier_str = data.get('plan_tier')
+    billing_interval = data.get('billing_interval', 'monthly')  # 'monthly' or 'weekly'
+    
+    if not plan_tier_str:
+        return jsonify({
+            'status': 'error',
+            'message': 'Plan tier required'
+        }), 400
+    
+    # Validate billing interval
+    if billing_interval not in ['monthly', 'weekly']:
+        return jsonify({
+            'status': 'error',
+            'message': f'Invalid billing interval: {billing_interval}. Must be "monthly" or "weekly"'
+        }), 400
+    
+    # Convert string to PlanTier enum
+    try:
+        plan_tier = PlanTier(plan_tier_str)
+    except ValueError:
+        return jsonify({
+            'status': 'error',
+            'message': f'Invalid plan tier: {plan_tier_str}'
+        }), 400
+    
+    if plan_tier == PlanTier.FREE:
+        return jsonify({
+            'status': 'error',
+            'message': 'Cannot purchase free tier'
+        }), 400
+    
+    user = request.current_user
+    
+    # Check if user already has an active subscription
+    current_sub = DatabaseManager.get_active_subscription(user.id)
+    if current_sub and current_sub.plan.tier != PlanTier.FREE:
+        return jsonify({
+            'status': 'error',
+            'message': 'You already have an active subscription. Please cancel it first.'
+        }), 400
+    
+    # Get plan details and pricing
+    plan = Plan.query.filter_by(tier=plan_tier).first()
+    if not plan:
+        return jsonify({
+            'status': 'error',
+            'message': 'Plan not found'
+        }), 404
+    
+    # Calculate subscription cost in dollars
+    if billing_interval == 'weekly':
+        cost = plan.price_weekly
+        days = 7
+    else:
+        cost = plan.price_monthly
+        days = 30
+    
+    # Check if user has sufficient balance
+    if user.account_balance < cost:
+        return jsonify({
+            'status': 'error',
+            'message': f'Insufficient balance. You have ${user.account_balance:.2f} but need ${cost:.2f}',
+            'required': cost,
+            'balance': user.account_balance
+        }), 400
+    
+    try:
+        # Begin transaction
+        # Deduct amount from user balance
+        user.account_balance -= cost
+        
+        # Create or update subscription
+        new_subscription = Subscription(
+            user_id=user.id,
+            plan_id=plan.id,
+            status=SubscriptionStatus.ACTIVE,
+            period_start=datetime.utcnow(),
+            period_end=datetime.utcnow() + timedelta(days=days),
+            billing_period=billing_interval
+        )
+        db.session.add(new_subscription)
+        
+        # Cancel any existing free tier subscription
+        if current_sub and current_sub.plan.tier == PlanTier.FREE:
+            current_sub.status = SubscriptionStatus.CANCELED
+            current_sub.canceled_at = datetime.utcnow()
+        
+        # Log the transaction
+        transaction = AccountTransaction(
+            user_id=user.id,
+            type=TransactionType.SUBSCRIPTION_CHARGE,
+            amount=-cost,  # Negative for deductions
+            balance_after=user.account_balance,
+            description=f'{plan.name} - {billing_interval.capitalize()} Subscription',
+            metadata={
+                'plan_tier': plan_tier.value,
+                'billing_interval': billing_interval,
+                'subscription_id': new_subscription.id
+            },
+            status='completed'
+        )
+        db.session.add(transaction)
+        
+        # Commit all changes
+        db.session.commit()
+        
+        return jsonify({
+            'status': 'success',
+            'message': f'Successfully subscribed to {plan.name} using account credits',
+            'subscription': {
+                'id': new_subscription.id,
+                'plan': plan.name,
+                'tier': plan.tier.value,
+                'billing_interval': billing_interval,
+                'period_start': new_subscription.period_start.isoformat(),
+                'period_end': new_subscription.period_end.isoformat(),
+                'status': new_subscription.status.value
+            },
+            'transaction': {
+                'id': transaction.id,
+                'amount': cost,
+                'balance_after': user.account_balance,
+                'type': 'subscription_payment'
+            },
+            'remaining_balance': user.account_balance
+        }), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            'status': 'error',
+            'message': f'Failed to process payment: {str(e)}'
+        }), 500
+
+
+@app.route("/api/user/balance", methods=["GET"])
+@require_auth
+def get_user_balance():
+    """Get current user's account balance"""
+    user = request.current_user
+    
+    return jsonify({
+        'status': 'success',
+        'balance': user.account_balance,
+        'formatted_balance': f'${user.account_balance:.2f}'
+    }), 200
+
+
 @app.route("/api/stripe/init-products", methods=["POST"])
 @require_admin
 def init_stripe_products():

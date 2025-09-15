@@ -1168,28 +1168,31 @@ PRICING_TEMPLATE = """
                 return;
             }
             
-            const paymentType = currency === 'USDC' ? 'crypto' : 'stripe';
+            // Get plan details from current pricing data
+            const data = pricingData[currency];
+            const plans = data[period];
+            const plan = plans.find(p => p.id === planId);
             
-            const response = await fetch('/api/stripe/create-checkout', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-                body: JSON.stringify({ 
-                    plan_id: planId,
-                    currency: currency,
-                    payment_type: paymentType,
-                    billing_period: period
-                })
+            if (!plan) {
+                alert('Error: Plan not found');
+                return;
+            }
+            
+            // Extract tier from planId (format: tier_currency_period)
+            let tier = 'free';
+            if (planId.startsWith('basic')) tier = 'basic';
+            else if (planId.startsWith('premium')) tier = 'premium';
+            
+            // Redirect to payment method selection page with plan details
+            const params = new URLSearchParams({
+                tier: tier,
+                name: plan.name,
+                price: plan.price,
+                period: period,
+                currency: currency
             });
             
-            const data = await response.json();
-            if (data.checkout_url) {
-                window.location.href = data.checkout_url;
-            } else {
-                alert('Error creating checkout session');
-            }
+            window.location.href = '/payment-method?' + params.toString();
         }
         
         // Initialize pricing and event handlers on page load
@@ -1221,6 +1224,312 @@ PRICING_TEMPLATE = """
 """
 
 # Admin Dashboard Template
+PAYMENT_METHOD_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Payment Method - Options Scanner Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        .payment-option {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .payment-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .badge-popular {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-purple-600">Options Scanner Pro</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/pricing" class="text-gray-700 hover:text-purple-600">← Back to Pricing</a>
+                    <a href="/dashboard" class="text-gray-700 hover:text-purple-600">Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto px-4 py-12">
+        <!-- Order Summary -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4">Order Summary</h2>
+            <div class="flex justify-between items-center border-b pb-4 mb-4">
+                <div>
+                    <p class="font-semibold text-lg" id="planName">Loading...</p>
+                    <p class="text-gray-600" id="billingPeriod">Loading...</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-2xl font-bold" id="planPrice">Loading...</p>
+                    <p class="text-sm text-gray-500" id="periodLabel">Loading...</p>
+                </div>
+            </div>
+            
+            <!-- Account Balance Display -->
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-blue-700 font-medium">Your Account Balance:</span>
+                    <span class="text-2xl font-bold text-blue-900" id="accountBalance">Loading...</span>
+                </div>
+                <div id="balanceMessage" class="mt-2 text-sm"></div>
+            </div>
+        </div>
+
+        <!-- Payment Methods -->
+        <h1 class="text-3xl font-bold text-center mb-8">Select Payment Method</h1>
+        
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- Pay with Card -->
+            <div onclick="selectPaymentMethod('stripe')" class="payment-option bg-white rounded-lg shadow-lg p-6 border-2 border-transparent hover:border-purple-500">
+                <div class="text-center mb-4">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full mx-auto flex items-center justify-center mb-3">
+                        <span class="text-2xl">💳</span>
+                    </div>
+                    <h3 class="text-xl font-bold">Pay with Card</h3>
+                    <span class="inline-block mt-2 px-3 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full">Most Popular</span>
+                </div>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li>✓ Secure Stripe checkout</li>
+                    <li>✓ All major cards accepted</li>
+                    <li>✓ Instant activation</li>
+                    <li>✓ Auto-renewal available</li>
+                </ul>
+                <button class="w-full mt-4 bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition">
+                    Continue with Card
+                </button>
+            </div>
+
+            <!-- Pay with Crypto -->
+            <div onclick="selectPaymentMethod('crypto')" class="payment-option bg-white rounded-lg shadow-lg p-6 border-2 border-transparent hover:border-green-500">
+                <div class="text-center mb-4">
+                    <div class="w-16 h-16 bg-green-100 rounded-full mx-auto flex items-center justify-center mb-3">
+                        <span class="text-2xl">₿</span>
+                    </div>
+                    <h3 class="text-xl font-bold">Pay with Crypto</h3>
+                    <span class="inline-block mt-2 px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">USDC Stablecoin</span>
+                </div>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li>✓ Pay with USDC</li>
+                    <li>✓ Secure blockchain payment</li>
+                    <li>✓ Lower fees</li>
+                    <li>✓ Instant confirmation</li>
+                </ul>
+                <button class="w-full mt-4 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
+                    Continue with Crypto
+                </button>
+            </div>
+
+            <!-- Pay with Credits -->
+            <div onclick="selectPaymentMethod('credits')" class="payment-option bg-white rounded-lg shadow-lg p-6 border-2 border-transparent hover:border-blue-500">
+                <div class="text-center mb-4">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full mx-auto flex items-center justify-center mb-3">
+                        <span class="text-2xl">💰</span>
+                    </div>
+                    <h3 class="text-xl font-bold">Pay with Credits</h3>
+                    <span id="creditStatus" class="inline-block mt-2 px-3 py-1 text-xs font-semibold rounded-full">Checking balance...</span>
+                </div>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li>✓ Use account balance</li>
+                    <li>✓ Instant activation</li>
+                    <li>✓ No transaction fees</li>
+                    <li>✓ Simple one-click payment</li>
+                </ul>
+                <button id="creditPayButton" class="w-full mt-4 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+                    Pay with Credits
+                </button>
+            </div>
+        </div>
+
+        <!-- Info Section -->
+        <div class="mt-8 text-center text-gray-600">
+            <p>All payment methods are secure and encrypted</p>
+            <p class="mt-2">Need help? <a href="#" class="text-purple-600 hover:underline">Contact support</a></p>
+        </div>
+    </div>
+
+    <script>
+        const stripe = Stripe('pk_test_51J1234567890'); // Will be replaced with actual key
+        let planDetails = {};
+        let userBalance = 0;
+        
+        async function loadPaymentPage() {
+            // Get plan details from URL params
+            const urlParams = new URLSearchParams(window.location.search);
+            planDetails = {
+                tier: urlParams.get('tier'),
+                name: urlParams.get('name'),
+                price: parseFloat(urlParams.get('price')),
+                period: urlParams.get('period') || 'monthly',
+                currency: urlParams.get('currency') || 'USD'
+            };
+            
+            // Display plan details
+            document.getElementById('planName').textContent = planDetails.name + ' Plan';
+            document.getElementById('billingPeriod').textContent = planDetails.period.charAt(0).toUpperCase() + planDetails.period.slice(1) + ' Billing';
+            
+            // Format price based on currency
+            const currencySymbol = planDetails.currency === 'EUR' ? '€' : 
+                                 planDetails.currency === 'GBP' ? '£' : 
+                                 planDetails.currency === 'USDC' ? 'USDC ' : '$';
+            document.getElementById('planPrice').textContent = currencySymbol + planDetails.price;
+            document.getElementById('periodLabel').textContent = 'per ' + (planDetails.period === 'weekly' ? 'week' : 'month');
+            
+            // Load user balance
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/user/balance', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    userBalance = data.balance;
+                    document.getElementById('accountBalance').textContent = data.formatted_balance;
+                    
+                    // Check if user has sufficient balance for credit payment
+                    if (userBalance >= planDetails.price) {
+                        document.getElementById('creditStatus').textContent = 'Sufficient Balance';
+                        document.getElementById('creditStatus').className = 'inline-block mt-2 px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full';
+                        document.getElementById('balanceMessage').innerHTML = '<span class="text-green-600">✓ You have sufficient balance to pay with credits</span>';
+                        document.getElementById('creditPayButton').disabled = false;
+                    } else {
+                        document.getElementById('creditStatus').textContent = 'Insufficient Balance';
+                        document.getElementById('creditStatus').className = 'inline-block mt-2 px-3 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded-full';
+                        document.getElementById('balanceMessage').innerHTML = '<span class="text-red-600">✗ You need $' + (planDetails.price - userBalance).toFixed(2) + ' more to pay with credits</span>';
+                        document.getElementById('creditPayButton').disabled = true;
+                        document.getElementById('creditPayButton').className = 'w-full mt-4 bg-gray-400 text-white py-2 rounded-lg cursor-not-allowed';
+                    }
+                } else {
+                    console.error('Failed to fetch balance');
+                    document.getElementById('accountBalance').textContent = 'Error loading';
+                }
+            } catch (error) {
+                console.error('Error loading balance:', error);
+                document.getElementById('accountBalance').textContent = 'Error loading';
+            }
+        }
+        
+        async function selectPaymentMethod(method) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
+            
+            if (method === 'stripe') {
+                // Redirect to Stripe checkout
+                const response = await fetch('/api/stripe/create-checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({
+                        plan_tier: planDetails.tier,
+                        billing_interval: planDetails.period,
+                        currency: planDetails.currency.toLowerCase()
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.checkout_url) {
+                        window.location.href = data.checkout_url;
+                    } else {
+                        alert('Error creating checkout session');
+                    }
+                } else {
+                    const error = await response.json();
+                    alert('Error: ' + error.message);
+                }
+                
+            } else if (method === 'crypto') {
+                // Redirect to Stripe checkout with crypto payment
+                const response = await fetch('/api/stripe/create-checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({
+                        plan_tier: planDetails.tier,
+                        billing_interval: planDetails.period,
+                        currency: 'usdc',
+                        payment_type: 'crypto'
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.checkout_url) {
+                        window.location.href = data.checkout_url;
+                    } else {
+                        alert('Error creating crypto checkout session');
+                    }
+                } else {
+                    const error = await response.json();
+                    alert('Error: ' + error.message);
+                }
+                
+            } else if (method === 'credits') {
+                // Check balance again before processing
+                if (userBalance < planDetails.price) {
+                    alert('Insufficient balance. Please top up your account or choose another payment method.');
+                    return;
+                }
+                
+                // Process credit payment
+                if (confirm(`Confirm payment of $${planDetails.price} from your account balance?`)) {
+                    const response = await fetch('/api/subscription/credit-payment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + token
+                        },
+                        body: JSON.stringify({
+                            plan_tier: planDetails.tier,
+                            billing_interval: planDetails.period
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        alert(data.message + '\\n\\nRemaining balance: ' + data.formatted_balance);
+                        window.location.href = '/dashboard';
+                    } else {
+                        const error = await response.json();
+                        alert('Error: ' + error.message);
+                    }
+                }
+            }
+        }
+        
+        // Load page data on load
+        loadPaymentPage();
+    </script>
+</body>
+</html>
+"""
+
 ADMIN_DASHBOARD_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
@@ -1681,6 +1990,10 @@ def scanner():
 @frontend_app.route('/pricing')
 def pricing():
     return render_template_string(PRICING_TEMPLATE)
+
+@frontend_app.route('/payment-method')
+def payment_method():
+    return render_template_string(PAYMENT_METHOD_TEMPLATE)
 
 @frontend_app.route('/admin')
 def admin():
