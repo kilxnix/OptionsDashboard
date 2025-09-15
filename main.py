@@ -574,7 +574,7 @@ def revoke_api_key(key_id):
 
 @app.route("/api/stripe/prices", methods=["GET"])
 def get_stripe_prices():
-    """Get available subscription prices"""
+    """Get available subscription prices - returns array directly for frontend compatibility"""
     from stripe_manager import StripeManager, PLAN_PRICES
     
     prices = []
@@ -594,10 +594,8 @@ def get_stripe_prices():
         
         prices.append(price_info)
     
-    return jsonify({
-        'status': 'success',
-        'prices': prices
-    }), 200
+    # Return array directly for frontend compatibility
+    return jsonify(prices), 200
 
 
 @app.route("/api/stripe/create-checkout", methods=["POST"])
