@@ -48,7 +48,6 @@ class PlanTier(enum.Enum):
     FREE = "free"
     BASIC = "basic"
     PREMIUM = "premium"
-    ENTERPRISE = "enterprise"
 
 
 class User(db.Model):
@@ -108,6 +107,11 @@ class Plan(db.Model):
     stripe_product_id = Column(String(255), index=True)
     stripe_price_monthly_id = Column(String(255))
     stripe_price_yearly_id = Column(String(255))
+    
+    # Multi-currency price IDs
+    stripe_price_eur_id = Column(String(255))
+    stripe_price_gbp_id = Column(String(255))
+    stripe_price_usdc_id = Column(String(255))
     
     # Relationships
     subscriptions = relationship('Subscription', back_populates='plan')

@@ -744,7 +744,7 @@ def get_scan_parameters():
 
 
 @app.route("/scan", methods=["GET", "POST"])
-@require_tier([PlanTier.FREE, PlanTier.BASIC, PlanTier.PREMIUM, PlanTier.ENTERPRISE])
+@require_tier([PlanTier.FREE, PlanTier.BASIC, PlanTier.PREMIUM])
 def trigger_scan():
     # Handle both GET (query params) and POST (JSON body) requests
     if request.method == 'POST' and request.is_json:
@@ -1413,7 +1413,7 @@ CONFLUENCE SCORE ACCURACY:
 
 
 @app.route("/enhanced-scan", methods=["GET", "POST"])
-@require_tier([PlanTier.PREMIUM, PlanTier.ENTERPRISE])
+@require_tier([PlanTier.PREMIUM])
 def enhanced_scan():
     """Enhanced options scanning with complex analysis"""
     try:
@@ -1503,7 +1503,7 @@ def enhanced_scan():
 
 
 @app.route("/explosive-scan", methods=["GET", "POST"])
-@require_tier([PlanTier.BASIC, PlanTier.PREMIUM, PlanTier.ENTERPRISE])
+@require_tier([PlanTier.BASIC, PlanTier.PREMIUM])
 def run_explosive_scan():
     """Run the explosive options scanner optimized for your API plan"""
     try:
@@ -2343,7 +2343,7 @@ def get_earnings_calendar():
 
 
 @app.route('/api/jpm-explosion-hunter', methods=['GET', 'POST'])
-@require_tier([PlanTier.PREMIUM, PlanTier.ENTERPRISE])
+@require_tier([PlanTier.PREMIUM])
 def jpm_explosion_hunter():
     """
     Phase 2: Find options matching the JPM explosion pattern from your example contract.
@@ -2837,7 +2837,7 @@ def explosive_earnings_combo():
 
 
 @app.route("/pre-earnings-scan", methods=["GET", "POST"])
-@require_tier([PlanTier.PREMIUM, PlanTier.ENTERPRISE])
+@require_tier([PlanTier.PREMIUM])
 def run_pre_earnings_scan():
     """Run specialized scan focused on pre-earnings opportunities"""
     try:
@@ -3023,7 +3023,7 @@ def get_formatted_plans():
 
 
 @app.route("/enhanced-scan", methods=["GET", "POST"])
-@require_tier([PlanTier.PREMIUM, PlanTier.ENTERPRISE])
+@require_tier([PlanTier.PREMIUM])
 def run_enhanced_scan():
     """Run enhanced options scan with comprehensive analysis"""
     try:
@@ -3106,7 +3106,7 @@ def run_enhanced_scan():
 
 
 @app.route("/enhanced-scan/progress", methods=["GET"])
-@require_tier([PlanTier.PREMIUM, PlanTier.ENTERPRISE])
+@require_tier([PlanTier.PREMIUM])
 def get_enhanced_scan_progress():
     """Check progress of enhanced scan"""
     try:
@@ -3167,7 +3167,7 @@ def get_enhanced_scan_progress():
 
 
 @app.route("/enhanced-scan/resume", methods=["POST"])
-@require_tier([PlanTier.PREMIUM, PlanTier.ENTERPRISE])
+@require_tier([PlanTier.PREMIUM])
 def resume_enhanced_scan():
     """Resume an interrupted enhanced scan"""
     try:
@@ -3190,7 +3190,7 @@ def resume_enhanced_scan():
 
 
 @app.route("/explosive-techvol-scan", methods=["GET", "POST"])
-@require_tier([PlanTier.PREMIUM, PlanTier.ENTERPRISE])
+@require_tier([PlanTier.PREMIUM])
 def explosive_techvol_scan():
     """Find short-term technical or volatility driven setups."""
     try:
@@ -3633,7 +3633,7 @@ def explosive_52week_combo():
 
 
 @app.route("/mega-discovery-scan", methods=["GET", "POST"])
-@require_tier([PlanTier.ENTERPRISE])
+@require_tier([PlanTier.PREMIUM])
 def mega_discovery_scan():
     """Ultimate auto-discovery scan combining ALL methods with full analysis"""
     try:
@@ -3933,7 +3933,7 @@ def discovery_info():
 
 
 @app.route("/quantitative-squeeze-scan", methods=["GET"])
-@require_tier([PlanTier.PREMIUM, PlanTier.ENTERPRISE])
+@require_tier([PlanTier.PREMIUM])
 def quantitative_squeeze_scan():
     """
     A dedicated endpoint to find high-potential explosive moves.
@@ -4053,7 +4053,7 @@ def quantitative_squeeze_scan():
 
 
 @app.route("/comprehensive-pipeline-scan", methods=["GET"])
-@require_tier([PlanTier.ENTERPRISE])
+@require_tier([PlanTier.PREMIUM])
 def comprehensive_pipeline_scan():
     """
     Finds high-potential opportunities by looking for two distinct setups:
@@ -4146,7 +4146,7 @@ def comprehensive_pipeline_scan():
         }), 500
         
 @app.route("/gamma-squeeze-scan", methods=["GET"])
-@require_tier([PlanTier.PREMIUM, PlanTier.ENTERPRISE])
+@require_tier([PlanTier.PREMIUM])
 def gamma_squeeze_scan():
     """
     An innovative scanner that finds explosive setups by identifying "gamma walls"
