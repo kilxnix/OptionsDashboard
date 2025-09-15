@@ -16,12 +16,12 @@ run = ["python3", "main.py"]
 deploymentTarget = "cloudrun"
 
 [[ports]]
-localPort = 8080
-externalPort = 8080
-
-[[ports]]
 localPort = 5000
 externalPort = 80
+
+[[ports]]
+localPort = 8080
+externalPort = 8080
 
 [workflows]
 runButton = "Project"
@@ -58,3 +58,4 @@ outputType = "webview"
 
 [agent]
 expertMode = true
+integrations = ["python_database:1.0.0"]
