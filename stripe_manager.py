@@ -33,6 +33,9 @@ PLAN_PRICES = {
     PlanTier.BASIC: {
         'name': 'Basic Plan',
         'price_monthly': 2900,  # $29.00 in cents
+        'price_eur': 2700,     # €27.00 in cents
+        'price_gbp': 2300,     # £23.00 in pence
+        'price_usdc': 2900,    # 29.00 USDC in cents equivalent
         'trial_days': 14,
         'features': {
             'scans_per_day': 50,
@@ -44,6 +47,9 @@ PLAN_PRICES = {
     PlanTier.PREMIUM: {
         'name': 'Premium Plan',
         'price_monthly': 9900,  # $99.00 in cents
+        'price_eur': 9200,     # €92.00 in cents
+        'price_gbp': 7900,     # £79.00 in pence
+        'price_usdc': 9900,    # 99.00 USDC in cents equivalent
         'trial_days': 14,
         'features': {
             'scans_per_day': 500,
@@ -51,19 +57,33 @@ PLAN_PRICES = {
             'endpoints': ['/scan', '/explosive-scan', '/jpm-explosion-hunter'],
             'description': 'Advanced scanning with all premium features'
         }
-    },
-    PlanTier.ENTERPRISE: {
-        'name': 'Enterprise Plan',
-        'price_monthly': 29900,  # $299.00 in cents
-        'trial_days': 14,
-        'features': {
-            'scans_per_day': -1,  # Unlimited
-            'api_calls_per_minute': -1,  # Unlimited
-            'endpoints': ['*'],  # All endpoints
-            'description': 'Unlimited access with priority support'
-        }
     }
 }
+
+# Currency conversion rates (approximate, should be updated regularly)
+CURRENCY_RATES = {
+    'USD': 1.0,
+    'EUR': 0.93,  # 1 USD = 0.93 EUR
+    'GBP': 0.79,  # 1 USD = 0.79 GBP
+    'USDC': 1.0   # 1 USD = 1 USDC (stablecoin)
+}
+
+
+def convert_currency(amount_usd: int, target_currency: str) -> int:
+    """Convert USD amount (in cents) to target currency
+    
+    Args:
+        amount_usd: Amount in USD cents
+        target_currency: Target currency code (EUR, GBP, USDC)
+    
+    Returns:
+        Amount in target currency's smallest unit (cents/pence)
+    """
+    if target_currency == 'USD':
+        return amount_usd
+    
+    rate = CURRENCY_RATES.get(target_currency, 1.0)
+    return int(amount_usd * rate)
 
 
 class StripeManager:
@@ -71,8 +91,16 @@ class StripeManager:
     
     @staticmethod
     def create_or_update_products() -> Dict[str, Any]:
-        """Create or update Stripe products and prices for all tiers"""
+        """Create or update Stripe products and prices for all tiers in multiple currencies"""
         results = {}
+        
+        # Define supported currencies
+        currencies = {
+            'usd': {'field': 'price_monthly', 'db_field': 'stripe_price_monthly_id'},
+            'eur': {'field': 'price_eur', 'db_field': 'stripe_price_eur_id'},
+            'gbp': {'field': 'price_gbp', 'db_field': 'stripe_price_gbp_id'},
+            'usdc': {'field': 'price_usdc', 'db_field': 'stripe_price_usdc_id'}
+        }
         
         for tier, config in PLAN_PRICES.items():
             if tier == PlanTier.FREE:
@@ -109,28 +137,58 @@ class StripeManager:
                         }
                     )
                 
-                # Create or retrieve price
-                price_id = f'price_{tier.value}_monthly'
-                
-                # Search for existing price
-                prices = stripe.Price.list(product=product.id, active=True)
-                existing_price = None
-                for price in prices.data:
-                    if price.recurring and price.recurring.interval == 'month':
-                        existing_price = price
-                        break
-                
-                if not existing_price:
-                    # Create new price
-                    price = stripe.Price.create(
-                        product=product.id,
-                        unit_amount=config['price_monthly'],
-                        currency='usd',
-                        recurring={'interval': 'month'},
-                        metadata={'tier': tier.value}
-                    )
-                else:
-                    price = existing_price
+                # Create prices for each currency
+                price_ids = {}
+                for currency, currency_info in currencies.items():
+                    price_field = currency_info['field']
+                    
+                    # Get price amount for this currency
+                    if currency == 'usd':
+                        price_amount = config.get('price_monthly', 0)
+                    else:
+                        price_amount = config.get(price_field, config['price_monthly'])
+                    
+                    if price_amount == 0 and tier != PlanTier.FREE:
+                        continue  # Skip creating price for non-supported currency
+                    
+                    # For USDC (stablecoin), use USD pricing but mark as crypto
+                    if currency == 'usdc':
+                        # USDC uses USD pricing as it's a stablecoin
+                        price_amount = config.get('price_monthly', 0)
+                    
+                    # Create or retrieve price
+                    price_id = f'price_{tier.value}_{currency}_monthly'
+                    
+                    # Search for existing price
+                    prices = stripe.Price.list(product=product.id, active=True, currency=currency if currency != 'usdc' else 'usd')
+                    existing_price = None
+                    for price in prices.data:
+                        if price.recurring and price.recurring.interval == 'month':
+                            if currency == 'usdc' and price.metadata.get('is_crypto') == 'true':
+                                existing_price = price
+                                break
+                            elif currency != 'usdc' and not price.metadata.get('is_crypto'):
+                                existing_price = price
+                                break
+                    
+                    if not existing_price:
+                        # Create new price
+                        price_metadata = {'tier': tier.value}
+                        if currency == 'usdc':
+                            price_metadata['is_crypto'] = 'true'
+                            price_metadata['currency_type'] = 'usdc'
+                        
+                        price = stripe.Price.create(
+                            product=product.id,
+                            unit_amount=price_amount,
+                            currency='usd' if currency == 'usdc' else currency,
+                            recurring={'interval': 'month'},
+                            metadata=price_metadata
+                        )
+                    else:
+                        price = existing_price
+                    
+                    price_ids[currency_info['db_field']] = price.id
                 
                 # Update database with Stripe IDs
                 plan = Plan.query.filter_by(tier=tier).first()
@@ -150,12 +208,15 @@ class StripeManager:
                     db.session.add(plan)
                 
                 plan.stripe_product_id = product.id
-                plan.stripe_price_monthly_id = price.id
+                # Set all currency price IDs
+                for db_field, price_id in price_ids.items():
+                    setattr(plan, db_field, price_id)
+                
                 db.session.commit()
                 
                 results[tier.value] = {
                     'product_id': product.id,
-                    'price_id': price.id,
+                    'price_ids': price_ids,
                     'status': 'success'
                 }
                 
@@ -173,9 +234,20 @@ class StripeManager:
         user_id: int,
         plan_tier: PlanTier,
         success_url: str,
-        cancel_url: str
+        cancel_url: str,
+        currency: str = 'usd',
+        payment_type: str = 'card'
     ) -> Optional[Dict[str, Any]]:
-        """Create a Stripe checkout session for subscription"""
+        """Create a Stripe checkout session for subscription with multi-currency and crypto support
+        
+        Args:
+            user_id: User ID
+            plan_tier: Plan tier to subscribe to
+            success_url: URL to redirect to on success
+            cancel_url: URL to redirect to on cancel
+            currency: Currency to use (usd, eur, gbp, usdc)
+            payment_type: Payment type (card, crypto)
+        """
         try:
             user = DatabaseManager.get_user_by_id(user_id)
             if not user:
@@ -183,8 +255,22 @@ class StripeManager:
             
             # Get plan details
             plan = Plan.query.filter_by(tier=plan_tier).first()
-            if not plan or not plan.stripe_price_monthly_id:
-                raise ValueError(f"Plan {plan_tier.value} not configured in Stripe")
+            if not plan:
+                raise ValueError(f"Plan {plan_tier.value} not found")
+            
+            # Determine which price ID to use based on currency
+            price_id = None
+            if currency == 'usd' or (currency == 'usdc' and payment_type != 'crypto'):
+                price_id = plan.stripe_price_monthly_id
+            elif currency == 'eur':
+                price_id = plan.stripe_price_eur_id
+            elif currency == 'gbp':
+                price_id = plan.stripe_price_gbp_id
+            elif currency == 'usdc' and payment_type == 'crypto':
+                price_id = plan.stripe_price_usdc_id
+            
+            if not price_id:
+                raise ValueError(f"Price not configured for {currency} in {plan_tier.value} plan")
             
             # Create or retrieve Stripe customer
             if not user.stripe_customer_id:
@@ -213,29 +299,47 @@ class StripeManager:
                 if not existing_subs:
                     trial_period_days = PLAN_PRICES[plan_tier]['trial_days']
             
+            # Determine payment method types
+            if payment_type == 'crypto' and currency == 'usdc':
+                # For crypto payments (USDC stablecoin)
+                payment_method_types = ['card', 'link', 'crypto']
+            else:
+                # Standard card payments
+                payment_method_types = ['card']
+            
             # Create checkout session
             session_params = {
                 'customer': customer.id,
-                'payment_method_types': ['card'],
+                'payment_method_types': payment_method_types,
                 'mode': 'subscription',
                 'line_items': [{
-                    'price': plan.stripe_price_monthly_id,
+                    'price': price_id,
                     'quantity': 1
                 }],
                 'success_url': success_url,
                 'cancel_url': cancel_url,
                 'metadata': {
                     'user_id': str(user.id),
-                    'plan_tier': plan_tier.value
+                    'plan_tier': plan_tier.value,
+                    'currency': currency,
+                    'payment_type': payment_type
                 }
             }
+            
+            # Add automatic tax collection if needed
+            session_params['automatic_tax'] = {'enabled': True}
+            
+            # Enable customer to choose their preferred currency
+            if currency != 'usdc':
+                session_params['currency'] = currency
             
             if trial_period_days:
                 session_params['subscription_data'] = {
                     'trial_period_days': trial_period_days,
                     'metadata': {
                         'user_id': str(user.id),
-                        'plan_tier': plan_tier.value
+                        'plan_tier': plan_tier.value,
+                        'currency': currency
                     }
                 }
             
@@ -245,7 +349,9 @@ class StripeManager:
                 'session_id': session.id,
                 'url': session.url,
                 'customer_id': customer.id,
-                'trial_days': trial_period_days
+                'trial_days': trial_period_days,
+                'currency': currency,
+                'payment_type': payment_type
             }
             
         except Exception as e:

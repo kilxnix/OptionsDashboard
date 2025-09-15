@@ -59,8 +59,8 @@ class DatabaseManager:
         if not plan:
             return False
         
-        # Enterprise tier has access to all endpoints
-        if plan.tier == PlanTier.ENTERPRISE:
+        # Premium tier has access to all endpoints
+        if plan.tier == PlanTier.PREMIUM:
             return True
         
         # Check if endpoint is in allowed list
