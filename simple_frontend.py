@@ -101,22 +101,26 @@ HTML_TEMPLATE = """
     <div class="bg-gray-100 py-16">
         <div class="max-w-7xl mx-auto px-4">
             <h2 class="text-3xl font-bold text-center mb-12">Simple, Transparent Pricing</h2>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="bg-white p-6 rounded-lg shadow-lg">
                     <h3 class="text-xl font-semibold mb-3">Free</h3>
                     <p class="text-3xl font-bold mb-4">$0<span class="text-sm text-gray-600">/month</span></p>
                     <ul class="text-gray-600 space-y-2">
-                        <li>✓ Basic Scanner</li>
-                        <li>✓ 10 scans/day</li>
+                        <li>✓ 5 scans/day</li>
+                        <li>✓ Basic scanner</li>
                         <li>✓ Community support</li>
                     </ul>
                 </div>
-                <div class="bg-purple-600 text-white p-6 rounded-lg shadow-lg transform scale-105">
-                    <h3 class="text-xl font-semibold mb-3">Basic</h3>
+                <div class="bg-purple-600 text-white p-6 rounded-lg shadow-lg transform scale-105 relative">
+                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                        <span class="bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-4 py-1 rounded-full text-sm font-bold">Most Popular</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 mt-2">Basic</h3>
                     <p class="text-3xl font-bold mb-4">$29<span class="text-sm">/month</span></p>
                     <ul class="space-y-2">
-                        <li>✓ Explosive Scanner</li>
-                        <li>✓ 100 scans/day</li>
+                        <li>✓ 50 scans/day</li>
+                        <li>✓ Explosive scanner</li>
+                        <li>✓ Technical analysis</li>
                         <li>✓ Email support</li>
                     </ul>
                 </div>
@@ -124,18 +128,10 @@ HTML_TEMPLATE = """
                     <h3 class="text-xl font-semibold mb-3">Premium</h3>
                     <p class="text-3xl font-bold mb-4">$99<span class="text-sm text-gray-600">/month</span></p>
                     <ul class="text-gray-600 space-y-2">
-                        <li>✓ All Scanners</li>
                         <li>✓ 500 scans/day</li>
+                        <li>✓ All scanners</li>
                         <li>✓ Priority support</li>
-                    </ul>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-semibold mb-3">Enterprise</h3>
-                    <p class="text-3xl font-bold mb-4">$299<span class="text-sm text-gray-600">/month</span></p>
-                    <ul class="text-gray-600 space-y-2">
-                        <li>✓ Unlimited everything</li>
-                        <li>✓ API access</li>
-                        <li>✓ Dedicated support</li>
+                        <li>✓ Advanced features</li>
                     </ul>
                 </div>
             </div>
@@ -531,6 +527,14 @@ PRICING_TEMPLATE = """
     <title>Pricing - Options Scanner Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        .currency-flag {
+            width: 20px;
+            height: 14px;
+            display: inline-block;
+            margin-right: 8px;
+        }
+    </style>
 </head>
 <body class="bg-gray-50">
     <nav class="bg-white shadow-lg">
@@ -550,33 +554,236 @@ PRICING_TEMPLATE = """
     </nav>
 
     <div class="max-w-7xl mx-auto px-4 py-16">
-        <h1 class="text-4xl font-bold text-center mb-12">Choose Your Plan</h1>
+        <h1 class="text-4xl font-bold text-center mb-4">Choose Your Plan</h1>
         
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8" id="pricingCards">
+        <!-- Currency Selector -->
+        <div class="flex justify-center mb-12">
+            <div class="bg-white rounded-lg shadow-md p-2 flex items-center space-x-2">
+                <label class="text-sm font-medium text-gray-700 px-2">Currency:</label>
+                <select id="currencySelector" class="px-4 py-2 border-0 focus:outline-none focus:ring-2 focus:ring-purple-600 rounded-lg cursor-pointer font-medium">
+                    <option value="USD">🇺🇸 USD - US Dollar</option>
+                    <option value="EUR">🇪🇺 EUR - Euro</option>
+                    <option value="GBP">🇬🇧 GBP - British Pound</option>
+                    <option value="USDC">₿ USDC - Crypto</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="pricingCards">
             <!-- Pricing cards will be loaded here -->
+        </div>
+        
+        <!-- Payment Methods Notice -->
+        <div class="mt-12 text-center">
+            <p class="text-gray-600">Accepted payment methods: </p>
+            <div class="flex justify-center items-center mt-3 space-x-4">
+                <span class="text-gray-500">💳 Credit/Debit Cards</span>
+                <span class="text-gray-500">🏦 Bank Transfer</span>
+                <span id="cryptoBadge" class="text-gray-500 hidden">₿ Cryptocurrency</span>
+            </div>
         </div>
     </div>
 
     <script>
         const stripe = Stripe('pk_test_51J1234567890'); // Will be replaced with actual key
         
-        async function loadPricing() {
-            const response = await fetch('/api/stripe/prices');
-            const plans = await response.json();
-            
+        // Pricing data for each currency
+        const pricingData = {
+            'USD': {
+                symbol: '$',
+                plans: [
+                    {
+                        id: 'free',
+                        name: 'Free',
+                        price: 0,
+                        features: [
+                            '5 scans/day',
+                            'Basic scanner',
+                            'Community support'
+                        ]
+                    },
+                    {
+                        id: 'basic_usd',
+                        name: 'Basic',
+                        price: 29,
+                        popular: true,
+                        features: [
+                            '50 scans/day',
+                            'Explosive scanner',
+                            'Technical analysis',
+                            'Email support'
+                        ]
+                    },
+                    {
+                        id: 'premium_usd',
+                        name: 'Premium',
+                        price: 99,
+                        features: [
+                            '500 scans/day',
+                            'All scanners',
+                            'Priority support',
+                            'Advanced features'
+                        ]
+                    }
+                ]
+            },
+            'EUR': {
+                symbol: '€',
+                plans: [
+                    {
+                        id: 'free',
+                        name: 'Free',
+                        price: 0,
+                        features: [
+                            '5 scans/day',
+                            'Basic scanner',
+                            'Community support'
+                        ]
+                    },
+                    {
+                        id: 'basic_eur',
+                        name: 'Basic',
+                        price: 27,
+                        popular: true,
+                        features: [
+                            '50 scans/day',
+                            'Explosive scanner',
+                            'Technical analysis',
+                            'Email support'
+                        ]
+                    },
+                    {
+                        id: 'premium_eur',
+                        name: 'Premium',
+                        price: 92,
+                        features: [
+                            '500 scans/day',
+                            'All scanners',
+                            'Priority support',
+                            'Advanced features'
+                        ]
+                    }
+                ]
+            },
+            'GBP': {
+                symbol: '£',
+                plans: [
+                    {
+                        id: 'free',
+                        name: 'Free',
+                        price: 0,
+                        features: [
+                            '5 scans/day',
+                            'Basic scanner',
+                            'Community support'
+                        ]
+                    },
+                    {
+                        id: 'basic_gbp',
+                        name: 'Basic',
+                        price: 23,
+                        popular: true,
+                        features: [
+                            '50 scans/day',
+                            'Explosive scanner',
+                            'Technical analysis',
+                            'Email support'
+                        ]
+                    },
+                    {
+                        id: 'premium_gbp',
+                        name: 'Premium',
+                        price: 79,
+                        features: [
+                            '500 scans/day',
+                            'All scanners',
+                            'Priority support',
+                            'Advanced features'
+                        ]
+                    }
+                ]
+            },
+            'USDC': {
+                symbol: '',
+                suffix: ' USDC',
+                plans: [
+                    {
+                        id: 'free',
+                        name: 'Free',
+                        price: 0,
+                        features: [
+                            '5 scans/day',
+                            'Basic scanner',
+                            'Community support'
+                        ]
+                    },
+                    {
+                        id: 'basic_usdc',
+                        name: 'Basic',
+                        price: 29,
+                        popular: true,
+                        features: [
+                            '50 scans/day',
+                            'Explosive scanner',
+                            'Technical analysis',
+                            'Email support',
+                            '🔐 Pay with crypto'
+                        ]
+                    },
+                    {
+                        id: 'premium_usdc',
+                        name: 'Premium',
+                        price: 99,
+                        features: [
+                            '500 scans/day',
+                            'All scanners',
+                            'Priority support',
+                            'Advanced features',
+                            '🔐 Pay with crypto'
+                        ]
+                    }
+                ]
+            }
+        };
+        
+        let currentCurrency = 'USD';
+        
+        function loadPricing(currency = 'USD') {
+            currentCurrency = currency;
+            const data = pricingData[currency];
             const container = document.getElementById('pricingCards');
-            container.innerHTML = plans.map(plan => `
-                <div class="bg-white p-6 rounded-lg shadow-lg ${plan.name === 'Basic' ? 'transform scale-105 border-2 border-purple-600' : ''}">
-                    <h3 class="text-xl font-semibold mb-3">${plan.name}</h3>
-                    <p class="text-3xl font-bold mb-4">$${plan.price_monthly}<span class="text-sm text-gray-600">/month</span></p>
+            const cryptoBadge = document.getElementById('cryptoBadge');
+            
+            // Show/hide crypto badge
+            if (currency === 'USDC') {
+                cryptoBadge.classList.remove('hidden');
+            } else {
+                cryptoBadge.classList.add('hidden');
+            }
+            
+            container.innerHTML = data.plans.map(plan => `
+                <div class="bg-white p-6 rounded-lg shadow-lg ${plan.popular ? 'transform scale-105 border-2 border-purple-600 relative' : ''} transition-all duration-300">
+                    ${plan.popular ? 
+                        '<div class="absolute -top-3 left-1/2 transform -translate-x-1/2"><span class="bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-4 py-1 rounded-full text-sm font-bold">Most Popular</span></div>' : 
+                        ''
+                    }
+                    <h3 class="text-xl font-semibold mb-3 ${plan.popular ? 'mt-2' : ''}">${plan.name}</h3>
+                    <p class="text-3xl font-bold mb-4">
+                        ${data.symbol}${plan.price}${data.suffix || ''}
+                        <span class="text-sm text-gray-600">/month</span>
+                    </p>
+                    ${currency === 'USDC' && plan.price > 0 ? 
+                        '<div class="mb-4"><span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">₿ Pay with Crypto</span></div>' : 
+                        ''
+                    }
                     <ul class="text-gray-600 space-y-2 mb-6">
-                        ${plan.features.map(f => `<li>✓ ${f}</li>`).join('')}
+                        ${plan.features.map(f => `<li class="flex items-start"><span class="text-green-500 mr-2">✓</span><span>${f}</span></li>`).join('')}
                     </ul>
-                    ${plan.price_monthly > 0 ? 
-                        `<button onclick="subscribe('${plan.id}')" class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700">
-                            Subscribe
+                    ${plan.price > 0 ? 
+                        `<button onclick="subscribe('${plan.id}', '${currency}')" class="w-full ${plan.popular ? 'bg-gradient-to-r from-purple-600 to-purple-700' : 'bg-purple-600'} text-white py-3 rounded-lg hover:shadow-lg transition-all duration-200 font-semibold">
+                            ${currency === 'USDC' ? 'Pay with Crypto' : 'Subscribe Now'}
                         </button>` :
-                        `<a href="/register" class="block w-full bg-gray-600 text-white py-2 rounded-lg text-center hover:bg-gray-700">
+                        `<a href="/register" class="block w-full bg-gray-600 text-white py-3 rounded-lg text-center hover:bg-gray-700 transition-all duration-200 font-semibold">
                             Start Free
                         </a>`
                     }
@@ -584,12 +791,14 @@ PRICING_TEMPLATE = """
             `).join('');
         }
         
-        async function subscribe(planId) {
+        async function subscribe(planId, currency) {
             const token = localStorage.getItem('token');
             if (!token) {
                 window.location.href = '/login';
                 return;
             }
+            
+            const paymentType = currency === 'USDC' ? 'crypto' : 'stripe';
             
             const response = await fetch('/api/stripe/create-checkout', {
                 method: 'POST',
@@ -597,7 +806,11 @@ PRICING_TEMPLATE = """
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + token
                 },
-                body: JSON.stringify({ plan_id: planId })
+                body: JSON.stringify({ 
+                    plan_id: planId,
+                    currency: currency,
+                    payment_type: paymentType
+                })
             });
             
             const data = await response.json();
@@ -608,7 +821,13 @@ PRICING_TEMPLATE = """
             }
         }
         
-        loadPricing();
+        // Handle currency change
+        document.getElementById('currencySelector').addEventListener('change', (e) => {
+            loadPricing(e.target.value);
+        });
+        
+        // Load initial pricing
+        loadPricing('USD');
     </script>
 </body>
 </html>
