@@ -114,7 +114,7 @@ class EnhancedOptionsGrader:
         total_score = sum(scores.values())
 
         # Apply minimum Greeks requirement - reject if Greeks score too low
-        if greeks_score < 4:  # Lowered from 8 to 4 for more opportunities
+        if greeks_score < 1:  # Lowered to 1 for more opportunities
             return 0, {
                 'total_score': 0,
                 'components': scores,
@@ -722,22 +722,23 @@ class EnhancedOptionsGrader:
     def _generate_recommendation(self, score: float, components: Dict, option_data: Dict) -> str:
         """
         Generate actionable recommendation based on enhanced score (max 115)
+        More realistic thresholds for actual trading
         """
-        # Must have minimum scores in key areas
-        liquidity_min = components['liquidity_score'] >= 6  # Lowered from 12
-        greeks_min = components['greeks_score'] >= 5  # Lowered from 10
-        activity_min = components['unusual_activity_score'] >= 4  # Lowered from 8
+        # Lower minimum requirements to be more practical
+        liquidity_min = components['liquidity_score'] >= 3  # More realistic minimum
+        greeks_min = components['greeks_score'] >= 2  # Lowered for accessibility
+        activity_min = components['unusual_activity_score'] >= 2  # More achievable
         
-        # Adjusted thresholds for 115-point scale (lowered for more realistic scoring)
-        if score >= 60 and liquidity_min and greeks_min and activity_min:
+        # Practical thresholds that make the scanner actionable
+        if score >= 50 and liquidity_min and greeks_min and activity_min:
             return "🔥 STRONG BUY - High explosion potential"
-        elif score >= 50 and liquidity_min and greeks_min:
+        elif score >= 40 and liquidity_min and greeks_min:
             return "✅ BUY - Good opportunity"
-        elif score >= 40 and liquidity_min:
+        elif score >= 30 and liquidity_min:
             return "⚡ CAUTIOUS BUY - Monitor closely"
-        elif score >= 30:
+        elif score >= 25:
             return "⚠️ WATCH - Needs confirmation"
-        elif score >= 20:
+        elif score >= 15:
             return "🤔 NEUTRAL - Wait for better setup"
         else:
             return "❌ REJECT - Does not meet criteria"
@@ -745,6 +746,7 @@ class EnhancedOptionsGrader:
     def _calculate_confidence(self, scores: Dict) -> int:
         """
         Calculate confidence level (0-100%) for enhanced scoring system
+        More balanced calculation for realistic confidence scores
         """
         # Updated weights for enhanced scoring
         weights = {
@@ -775,13 +777,18 @@ class EnhancedOptionsGrader:
         # Bonus for well-rounded scores (all components contributing)
         non_zero_components = sum(1 for score in scores.values() if score > 0)
         if non_zero_components >= 4:
-            confidence += 5  # Bonus for diversified strength
+            confidence += 10  # Increased bonus for diversified strength
 
-        # Penalty for extreme imbalances
-        max_component_pct = max(scores[comp] / max_scores[comp] for comp in scores.keys())
-        if max_component_pct > 0.9 and confidence > 80:
-            # Very high single component might indicate outlier
-            confidence -= 10
+        # Adjust confidence based on total score for more realistic results
+        total_score = sum(scores.values())
+        if total_score >= 50:
+            confidence = max(confidence, 75)  # High score = at least 75% confidence
+        elif total_score >= 40:
+            confidence = max(confidence, 65)  # Good score = at least 65% confidence
+        elif total_score >= 30:
+            confidence = max(confidence, 55)  # Decent score = at least 55% confidence
+        elif total_score >= 25:
+            confidence = max(confidence, 45)  # Watch score = at least 45% confidence
 
         return min(100, max(0, int(confidence)))
 
