@@ -610,6 +610,7 @@ def create_checkout_session():
     plan_tier_str = data.get('plan_tier')
     billing_interval = data.get('billing_interval', 'monthly')  # 'monthly' or 'weekly'
     currency = data.get('currency', 'usd')  # 'usd', 'eur', 'gbp', 'usdc'
+    payment_type = data.get('payment_type', 'card')  # 'card' or 'crypto'
     
     if not plan_tier_str:
         return jsonify({
@@ -622,6 +623,20 @@ def create_checkout_session():
         return jsonify({
             'status': 'error',
             'message': f'Invalid billing interval: {billing_interval}. Must be "monthly" or "weekly"'
+        }), 400
+    
+    # Validate payment type
+    if payment_type not in ['card', 'crypto']:
+        return jsonify({
+            'status': 'error',
+            'message': f'Invalid payment type: {payment_type}. Must be "card" or "crypto"'
+        }), 400
+    
+    # Validate crypto payment requirements
+    if payment_type == 'crypto' and currency != 'usdc':
+        return jsonify({
+            'status': 'error',
+            'message': 'Crypto payments are only available with USDC currency'
         }), 400
     
     # Convert string to PlanTier enum
@@ -661,7 +676,8 @@ def create_checkout_session():
         billing_interval=billing_interval,
         success_url=success_url,
         cancel_url=cancel_url,
-        currency=currency
+        currency=currency,
+        payment_type=payment_type
     )
     
     if not session_data:
@@ -677,6 +693,7 @@ def create_checkout_session():
         'checkout_url': session_data['url'],
         'billing_interval': session_data.get('billing_interval', billing_interval),
         'currency': session_data.get('currency', currency),
+        'payment_type': session_data.get('payment_type', payment_type),
         'trial_days': session_data.get('trial_days')
     }), 200
 
