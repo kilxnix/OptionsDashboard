@@ -799,6 +799,388 @@ def init_stripe_products():
     }), 200
 
 
+# ==================== Admin API Endpoints ====================
+
+@app.route("/api/admin/users", methods=["GET"])
+@require_admin
+def admin_list_users():
+    """List all users with their current balance and subscription status"""
+    try:
+        # Get pagination parameters
+        page = int(request.args.get('page', 1))
+        per_page = int(request.args.get('per_page', 50))
+        search = request.args.get('search', '')
+        
+        # Build query
+        query = User.query
+        
+        # Apply search filter if provided
+        if search:
+            query = query.filter(
+                db.or_(
+                    User.email.ilike(f'%{search}%'),
+                    User.first_name.ilike(f'%{search}%'),
+                    User.last_name.ilike(f'%{search}%'),
+                    User.company.ilike(f'%{search}%')
+                )
+            )
+        
+        # Order by created_at descending (newest first)
+        query = query.order_by(User.created_at.desc())
+        
+        # Paginate results
+        paginated = query.paginate(page=page, per_page=per_page, error_out=False)
+        
+        # Format user data
+        users_data = []
+        for user in paginated.items:
+            # Get active subscription
+            active_sub = Subscription.query.filter_by(
+                user_id=user.id,
+                status=SubscriptionStatus.ACTIVE
+            ).first()
+            
+            # Get last activity
+            last_activity = UsageEvent.query.filter_by(
+                user_id=user.id
+            ).order_by(UsageEvent.created_at.desc()).first()
+            
+            user_data = {
+                'id': user.id,
+                'email': user.email,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'company': user.company,
+                'role': user.role.value,
+                'status': user.status.value,
+                'account_balance': user.account_balance,
+                'created_at': user.created_at.isoformat() if user.created_at else None,
+                'last_activity': last_activity.created_at.isoformat() if last_activity else None,
+                'subscription': {
+                    'tier': active_sub.plan.tier.value if active_sub and active_sub.plan else 'free',
+                    'status': active_sub.status.value if active_sub else 'none',
+                    'period_end': active_sub.period_end.isoformat() if active_sub else None
+                }
+            }
+            users_data.append(user_data)
+        
+        # Log admin action
+        from models import AuditLog
+        audit = AuditLog(
+            actor_user_id=request.current_user.id,
+            action='admin_list_users',
+            target_type='users',
+            metadata_json={'page': page, 'search': search},
+            ip_address=request.remote_addr,
+            user_agent=request.headers.get('User-Agent'),
+            success=True
+        )
+        db.session.add(audit)
+        db.session.commit()
+        
+        return jsonify({
+            'status': 'success',
+            'users': users_data,
+            'pagination': {
+                'page': page,
+                'per_page': per_page,
+                'total': paginated.total,
+                'pages': paginated.pages
+            }
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
+
+
+@app.route("/api/admin/topup/<int:user_id>", methods=["POST"])
+@require_admin
+def admin_topup_user(user_id):
+    """Top up a specific user's account balance (Admin only)"""
+    try:
+        data = request.get_json()
+        amount = float(data.get('amount', 0))
+        description = data.get('description', 'Admin credit adjustment')
+        
+        # Validate amount
+        if amount <= 0:
+            return jsonify({
+                'status': 'error',
+                'message': 'Amount must be positive'
+            }), 400
+        
+        if amount > 10000:  # Max $10,000 topup
+            return jsonify({
+                'status': 'error',
+                'message': 'Maximum topup amount is $10,000'
+            }), 400
+        
+        # Get target user
+        target_user = db.session.get(User, user_id)
+        if not target_user:
+            return jsonify({
+                'status': 'error',
+                'message': 'User not found'
+            }), 404
+        
+        # Update user balance
+        old_balance = target_user.account_balance
+        target_user.account_balance += amount
+        
+        # Create transaction record
+        from models import AccountTransaction, TransactionType
+        transaction = AccountTransaction(
+            user_id=user_id,
+            amount=amount,
+            balance_after=target_user.account_balance,
+            type=TransactionType.BONUS,
+            description=f"{description} (Admin: {request.current_user.email})",
+            status='completed'
+        )
+        db.session.add(transaction)
+        
+        # Log admin action
+        from models import AuditLog
+        audit = AuditLog(
+            actor_user_id=request.current_user.id,
+            action='admin_topup',
+            target_type='user',
+            target_id=user_id,
+            metadata_json={
+                'amount': amount,
+                'old_balance': old_balance,
+                'new_balance': target_user.account_balance,
+                'description': description
+            },
+            ip_address=request.remote_addr,
+            user_agent=request.headers.get('User-Agent'),
+            success=True
+        )
+        db.session.add(audit)
+        
+        # Commit all changes
+        db.session.commit()
+        
+        return jsonify({
+            'status': 'success',
+            'message': f'Successfully topped up ${amount:.2f} to {target_user.email}',
+            'transaction_id': transaction.id,
+            'new_balance': target_user.account_balance
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        
+        # Log failed attempt
+        from models import AuditLog
+        audit = AuditLog(
+            actor_user_id=request.current_user.id,
+            action='admin_topup',
+            target_type='user',
+            target_id=user_id,
+            metadata_json={'error': str(e)},
+            ip_address=request.remote_addr,
+            user_agent=request.headers.get('User-Agent'),
+            success=False,
+            error_message=str(e)
+        )
+        db.session.add(audit)
+        db.session.commit()
+        
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
+
+
+@app.route("/api/admin/grant-subscription/<int:user_id>", methods=["POST"])
+@require_admin
+def admin_grant_subscription(user_id):
+    """Grant a free subscription to a user (Admin only)"""
+    try:
+        data = request.get_json()
+        plan_tier = data.get('tier', 'basic').lower()
+        duration_days = int(data.get('duration_days', 30))
+        
+        # Validate plan tier
+        if plan_tier not in ['free', 'basic', 'premium']:
+            return jsonify({
+                'status': 'error',
+                'message': 'Invalid plan tier. Must be free, basic, or premium'
+            }), 400
+        
+        # Get target user
+        target_user = db.session.get(User, user_id)
+        if not target_user:
+            return jsonify({
+                'status': 'error',
+                'message': 'User not found'
+            }), 404
+        
+        # Get the plan
+        from models import Plan
+        tier_enum = getattr(PlanTier, plan_tier.upper())
+        plan = Plan.query.filter_by(tier=tier_enum, active=True).first()
+        
+        if not plan:
+            return jsonify({
+                'status': 'error',
+                'message': f'No active {plan_tier} plan found'
+            }), 404
+        
+        # Cancel existing subscription if any
+        existing_sub = Subscription.query.filter_by(
+            user_id=user_id,
+            status=SubscriptionStatus.ACTIVE
+        ).first()
+        
+        if existing_sub:
+            existing_sub.status = SubscriptionStatus.CANCELED
+            existing_sub.period_end = datetime.utcnow()
+        
+        # Create new subscription
+        from datetime import datetime, timedelta
+        new_sub = Subscription(
+            user_id=user_id,
+            plan_id=plan.id,
+            status=SubscriptionStatus.ACTIVE,
+            period_start=datetime.utcnow(),
+            period_end=datetime.utcnow() + timedelta(days=duration_days),
+            billing_period='admin_granted',
+            metadata_json={
+                'admin_granted': True,
+                'granted_by': request.current_user.email,
+                'granted_at': datetime.utcnow().isoformat(),
+                'duration_days': duration_days
+            }
+        )
+        db.session.add(new_sub)
+        
+        # Log admin action
+        from models import AuditLog
+        audit = AuditLog(
+            actor_user_id=request.current_user.id,
+            action='admin_grant_subscription',
+            target_type='user',
+            target_id=user_id,
+            metadata_json={
+                'plan_tier': plan_tier,
+                'plan_id': plan.id,
+                'duration_days': duration_days,
+                'subscription_id': new_sub.id
+            },
+            ip_address=request.remote_addr,
+            user_agent=request.headers.get('User-Agent'),
+            success=True
+        )
+        db.session.add(audit)
+        
+        # Commit all changes
+        db.session.commit()
+        
+        return jsonify({
+            'status': 'success',
+            'message': f'Successfully granted {plan_tier} subscription to {target_user.email}',
+            'subscription_id': new_sub.id,
+            'expires_at': new_sub.period_end.isoformat()
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        
+        # Log failed attempt
+        from models import AuditLog
+        audit = AuditLog(
+            actor_user_id=request.current_user.id,
+            action='admin_grant_subscription',
+            target_type='user',
+            target_id=user_id,
+            metadata_json={'error': str(e)},
+            ip_address=request.remote_addr,
+            user_agent=request.headers.get('User-Agent'),
+            success=False,
+            error_message=str(e)
+        )
+        db.session.add(audit)
+        db.session.commit()
+        
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
+
+
+@app.route("/api/admin/audit-log", methods=["GET"])
+@require_admin
+def admin_audit_log():
+    """View audit log of admin actions"""
+    try:
+        # Get pagination parameters
+        page = int(request.args.get('page', 1))
+        per_page = int(request.args.get('per_page', 50))
+        action_filter = request.args.get('action', '')
+        
+        # Build query
+        from models import AuditLog
+        query = AuditLog.query
+        
+        # Apply action filter if provided
+        if action_filter:
+            query = query.filter(AuditLog.action == action_filter)
+        
+        # Order by created_at descending (newest first)
+        query = query.order_by(AuditLog.created_at.desc())
+        
+        # Paginate results
+        paginated = query.paginate(page=page, per_page=per_page, error_out=False)
+        
+        # Format audit log data
+        logs_data = []
+        for log in paginated.items:
+            # Get actor details
+            actor = db.session.get(User, log.actor_user_id)
+            
+            log_data = {
+                'id': log.id,
+                'actor': {
+                    'id': log.actor_user_id,
+                    'email': actor.email if actor else 'Unknown'
+                },
+                'action': log.action,
+                'target_type': log.target_type,
+                'target_id': log.target_id,
+                'metadata': log.metadata_json,
+                'success': log.success,
+                'error_message': log.error_message,
+                'ip_address': log.ip_address,
+                'created_at': log.created_at.isoformat() if log.created_at else None
+            }
+            logs_data.append(log_data)
+        
+        return jsonify({
+            'status': 'success',
+            'logs': logs_data,
+            'pagination': {
+                'page': page,
+                'per_page': per_page,
+                'total': paginated.total,
+                'pages': paginated.pages
+            }
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
+
+
+# ==================== End Admin API Endpoints ====================
+
+
 @app.route("/scan/parameters", methods=["GET"])
 def get_scan_parameters():
     """Get available scan parameters and their default values"""

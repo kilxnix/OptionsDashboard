@@ -7,6 +7,22 @@ The system integrates multiple data sources (Alpha Vantage, Yahoo Finance) to pr
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
+Admin account: sheltontraylor@gmail.com (UserRole.ADMIN)
+
+# Admin Features
+
+## Admin Dashboard (/admin)
+- User management interface with search and pagination
+- Top-up any user's account balance (no payment required)
+- Grant free subscriptions to users (Basic/Premium)
+- View user activity and subscription status
+- Full audit logging of all admin actions
+
+## Admin Capabilities
+- **Account Top-up**: Add credits to any user's account ($10-$10,000)
+- **Grant Subscriptions**: Give free Basic or Premium subscriptions
+- **User Management**: View all users, balances, and subscription status
+- **Audit Trail**: All admin actions are logged with timestamp and details
 
 # System Architecture
 
