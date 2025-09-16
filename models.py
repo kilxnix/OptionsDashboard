@@ -3,18 +3,15 @@ Database models for the Options Scanner SaaS platform
 """
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, Text, ForeignKey, JSON, Index, Enum
-from sqlalchemy.orm import relationship, DeclarativeBase
+from sqlalchemy.orm import relationship
 from datetime import datetime
 import enum
 import hashlib
 import secrets
 
 
-class Base(DeclarativeBase):
-    pass
 
-
-db = SQLAlchemy(model_class=Base)
+db = SQLAlchemy()
 
 
 class UserRole(enum.Enum):
