@@ -1,0 +1,11 @@
+.git
+__pycache__/
+*.py[cod]
+.venv
+.env
+dist/
+build/
+*.ipynb_checkpoints
+output/
+TradingPlans/
+attached_assets/

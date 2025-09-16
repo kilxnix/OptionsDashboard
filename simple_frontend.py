@@ -11,7 +11,7 @@ frontend_app = Flask(__name__)
 frontend_app.secret_key = os.urandom(24)
 
 # Backend API URL
-BACKEND_URL = "http://localhost:5001"
+BACKEND_URL = os.getenv("BACKEND_URL", "http://api:8000")
 
 # HTML Template for the SaaS frontend
 HTML_TEMPLATE = """

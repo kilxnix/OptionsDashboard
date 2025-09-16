@@ -129,8 +129,42 @@ def index():
     })
 
 
-@app.route("/health")
-def health():
+@app.route("/api/health", methods=["GET"])
+def health_check():
+    """
+    Health check endpoint for Docker health monitoring
+    """
+    try:
+        # Check database connection
+        from sqlalchemy import text
+        db.session.execute(text('SELECT 1'))
+        db_status = "healthy"
+    except Exception as e:
+        db_status = f"unhealthy: {str(e)}"
+    
+    # Get application info
+    health_info = {
+        "status": "healthy" if db_status == "healthy" else "degraded",
+        "timestamp": datetime.utcnow().isoformat(),
+        "service": "optionsscanner-api",
+        "version": "1.0.0",
+        "checks": {
+            "database": db_status,
+            "memory": "healthy",  # You can add actual memory checks here
+            "disk": "healthy"     # You can add actual disk checks here
+        }
+    }
+    
+    # Return 200 if healthy, 503 if not
+    status_code = 200 if health_info["status"] == "healthy" else 503
+    
+    return jsonify(health_info), status_code
+
+
+# Also add this simple version if you prefer minimal health checks
+@app.route("/health", methods=["GET"])
+def simple_health():
+    """Simple health check endpoint"""
     return "OK", 200
 
 
