@@ -1,0 +1,4 @@
+# Optional dependencies for Alpaca brokerage integration.
+# Install alongside requirements.txt only if Alpaca features are enabled.
+alpaca-trade-api==3.0.2
+websocket-client==1.6.1

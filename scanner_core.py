@@ -636,30 +636,69 @@ class CompleteOptionsScanner:
 
     def fetch_alpha_vantage_data(self, symbol, timeframe):
         """Fetch price data using Alpha Vantage API with support for all timeframes"""
-        self._check_rate_limit()
+        tf_config = TIMEFRAMES[timeframe]
+        function = tf_config['function']
+
+        # Build URL based on timeframe type
+        if function == 'TIME_SERIES_INTRADAY':
+            url = (f'https://www.alphavantage.co/query?function={function}'
+                   f'&symbol={symbol}&interval={tf_config["interval"]}'
+                   f'&outputsize=compact&apikey={self.api_key}'
+                   )  # Use compact for faster response
+        elif function == 'TIME_SERIES_DAILY_ADJUSTED':
+            url = (
+                f'https://www.alphavantage.co/query?function={function}'
+                f'&symbol={symbol}&outputsize=compact&apikey={self.api_key}'
+            )
+        else:  # Weekly
+            url = (f'https://www.alphavantage.co/query?function={function}'
+                   f'&symbol={symbol}&apikey={self.api_key}')
 
         try:
-            tf_config = TIMEFRAMES[timeframe]
-            function = tf_config['function']
+            base_wait = int(os.getenv('ALPHAVANTAGE_RATE_LIMIT_WAIT', '60'))
+        except ValueError:
+            base_wait = 60
 
-            # Build URL based on timeframe type
-            if function == 'TIME_SERIES_INTRADAY':
-                url = (f'https://www.alphavantage.co/query?function={function}'
-                       f'&symbol={symbol}&interval={tf_config["interval"]}'
-                       f'&outputsize=compact&apikey={self.api_key}'
-                       )  # Use compact for faster response
-            elif function == 'TIME_SERIES_DAILY_ADJUSTED':
-                url = (
-                    f'https://www.alphavantage.co/query?function={function}'
-                    f'&symbol={symbol}&outputsize=compact&apikey={self.api_key}'
+        max_attempts = 3
+        last_error = None
+
+        for attempt in range(1, max_attempts + 1):
+            self._check_rate_limit()
+
+            try:
+                response = requests.get(url, timeout=15)
+                response.raise_for_status()
+                data = response.json()
+            except (requests.exceptions.RequestException, ValueError) as err:
+                last_error = err
+                print(
+                    f"Error fetching {timeframe} data for {symbol} "
+                    f"(attempt {attempt}/{max_attempts}): {err}"
                 )
-            else:  # Weekly
-                url = (f'https://www.alphavantage.co/query?function={function}'
-                       f'&symbol={symbol}&apikey={self.api_key}')
+                if attempt < max_attempts:
+                    sleep_time = min(5 * attempt, 15)
+                    print(f"⏳ Retrying Alpha Vantage request in {sleep_time}s...")
+                    time.sleep(sleep_time)
+                    continue
+                break
 
-            response = requests.get(url, timeout=15)  # Add timeout
-            response.raise_for_status()  # Raise exception for bad status codes
-            data = response.json()
+            rate_limit_msg = data.get('Note')
+            info_msg = data.get('Information')
+            if not rate_limit_msg and isinstance(info_msg, str) and 'rate limit' in info_msg.lower():
+                rate_limit_msg = info_msg
+
+            if rate_limit_msg:
+                wait_seconds = base_wait * (2 ** (attempt - 1))
+                print(
+                    f"⏳ Alpha Vantage throttled for {symbol} {timeframe}. "
+                    f"Waiting {wait_seconds}s before retry {attempt}/{max_attempts}."
+                )
+                print(f"   Message: {rate_limit_msg}")
+                if attempt < max_attempts:
+                    time.sleep(wait_seconds)
+                    continue
+                last_error = RuntimeError('Alpha Vantage rate limit exceeded')
+                break
 
             if 'Error Message' in data:
                 print(
@@ -699,9 +738,12 @@ class CompleteOptionsScanner:
             print(f"Successfully fetched {timeframe} data for {symbol}")
             return df
 
-        except Exception as e:
-            print(f"Error fetching {timeframe} data for {symbol}: {e}")
-            return self._fetch_yfinance_fallback(symbol, timeframe)
+        if last_error:
+            print(
+                f"⚠️  Alpha Vantage data unavailable for {symbol} {timeframe} after "
+                f"{max_attempts} attempts: {last_error}"
+            )
+        return self._fetch_yfinance_fallback(symbol, timeframe)
 
     def fetch_multi_timeframe_data(self, symbol):
         """Fetch price data for all timeframes using Alpha Vantage"""
@@ -863,18 +905,42 @@ class CompleteOptionsScanner:
         }
 
     def fetch_price_data(self, symbol, period='1mo', interval='15m'):
-        """Fetch price data using yfinance"""
-        try:
-            stock = yf.Ticker(symbol)
-            df = stock.history(period=period, interval=interval)
-            if df.empty:
-                print(f"No price data available for {symbol}")
-                return None
-            df.index = pd.to_datetime(df.index)
-            return df
-        except Exception as e:
-            print(f"Error fetching price data for {symbol}: {e}")
-            return None
+        """Fetch price data using yfinance with retry/backoff handling"""
+        max_attempts = 3
+        retry_delay = 2
+
+        for attempt in range(1, max_attempts + 1):
+            try:
+                stock = yf.Ticker(symbol)
+                df = stock.history(period=period, interval=interval)
+                if df.empty:
+                    print(f"No price data available for {symbol}")
+                    return None
+                df.index = pd.to_datetime(df.index)
+                return df
+            except (json.JSONDecodeError, requests.exceptions.RequestException, ValueError) as e:
+                print(
+                    f"⚠️  Error fetching price data for {symbol} "
+                    f"(attempt {attempt}/{max_attempts}): {e}"
+                )
+                if attempt < max_attempts:
+                    wait = retry_delay * attempt
+                    print(f"⏳ Retrying yfinance price fetch for {symbol} in {wait}s...")
+                    time.sleep(wait)
+                    continue
+            except Exception as e:
+                print(
+                    f"⚠️  Unexpected error fetching price data for {symbol} "
+                    f"(attempt {attempt}/{max_attempts}): {e}"
+                )
+                if attempt < max_attempts:
+                    wait = retry_delay * attempt
+                    print(f"⏳ Retrying yfinance price fetch for {symbol} in {wait}s...")
+                    time.sleep(wait)
+                    continue
+
+        print(f"❌ Price data fetch failed for {symbol} after {max_attempts} attempts")
+        return None
 
     def _fetch_yfinance_fallback(self, symbol, timeframe):
         """Fallback to yfinance when Alpha Vantage data is unavailable"""

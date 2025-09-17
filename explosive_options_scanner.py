@@ -925,45 +925,98 @@ class ExplosiveOptionsScanner:
 
     def _fetch_yahoo_options(self, symbol: str) -> Optional[pd.DataFrame]:
         """Fetch options data from Yahoo Finance as fallback"""
+        max_attempts = 3
+        retry_delay = 2
+
         try:
             import yfinance as yf
 
             print(f"🌐 Fetching Yahoo Finance options for {symbol}...")
             ticker = yf.Ticker(symbol)
 
-            # Get available expiration dates
-            try:
-                expirations = ticker.options
-                if not expirations:
-                    print(f"❌ No options available for {symbol} on Yahoo Finance")
+            expirations = None
+            for attempt in range(1, max_attempts + 1):
+                try:
+                    expirations = ticker.options
+                    break
+                except (json.JSONDecodeError, requests.exceptions.RequestException, ValueError) as err:
+                    print(
+                        f"❌ Error getting expiration dates for {symbol} "
+                        f"(attempt {attempt}/{max_attempts}): {err}"
+                    )
+                    if attempt < max_attempts:
+                        wait = retry_delay * attempt
+                        print(f"⏳ Retrying Yahoo expirations for {symbol} in {wait}s...")
+                        time.sleep(wait)
+                        continue
                     return None
-            except Exception as e:
-                print(f"❌ Error getting expiration dates for {symbol}: {e}")
+                except Exception as err:
+                    print(
+                        f"❌ Unexpected error getting expiration dates for {symbol}: {err}"
+                    )
+                    if attempt < max_attempts:
+                        wait = retry_delay * attempt
+                        print(f"⏳ Retrying Yahoo expirations for {symbol} in {wait}s...")
+                        time.sleep(wait)
+                        continue
+                    return None
+
+            if not expirations:
+                print(f"❌ No options available for {symbol} on Yahoo Finance")
                 return None
 
             # Fetch options data for all available expirations (limit to first 4 for performance)
             all_options = []
             for exp_date in expirations[:4]:  # Limit to avoid too many calls
-                try:
-                    option_chain = ticker.option_chain(exp_date)
+                option_chain = None
+                for attempt in range(1, max_attempts + 1):
+                    try:
+                        option_chain = ticker.option_chain(exp_date)
+                        break
+                    except (json.JSONDecodeError, requests.exceptions.RequestException, ValueError) as err:
+                        print(
+                            f"⚠️ Error fetching {exp_date} options for {symbol} "
+                            f"(attempt {attempt}/{max_attempts}): {err}"
+                        )
+                        if attempt < max_attempts:
+                            wait = retry_delay * attempt
+                            print(
+                                f"⏳ Retrying Yahoo options for {symbol} {exp_date} in {wait}s..."
+                            )
+                            time.sleep(wait)
+                            continue
+                    except Exception as err:
+                        print(
+                            f"⚠️ Unexpected error fetching {exp_date} options for {symbol}: {err}"
+                        )
+                        if attempt < max_attempts:
+                            wait = retry_delay * attempt
+                            print(
+                                f"⏳ Retrying Yahoo options for {symbol} {exp_date} in {wait}s..."
+                            )
+                            time.sleep(wait)
+                            continue
+                    break
 
-                    # Process calls
-                    calls = option_chain.calls.copy()
-                    calls['type'] = 'call'
-                    calls['expiration'] = exp_date
-                    calls['symbol'] = symbol
-
-                    # Process puts  
-                    puts = option_chain.puts.copy()
-                    puts['type'] = 'put'
-                    puts['expiration'] = exp_date
-                    puts['symbol'] = symbol
-
-                    all_options.extend([calls, puts])
-
-                except Exception as e:
-                    print(f"⚠️ Error fetching {exp_date} options for {symbol}: {e}")
+                if option_chain is None:
+                    print(
+                        f"❌ Giving up on {symbol} {exp_date} after {max_attempts} attempts"
+                    )
                     continue
+
+                # Process calls
+                calls = option_chain.calls.copy()
+                calls['type'] = 'call'
+                calls['expiration'] = exp_date
+                calls['symbol'] = symbol
+
+                # Process puts
+                puts = option_chain.puts.copy()
+                puts['type'] = 'put'
+                puts['expiration'] = exp_date
+                puts['symbol'] = symbol
+
+                all_options.extend([calls, puts])
 
             if not all_options:
                 print(f"❌ No valid options data found for {symbol}")
@@ -973,10 +1026,10 @@ class ExplosiveOptionsScanner:
             df = pd.concat(all_options, ignore_index=True)
             print(f"✅ Yahoo Finance options found for {symbol}: {len(df)} contracts")
 
-                # Standardize Yahoo Finance columns to match Alpha Vantage format
+            # Standardize Yahoo Finance columns to match Alpha Vantage format
             column_mapping = {
                 'lastPrice': 'mark',
-                'openInterest': 'open_interest', 
+                'openInterest': 'open_interest',
                 'impliedVolatility': 'impliedVolatility',
                 'contractSymbol': 'contractSymbol'
             }
@@ -999,7 +1052,7 @@ class ExplosiveOptionsScanner:
                 'volume': 100,
                 'open_interest': 50,
                 'delta': 0.3,
-                'gamma': 0.01, 
+                'gamma': 0.01,
                 'theta': -0.05,
                 'impliedVolatility': 0.25
             }
