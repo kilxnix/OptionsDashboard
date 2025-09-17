@@ -2,8 +2,14 @@ services:
   api:
     build: .
     env_file: .env
+    environment:
+      PYTHONUNBUFFERED: "1"
+      PORT: ${PORT:-5001}
+      WEB_CONCURRENCY: ${GUNICORN_WORKERS:-2}
+      GUNICORN_TIMEOUT: ${GUNICORN_TIMEOUT:-300}
+      GUNICORN_GRACEFUL_TIMEOUT: ${GUNICORN_GRACEFUL_TIMEOUT:-60}
     # Add timeout to prevent worker kills during long scans
-    command: /bin/sh -lc "gunicorn --access-logfile - --error-logfile - -w ${GUNICORN_WORKERS:-2} -b 0.0.0.0:${PORT:-5001} --timeout 120 --graceful-timeout 30 main:app"
+    command: /bin/sh -lc "gunicorn --access-logfile - --error-logfile - --workers ${WEB_CONCURRENCY:-2} --bind 0.0.0.0:${PORT:-5001} --timeout ${GUNICORN_TIMEOUT:-300} --graceful-timeout ${GUNICORN_GRACEFUL_TIMEOUT:-60} main:app"
     volumes:
       - ./TradingPlans:/app/TradingPlans
       - ./output:/app/output
@@ -11,12 +17,9 @@ services:
       - "${PORT:-5001}:${PORT:-5001}"
     restart: unless-stopped
     # Add memory limits to prevent OOM kills
-    deploy:
-      resources:
-        limits:
-          memory: 2G
-        reservations:
-          memory: 1G
+    mem_limit: 3g
+    memswap_limit: 3g
+    mem_reservation: 1536m
 
   frontend:
     build: .

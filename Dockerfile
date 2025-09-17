@@ -2,7 +2,11 @@ FROM python:3.11-slim-bookworm
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1
+    PIP_NO_CACHE_DIR=1 \
+    PORT=5001 \
+    GUNICORN_TIMEOUT=300 \
+    GUNICORN_GRACEFUL_TIMEOUT=60 \
+    WEB_CONCURRENCY=2
 
 RUN apt-get update && apt-get install -y \
     gcc \
@@ -27,4 +31,4 @@ COPY --chown=appuser:appuser . /app/
 USER appuser
 EXPOSE 5000 5001
 
-CMD ["gunicorn", "-w", "2", "-b", "0.0.0.0:5001", "main:app"]
+CMD ["/bin/sh", "-lc", "gunicorn --access-logfile - --error-logfile - --workers ${WEB_CONCURRENCY:-2} --bind 0.0.0.0:${PORT:-5001} --timeout ${GUNICORN_TIMEOUT:-300} --graceful-timeout ${GUNICORN_GRACEFUL_TIMEOUT:-60} main:app"]
